@@ -1,5 +1,5 @@
 import React from "react";
-import db from "./fireB/firestore"
+import db from "Components/fireB/firestore"
  
 class YsiList extends React.Component {
   constructor(props) {

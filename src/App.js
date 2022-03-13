@@ -1,5 +1,5 @@
 import './App.css';
-import YsiList from "./components/YsiList";
+import YsiList from "./Components/organisms/OG0000_YsiList/view";
 
 function App() {
   return (
