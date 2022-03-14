@@ -8,7 +8,6 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<YsiList />} />
-        <Route path="/:lang" element={<YsiList />} />
       </Routes>
     </div>
   );
