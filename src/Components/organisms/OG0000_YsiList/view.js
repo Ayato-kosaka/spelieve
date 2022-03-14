@@ -1,7 +1,8 @@
 import React from "react";
 import db from "Components/fireB/firestore"
+import { withTranslation, WithTranslation } from "react-i18next";
  
-class YsiList extends React.Component {
+class YsiList extends React.Component<WithTranslation> {
   constructor(props) {
     super(props);
     this.state = {
@@ -32,6 +33,7 @@ class YsiList extends React.Component {
   }
   
   render() {
+    const { t } = this.props;
     return <>
       <form id="ystForm">
         <label>
@@ -39,9 +41,9 @@ class YsiList extends React.Component {
           <input type="text" name="name" />
         </label>
       </form>
-      <button onClick={this.setClick}>野菜設定</button>
+      <button onClick={this.setClick}>{t("野菜設定")}</button>
       
-      <button onClick={this.getClick}>野菜取得</button>
+      <button onClick={this.getClick}>{t("野菜取得")}</button>
       {this.state.ysiList.map(val => (
         <p>{val.name}</p>
       ))}
@@ -49,4 +51,4 @@ class YsiList extends React.Component {
   }
 }
  
-export default YsiList;
+export default withTranslation()(YsiList);
