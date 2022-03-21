@@ -1,12 +1,33 @@
 import db from "Components/fireB/firestore"
+import DB0002_Itineraries from "DB/DB0002_Itineraries.json"
 
 const collectionName = 'Itineraries';
+const itinerariesCollectionRef = db.collection(collectionName);
 const subCollectionName = 'ItineraryPlansGroupings'
 const subSubCollectionName = 'Plans'
 
+export const BL0014_insertItineraryTestData = () =>{
+    const itineraryID = "sampleItinerary1"
+    let itinerary = DB0002_Itineraries[itineraryID];
+    let subCollectionName = "ItineraryPlansGroupings";
+    Object.keys(itinerary[subCollectionName]).forEach(function(PlansGroupingsID){
+        let itineraryPlansGrouping = itinerary[subCollectionName][PlansGroupingsID]
+        let subsubCollectionName = "Plans"
+        Object.keys(itineraryPlansGrouping[subsubCollectionName]).forEach(function(planID){
+            let plan = itineraryPlansGrouping[subsubCollectionName][planID]
+            itinerariesCollectionRef.doc(itineraryID).collection(subCollectionName).doc(PlansGroupingsID).collection(subsubCollectionName).doc(planID).set(plan)
+        });
+        delete itineraryPlansGrouping[subsubCollectionName];
+        itinerariesCollectionRef.doc(itineraryID).collection(subCollectionName).doc(PlansGroupingsID).set(itineraryPlansGrouping);
+    });
+    delete itinerary[subCollectionName];
+    itinerariesCollectionRef.doc(itineraryID).set(itinerary);
+    console.log("BL0014_insertItineraryTestData finised")
+}
+
 export const BL0010_getItinerary = (itineraryID) =>{
     let itinerary = {}
-    db.collection(collectionName).doc(itineraryID).get().then((doc) => {
+    itinerariesCollectionRef.doc(itineraryID).get().then((doc) => {
         if (doc.exists) {
             itinerary[itineraryID] = doc.data();
             itinerary[itineraryID][subCollectionName] = {};
