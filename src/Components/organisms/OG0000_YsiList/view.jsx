@@ -1,6 +1,7 @@
 import React from "react";
 import db from "Components/fireB/firestore"
 import { withTranslation, WithTranslation } from "react-i18next";
+import { PlusButton } from "Components/atoms/AT0004_PlusButton/view";
  
 class YsiList extends React.Component<WithTranslation> {
   constructor(props) {
@@ -47,6 +48,7 @@ class YsiList extends React.Component<WithTranslation> {
       {this.state.ysiList.map(val => (
         <p>{val.name}</p>
       ))}
+      <PlusButton onClick={() => { alert("押すなアホ")}} />
     </>;
   }
 }
