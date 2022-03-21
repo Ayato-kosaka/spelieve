@@ -3,6 +3,8 @@ import db from "Components/fireB/firestore"
 import { withTranslation, WithTranslation } from "react-i18next";
 import { PlusButton } from "Components/atoms/AT0004_PlusButton/view";
 import { TimeArea } from 'Components/atoms/AT0001_TimeArea/view';
+import { TitleArea } from 'Components/atoms/AT0002_TitleArea/view';
+import { SpanArea } from 'Components/atoms/AT0003_SpanArea/view';
  
 class YsiList extends React.Component<WithTranslation> {
   constructor(props) {
@@ -51,6 +53,8 @@ class YsiList extends React.Component<WithTranslation> {
       ))}
       <PlusButton onClick={() => { alert("押すなアホ")}} />
       <TimeArea />
+      <TitleArea />
+      <SpanArea />
     </>;
   }
 }
