@@ -1,7 +1,7 @@
-import { TitileInput } from './style.js'
+import { TitleInput } from './style.js'
 
 export const TitleArea = () => {
   return (
-    <TitileInput type="text" ></TitileInput>
+    <TitleInput type="text" ></TitleInput>
   )
 }
