@@ -1,7 +1,10 @@
-import { TimeInput } from './style.js'
+import { TimeInput, TimeOutput } from './style.js'
 
-export const TimeArea = () => {
+export const TimeArea = (props) => {
+  const { isInput } = props;
   return (
-    <TimeInput type="time" name="scheduled_time" id="scheduled-time" ></TimeInput>
-  )
-}
+    <>
+      { isInput ? <TimeInput type="time"></TimeInput> : <TimeOutput></TimeOutput> }
+    </>
+  );
+};
