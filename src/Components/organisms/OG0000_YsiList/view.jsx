@@ -5,6 +5,7 @@ import { PlusButton } from "Components/atoms/AT0004_PlusButton/view";
 import { TimeArea } from 'Components/atoms/AT0001_TimeArea/view';
 import { TitleArea } from 'Components/atoms/AT0002_TitleArea/view';
 import { SpanArea } from 'Components/atoms/AT0003_SpanArea/view';
+import { Plan } from 'Components/molecules/MC0001_Plan/view'
  
 class YsiList extends React.Component<WithTranslation> {
   constructor(props) {
@@ -54,7 +55,8 @@ class YsiList extends React.Component<WithTranslation> {
       <PlusButton onClick={() => { alert("押すなアホ")}} />
       <TimeArea />
       <TitleArea />
-      <SpanArea />
+      <SpanArea /><br></br>
+      <Plan />
     </>;
   }
 }
