@@ -1,7 +1,6 @@
 import { PlusBtn } from './style.js'
 
-export const AT0004_PlusButton = (props) => {
-  const { onClick } = props;
+export const AT0004_PlusButton = () => {
   return (
     <PlusBtn onClick={onClick} >
       +
