@@ -1,16 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import db from "Components/fireB/firestore"
-import { withTranslation, WithTranslation } from "react-i18next";
+// import { withTranslation, WithTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
  
-class YsiList extends React.Component<WithTranslation> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      ysiList: []
-    };
-  }
-  
-  setClick = () => {
+// class YsiList extends React.Component<WithTranslation> {
+export const YsiList = () => {
+  const [ysiList, setYsiList] = useState([]);
+  const { t } = useTranslation();
+
+  const setClick = () => {
     var ysiName = document.getElementById("ystForm").elements["name"]["value"];
     console.log(ysiName)
     db.collection("yasais").add({name: ysiName})
@@ -22,33 +20,30 @@ class YsiList extends React.Component<WithTranslation> {
       });
   }
  
-  getClick = () => {
+  const getClick = () => {
     let data = [];
     db.collection('yasais').get().then(snapShot => {
       snapShot.forEach(doc => {
         data.push(doc.data());
       });
-      this.setState({ ysiList: data });
+      setYsiList(data);
     });
   }
   
-  render() {
-    const { t } = this.props;
-    return <>
+  return (
+    <>
       <form id="ystForm">
         <label>
           Name:
           <input type="text" name="name" />
         </label>
       </form>
-      <button onClick={this.setClick}>{t("野菜設定")}</button>
+      <button onClick={setClick}>{t("野菜設定")}</button>
       
-      <button onClick={this.getClick}>{t("野菜取得")}</button>
-      {this.state.ysiList.map(val => (
-        <p>{val.name}</p>
+      <button onClick={getClick}>{t("野菜取得")}</button>
+      {ysiList.map((val, i) => (
+        <p key={`ysi${i}`}>{val.name}</p>
       ))}
-    </>;
-  }
-}
- 
-export default withTranslation()(YsiList);
+    </>
+  );
+};
