@@ -1,6 +1,6 @@
 import { TimeInput, TimeOutput } from './style.js'
 
-export const TimeArea = (props) => {
+export const AT0001_TimeArea = (props) => {
   const { isInput } = props;
   return (
     <>
