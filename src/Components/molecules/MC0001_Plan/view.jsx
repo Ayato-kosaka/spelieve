@@ -1,10 +1,11 @@
-import { PlanInput, Ppp } from './style.js'
+import { PlanInput, TimeArea, TitleArea } from './style.js'
 
-export const Plan = () => {
-  
+export const MC0001_Plan = () => {
   return (
     <PlanInput>
-      <Ppp>Hello</Ppp>
+      <TimeArea></TimeArea>
+      <TitleArea></TitleArea>
+      <TimeArea></TimeArea>
     </PlanInput>
   )
 }

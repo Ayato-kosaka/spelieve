@@ -1,14 +1,7 @@
 import React from "react";
 import db from "Components/fireB/firestore"
 import { withTranslation, WithTranslation } from "react-i18next";
-<<<<<<< HEAD
-import { PlusButton } from "Components/atoms/AT0004_PlusButton/view";
-import { TimeArea } from 'Components/atoms/AT0001_TimeArea/view';
-import { TitleArea } from 'Components/atoms/AT0002_TitleArea/view';
-import { SpanArea } from 'Components/atoms/AT0003_SpanArea/view';
-import { Plan } from 'Components/molecules/MC0001_Plan/view'
-=======
->>>>>>> nt/feature_atoms
+import { MC0001_Plan } from 'Components/molecules/MC0001_Plan/view'
  
 class YsiList extends React.Component<WithTranslation> {
   constructor(props) {
@@ -55,14 +48,7 @@ class YsiList extends React.Component<WithTranslation> {
       {this.state.ysiList.map(val => (
         <p>{val.name}</p>
       ))}
-<<<<<<< HEAD
-      <PlusButton onClick={() => { alert("押すなアホ")}} />
-      <TimeArea />
-      <TitleArea />
-      <SpanArea /><br></br>
-      <Plan />
-=======
->>>>>>> nt/feature_atoms
+      <MC0001_Plan />
     </>;
   }
 }
