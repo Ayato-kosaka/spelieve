@@ -17,7 +17,7 @@ const resources = {
 };
 
 const detector = new languagedetector(null, {
-   order: ['querystring', 'cookie', 'navigator', 'path', 'localStorage', 'htmlTag', 'sessionStorage',  'subdomain']
+   order: ['querystring']
 });
 
 i18n
