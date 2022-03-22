@@ -1,7 +1,7 @@
 {
     "sampleItinerary1": {
         "title": "日光・鬼怒川・中禅寺湖",
-        "ItineraryPlansGroupings": {
+        "PlanGroups": {
             "PlansGroupings0001": {
                 "representivePlanID": "plan0003",
                 "representiveStartTime": "1970/01/01T20:00:00",

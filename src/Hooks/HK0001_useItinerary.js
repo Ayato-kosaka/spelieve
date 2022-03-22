@@ -3,13 +3,12 @@ import DB0002_Itineraries from "DB/DB0002_Itineraries.json"
 
 const collectionName = 'Itineraries';
 const itinerariesCollectionRef = db.collection(collectionName);
-const subCollectionName = 'ItineraryPlansGroupings'
+const subCollectionName = 'PlanGroups'
 const subSubCollectionName = 'Plans'
 
 export const BL0014_insertItineraryTestData = () =>{
     const itineraryID = "sampleItinerary1"
     let itinerary = DB0002_Itineraries[itineraryID];
-    let subCollectionName = "ItineraryPlansGroupings";
     Object.keys(itinerary[subCollectionName]).forEach(function(PlansGroupingsID){
         let itineraryPlansGrouping = itinerary[subCollectionName][PlansGroupingsID]
         let subsubCollectionName = "Plans"
