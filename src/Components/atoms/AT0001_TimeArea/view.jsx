@@ -1,10 +1,10 @@
-import { TimeInput, TimeOutput } from './style.js'
+import { styled_input, styled_p } from './style.js'
 
 export const AT0001_TimeArea = (props) => {
   const { isInput=true, onFocusout } = props;
   return (
     <>
-      { isInput ? <TimeInput type="time" onFocusout={onFocusout}></TimeInput> : <TimeOutput></TimeOutput> }
+      { isInput ? <styled_input type="time" onFocusout={onFocusout}></styled_input> : <styled_p></styled_p> }
     </>
   );
 };
