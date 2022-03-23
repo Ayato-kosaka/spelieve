@@ -1,11 +1,11 @@
-import { PlanInput, TimeArea, TitleArea } from './style.js'
+import { PlanInput, Styled_AT0001_TimeArea, Styled_AT0002_TitleArea } from './style.js'
 
 export const MC0001_Plan = () => {
   return (
     <PlanInput>
-      <TimeArea></TimeArea>
-      <TitleArea></TitleArea>
-      <TimeArea></TimeArea>
+      <Styled_AT0001_TimeArea></Styled_AT0001_TimeArea>
+      <Styled_AT0002_TitleArea></Styled_AT0002_TitleArea>
+      <Styled_AT0001_TimeArea></Styled_AT0001_TimeArea>
     </PlanInput>
   )
 }
