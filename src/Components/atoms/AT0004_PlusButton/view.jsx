@@ -1,10 +1,10 @@
-import { PlusBtn } from './style.js'
+import { StyledPlusBtn } from './style.js'
 
 export const AT0004_PlusButton = (props) => {
   const { onClick } = props
   return (
-    <PlusBtn onClick={onClick} >
+    <StyledPlusBtn onClick={onClick} >
       +
-    </PlusBtn>
+    </StyledPlusBtn>
   )
 }
