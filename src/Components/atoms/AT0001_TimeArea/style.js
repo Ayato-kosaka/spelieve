@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 
-export const StyledInput = styled.input`
+export const StyledTimeInput = styled.input`
   
 `
 
-export const StyledOutput = styled.p`
+export const StyledTimeOutput = styled.p`
   
 `
