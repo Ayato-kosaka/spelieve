@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import db from "Components/fireB/firestore"
 // import { withTranslation, WithTranslation } from "react-i18next";
 import { useTranslation } from "react-i18next";
+import{ BL0014_insertItineraryTestData, BL0010_getItinerary, Itinerary } from 'Hooks/HK0001_useItinerary'
  
 // class YsiList extends React.Component<WithTranslation> {
 export const YsiList = () => {
@@ -38,9 +39,9 @@ export const YsiList = () => {
           <input type="text" name="name" />
         </label>
       </form>
-      <button onClick={setClick}>{t("野菜設定")}</button>
+      <button onClick={BL0014_insertItineraryTestData}>{t("野菜設定")}</button>
       
-      <button onClick={getClick}>{t("野菜取得")}</button>
+      <button onClick={BL0010_getItinerary("sampleItinerary1")}>{t("野菜取得")}</button>
       {ysiList.map((val, i) => (
         <p key={`ysi${i}`}>{val.name}</p>
       ))}
