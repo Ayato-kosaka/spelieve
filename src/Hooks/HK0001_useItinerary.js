@@ -1,56 +1,53 @@
 import db from "Components/fireB/firestore"
 import DB0002_Itineraries from "DB/DB0002_Itineraries.json"
-import{ PlanGroup } from 'Hooks/HK0003_usePlanGroup'
+import{ HK0003_PlanGroup } from 'Hooks/HK0003_usePlanGroup'
 
-import { doc, getDoc } from "firebase/firestore";
+import { doc, collection, query, where, getDocs } from "firebase/firestore";
 
 
 
 //model はどこに配置しよう、、、、
-export class Itinerary {
+//docRef と doc の違いがよくわかっていないいいいいいいいいいいいいいいいい
+export class HK0001_Itinerary {
     static collectionName = 'Itineraries';
-    static collectionRef = db.collection(this.collectionName);
+    // static collectionRef = db.collection(this.collectionName); //←いらないかなぁあああ？
     
-    constructor (id) {
-        
-    }
-    setter(data) { //BL0012_updateItinerary
-        this.title = data.title;
+    
+    constructor (id) { //await が無理なら、new HK0001_Itinerary().build(id) でも良い。
+        // if(!id){
+        //     this.docRef = await addDoc(collection(db, this.collectionName));
+        //     this.id = docRef.id;
+        // }else{
+        //     this.id = id;
+        //     this.docRef = doc(db, this.collectionName, id);
+        //     let doc = await getDoc(this.docRef);
+        //     this.setter(doc.data());
+        //     const subCollection = await doc.ref.collection(HK0003_PlanGroup.collectionName).orderBy("representiveStartTime").get()
+        //     this.planGroups = subCollection.map((subDoc) => {
+        //         return new HK0003_PlanGroup(subDoc);
+        //     });
+        // }
+        // return(this);
     }
     setData(data){
         this.setter(data);
-        //db.set
+        // await setDoc(this.docRef, data);
+        // return(this);
     }
     createPlanGroup() {
-        //await　の導入から
-        // this.planGroups.push(PlanGroup.create(this.collectionRef));
+        this.planGroups.push(HK0003_PlanGroup.create(this.docRef));
     }
     
-    static get(id){
-        let ret = new Itinerary(id);
-        ret.doc.get().then((doc) => {
-            if (!doc.exists) return  0;
-            this.setData(doc.data());
-            doc.ref.collection(PlanGroup.collectionName).orderBy("representiveStartTime").get().then((querySnapshot) => {
-                this.planGroups = querySnapshot.docs.map((subDoc) => {
-                    return new PlanGroup(subDoc);
-                });
-            })
-            .catch((error) => {
-                console.log("Error getting sub documents: ", error);
-            });
-        }).catch((error) => {
-            console.log("Error getting document:", error);
-        });
-        
+    //private
+    setter(data) {
+        this.title = data.title;
     }
 };
 
 
 
 export const BL0010_getItinerary = (itineraryID) =>{
-    let itinerary = new Itinerary(itineraryID);
-    console.log(itinerary);
+    // let itinerary = new HK0001_Itinerary(itineraryID);
 }
 
 
