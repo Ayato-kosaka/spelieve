@@ -1,8 +1,8 @@
-import { TitileInput } from './style.js'
+import { Styled_input } from './style.js'
 
 export const AT0002_TitleArea = (props) => {
-  const { onFocusout } = props
+  const { className, onFocusout } = props
   return (
-    <TitileInput type="text" onBlur={onFocusout} ></TitileInput>
+    <Styled_input type="text" className={className} onBlur={onFocusout} ></Styled_input>
   )
 }

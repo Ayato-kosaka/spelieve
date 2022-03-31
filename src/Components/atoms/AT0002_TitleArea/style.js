@@ -1,5 +1,5 @@
 import styled from 'styled-components'
 
-export const TitileInput = styled.input`
+export const Styled_input = styled.input`
   
 `
