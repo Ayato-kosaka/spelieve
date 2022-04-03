@@ -4,7 +4,8 @@ export const OG0001_PlanGroupList = (props) => {
   const { className } = props
   return (
     <Styled_div className={className}>
-        <Styled_OG0005_PlanGroup></Styled_OG0005_PlanGroup>
+        <Styled_OG0005_PlanGroup startTimes={[1,2,3]} ></Styled_OG0005_PlanGroup>
+        <Styled_OG0005_PlanGroup startTimes={[4,5]} ></Styled_OG0005_PlanGroup>
     </Styled_div>
   )
 }

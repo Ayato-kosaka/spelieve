@@ -17,7 +17,6 @@ export const Styled_div = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: grey;
   height: 40px;
   width: 100%;
 `
