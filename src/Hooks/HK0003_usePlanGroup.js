@@ -1,59 +1,71 @@
 import db from "Components/fireB/firestore"
-import{ HK0002_Plan } from 'Hooks/HK0002_usePlan'
-import{ HK0001_Itinerary } from 'Hooks/HK0001_useItinerary'
+import HK0001_useItinerary from 'Hooks/HK0001_useItinerary'
 
 import { collection, addDoc, setDoc, doc } from "firebase/firestore";
 
 
 
-export class HK0003_PlanGroup {
+export default class HK0003_usePlanGroup {
     static collectionName = 'PlanGroups';
     
-    async build(parentId, document){
-        if(document){
-            this.docRef = doc(db, HK0001_Itinerary.collectionName, parentId, HK0003_PlanGroup.collectionName, document.id);
-            this.id = document.id;
-            this.setter(document.data());
-            this.plans = document.data().plans.split(",");
-        }else{ //createPlanGroup をしたとき
-            let plan = await new HK0002_Plan().build();
-            this.representivePlanID = plan.id;
-            this.plans = [plan.id];
-            this.docRef = await addDoc(collection(db, HK0001_Itinerary.collectionName, parentId, HK0003_PlanGroup.collectionName), 
-                {
-                    "representivePlanID": plan.id,
-                    "plans": plan.id
-                }
-            );
-            this.id = this.docRef.id;
-        }
+    constructor(itineraryId, id){
+        this.itineraryId = itineraryId;
+        this.id = id;
+    }
+    async create(){
+        let docRef = await addDoc(collection(db, HK0001_useItinerary.collectionName, this.itineraryId, HK0003_usePlanGroup.collectionName), {});
+        this.id = docRef.id;
         return(this);
     }
-    setData(data){
-        this.setter(data);
-        setDoc(this.docRef, data, { merge: true });
+    update(data){
+        this.setBody(data);
+        setDoc(this.docRef(), this.getBody(), { merge: true });
     }
-    async insertPlan(index, planId){
-        if(planId){
-            this.plans.splice(index, 0, planId);
-        }else{
-            let plan = await new HK0002_Plan().build();
-            this.plans.splice(index, 0, plan.id);
-        }
-        await setDoc(this.docRef, {
-            "plans": this.plans.join()
-        }, { merge: true });
+    insertPlan(index, planId){
+        this.plans.splice(index, 0, planId);
+        this.update();
     }
-    deletePlan(planID){
-        // let plan = this.removePlan(planID);
-        // plan.delete();
-        // delete this.plans[planID];
+    deletePlan = (index) =>{
+        let [removed] = this.plans.splice(index, 1);
+        return removed;
     }
 
 
     //private
-    setter (data) {
-        this.representivePlanID = data.representivePlanID;
-        this.representiveStartTime = data.representiveStartTime;
+    setBody (data={}) {
+        if(data.representivePlanID !== undefined){
+            this.representivePlanID = data.representivePlanID;
+        }
+        if(data.representiveStartTime !== undefined){
+            this.representiveStartTime = (data.representiveStartTime instanceof Date) ? data.representiveStartTime : data.representiveStartTime.toDate();
+        }
+        if(data.plans !== undefined){
+            this.plans = Array.isArray(data.plans) ? data.plans : (data.plans ? data.plans.split(",") : []);
+        }
+    }
+    getBody(){
+        let ret = {};
+        if(this.plans){ ret.plans = this.getPlans(); }
+        if(this.representivePlanID){ ret.representivePlanID = this.representivePlanID }
+        if(this.representiveStartTime){ ret.representiveStartTime = this.representiveStartTime }
+        return(ret);
+    }
+    getPlans(){
+        return(this.plans.join());
+    }
+    docRef() {
+        return(doc(db, HK0001_useItinerary.collectionName, this.itineraryId, HK0003_usePlanGroup.collectionName, this.id));
+    }
+
+    //Class method
+    static async getPlanGroups(itineraryId){
+        let ret = [];
+        const querySnapshot = await db.collection(HK0001_useItinerary.collectionName).doc(itineraryId).collection(HK0003_usePlanGroup.collectionName).orderBy("representiveStartTime", "desc").get()
+        querySnapshot.forEach(async (doc) => {
+            let planGroup = new HK0003_usePlanGroup(itineraryId, doc.id);
+            planGroup.setBody(doc.data());
+            ret.push(planGroup);
+        });
+        return(ret);
     }
 };

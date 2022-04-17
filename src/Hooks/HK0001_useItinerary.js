@@ -1,101 +1,128 @@
 import db from "Components/fireB/firestore"
 import DB0002_Itineraries from "DB/DB0002_Itineraries.json"
-import DB0004_Plans from "DB/DB0004_Plans.json"
-import{ HK0002_Plan } from 'Hooks/HK0002_usePlan'
-import{ HK0003_PlanGroup } from 'Hooks/HK0003_usePlanGroup'
+import HK0002_usePlan from 'Hooks/HK0002_usePlan'
+import HK0003_usePlanGroup from 'Hooks/HK0003_usePlanGroup'
 
 import { doc, collection, query, where, getDoc, setDoc, getDocs, addDoc } from "firebase/firestore";
 
 
 
-export class HK0001_Itinerary {
+export default class HK0001_useItinerary {
     static collectionName = 'Itineraries';
-    static collectionRef = db.collection(HK0001_Itinerary.collectionName);
     
     async build(id){
         this.planGroups = [];
         if(id){
             this.id = id;
-            this.docRef = HK0001_Itinerary.collectionRef.doc(id);
-            const docSnap = await getDoc(this.docRef);
-            if (!docSnap.exists()) {
-                console.log("No such document!");
-                return(new HK0001_Itinerary().build());
-            }
-            this.setter(docSnap.data());
-            const querySnapshot = await this.docRef.collection(HK0003_PlanGroup.collectionName).orderBy("representiveStartTime").get()
-            querySnapshot.forEach(async (subDoc) => {
-                this.planGroups.push(await new HK0003_PlanGroup().build(this.id, subDoc));
-            });
+            let doc = await getDoc(this.docRef());
+            this.setBody(doc.data());
         }else{
-            this.docRef = await addDoc(collection(db, HK0001_Itinerary.collectionName), {});
-            this.id = this.docRef.id;
+            let docRef = await addDoc(collection(db, HK0001_useItinerary.collectionName), {});
+            this.id = docRef.id;
         }
         return(this);
     }
-    setData(data){
-        this.setter(data);
-        setDoc(this.docRef, data, { merge: true });
+    update(data){
+        this.setBody(data);
+        setDoc(this.docRef(), this.getBody(), { merge: true });
     }
-    async createPlanGroup() {
-        this.planGroups.push(await new HK0003_PlanGroup().build(this.id));
+    copy(){
+        let ret = new HK0001_useItinerary();
+        Object.keys(this).forEach( (v) => {
+            ret[v] = this[v];
+        })
+        return(ret);
     }
     
     //private
-    setter(data) {
+    setBody(data) {
         this.title = data.title;
     }
-    sortPlanGroups(){
-        this.planGroups.sort(function (a, b) {
-            return a.value - b.value;
+    getBody(){
+        return({
+            "title": this.title
         });
+    }
+    docRef() {
+        return(doc(db, HK0001_useItinerary.collectionName, this.id));
     }
 };
 
-
-
-export const BL0010_getItinerary = (itineraryID) =>{
-    // let itinerary = new HK0001_Itinerary(itineraryID);
-}
-
+//---------------------------------------------
 
 
 export const BL0014_insertItineraryTestData = async () =>{
-    let itinerary = await new HK0001_Itinerary().build();
-    itinerary.setData({"title": "日光・鬼怒川・中禅寺湖"});
-    await itinerary.createPlanGroup();
-    await itinerary.createPlanGroup();
-    await itinerary.planGroups[0].insertPlan(1);
-    await itinerary.planGroups[0].insertPlan(0);
-    await itinerary.planGroups[0].insertPlan(0);
-    await itinerary.planGroups[1].insertPlan(1);
-    await itinerary.planGroups[1].insertPlan(2);
-    await itinerary.planGroups[1].insertPlan(3);
-    itinerary.planGroups.forEach((value_i, index_i)=>{
-        value_i.setData(DB0002_Itineraries.PlanGroups[index_i]);
-        value_i.plans.forEach(async (value_j, index_j)=>{
-            let plan = await new HK0002_Plan().build(value_j);
-            plan.setData(DB0004_Plans["plan000"+(index_j+1)]);
-        });
+    let itinerary = await new HK0001_useItinerary().build();
+    itinerary.update({"title": "日光・鬼怒川・中禅寺湖"});
+    let planGroups = [];
+    let plans = {};
+    
+    //createPlanGroup
+    let plan = await new HK0002_usePlan(itinerary.id).create();
+    plans[plan.id] = plan;
+    planGroups.push(await new HK0003_usePlanGroup(itinerary.id).create());
+    planGroups[planGroups.length -1].update({
+        "representivePlanID": plan.id,
+        "representiveStartTime": new Date(1970, 1, 1, 0, 0, 0),
+        "plans": plan.id
     });
+
+    //updatePlanGroup
+    let index = 0;
+    let planGroup = planGroups[index]
+    planGroup.update({
+        "representiveStartTime": new Date(DB0002_Itineraries.PlanGroups[index].representiveStartTime)
+    });
+    //createPlan
+    plan = await new HK0002_usePlan(itinerary.id).create();
+    plans[plan.id] = plan;
+    planGroups[index].insertPlan(0, plan.id);
+    plan = await new HK0002_usePlan(itinerary.id).create();
+    plans[plan.id] = plan;
+    planGroups[index].insertPlan(0, plan.id);
+    plan = await new HK0002_usePlan(itinerary.id).create();
+    plans[plan.id] = plan;
+    planGroups[index].insertPlan(3, plan.id);
+    //setPlan
+    planGroups[index].plans.forEach( (v,i)=>{
+        plans[v].update(DB0002_Itineraries.Plans[i]);
+    });
+
+
+    
+    //createPlanGroup
+    plan = await new HK0002_usePlan(itinerary.id).create();
+    plans[plan.id] = plan;
+    planGroups.push(await new HK0003_usePlanGroup(itinerary.id).create());
+    planGroups[planGroups.length -1].update({
+        "representivePlanID": plan.id,
+        "representiveStartTime": new Date(1970, 1, 1, 0, 0, 0),
+        "plans": plan.id
+    });
+
+    //updatePlanGroup
+    index = 1;
+    planGroup = planGroups[index]
+    planGroup.update({
+        "representiveStartTime": new Date(DB0002_Itineraries.PlanGroups[index].representiveStartTime)
+    });
+    //createPlan
+    plan = await new HK0002_usePlan(itinerary.id).create();
+    plans[plan.id] = plan;
+    planGroups[index].insertPlan(1, plan.id);
+    plan = await new HK0002_usePlan(itinerary.id).create();
+    plans[plan.id] = plan;
+    planGroups[index].insertPlan(2, plan.id);
+    plan = await new HK0002_usePlan(itinerary.id).create();
+    plans[plan.id] = plan;
+    planGroups[index].insertPlan(3, plan.id);
+    //setPlan
+    planGroups[index].plans.forEach( (v,i)=>{
+        plans[v].update(DB0002_Itineraries.Plans[i+4]);
+    });
+
+
+    
+    console.log("Test data inserted with itineary ID => " + itinerary.id)
     return itinerary;
-
-
-    // const itinerariesCollectionRef = db.collection('Itineraries');
-    // const subCollectionName = 'PlanGroups'
-    // const itineraryID = "sampleItinerary1"
-    // let itinerary = DB0002_Itineraries[itineraryID];
-    // Object.keys(itinerary[subCollectionName]).forEach(function(PlansGroupingsID){
-    //     let itineraryPlansGrouping = itinerary[subCollectionName][PlansGroupingsID]
-    //     let subsubCollectionName = "Plans"
-    //     Object.keys(itineraryPlansGrouping[subsubCollectionName]).forEach(function(planID){
-    //         let plan = itineraryPlansGrouping[subsubCollectionName][planID]
-    //         itinerariesCollectionRef.doc(itineraryID).collection(subCollectionName).doc(PlansGroupingsID).collection(subsubCollectionName).doc(planID).set(plan)
-    //     });
-    //     delete itineraryPlansGrouping[subsubCollectionName];
-    //     itinerariesCollectionRef.doc(itineraryID).collection(subCollectionName).doc(PlansGroupingsID).set(itineraryPlansGrouping);
-    // });
-    // delete itinerary[subCollectionName];
-    // itinerariesCollectionRef.doc(itineraryID).set(itinerary);
-    // console.log("BL0014_insertItineraryTestData finised")
 }

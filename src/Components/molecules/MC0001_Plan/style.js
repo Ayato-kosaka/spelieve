@@ -47,7 +47,7 @@ export const Styled_TimelineContent = styled(Box)`
     display: flex;
     align-items: center;
 `
-export const Styled_ConnectorConent = styled (Box)`
+export const Styled_ConnectorConent = styled(Box)`
     display: flex;
     flex-direction: column;
     justify-content: center;

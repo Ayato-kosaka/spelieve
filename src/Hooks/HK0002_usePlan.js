@@ -1,44 +1,55 @@
 import db from "Components/fireB/firestore"
 import { doc, collection, query, where, getDoc, setDoc, getDocs, addDoc } from "firebase/firestore";
+import HK0001_useItinerary from 'Hooks/HK0001_useItinerary'
 
 
-export class HK0002_Plan {
+export default class HK0002_usePlan {
     static collectionName = 'Plans';
     
-    constructor (doc){
+    constructor(itineraryId, id){
+        this.itineraryId = itineraryId;
+        this.id = id;
     }
-    async build(id){
-        if(id){
-            this.id = id;
-            this.docRef = doc(db, HK0002_Plan.collectionName, id);
-            const docSnap = await getDoc(this.docRef);
-            if (!docSnap.exists()) {
-                console.log("No such document!");
-                return(new HK0002_Plan().build());
-            }
-            this.setter(docSnap.data());
-        }else{
-            this.docRef = await addDoc(collection(db, HK0002_Plan.collectionName), {});
-            this.id = this.docRef.id;
-        }
+    async create(){
+        let docRef = await addDoc(collection(db, HK0001_useItinerary.collectionName, this.itineraryId, HK0002_usePlan.collectionName), {});
+        this.id = docRef.id;
+        this.update({"span": "00:00"})
         return(this);
     }
-    setData(data){
-        this.setter(data);
-        setDoc(this.docRef, data, { merge: true });
-        return(this);
+    update(data){
+        this.setBody(data);
+        setDoc(this.docRef(), this.getBody(), { merge: true });
     }
-    delete(){
-        // await deleteDoc(this.doc));   
-    }
-    
+
     //private
-    setter (data) {
-        this.title = data.title;
-        this.span = data.span;
+    setBody (data) {
+        if(data.title !== undefined){
+            this.title = data.title;
+        }
+        if(data.span !== undefined){
+            // this.span = (data.span instanceof Date) ? data.span : data.span.toDate();
+            this.span = data.span;
+        }
     }
-    
-    static create(docRef){
-        // new HK0002_Plan(await docRef.collection(this.collectionName).add());
+    getBody(){
+        let ret = {};
+        if(this.title){ ret.title = this.title }
+        if(this.span){ ret.span = this.span }
+        return(ret);
+    }
+    docRef() {
+        return(doc(db, HK0001_useItinerary.collectionName, this.itineraryId, HK0002_usePlan.collectionName, this.id));
+    }
+
+    //Class method
+    static async getPlans(itineraryId){
+        let ret = {};
+        const querySnapshot = await db.collection(HK0001_useItinerary.collectionName).doc(itineraryId).collection(HK0002_usePlan.collectionName).get()
+        querySnapshot.forEach(async (doc) => {
+            let plan = new HK0002_usePlan(itineraryId, doc.id);
+            plan.setBody(doc.data());
+            ret[plan.id] = plan;
+        });
+        return(ret);
     }
 };

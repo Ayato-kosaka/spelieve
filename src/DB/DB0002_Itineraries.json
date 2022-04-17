@@ -2,14 +2,44 @@
     "title": "日光・鬼怒川・中禅寺湖",
     "PlanGroups": [
         {
-            "id": "PlansGroupings0001",
-            "representivePlanID": "plan0003",
-            "representiveStartTime": "1970/01/01T20:00:00"
+            "representiveStartTime": "1970-01-01T20:00:00"
         },
         {
-            "id": "PlansGroupings0002",
-            "representivePlanID": "plan0005",
-            "representiveStartTime": "1970/01/02T10:00:00"
+            "representiveStartTime": "1970-01-02T10:00:00"
+        }
+    ],
+    "Plans": [
+        {
+            "title": "日光IC",
+            "span": "1:00"
+        },
+        {
+            "title": "日光山内",
+            "span": "4:00"
+        },
+        {
+            "title": "湯波グルメ",
+            "span": "3:00"
+        },
+        {
+            "title": "鬼怒川温泉",
+            "span": "2:00"
+        },
+        {
+            "title": "鬼怒川ライン下り",
+            "span": "2:00"
+        },
+        {
+            "title": "鬼怒川のテーマパーク",
+            "span": "3:45"
+        },
+        {
+            "title": "中禅寺湖",
+            "span": "1:15"
+        },
+        {
+            "title": "清滝IC",
+            "span": "2:45"
         }
     ]
 }
