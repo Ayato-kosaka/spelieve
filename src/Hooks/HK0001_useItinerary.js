@@ -10,6 +10,9 @@ import { doc, collection, query, where, getDoc, setDoc, getDocs, addDoc } from "
 export default class HK0001_useItinerary {
     static collectionName = 'Itineraries';
     
+    constructor(){
+        
+    }
     async build(id){
         this.planGroups = [];
         if(id){
@@ -22,7 +25,7 @@ export default class HK0001_useItinerary {
         }
         return(this);
     }
-    update(data){
+    update(data={}){
         this.setBody(data);
         setDoc(this.docRef(), this.getBody(), { merge: true });
     }
@@ -36,7 +39,9 @@ export default class HK0001_useItinerary {
     
     //private
     setBody(data) {
-        this.title = data.title;
+        if(data.title !== undefined){
+            this.title = data.title;
+        }
     }
     getBody(){
         return({

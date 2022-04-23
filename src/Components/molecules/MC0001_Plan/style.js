@@ -49,7 +49,7 @@ export const Styled_TimelineContent = styled(Box)`
 `
 export const Styled_ConnectorConent = styled(Box)`
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    ustify-content: flex-start;
+    align-items: center;
     height: ${halfHeight+10}px;
 `

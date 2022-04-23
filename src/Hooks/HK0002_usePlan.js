@@ -1,5 +1,5 @@
 import db from "Components/fireB/firestore"
-import { doc, collection, query, where, getDoc, setDoc, getDocs, addDoc } from "firebase/firestore";
+import { doc, collection, query, where, getDoc, setDoc, deleteDoc, addDoc } from "firebase/firestore";
 import HK0001_useItinerary from 'Hooks/HK0001_useItinerary'
 
 
@@ -14,11 +14,15 @@ export default class HK0002_usePlan {
         let docRef = await addDoc(collection(db, HK0001_useItinerary.collectionName, this.itineraryId, HK0002_usePlan.collectionName), {});
         this.id = docRef.id;
         this.update({"span": "00:00"})
+        // this.startTime = new Date(1970, 1, 1, 0, 0, 0); //startTime はDBと乖離している。（書き方要検討）
         return(this);
     }
-    update(data){
+    update(data={}){
         this.setBody(data);
         setDoc(this.docRef(), this.getBody(), { merge: true });
+    }
+    delete(){
+        deleteDoc(this.docRef());
     }
 
     //private
@@ -27,8 +31,7 @@ export default class HK0002_usePlan {
             this.title = data.title;
         }
         if(data.span !== undefined){
-            // this.span = (data.span instanceof Date) ? data.span : data.span.toDate();
-            this.span = data.span;
+            this.span = (data.span instanceof Date) ? data.span : data.span.toDate();
         }
     }
     getBody(){
@@ -48,6 +51,7 @@ export default class HK0002_usePlan {
         querySnapshot.forEach(async (doc) => {
             let plan = new HK0002_usePlan(itineraryId, doc.id);
             plan.setBody(doc.data());
+            // plan.startTime = new Date(1970, 1, 1, 0, 0, 0); //startTime はDBと乖離している。（書き方要検討）
             ret[plan.id] = plan;
         });
         return(ret);

@@ -1,7 +1,7 @@
 import db from "Components/fireB/firestore"
 import HK0001_useItinerary from 'Hooks/HK0001_useItinerary'
 
-import { collection, addDoc, setDoc, doc } from "firebase/firestore";
+import { collection, doc, addDoc, setDoc, deleteDoc } from "firebase/firestore";
 
 
 
@@ -17,17 +17,37 @@ export default class HK0003_usePlanGroup {
         this.id = docRef.id;
         return(this);
     }
-    update(data){
+    update(data={}){
         this.setBody(data);
         setDoc(this.docRef(), this.getBody(), { merge: true });
+    }
+    delete(){
+        deleteDoc(this.docRef());
     }
     insertPlan(index, planId){
         this.plans.splice(index, 0, planId);
         this.update();
     }
-    deletePlan = (index) =>{
+    deletePlan = (index, representiveStartTime) =>{ //representataivePlanが削除された場合に新しいrepresentativeStartTimeを指定する。
         let [removed] = this.plans.splice(index, 1);
+        if(this.plans.length!=0){
+            if(removed==this.representivePlanID){
+                this.setBody({
+                    'representivePlanID': this.plans[0],
+                    'representiveStartTime': representiveStartTime
+                })
+            }
+            this.update();
+        }else{
+            this.delete();
+        }
         return removed;
+    }
+    swapPlan(index_i, index_j){
+        let tmp = this.plans[index_i]
+        this.plans[index_i] = this.plans[index_j]
+        this.plans[index_j] = tmp
+        this.update();
     }
 
 

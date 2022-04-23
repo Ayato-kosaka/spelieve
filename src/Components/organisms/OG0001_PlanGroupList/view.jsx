@@ -5,45 +5,32 @@ import HK0003_usePlanGroup from 'Hooks/HK0003_usePlanGroup'
 import HK0002_usePlan from 'Hooks/HK0002_usePlan'
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import AddIcon from '@material-ui/icons/Add';
-import {PlanGroupsContext, PlansContext} from 'Components/organisms/OG0001_PlanGroupList/Context'
+import CT0001_PlanGroups from 'Components/context/CT0001_PlanGroups.jsx'
+import CT0002_Plans from 'Components/context/CT0002_Plans.jsx'
   
-//↓Childrenにしたい
-export const PlanGroupsProvider = (props) => { //PlanGroupsProvider
-    const [planGroups, setPlanGroups] = useState([]);
-    useEffect(async () => {
-        setPlanGroups(await HK0003_usePlanGroup.getPlanGroups(props.itinerayId));
-    }, []);
-    return (
-        <PlanGroupsContext.Provider value={{planGroups, setPlanGroups}}>
-            <Body {...props} />
-        </PlanGroupsContext.Provider>
-    );
-};
+
+
 
 export const OG0001_PlanGroupList = (props) => {
-    const [plans, setPlans] = useState({});
-    const [finishedReadData, setFinishedReadData] = useState(false);
+    const {planGroups, setPlanGroups} = useContext(CT0001_PlanGroups);
+    const {plans, setPlans} = useContext(CT0002_Plans);
     useEffect(async () => {
-        setPlans(await HK0002_usePlan.getPlans(props.itinerayId));
-        setFinishedReadData(true);
+        let plans = await HK0002_usePlan.getPlans(props.itinerayId);
+        let planGroups = await HK0003_usePlanGroup.getPlanGroups(props.itinerayId)
+        setPlans(plans);
+        setPlanGroups(planGroups);
     }, []);
-    return (
-        <PlansContext.Provider value={{plans, setPlans}}>
-            {/* Plansを取得してから、次のレンダリングを始める */}
-            {finishedReadData && <PlanGroupsProvider {...props} />}
-        </PlansContext.Provider>
-    );
-};
-
-export const Body = (props) => {
-    const {planGroups, setPlanGroups} = useContext(PlanGroupsContext);
-    const {plans, setPlans} = useContext(PlansContext);
 	
     const onDragEnd = (result) => {
         if (!result.destination) { return; }
         let planGroupsCopy = planGroups.slice();
-        let removedPlanId = planGroupsCopy[result.source.droppableId].deletePlan(result.source.index);
-        planGroupsCopy[result.destination.droppableId].insertPlan(result.destination.index, removedPlanId);
+        if(result.source.droppableId == result.destination.droppableId){
+            planGroupsCopy[result.source.droppableId].swapPlan(result.source.index, result.destination.index)
+        }else{
+            let removedPlanId = planGroupsCopy[result.source.droppableId].deletePlan(result.source.index, plans[planGroupsCopy[result.source.droppableId].plans[0]].startTime);
+            planGroupsCopy[result.destination.droppableId].insertPlan(result.destination.index, removedPlanId);
+        }
+        if(planGroupsCopy[result.source.droppableId].plans.length==0){ planGroupsCopy.splice(result.source.droppableId, 1); }
         setPlanGroups(planGroupsCopy);
     };
 
@@ -56,7 +43,7 @@ export const Body = (props) => {
             "plans": plan.id
         });
         setPlans({...plans, [plan.id]: plan})
-        setPlanGroups([...planGroups, planGroup]);
+        setPlanGroups([planGroup, ...planGroups]);
     }
 
   return (
