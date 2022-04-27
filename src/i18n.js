@@ -6,11 +6,17 @@ import backend from "i18next-xhr-backend";
 const resources = {
     en: {
         translation: {
+            "PROJECT": {
+                "NAME": "Spelieve"
+            },
             "野菜設定": "set Vesitalble"
         }
     },
     ja: {
         translation: {
+            "PROJECT": {
+                "NAME": "Spelieve"
+            },
             "野菜設定": "野菜追加！！"
         }
     }
