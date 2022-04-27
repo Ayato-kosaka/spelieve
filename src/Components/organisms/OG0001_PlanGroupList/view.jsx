@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Styled_div, Styled_OG0005_PlanGroup, Styled_Fab } from './style.js'
+import { Styled_OG0005_PlanGroup, Styled_Fab, Styled_WrrapAddPlanGroup } from './style.js'
 import React, { Component, useEffect, useState, useContext, createContext } from "react";
 import HK0003_usePlanGroup from 'Hooks/HK0003_usePlanGroup'
 import HK0002_usePlan from 'Hooks/HK0002_usePlan'
@@ -16,9 +16,13 @@ export const OG0001_PlanGroupList = (props) => {
     const {plans, setPlans} = useContext(CT0002_Plans);
     useEffect(async () => {
         let plans = await HK0002_usePlan.getPlans(props.itinerayId);
-        let planGroups = await HK0003_usePlanGroup.getPlanGroups(props.itinerayId)
-        setPlans(plans);
-        setPlanGroups(planGroups);
+        let planGroups = await HK0003_usePlanGroup.getPlanGroups(props.itinerayId);
+        if(planGroups.length){
+            setPlans(plans);
+            setPlanGroups(planGroups);
+        }else{
+            await createPlanGroup();
+        }
     }, []);
 	
     const onDragEnd = (result) => {
@@ -48,13 +52,6 @@ export const OG0001_PlanGroupList = (props) => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-        <Styled_Fab 
-            color="primary" 
-            aria-label="add"
-            onClick={createPlanGroup}
-        >
-            <AddIcon />
-        </Styled_Fab>
         {planGroups.map((planGroup, index) => {
             return(
                 <Styled_OG0005_PlanGroup
@@ -63,6 +60,15 @@ export const OG0001_PlanGroupList = (props) => {
                 />
             )
         })}
+        <Styled_WrrapAddPlanGroup>
+            <Styled_Fab 
+                color="primary" 
+                aria-label="add"
+                onClick={createPlanGroup}
+            >
+                <AddIcon />
+            </Styled_Fab>
+        </Styled_WrrapAddPlanGroup>
     </DragDropContext>
   )
 }

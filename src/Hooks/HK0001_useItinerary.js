@@ -15,9 +15,12 @@ export default class HK0001_useItinerary {
     }
     async build(id){
         this.planGroups = [];
+        let doc;
         if(id){
             this.id = id;
-            let doc = await getDoc(this.docRef());
+            doc = await getDoc(this.docRef());
+        }
+        if(doc && doc.id!=='undefined'){
             this.setBody(doc.data());
         }else{
             let docRef = await addDoc(collection(db, HK0001_useItinerary.collectionName), {});

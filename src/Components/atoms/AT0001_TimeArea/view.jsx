@@ -1,34 +1,6 @@
 import { Styled_input, Styled_p } from './style.js'
 import React, { useEffect, useState } from "react";
 
-const anyToTime = (x) => {
-    if (!x) { return (0) }
-    let val = 0;
-    switch (x.constructor.name) {
-        case 'Number':
-            val = new Date(0, 0, 0, ...timeToList(x % 10000));
-            break;
-        case 'String':
-            val = new Date(0, 0, 0, ...timeToList(stringToTime(x)));
-            break;
-        case 'Date':
-            val = x;
-            break;
-        default:
-            val = new Date();
-    }
-    return (val.getHours() * 100 + val.getMinutes())
-}
-
-const stringToTime = (s) => {
-    let filtered = s.split('').filter(x => !isNaN(x)).join('');
-    if (!filtered) { filtered = '0' }
-    return (parseInt(filtered) % 10000);
-}
-
-export const timeToList = (v) => {
-    return ([Math.floor(v / 100) % 100, v % 100])
-}
 
 export const AT0001_TimeArea = ({
     isInput = true,
@@ -39,26 +11,40 @@ export const AT0001_TimeArea = ({
     minUnit = '',
     ...props
 }) => {
-    const [time, setTime] = useState([]);//[min, hour]
+    const [time, setTime] = useState([0,0]); //[hour, min]
     useEffect(() => {
-        setTime(anyToTime(props.value));
+        if(props.value){ setTime([props.value.getHours(), props.value.getMinutes()]); }
     }, [props.value]);
     const handleFocus = (event) => event.target.select();
     const handleChanged = event => {
-        let val = stringToTime(event.target.value);
-        let [hour, min] = timeToList(val);
+        let value = event.target.value;
+        let displayString = display();
+        let timeNum = parseInt(time.join(''));
+        if(!value){
+            timeNum = 0;
+        }else if(value===displayString.substr(0,displayString.length-1)){
+            timeNum = Math.floor(timeNum/10)
+        }else{
+            let inputNum = parseInt(value[value.length - 1])
+            console.log(time, timeNum, value)
+            if(isNaN(inputNum)){ return; }
+            else if((displayString+inputNum)===value){
+                timeNum = (timeNum*10 + inputNum) % 10000;
+            }else{
+                timeNum = inputNum;
+            }
+        }
+        let [hour, min] = [Math.floor(timeNum / 100) % 100, timeNum % 100];
         if (min > 23 && min % 10 > 6) { min %= 10; }
         if (hour > 23) { hour %= 10; }
-        setTime(hour * 100 + min);
+        setTime([hour, min]);
     };
     const display = () => {
-        let [hour, min] = timeToList(time).map((x) => (String(x).padStart(2, '0')))
-        if (hour !== '00' || minUnit === '') {
-            return (hour + hourUnit + (min !== '00' || minUnit === '' ? (min) : ''));
-            //return (hour + ' ' + hourUnit + (min !== '00' || minUnit === '' ? (' ' + min) : ''));
+        let [hour, min] = time.map((x) => (String(x).padStart((!minUnit) ? 2 : 1, '0')));
+        if (parseInt(hour)!=0 || !minUnit) {
+            return (hour + hourUnit + (parseInt(min)!=0 || !minUnit ? min : ''));
         } else {
             return (min + minUnit);
-            //return (min + ' ' + minUnit);
         }
     }
     return (

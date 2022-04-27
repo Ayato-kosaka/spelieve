@@ -13,8 +13,7 @@ export default class HK0002_usePlan {
     async create(){
         let docRef = await addDoc(collection(db, HK0001_useItinerary.collectionName, this.itineraryId, HK0002_usePlan.collectionName), {});
         this.id = docRef.id;
-        this.update({"span": "00:00"})
-        // this.startTime = new Date(1970, 1, 1, 0, 0, 0); //startTime はDBと乖離している。（書き方要検討）
+        this.update({"span": new Date(1970, 1, 1, 0, 0, 0)})
         return(this);
     }
     update(data={}){
@@ -31,7 +30,7 @@ export default class HK0002_usePlan {
             this.title = data.title;
         }
         if(data.span !== undefined){
-            this.span = (data.span instanceof Date) ? data.span : data.span.toDate();
+            this.span = (data.span instanceof Date) ? data.span : data.span.constructor.name==='String' ? new Date(data.span) : data.span.toDate();
         }
     }
     getBody(){
@@ -51,7 +50,6 @@ export default class HK0002_usePlan {
         querySnapshot.forEach(async (doc) => {
             let plan = new HK0002_usePlan(itineraryId, doc.id);
             plan.setBody(doc.data());
-            // plan.startTime = new Date(1970, 1, 1, 0, 0, 0); //startTime はDBと乖離している。（書き方要検討）
             ret[plan.id] = plan;
         });
         return(ret);
