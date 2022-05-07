@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import React, { Component, useEffect, useState, createContext } from "react";
 import HK0001_useItinerary from 'Hooks/HK0001_useItinerary'
 import { Styled_div } from './style.js'
+
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -14,7 +15,7 @@ import { OG0001_PlanGroupList } from 'Components/organisms/OG0001_PlanGroupList/
 import { CT0001_PlanGroupsProvider } from 'Components/context/CT0001_PlanGroups.jsx'
 import { CT0002_PlansProvider } from 'Components/context/CT0002_Plans.jsx'
 
-import { BL0014_insertItineraryTestData, BL0010_getItinerary, HK0001_Itinerary } from 'Hooks/HK0001_useItinerary'
+import { BL0010_getItinerary, HK0001_Itinerary } from 'Hooks/HK0001_useItinerary'
 
 
 export const PA0002_ItineraryPage = (props) => {
@@ -22,7 +23,7 @@ export const PA0002_ItineraryPage = (props) => {
     const [itinerary, setItinerary] = useState({});
     const params = useParams();
     useEffect(async () => {
-        let id =  params.itineraryId;//kca5xiPI56W37IpRScU9
+        let id =  params.itineraryId;//L23yI08p6zqiyJ9E6R5M
         let itinerary = await new HK0001_useItinerary().build(id);
         setItinerary(itinerary);
         window.history.pushState(null, null, "/itineraries/"+itinerary.id);
@@ -39,18 +40,18 @@ export const PA0002_ItineraryPage = (props) => {
     const handleBlur = () => {
         itinerary.update();
     }
-
-    const copyURL = () => {
-        setOpen(true);
-        navigator.clipboard.writeText(window.location.href);
-    }
-    const [open, setOpen] = React.useState(false);
+    
     const returnTop = () => {
         window.scrollTo({
           top: 0,
           behavior: "smooth",
         });
     };
+    const copyURL = () => {
+        setOpen(true);
+        navigator.clipboard.writeText(window.location.href);
+    }
+    const [open, setOpen] = useState(false);
     const handleCloseAlert = (event, reason) => {
         if (reason === 'clickaway') { return; }
         setOpen(false);
@@ -106,3 +107,5 @@ export const PA0002_ItineraryPage = (props) => {
         </Styled_div>
     )
 }
+
+export default PA0002_ItineraryPage;
