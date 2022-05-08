@@ -1,7 +1,7 @@
 import './App.css';
 import './i18n';
 import { Routes, Route } from 'react-router-dom';
-import { PA0002_ItineraryPage } from 'Components/pages/PA0002_ItineraryPage/view';
+import PA0002_ItineraryPage from 'Components/pages/PA0002_ItineraryPage/view';
 import MC0003_AppBar from 'Components/molecules/MC0003_AppBar/view';
 import MC0004_Footer from 'Components/molecules/MC0004_Footer/view';
 import theme from 'theme';

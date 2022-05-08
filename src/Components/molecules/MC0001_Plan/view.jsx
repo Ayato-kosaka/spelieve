@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useState, useEffect, useContext } from 'react';
-import CT0001_PlanGroups from 'Components/context/CT0001_PlanGroups.jsx'
-import CT0002_Plans from 'Components/context/CT0002_Plans.jsx'
+import CT0001_PlanGroups from 'Hooks/contexts/CT0001_PlanGroups'
+import CT0002_Plans from 'Hooks/contexts/CT0002_Plans'
 import {
     Styled_TimelineDot, Styled_AT0001_TimeArea, Styled_AddPlanArea, Styled_BodyArea,
     Styled_GridContainer, Styled_StartTimeArea, Styled_TimelineDotArea, Styled_SpanArea, Styled_ConnectorArea

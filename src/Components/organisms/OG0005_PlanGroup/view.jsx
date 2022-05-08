@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { useState, useEffect, useContext } from 'react';
 import { Styled_div, Styled_MC0001_Plan } from './style.js'
-import CT0001_PlanGroups from 'Components/context/CT0001_PlanGroups.jsx'
-import CT0002_Plans from 'Components/context/CT0002_Plans.jsx'
+import CT0001_PlanGroups from 'Hooks/contexts/CT0001_PlanGroups'
+import CT0002_Plans from 'Hooks/contexts/CT0002_Plans'
 import HK0002_usePlan from 'Hooks/HK0002_usePlan'
 import { Droppable } from "react-beautiful-dnd";
 import Timeline from '@material-ui/lab/Timeline';

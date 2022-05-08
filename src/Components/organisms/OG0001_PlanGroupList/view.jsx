@@ -1,29 +1,31 @@
 import { useTranslation } from "react-i18next";
+import { Component, useEffect, useState, useContext, createContext } from "react";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Styled_OG0005_PlanGroup, Styled_Fab, Styled_WrrapAddPlanGroup } from './style.js'
-import React, { Component, useEffect, useState, useContext, createContext } from "react";
 import HK0003_usePlanGroup from 'Hooks/HK0003_usePlanGroup'
 import HK0002_usePlan from 'Hooks/HK0002_usePlan'
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
+import CT0001_PlanGroups from 'Hooks/contexts/CT0001_PlanGroups'
+import CT0002_Plans from 'Hooks/contexts/CT0002_Plans'
+
 import AddIcon from '@material-ui/icons/Add';
-import CT0001_PlanGroups from 'Components/context/CT0001_PlanGroups.jsx'
-import CT0002_Plans from 'Components/context/CT0002_Plans.jsx'
   
 
 
 
-export const OG0001_PlanGroupList = (props) => {
-    const {planGroups, setPlanGroups} = useContext(CT0001_PlanGroups);
-    const {plans, setPlans} = useContext(CT0002_Plans);
-    useEffect(async () => {
-        let plans = await HK0002_usePlan.getPlans(props.itinerayId);
-        let planGroups = await HK0003_usePlanGroup.getPlanGroups(props.itinerayId);
-        if(planGroups.length){
-            setPlans(plans);
-            setPlanGroups(planGroups);
-        }else{
-            await createPlanGroup();
-        }
-    }, []);
+const OG0001_PlanGroupList = (props) => {
+    const {planGroups, setPlanGroups, createPlanGroup} = useContext(CT0001_PlanGroups);
+    const {plans} = useContext(CT0002_Plans);
+    // useEffect(async () => {
+    //     let plans = await HK0002_usePlan.getPlans(props.itineraryId);
+    //     let planGroups = await HK0003_usePlanGroup.getPlanGroups(props.itineraryId);
+    //     if(planGroups.length){
+    //         setPlans(plans);
+    //         setPlanGroups(planGroups);
+    //     }else{
+    //         await createPlanGroup();
+    //     }
+    // }, []);
 	
     const onDragEnd = (result) => {
         if (!result.destination) { return; }
@@ -38,17 +40,17 @@ export const OG0001_PlanGroupList = (props) => {
         setPlanGroups(planGroupsCopy);
     };
 
-    const createPlanGroup = async() => {
-        let plan = await new HK0002_usePlan(props.itinerayId).create();
-        let planGroup = await new HK0003_usePlanGroup(props.itinerayId).create();
-        planGroup.update({
-            "representivePlanID": plan.id,
-            "representiveStartTime": new Date(1970, 1, 1, 0, 0, 0),
-            "plans": plan.id
-        });
-        setPlans({...plans, [plan.id]: plan})
-        setPlanGroups([planGroup, ...planGroups]);
-    }
+    // const createPlanGroup = async() => {
+    //     let plan = await new HK0002_usePlan(props.itineraryId).create();
+    //     let planGroup = await new HK0003_usePlanGroup(props.itineraryId).create();
+    //     planGroup.update({
+    //         "representivePlanID": plan.id,
+    //         "representiveStartTime": new Date(1970, 1, 1, 0, 0, 0),
+    //         "plans": plan.id
+    //     });
+    //     setPlans({...plans, [plan.id]: plan})
+    //     setPlanGroups([planGroup, ...planGroups]);
+    // }
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -60,6 +62,7 @@ export const OG0001_PlanGroupList = (props) => {
                 />
             )
         })}
+        
         <Styled_WrrapAddPlanGroup>
             <Styled_Fab 
                 color="primary" 
@@ -72,3 +75,4 @@ export const OG0001_PlanGroupList = (props) => {
     </DragDropContext>
   )
 }
+export default OG0001_PlanGroupList;

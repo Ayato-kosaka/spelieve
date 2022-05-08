@@ -1,8 +1,13 @@
 import { useTranslation } from "react-i18next";
-import { useParams } from 'react-router-dom';
-import React, { Component, useEffect, useState, createContext } from "react";
-import HK0001_useItinerary from 'Hooks/HK0001_useItinerary'
+import usePA0002, {returnTop, useAlert} from './ItineraryPageLogic'
 import { Styled_div } from './style.js'
+
+import * as DB0002Itineraries from 'Utils/api/DB0002Itineraries';
+
+import AT0005Loader from'Components/atoms/AT0005Loader';
+import OG0001_PlanGroupList from 'Components/organisms/OG0001_PlanGroupList/view';
+import { CT0001_PlanGroupsProvider } from 'Hooks/contexts/CT0001_PlanGroups'
+import { CT0002_PlansProvider } from 'Hooks/contexts/CT0002_Plans'
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -10,53 +15,24 @@ import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/core/Alert';
 
 
-import { OG0001_PlanGroupList } from 'Components/organisms/OG0001_PlanGroupList/view';
 
-import { CT0001_PlanGroupsProvider } from 'Components/context/CT0001_PlanGroups.jsx'
-import { CT0002_PlansProvider } from 'Components/context/CT0002_Plans.jsx'
-
-import { BL0010_getItinerary, HK0001_Itinerary } from 'Hooks/HK0001_useItinerary'
-
-
-export const PA0002_ItineraryPage = (props) => {
+const PA0002_ItineraryPage = (props) => {
     const { t } = useTranslation();
-    const [itinerary, setItinerary] = useState({});
-    const params = useParams();
-    useEffect(async () => {
-        let id =  params.itineraryId;//L23yI08p6zqiyJ9E6R5M
-        let itinerary = await new HK0001_useItinerary().build(id);
-        setItinerary(itinerary);
-        window.history.pushState(null, null, "/itineraries/"+itinerary.id);
-    }, []);
-
+    const {itinerary, setItinerary, isLoading} = usePA0002();
+    const {open, handleCloseAlert, copyURL} = useAlert();
 
     const handleChange = event => {
         const { name, value } = event.target;
-        let itineraryCopy = itinerary.copy();
-        itineraryCopy.setBody({[name]: value });
-        setItinerary(itineraryCopy);
+        setItinerary({...itinerary, [name]: value });
     }
 
     const handleBlur = () => {
-        itinerary.update();
+        DB0002Itineraries.update(itinerary);
     }
     
-    const returnTop = () => {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
-    };
-    const copyURL = () => {
-        setOpen(true);
-        navigator.clipboard.writeText(window.location.href);
+    if(isLoading){
+        return <AT0005Loader />
     }
-    const [open, setOpen] = useState(false);
-    const handleCloseAlert = (event, reason) => {
-        if (reason === 'clickaway') { return; }
-        setOpen(false);
-    }
-
     return (
         <Styled_div>
             <Snackbar open={open} autoHideDuration={3000} onClose={handleCloseAlert}>
@@ -77,11 +53,13 @@ export const PA0002_ItineraryPage = (props) => {
                 }}
                 sx={{ my: 2 }}
             />
-            <CT0002_PlansProvider>
-                <CT0001_PlanGroupsProvider>
-                    {itinerary.id && <OG0001_PlanGroupList itinerayId={itinerary.id} />}
+            
+            <CT0002_PlansProvider itineraryId={itinerary.id}>
+                <CT0001_PlanGroupsProvider itineraryId={itinerary.id}>
+                    <OG0001_PlanGroupList />
                 </CT0001_PlanGroupsProvider>
             </CT0002_PlansProvider>
+            
             <Button
                 variant="outlined"
                 color="inherit"
@@ -93,6 +71,7 @@ export const PA0002_ItineraryPage = (props) => {
             >
                 {t("URLをコピー")}
             </Button>
+            
             <Button
                 variant="outlined"
                 color="inherit"
@@ -107,5 +86,4 @@ export const PA0002_ItineraryPage = (props) => {
         </Styled_div>
     )
 }
-
 export default PA0002_ItineraryPage;
