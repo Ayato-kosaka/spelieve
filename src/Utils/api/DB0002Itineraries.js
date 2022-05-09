@@ -3,7 +3,7 @@ import { doc, collection, getDoc, setDoc, addDoc, deleteDoc } from "firebase/fir
 
 
 export const collectionName = 'Itineraries';
-const collectionRef = () => db.collection(collectionName);
+const collectionRef = collection(db, collectionName);
 
 const dataHash = (id, data) =>{
     if(!id){ return }
@@ -21,7 +21,7 @@ const bodyHash = (data) => {
 
 export const read = async (id) => { 
     if(!id){ return }
-    let docSnap = await collectionRef().doc(id).get();
+    let docSnap = await getDoc(doc(collectionRef, id));
     if(!docSnap.exists){ return }
     return(dataHash(id, docSnap.data()))
 }
@@ -32,9 +32,9 @@ export const create = async () => {
 }
 
 export const update = async (data) => {
-    await setDoc(collectionRef().doc(data.id), bodyHash(data), { merge: true });
+    await setDoc(doc(collectionRef, data.id), bodyHash(data), { merge: true });
 }
 
 export const deleteData = async (data) => {
-    await deleteDoc(collectionRef().doc(data.id));
+    await deleteDoc(doc(collectionRef, data.id));
 }

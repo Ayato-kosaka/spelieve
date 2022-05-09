@@ -1,12 +1,14 @@
 import { useTranslation } from "react-i18next";
 import { useState, useEffect, useContext } from 'react';
-import CT0001_PlanGroups from 'Hooks/contexts/CT0001_PlanGroups'
-import CT0002_Plans from 'Hooks/contexts/CT0002_Plans'
 import {
     Styled_TimelineDot, Styled_AT0001_TimeArea, Styled_AddPlanArea, Styled_BodyArea,
     Styled_GridContainer, Styled_StartTimeArea, Styled_TimelineDotArea, Styled_SpanArea, Styled_ConnectorArea
 } from './style.js'
 import { Draggable } from "react-beautiful-dnd";
+
+import CT0001_PlanGroups from 'Hooks/contexts/CT0001_PlanGroups'
+import CT0002_Plans from 'Hooks/contexts/CT0002_Plans'
+
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -17,6 +19,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 
 export const MC0001_Plan = ({
+    index,
+    planGroupIndex,
     planId,
     createPlan,
     showSpan = true,
@@ -25,11 +29,11 @@ export const MC0001_Plan = ({
 }) => {
     const { t } = useTranslation();
     const { plans, setPlans } = useContext(CT0002_Plans);
-    const { planGroups, setPlanGroups } = useContext(CT0001_PlanGroups);
+    const { planGroups, setPlanGroups, deletePlan, insertPlan } = useContext(CT0001_PlanGroups);
     const [plan, setPlan] = useState(plans[planId]);
 
-    let linkedIndex = props.index + props.linkedIndexDiff;
-    let planGroup = planGroups[props.planGroupIndex];
+    let linkedIndex = index + props.linkedIndexDiff;
+    let planGroup = planGroups[planGroupIndex];
     let linkedPlan = plans[planGroup.plans[linkedIndex]];
     let startTime = undefined; //state にすべき？（したらエラーが出る）
     if (!props.linkedIndexDiff || linkedPlan && linkedPlan.startTime) {
@@ -40,6 +44,9 @@ export const MC0001_Plan = ({
         startTime.setHours(startTime.getHours() - linkedSpan.getHours() * props.linkedIndexDiff);
         startTime.setMinutes(startTime.getMinutes() - linkedSpan.getMinutes() * props.linkedIndexDiff);
     }
+    // if(planId==='QTfc58iNaASHDCAI5pYv'){
+    //     console.log(planId, startTime, plans)
+    // }
     useEffect(() => {
         let plan = plans[planId];
         plan.startTime = startTime;
@@ -62,7 +69,7 @@ export const MC0001_Plan = ({
     }
     const updateRepresentiveStartTime = event => {
         let [hour, min] = event.target.getAttribute('time').split(',');
-        let planGroup = planGroups[props.planGroupIndex];
+        let planGroup = planGroups[planGroupIndex];
         startTime = new Date(planGroup.representiveStartTime.getTime());
         startTime.setHours(hour);
         startTime.setMinutes(min);
@@ -70,26 +77,22 @@ export const MC0001_Plan = ({
             'representiveStartTime': startTime
         });
         let planGroupsCopy = planGroups;
-        planGroupsCopy[props.planGroupIndex] = planGroup;
+        planGroupsCopy[planGroupIndex] = planGroup;
         setPlanGroups(planGroupsCopy.sort((a, b) => b.representiveStartTime - a.representiveStartTime))
         plan.startTime = startTime;
         setPlans({ ...plans, [planId]: plan });
     }
-    const deletePlan = () => {
-        let planGroupsCopy = [...planGroups];
-        console.log(planGroup, props.index)
-        planGroupsCopy[props.planGroupIndex].deletePlan(props.index, plans[planGroup.plans[0]].startTime);
-        if (planGroupsCopy[props.planGroupIndex].plans.length == 0) { planGroupsCopy.splice(props.planGroupIndex, 1); }
-        plan.delete();
-        setPlanGroups(planGroupsCopy);
+    
+    const handleDeletePlanClick = () => {
+        deletePlan(planGroupIndex, index);
     }
 
     const handleAddPlanClick = () => {
-        createPlan(props.index+1);
+        insertPlan(planGroupIndex, index+1)
     }
 
     return (
-        <Draggable draggableId={plan.id} index={props.index}>
+        <Draggable draggableId={plan.id} index={index}>
             {(provided, snapshot) => (
                 <Styled_GridContainer
                     ref={provided.innerRef}
@@ -114,7 +117,7 @@ export const MC0001_Plan = ({
                     </Styled_TimelineDotArea>
 
                     <Styled_BodyArea>
-                        <IconButton onClick={deletePlan} tabIndex={-1} sx={{ px: 0 }} >
+                        <IconButton onClick={handleDeletePlanClick} tabIndex={-1} sx={{ px: 0 }} >
                             <CloseIcon />
                         </IconButton>
                         <OutlinedInput

@@ -1,5 +1,5 @@
 import { Styled_input, Styled_p } from './style.js'
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 
 export const AT0001_TimeArea = ({
@@ -26,7 +26,6 @@ export const AT0001_TimeArea = ({
             timeNum = Math.floor(timeNum/10)
         }else{
             let inputNum = parseInt(value[value.length - 1])
-            console.log(time, timeNum, value)
             if(isNaN(inputNum)){ return; }
             else if((displayString+inputNum)===value){
                 timeNum = (timeNum*10 + inputNum) % 10000;

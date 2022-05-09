@@ -23,6 +23,11 @@ export const CT0002_PlansProvider = ({itineraryId, children}) => {
         return(plan);
     }
     
+    const deletePlan = async (id) => {
+        DB0004Plans.deleteData(plans[id]);
+        delete plans[id];
+    }
+    
     if(isLoading){
         return <AT0005Loader />
     }
@@ -30,6 +35,7 @@ export const CT0002_PlansProvider = ({itineraryId, children}) => {
         plans,
         setPlans, //消す
         createPlan,
+        deletePlan,
     }
     return <CT0002_Plans.Provider value={value}>{children}</CT0002_Plans.Provider>
 };
