@@ -1,24 +1,25 @@
 import './App.css';
 import './i18n';
 import { Routes, Route } from 'react-router-dom';
-import { PA0002_ItineraryPage } from 'Components/pages/PA0002_ItineraryPage/view';
-import MC0003_AppBar from 'Components/molecules/MC0003_AppBar/view';
-import MC0004_Footer from 'Components/molecules/MC0004_Footer/view';
 import theme from 'theme';
-import { ThemeProvider } from "@material-ui/core/styles";
+import { ThemeProvider } from '@material-ui/core/styles';
+
+import PA0002ItineraryPage from 'SV0001Itinerary/Components/pages/PA0002ItineraryPage';
+import MC0003AppBar from 'SV0001Itinerary/Components/molecules/MC0003AppBar';
+import MC0004Footer from 'SV0001Itinerary/Components/molecules/MC0004Footer';
 
 function App() {
     return (
-        <div className="App">
+        <div className='App'>
             <ThemeProvider theme={theme}>
-                <MC0003_AppBar />
+                <MC0003AppBar />
                 <Routes>
-                    <Route path="/" element={<PA0002_ItineraryPage />} />
-                    <Route path="/itineraries" element={<PA0002_ItineraryPage />} >
-                        <Route path=":itineraryId" element={<PA0002_ItineraryPage />} />
+                    <Route path='/' element={<PA0002ItineraryPage />} />
+                    <Route path='/itineraries' element={<PA0002ItineraryPage />} >
+                        <Route path=':itineraryId' element={<PA0002ItineraryPage />} />
                     </Route>
                 </Routes>
-                <MC0004_Footer />
+                <MC0004Footer />
             </ThemeProvider>
         </div>
     );
