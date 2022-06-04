@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Styled_input, Styled_p } from './style.js'
 import { useEffect, useState } from 'react';
 
@@ -9,8 +10,10 @@ export const AT0001TimeArea = ({
     inputProps,
     hourUnit = ':',
     minUnit = '',
+    onPClick,
     ...props
 }) => {
+    const { t } = useTranslation();
     const [time, setTime] = useState([0,0]); //[hour, min]
     useEffect(() => {
         if(props.value){ setTime([props.value.getHours(), props.value.getMinutes()]); }
@@ -38,6 +41,19 @@ export const AT0001TimeArea = ({
         if (hour > 23) { hour %= 10; }
         setTime([hour, min]);
     };
+    const handleKeyDown = (event) => {
+        if(isNaN(event.key)){
+            event.target.select();
+            return;
+        }
+    }
+    
+    const handlePClick = () => {
+        if(window.confirm(t('代表の予定を変更しますか？'))){
+            onPClick();
+        }
+    }
+    
     const display = () => {
         let [hour, min] = time.map((x) => (String(x).padStart((!minUnit) ? 2 : 1, '0')));
         if (parseInt(hour)!=0 || !minUnit) {
@@ -57,12 +73,18 @@ export const AT0001TimeArea = ({
                         'value': display(),
                         'onFocus': handleFocus,
                         'onChange': handleChanged,
+                        'onKeyDown': handleKeyDown,
                         'time': time
                     }}
                     className={className}
                 />
                 :
-                <Styled_p className={className}>{display()}</Styled_p>
+                <Styled_p 
+                    className={className}
+                    onClick={handlePClick}
+                >
+                    {display()}
+                </Styled_p>
             }
         </>
     );

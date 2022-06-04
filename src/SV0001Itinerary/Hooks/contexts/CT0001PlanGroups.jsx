@@ -39,7 +39,14 @@ export const CT0001PlanGroupsProvider = ({ itineraryId, children }) => {
     const updatePlanGroup = async (index, planGroup) => {
         DB0003PlanGroups.update(planGroup);
         planGroups[index] = planGroup;
-        setPlanGroups(planGroups.sort((a, b) => b.representiveStartTime - a.representiveStartTime))
+        setPlanGroups(planGroups.sort((a, b) => a.representiveStartTime - b.representiveStartTime))
+    }
+    
+    const changeRepresentivePlanID = (index, planIndex) => {
+        let planGroup = planGroups[index];
+        planGroup.representivePlanID = planGroup.plans[planIndex];
+        planGroup.representiveStartTime = plans[planGroup.representivePlanID].startTime;
+        setPlanGroups([...planGroups.slice(0, index), planGroup, ...planGroups.slice(index + 1, planGroups.length)]);
     }
 
     const swapPlan = (index, planIndex_i, planIndex_j) => {
@@ -53,11 +60,10 @@ export const CT0001PlanGroupsProvider = ({ itineraryId, children }) => {
 
     const removePlan = (index, planIndex) => {
         let planGroup = planGroups[index];
-        let [removed] = planGroup.plans.splice(planIndex, 1);
+        let [removedPlanId] = planGroup.plans.splice(planIndex, 1);
         if (planGroup.plans.length !== 0) {
-            if (removed === planGroup.representivePlanID) {
-                planGroup.representivePlanID = planGroup.plans[0];
-                planGroup.representiveStartTime = plans[planGroup.representivePlanID].startTime;
+            if (removedPlanId === planGroup.representivePlanID) {
+                changeRepresentivePlanID(index, planIndex);
             }
             DB0003PlanGroups.update(planGroup);
         }
@@ -65,7 +71,7 @@ export const CT0001PlanGroupsProvider = ({ itineraryId, children }) => {
             DB0003PlanGroups.deleteData(planGroup);
         }
         setPlanGroups([...planGroups.slice(0, index), planGroup, ...planGroups.slice(index + 1, planGroups.length)]);
-        return removed;
+        return removedPlanId;
     }
 
     const deletePlan = (index, planIndex) => {
@@ -91,6 +97,7 @@ export const CT0001PlanGroupsProvider = ({ itineraryId, children }) => {
     const value = {
         planGroups,
         createPlanGroup,
+        changeRepresentivePlanID,
         swapPlan,
         removePlan,
         deletePlan,

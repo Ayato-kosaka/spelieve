@@ -21,7 +21,7 @@ import Button from '@material-ui/core/Button';
 import TimelineConnector from '@material-ui/lab/TimelineConnector'
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
-import DragHandleIcon from '@material-ui/icons/DragHandle';
+import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 
 export const MC0001Plan = ({
     showSpan = true,
@@ -29,7 +29,7 @@ export const MC0001Plan = ({
     ...props
 }) => {
     const { t } = useTranslation();
-    const { isRepresentativePlan, plan, setPlan, updatePlan, updateRepresentiveStartTime, deletePlan, insertPlan } = useMC0001(props);
+    const { isRepresentativePlan, plan, setPlan, updatePlan, updateRepresentiveStartTime, deletePlan, insertPlan, changeRepresentivePlanID } = useMC0001(props);
     let index = props.index;
     let planGroupIndex = props.planGroupIndex;
 
@@ -69,8 +69,9 @@ export const MC0001Plan = ({
                 >
                     <Styled_StartTimeArea>
                         <Styled_AT0001TimeArea
-                            isInput={isRepresentativePlan}
-                            value={plan.startTime}
+                            isInput={ isRepresentativePlan }
+                            value={ plan.startTime }
+                            onPClick={ changeRepresentivePlanID }
                             inputProps={{
                                 'name': 'representiveStartTime',
                                 'onBlur': handleRepresentiveStartTimeBlur
@@ -90,7 +91,7 @@ export const MC0001Plan = ({
                             size='small'
                             inputProps={{
                                 'name': 'title',
-                                'placeholder': 'タイトル',
+                                'placeholder': t('カフェでひといき'),
                                 'value': plan.title,
                                 'onChange': handleTitleChange,
                                 'onBlur': handleBlur
@@ -98,7 +99,7 @@ export const MC0001Plan = ({
                             sx={{flexGrow: 1}}
                             endAdornment={
                                 <InputAdornment position='end' >
-                                    <DragHandleIcon
+                                    <DragIndicatorIcon
                                         size='small'
                                         style={{'cursor': 'default'}}
                                     />
@@ -124,7 +125,12 @@ export const MC0001Plan = ({
                     </Styled_ConnectorArea>
 
                     <Styled_AddPlanArea onClick={handleAddPlanClick} style={showAddPlan ? {} : {'display': 'none'}}>
-                        <Button variant='outlined' color='inherit' tabIndex={-1} startIcon={<AddIcon />}>
+                        <Button 
+                            variant='outlined' 
+                            color='grey'
+                            tabIndex={-1} 
+                            startIcon={<AddIcon />}
+                        >
                             {t('予定を追加')}
                         </Button>
                     </Styled_AddPlanArea>

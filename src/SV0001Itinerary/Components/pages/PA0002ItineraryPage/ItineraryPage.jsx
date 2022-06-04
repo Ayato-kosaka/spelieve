@@ -43,7 +43,7 @@ const PA0002ItineraryPage = (props) => {
             <TextField
                 id='outlined-basic'
                 fullWidth
-                label={t('タイトル')}
+                label={t('しおりのタイトルを入力してください')}
                 variant='outlined'
                 inputProps={{
                     'name': 'title',

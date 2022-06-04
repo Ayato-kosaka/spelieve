@@ -54,6 +54,10 @@ export const useMC0001 = ({
         setPlan(plan);
         setPlans({ ...plans, [planId]: plan });
     }
+    
+    const changeRepresentivePlanID = () => {
+        useCT0001.changeRepresentivePlanID(planGroupIndex, index);
+    }
 
     return{
         plan, 
@@ -63,6 +67,7 @@ export const useMC0001 = ({
         updateRepresentiveStartTime,
         deletePlan: useCT0001.deletePlan,
         insertPlan: useCT0001.insertPlan,
+        changeRepresentivePlanID,
     }
 }
 export default useMC0001;
