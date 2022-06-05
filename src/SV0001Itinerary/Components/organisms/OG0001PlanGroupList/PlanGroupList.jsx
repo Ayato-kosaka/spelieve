@@ -1,22 +1,19 @@
+import * as useHK0001Utils from 'SV0000Common/Hooks/HK0001Utils'
 import { useTranslation } from 'react-i18next';
 import { useContext } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
-import { Styled_OG0005PlanGroup, Styled_Fab, Styled_WrrapAddPlanGroup } from './style.js'
+import { Styled_OG0005PlanGroup } from './style.js'
 
 import CT0001PlanGroups from 'SV0001Itinerary/Hooks/contexts/CT0001PlanGroups'
-import CT0003Dialog from 'SV0001Itinerary/Hooks/contexts/CT0003Dialog'
-import MC0005DateTime from 'SV0001Itinerary/Components/molecules/MC0005DateTime';
+import MC0006AddPlanGroupButton from 'SV0001Itinerary/Components/molecules/MC0006AddPlanGroupButton';
 
-import AddIcon from '@material-ui/icons/Add';
-import TextField from '@material-ui/core/TextField';
-
-
+import Typography from '@material-ui/core/Typography';
 
 
 const OG0001PlanGroupList = (props) => {
     const { t } = useTranslation();
-    const { planGroups, createPlanGroup, swapPlan, removePlan, insertPlan } = useContext(CT0001PlanGroups);
-    const useCT0003 = useContext(CT0003Dialog);
+    const { planGroups, swapPlan, removePlan, insertPlan } = useContext(CT0001PlanGroups);
+    let dayNumber = 0;
 
     const onDragEnd = (result) => {
         if (!result.destination) { return; }
@@ -29,39 +26,25 @@ const OG0001PlanGroupList = (props) => {
         }
     };
 
-    const handleAddPlanGroupClick = () => {
-        useCT0003.openDialog({
-            title: t('新しい代表プランを作成'),
-            content: `${t('新しい代表プランを作成します')}\n${t('代表プランは自動計算の基準となります')}\n${t('何日目の何時の予定か入力してください')}`,
-            formArea: (
-                <MC0005DateTime />
-            ),
-            submitButtonName: t('作成'),
-            onSubmit: createPlanGroup,
-        });
-    }
-
     return (
-        <DragDropContext onDragEnd={onDragEnd}>
-        {planGroups.map((planGroup, index) => {
-            return(
-                <Styled_OG0005PlanGroup
-                    key={planGroup.id}
-                    index={index}
-                />
-            )
-        })}
-
-        <Styled_WrrapAddPlanGroup>
-            <Styled_Fab
-                color='secondary'
-                aria-label='add'
-                onClick={handleAddPlanGroupClick}
-            >
-                <AddIcon />
-            </Styled_Fab>
-        </Styled_WrrapAddPlanGroup>
-    </DragDropContext>
+        <>
+            <DragDropContext onDragEnd={onDragEnd}>
+                {planGroups.map((planGroup, index) => {
+                    let straddleDayNum = Math.floor((planGroup.representiveStartTime - useHK0001Utils.zeroDate())/useHK0001Utils.milliSecondsADay) + 1 - dayNumber;
+                    dayNumber += straddleDayNum
+                    return(
+                        <>
+                            { !!straddleDayNum && <Typography variant="h4">{ dayNumber }{t('日目')}</Typography> }
+                            <Styled_OG0005PlanGroup
+                                key={planGroup.id}
+                                index={index}
+                            />
+                        </>
+                    )
+                })}
+            </DragDropContext>
+            <MC0006AddPlanGroupButton />
+        </>
     )
 }
 export default OG0001PlanGroupList;

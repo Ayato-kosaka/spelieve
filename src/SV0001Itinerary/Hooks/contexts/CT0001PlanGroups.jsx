@@ -26,14 +26,14 @@ export const CT0001PlanGroupsProvider = ({ itineraryId, children }) => {
         fetchData();
     }, [itineraryId]);
 
-    const createPlanGroup = async () => {
+    const createPlanGroup = async (representiveStartTime = new Date(1970, 0, 1, 0, 0, 0)) => {
         let plan = await useCT0002.createPlan();
         let planGroup = await DB0003PlanGroups.create(itineraryId);
         planGroup.representivePlanID = plan.id;
-        planGroup.representiveStartTime = new Date(1970, 1, 1, 0, 0, 0);
+        planGroup.representiveStartTime = representiveStartTime;
         planGroup.plans = [plan.id];
         DB0003PlanGroups.update(planGroup);
-        setPlanGroups([planGroup, ...planGroups]);
+        setPlanGroups([planGroup, ...planGroups].sort((a, b) => a.representiveStartTime - b.representiveStartTime));
     }
 
     const updatePlanGroup = async (index, planGroup) => {
@@ -41,7 +41,12 @@ export const CT0001PlanGroupsProvider = ({ itineraryId, children }) => {
         planGroups[index] = planGroup;
         setPlanGroups(planGroups.sort((a, b) => a.representiveStartTime - b.representiveStartTime))
     }
-    
+
+    const deletePlanGroup = (index, planGroup) => {
+        DB0003PlanGroups.deleteData(planGroup);
+        setPlanGroups(planGroups.filter((x,i) => i != index));
+    }
+
     const changeRepresentivePlanID = (index, planIndex) => {
         let planGroup = planGroups[index];
         planGroup.representivePlanID = planGroup.plans[planIndex];
@@ -66,11 +71,11 @@ export const CT0001PlanGroupsProvider = ({ itineraryId, children }) => {
                 changeRepresentivePlanID(index, planIndex);
             }
             DB0003PlanGroups.update(planGroup);
+            setPlanGroups([...planGroups.slice(0, index), planGroup, ...planGroups.slice(index + 1, planGroups.length)]);
         }
         else {
-            DB0003PlanGroups.deleteData(planGroup);
+            deletePlanGroup(index, planGroup);
         }
-        setPlanGroups([...planGroups.slice(0, index), planGroup, ...planGroups.slice(index + 1, planGroups.length)]);
         return removedPlanId;
     }
 

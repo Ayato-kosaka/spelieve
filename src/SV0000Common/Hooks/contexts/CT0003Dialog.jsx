@@ -17,6 +17,7 @@ export const CT0003DialogProvider = ({
 }) => {
     const { t } = useTranslation();
     const [open, setOpen] = useState(false);
+    const [formData, setFormData] = useState({});
     const initialDialog = {
         title: 'DialogTitle',
         content: '',
@@ -36,13 +37,15 @@ export const CT0003DialogProvider = ({
         setOpen(false);
     };
 
-    const handleSubmit = () => {
-        dialog.onSubmit();
+    const handleSubmit = (e) => {
+        dialog.onSubmit(formData);
         handleClose();
     };
 
     const value = {
-        openDialog
+        openDialog,
+        formData,
+        setFormData
     }
 
     return (

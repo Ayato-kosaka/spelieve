@@ -14,21 +14,19 @@ export const useMC0001 = ({
     const { plans, setPlans, ...useCT0002 } = useContext(CT0002Plans);
     const { planGroups, ...useCT0001 } = useContext(CT0001PlanGroups);
     const [plan, setPlan] = useState(plans[planId]);
-    const [linkedIndex, setLinkedIndex] = useState(index + linkedIndexDiff);
     const planGroup = planGroups[planGroupIndex];
+    const [linkedPlan, setLinkedPlan] = useState(plans[planGroup.plans[index + linkedIndexDiff]]);
     const isRepresentativePlan = !linkedIndexDiff;
-    
+
     useEffect(() => {
         if(!isDragging){
-            setLinkedIndex(index + linkedIndexDiff)
+            setLinkedPlan(plans[planGroup.plans[index + linkedIndexDiff]])
         }
     }, [index + linkedIndexDiff])
-    
-    let linkedPlan = plans[planGroup.plans[linkedIndex]]
+
     let linkedSpan = linkedIndexDiff == 1 ? plan.span : linkedPlan.span;
-    
+
     useEffect(() => {
-        // console.log(`From useEffect, planID=>${planId}, catch=>${[(linkedPlan.startTime && linkedPlan.startTime.getTime()), (linkedSpan && linkedSpan.getTime())]}`)
         if(isRepresentativePlan){
             plan.startTime = planGroup.representiveStartTime;
         }else if (linkedPlan && linkedPlan.startTime) {
@@ -38,13 +36,13 @@ export const useMC0001 = ({
         }
         setPlan(plan)
         setPlans({ ...plans, [planId]: plan });
-    }, [(linkedPlan.startTime && linkedPlan.startTime.getTime()), (linkedSpan && linkedSpan.getTime())]);
-    
+    }, [(linkedPlan && linkedPlan.startTime && linkedPlan.startTime.getTime()), (linkedSpan && linkedSpan.getTime())]);
+
     const updatePlan = (plan) => {
         useCT0002.updatePlan(plan);
         setPlan(plan);
     }
-    
+
     const updateRepresentiveStartTime = (hour, min) => {
         plan.startTime = new Date(planGroup.representiveStartTime.getTime());
         plan.startTime.setHours(hour);
@@ -54,13 +52,13 @@ export const useMC0001 = ({
         setPlan(plan);
         setPlans({ ...plans, [planId]: plan });
     }
-    
+
     const changeRepresentivePlanID = () => {
         useCT0001.changeRepresentivePlanID(planGroupIndex, index);
     }
 
     return{
-        plan, 
+        plan,
         setPlan,
         isRepresentativePlan,
         updatePlan,

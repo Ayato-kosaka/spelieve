@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import {
     Styled_TimelineDot,
@@ -13,6 +14,7 @@ import {
 }
 from './style.js';
 import useMC0001 from './PlanLogic';
+import AT0006TimeP from 'SV0001Itinerary/Components/atoms/AT0006TimeP';
 
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import IconButton from '@material-ui/core/IconButton';
@@ -25,13 +27,14 @@ import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 
 export const MC0001Plan = ({
     showSpan = true,
-    showAddPlan = true,
+    showAddPlanProps = true,
     ...props
 }) => {
     const { t } = useTranslation();
     const { isRepresentativePlan, plan, setPlan, updatePlan, updateRepresentiveStartTime, deletePlan, insertPlan, changeRepresentivePlanID } = useMC0001(props);
     let index = props.index;
     let planGroupIndex = props.planGroupIndex;
+    const [showAddPlan, setShowAddPlan] = useState(showAddPlanProps);
 
     const handleTitleChange = event => {
         const { name, value } = event.target;
@@ -40,22 +43,28 @@ export const MC0001Plan = ({
     const handleBlur = event => {
         let { name, value } = event.target;
         if (event.target.getAttribute('time')) {
-            value = new Date(1970, 1, 1, ...(event.target.getAttribute('time').split(',')));
+            value = new Date(1970, 0, 1, ...(event.target.getAttribute('time').split(',')));
         }
         updatePlan({ ...plan, [name]: value });
     }
-    const handleRepresentiveStartTimeBlur = event => {
-        let [hour, min] = event.target.getAttribute('time').split(',');
-        updateRepresentiveStartTime(hour, min);
+    // const handleRepresentiveStartTimeBlur = event => {
+    //     let [hour, min] = event.target.getAttribute('time').split(',');
+    //     updateRepresentiveStartTime(hour, min);
+    // }
+    const handleStartTimeClick = () => {
+        alert("aaa")
     }
 
     const handleDeletePlanClick = () => {
         deletePlan(planGroupIndex, index);
     }
 
-    const handleAddPlanClick = () => {
-        insertPlan(planGroupIndex, index + 1)
+    const handleAddPlanClick = async () => {
+        setShowAddPlan(false);
+        await insertPlan(planGroupIndex, index + 1)
+        setShowAddPlan(true);
     }
+
 
     return (
         <Draggable draggableId={plan.id} index={index}>
@@ -68,14 +77,9 @@ export const MC0001Plan = ({
                     tabIndex='-1'
                 >
                     <Styled_StartTimeArea>
-                        <Styled_AT0001TimeArea
-                            isInput={ isRepresentativePlan }
+                        <AT0006TimeP
                             value={ plan.startTime }
-                            onPClick={ changeRepresentivePlanID }
-                            inputProps={{
-                                'name': 'representiveStartTime',
-                                'onBlur': handleRepresentiveStartTimeBlur
-                            }}
+                            onClick={ handleStartTimeClick }
                         />
                     </Styled_StartTimeArea>
 
@@ -125,10 +129,10 @@ export const MC0001Plan = ({
                     </Styled_ConnectorArea>
 
                     <Styled_AddPlanArea onClick={handleAddPlanClick} style={showAddPlan ? {} : {'display': 'none'}}>
-                        <Button 
-                            variant='outlined' 
+                        <Button
+                            variant='outlined'
                             color='grey'
-                            tabIndex={-1} 
+                            tabIndex={-1}
                             startIcon={<AddIcon />}
                         >
                             {t('予定を追加')}

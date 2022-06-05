@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import theme from 'theme';
 import { ThemeProvider } from '@material-ui/core/styles';
 
-import { CT0003DialogProvider } from 'SV0001Itinerary/Hooks/contexts/CT0003Dialog'
+import { CT0003DialogProvider } from 'SV0000Common/Hooks/contexts/CT0003Dialog'
 import PA0002ItineraryPage from 'SV0001Itinerary/Components/pages/PA0002ItineraryPage';
 import MC0003AppBar from 'SV0001Itinerary/Components/molecules/MC0003AppBar';
 import MC0004Footer from 'SV0001Itinerary/Components/molecules/MC0004Footer';

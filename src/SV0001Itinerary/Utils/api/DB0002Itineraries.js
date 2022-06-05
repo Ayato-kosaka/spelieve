@@ -1,5 +1,5 @@
 import db from '../fireB/firestore'
-import { doc, collection, getDoc, setDoc, addDoc, deleteDoc } from 'firebase/firestore';
+import { doc, collection, getDoc, setDoc, addDoc, deleteDoc, getDocs } from 'firebase/firestore';
 
 
 export const collectionName = 'Itineraries';
@@ -19,14 +19,21 @@ const bodyHash = (data) => {
     });
 }
 
-export const read = async (id) => { 
+export const read = async (id) => {
     if(!id){ return }
     let docSnap = await getDoc(doc(collectionRef, id));
     if(!docSnap.exists){ return }
     return(dataHash(id, docSnap.data()))
 }
 
-export const create = async () => { 
+export const readAll = async () => {
+    const querySnapshot = await getDocs(collectionRef);
+    return (querySnapshot.docs.map((doc) =>
+        dataHash(doc.id, doc.data())
+    ));
+}
+
+export const create = async () => {
     let docRef = await addDoc(collectionRef, {});
     return(dataHash(docRef.id, {}));
 }

@@ -52,7 +52,7 @@ export const Styled_AddPlanArea = styled.div`
     }
 `;
 
-//TimelineDotArea > 
+// TimelineDotArea
 export const Styled_TimelineDot = styled(TimelineDot)`
     margin: 0 !important;
     width: 5px;
@@ -67,5 +67,4 @@ export const Styled_TimelineDot = styled(TimelineDot)`
 export const halfHeight = 36;
 
 export const Styled_AT0001TimeArea = styled(AT0001TimeArea)`
-//   width: 0px;
 `;

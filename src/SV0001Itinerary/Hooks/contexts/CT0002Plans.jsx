@@ -36,8 +36,6 @@ export const CT0002PlansProvider = ({ itineraryId, children }) => {
         setPlans({ ...plans, [plan.id]: plan });
     }
 
-    // console.log(plans)
-
     if (isLoading) {
         return <AT0005Loader />
     }

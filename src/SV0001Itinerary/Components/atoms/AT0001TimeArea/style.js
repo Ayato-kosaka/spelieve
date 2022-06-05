@@ -9,8 +9,3 @@ export const Styled_input = styled(Input)`
         caret-color: #ff000000;
     }
 `
-
-export const Styled_p = styled.p`
-    width: 55px;
-    margin: 0;
-`
