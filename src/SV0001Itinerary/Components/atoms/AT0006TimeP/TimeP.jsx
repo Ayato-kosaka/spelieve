@@ -1,14 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import { StyledP } from './style.js'
-import { useEffect, useState } from 'react';
+import { StyledTypography } from './style.js';
 
 
 export const AT0006TimeP = ({
     value,
-    className,
     hourUnit = ':',
     minUnit = '',
-    onClick,
     ...props
 }) => {
     const { t } = useTranslation();
@@ -22,12 +19,12 @@ export const AT0006TimeP = ({
     }
     return (
         <>
-            <StyledP
-                onClick={ onClick }
-                className={ className }
+            <StyledTypography
+                variant="body1"
+                { ...props }
             >
                 { display() }
-            </StyledP>
+            </StyledTypography>
         </>
     );
 };

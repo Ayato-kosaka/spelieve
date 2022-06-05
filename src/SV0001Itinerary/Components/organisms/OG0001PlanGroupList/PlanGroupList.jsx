@@ -12,18 +12,13 @@ import Typography from '@material-ui/core/Typography';
 
 const OG0001PlanGroupList = (props) => {
     const { t } = useTranslation();
-    const { planGroups, swapPlan, removePlan, insertPlan } = useContext(CT0001PlanGroups);
+    const { planGroups, ...useCT0001 } = useContext(CT0001PlanGroups);
     let dayNumber = 0;
 
     const onDragEnd = (result) => {
         if (!result.destination) { return; }
-        if (result.source.droppableId == result.destination.droppableId) {
-            swapPlan(result.source.droppableId, result.source.index, result.destination.index);
-        }
-        else {
-            let removedPlanId = removePlan(result.source.droppableId, result.source.index);
-            insertPlan(result.destination.droppableId, result.destination.index, removedPlanId);
-        }
+        let removedPlanId = useCT0001.removePlan(result.source.droppableId, result.source.index, result.source.droppableId!==result.destination.droppableId);
+        useCT0001.insertPlan(result.destination.droppableId, result.destination.index, removedPlanId);
     };
 
     return (
@@ -33,13 +28,12 @@ const OG0001PlanGroupList = (props) => {
                     let straddleDayNum = Math.floor((planGroup.representiveStartTime - useHK0001Utils.zeroDate())/useHK0001Utils.milliSecondsADay) + 1 - dayNumber;
                     dayNumber += straddleDayNum
                     return(
-                        <>
+                        <div key={planGroup.id}>
                             { !!straddleDayNum && <Typography variant="h4">{ dayNumber }{t('日目')}</Typography> }
                             <StyledOG0005PlanGroup
-                                key={planGroup.id}
                                 index={index}
                             />
-                        </>
+                        </div>
                     )
                 })}
             </DragDropContext>

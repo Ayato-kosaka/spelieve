@@ -1,6 +1,7 @@
 import styled from 'styled-components'
+import Typography from '@material-ui/core/Typography';
 
-export const StyledP = styled.p`
+export const StyledTypography = styled(Typography)`
     width: 55px;
     margin: 0;
 `

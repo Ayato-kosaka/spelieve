@@ -31,7 +31,7 @@ export const MC0001Plan = ({
     ...props
 }) => {
     const { t } = useTranslation();
-    const { isRepresentativePlan, plan, setPlan, updatePlan, updateRepresentiveStartTime, deletePlan, insertPlan, changeRepresentivePlanID } = useMC0001(props);
+    const { isRepresentativePlan, plan, setPlan, updatePlan, deletePlan, insertPlan, openEditStartTimeDialog } = useMC0001(props);
     let index = props.index;
     let planGroupIndex = props.planGroupIndex;
     const [showAddPlan, setShowAddPlan] = useState(showAddPlanProps);
@@ -47,12 +47,8 @@ export const MC0001Plan = ({
         }
         updatePlan({ ...plan, [name]: value });
     }
-    // const handleRepresentiveStartTimeBlur = event => {
-    //     let [hour, min] = event.target.getAttribute('time').split(',');
-    //     updateRepresentiveStartTime(hour, min);
-    // }
     const handleStartTimeClick = () => {
-        alert("aaa")
+        openEditStartTimeDialog();
     }
 
     const handleDeletePlanClick = () => {
@@ -80,6 +76,7 @@ export const MC0001Plan = ({
                         <AT0006TimeP
                             value={ plan.startTime }
                             onClick={ handleStartTimeClick }
+                            sx={ isRepresentativePlan ? { color: 'primary.main' } : {} }
                         />
                     </StyledStartTimeArea>
 

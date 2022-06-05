@@ -9,23 +9,31 @@ from './style.js';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
 export const MC0005DateTime = ({
-    setFormData
+    setFormData,
+    initialDate,
+    skipDateFocus = false
 }) => {
     const { t } = useTranslation();
-    const [date, setDate] = useState(1);
-    const [hour, setHour] = useState(0);
-    const [min, setMin] = useState(0);
+    const [date, setDate] = useState(initialDate);
+    const [dateNum, setDateNum] = useState(initialDate.getDate());
 
     const handleDateChange = event => {
         const { name, value } = event.target;
-        setFormData({'date': value, hour, min});
-        setDate(value);
+        let newDate = new Date(initialDate)
+        newDate.setDate(value);
+        newDate.setHours(date.getHours());
+        newDate.setMinutes(date.getMinutes());
+        setFormData({ 'date': newDate });
+        setDateNum(value);
+        setDate(newDate);
     }
     const handleTimeBlur = event => {
         let [hour, min] = event.target.getAttribute('time').split(',');
-        setFormData({date, hour, min});
-        setHour(hour);
-        setMin(min);
+        let newDate = new Date(date.getTime())
+        newDate.setHours(hour);
+        newDate.setMinutes(min);
+        setFormData({ 'date': newDate });
+        setDate(newDate);
     }
 
     const handleFocus = (event) => event.target.select();
@@ -33,11 +41,11 @@ export const MC0005DateTime = ({
     return (
         <>
             <StyledTextField
-                autoFocus
+                autoFocus={ !skipDateFocus }
                 margin='dense'
                 variant='standard'
                 type='tel'
-                value={ date }
+                value={ dateNum }
                 onFocus={ handleFocus }
                 onChange={ handleDateChange }
                 InputProps={{
@@ -45,8 +53,10 @@ export const MC0005DateTime = ({
                 }}
             />
             <StyledAT0001TimeArea
+                value={ initialDate }
                 inputProps={{
-                    'onBlur': handleTimeBlur
+                    'onBlur': handleTimeBlur,
+                    'autoFocus': skipDateFocus
                 }}
             />
         </>

@@ -1,3 +1,4 @@
+import * as useHK0001Utils from 'SV0000Common/Hooks/HK0001Utils'
 import { useTranslation } from 'react-i18next'
 import { useContext } from 'react';
 import {
@@ -20,11 +21,7 @@ export const MC0006AddPlanGroupButton = ({
     const useCT0003 = useContext(CT0003Dialog);
 
     const handleAddPlanGroupClick = async () => {
-        useCT0003.setFormData({
-            date: 1,
-            hour: 0,
-            min: 0
-        })
+        useCT0003.setFormData({ date: useHK0001Utils.zeroDate() })
         useCT0003.openDialog({
             title: t('新しい代表プランを作成'),
             content: `${t('新しい代表プランを作成します')}\n${t('代表プランは自動計算の基準となります')}\n${t('何日目の何時の予定か入力してください')}`,
@@ -35,11 +32,12 @@ export const MC0006AddPlanGroupButton = ({
                             useCT0003.setFormData(x)
                         }
                     }
+                    initialDate={ useHK0001Utils.zeroDate() }
                 />
             ),
             submitButtonName: t('作成'),
-            onSubmit: (x) => {
-                createPlanGroup(new Date(1970, 0, x.date, x.hour, x.min, 0))
+            onSubmit: (formData) => {
+                createPlanGroup(formData.date);
             }
         });
     }

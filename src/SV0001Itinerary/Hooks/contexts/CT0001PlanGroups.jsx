@@ -54,21 +54,12 @@ export const CT0001PlanGroupsProvider = ({ itineraryId, children }) => {
         setPlanGroups([...planGroups.slice(0, index), planGroup, ...planGroups.slice(index + 1, planGroups.length)]);
     }
 
-    const swapPlan = (index, planIndex_i, planIndex_j) => {
-        let planGroup = planGroups[index];
-        let tmp = planGroup.plans[planIndex_i]
-        planGroup.plans[planIndex_i] = planGroup.plans[planIndex_j]
-        planGroup.plans[planIndex_j] = tmp
-        DB0003PlanGroups.update(planGroup);
-        setPlanGroups([...planGroups.slice(0, index), planGroup, ...planGroups.slice(index + 1, planGroups.length)]);
-    }
-
-    const removePlan = (index, planIndex) => {
+    const removePlan = (index, planIndex, isremoveFromPlanGroup=true) => {
         let planGroup = planGroups[index];
         let [removedPlanId] = planGroup.plans.splice(planIndex, 1);
         if (planGroup.plans.length !== 0) {
-            if (removedPlanId === planGroup.representivePlanID) {
-                changeRepresentivePlanID(index, planIndex);
+            if (isremoveFromPlanGroup && removedPlanId === planGroup.representivePlanID) {
+                changeRepresentivePlanID(index, 0);
             }
             DB0003PlanGroups.update(planGroup);
             setPlanGroups([...planGroups.slice(0, index), planGroup, ...planGroups.slice(index + 1, planGroups.length)]);
@@ -103,7 +94,7 @@ export const CT0001PlanGroupsProvider = ({ itineraryId, children }) => {
         planGroups,
         createPlanGroup,
         changeRepresentivePlanID,
-        swapPlan,
+        // swapPlan,
         removePlan,
         deletePlan,
         insertPlan,
