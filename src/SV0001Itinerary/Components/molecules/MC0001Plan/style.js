@@ -8,7 +8,7 @@ const gridX = {
     3: 17,
     4: 2
 }
-export const Styled_GridContainer = styled.div`
+export const StyledGridContainer = styled.div`
   display: grid;
   align-items: center;
   grid-template-columns: ${gridX[1]}px ${gridX[2]}px ${gridX[3]}px ${gridX[4]}px ${gridX[3]}px ${gridX[2]}px auto;
@@ -17,19 +17,19 @@ export const Styled_GridContainer = styled.div`
                          'spanArea spanArea . connector . addPlan addPlan';
 
 `;
-export const Styled_StartTimeArea = styled.div`
+export const StyledStartTimeArea = styled.div`
     grid-area: startTime;
 `;
-export const Styled_TimelineDotArea = styled.div`
+export const StyledTimelineDotArea = styled.div`
     grid-area: timelineDot;
     justify-self: center;
 `;
-export const Styled_BodyArea = styled.div`
+export const StyledBodyArea = styled.div`
     grid-area: bodyArea;
     display: flex;
     flex-direction: row-reverse;
 `;
-export const Styled_SpanArea = styled.div`
+export const StyledSpanArea = styled.div`
     grid-area: spanArea;
     justify-self: end;
     >.MuiInput-root{
@@ -38,13 +38,13 @@ export const Styled_SpanArea = styled.div`
         }
     }
 `;
-export const Styled_ConnectorArea = styled.div`
+export const StyledConnectorArea = styled.div`
     grid-area: connector;
     display: flex;
     flex-direction: column;
     height: ${gridX[3]+gridX[4]+gridX[3] + 10}px;
 `;
-export const Styled_AddPlanArea = styled.div`
+export const StyledAddPlanArea = styled.div`
     grid-area: addPlan;
     >* {
         padding: 4px 12px !important;
@@ -53,7 +53,7 @@ export const Styled_AddPlanArea = styled.div`
 `;
 
 // TimelineDotArea
-export const Styled_TimelineDot = styled(TimelineDot)`
+export const StyledTimelineDot = styled(TimelineDot)`
     margin: 0 !important;
     width: 5px;
     height: 5px;
@@ -66,5 +66,5 @@ export const Styled_TimelineDot = styled(TimelineDot)`
 
 export const halfHeight = 36;
 
-export const Styled_AT0001TimeArea = styled(AT0001TimeArea)`
+export const StyledAT0001TimeArea = styled(AT0001TimeArea)`
 `;

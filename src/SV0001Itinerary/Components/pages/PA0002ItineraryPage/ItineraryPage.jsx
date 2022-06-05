@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import usePA0002, { returnTop, useAlert } from './ItineraryPageLogic'
-import { Styled_div } from './style.js'
+import { StyledDiv } from './style.js'
 
 import * as DB0002Itineraries from 'SV0001Itinerary/Utils/api/DB0002Itineraries';
 
@@ -34,7 +34,7 @@ const PA0002ItineraryPage = (props) => {
         return <AT0005Loader />
     }
     return (
-        <Styled_div>
+        <StyledDiv>
             <Snackbar open={open} autoHideDuration={3000} onClose={handleCloseAlert}>
                 <Alert severity='info' elevation={6} sx={{ width: '100%' }}>
                     {t('このページのURLをコピーしました。')}
@@ -83,7 +83,7 @@ const PA0002ItineraryPage = (props) => {
             >
                 {t('一番上へ')}
             </Button>
-        </Styled_div>
+        </StyledDiv>
     )
 }
 export default PA0002ItineraryPage;

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Styled_Container, Styled_Link } from './style.js';
+import { StyledContainer, StyledLink } from './style.js';
 
 import Typography from '@material-ui/core/Typography';
 import GitHubIcon from '@material-ui/icons/GitHub';
@@ -12,9 +12,9 @@ const MC0004Footer = () => {
         return (
             <Typography variant='body2' align='center' {...props}>
                 {'Copyright © '}
-                <Styled_Link color='inherit' href='/'>
+                <StyledLink color='inherit' href='/'>
                     {t('PROJECT.NAME')}
-                </Styled_Link>
+                </StyledLink>
                 {' ' + (new Date().getFullYear()) + '.'}
             </Typography>
         );
@@ -34,7 +34,7 @@ const MC0004Footer = () => {
     ];
     const color = '#fff'
     return (
-        <Styled_Container
+        <StyledContainer
             maxWidth='md'
             component='footer'
             sx={{
@@ -49,7 +49,7 @@ const MC0004Footer = () => {
                     gutterBottom
                     style={{'textAlign': 'center'}}
                 >
-                    <Styled_Link 
+                    <StyledLink 
                         href={footer.link} 
                         target='_blank'
                         rel='noopener noreferrer'
@@ -57,7 +57,7 @@ const MC0004Footer = () => {
                         color={color}
                     >
                         {footer.title}
-                    </Styled_Link>
+                    </StyledLink>
                 </Typography>
             ))}
             <Typography 
@@ -66,7 +66,7 @@ const MC0004Footer = () => {
                 style={{'textAlign': 'center'}}
                 sx={{ mt: 3 }}
             >
-                <Styled_Link 
+                <StyledLink 
                     href='https://github.com/Ayato-kosaka/react-itinerary' 
                     target='_blank'
                     rel='noopener noreferrer'
@@ -74,10 +74,10 @@ const MC0004Footer = () => {
                     color={color}
                 >
                     <GitHubIcon />
-                </Styled_Link>
+                </StyledLink>
             </Typography>
             <Copyright sx={{ mt: 3 }} color={color} />
-        </Styled_Container>
+        </StyledContainer>
     );
 }
 

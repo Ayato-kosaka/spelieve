@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Styled_MC0001Plan } from './style.js'
+import { StyledMC0001Plan } from './style.js'
 import CT0001PlanGroups from 'SV0001Itinerary/Hooks/contexts/CT0001PlanGroups'
 import { Droppable } from 'react-beautiful-dnd';
 import Timeline from '@material-ui/lab/Timeline';
@@ -21,7 +21,7 @@ export const OG0005PlanGroup = (props) => {
                 {planGroup.plans.map((planId, index) => {
                     let representiveFlag = planId===planGroup.representivePlanID;
                     let component = (
-                        <Styled_MC0001Plan 
+                        <StyledMC0001Plan 
                             key={planId}
                             planId={planId}
                             index={index} 
@@ -35,7 +35,7 @@ export const OG0005PlanGroup = (props) => {
                     representativePlanFoundedFlag |= representiveFlag;
                     return(component)
                 })}
-                {/* <Styled_MC0001Plan 
+                {/* <StyledMC0001Plan 
                             planId={planId}
                             index={index} 
                             linkedIndexDiff={ -1 }

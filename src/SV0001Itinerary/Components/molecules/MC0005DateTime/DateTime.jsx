@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import { useState } from 'react';
 import {
-    Styled_AT0001TimeArea,
-    Styled_TextField,
+    StyledAT0001TimeArea,
+    StyledTextField,
 }
 from './style.js';
 
@@ -32,7 +32,7 @@ export const MC0005DateTime = ({
 
     return (
         <>
-            <Styled_TextField
+            <StyledTextField
                 autoFocus
                 margin='dense'
                 variant='standard'
@@ -44,7 +44,7 @@ export const MC0005DateTime = ({
                     startAdornment: <InputAdornment position="start">Day</InputAdornment>,
                 }}
             />
-            <Styled_AT0001TimeArea
+            <StyledAT0001TimeArea
                 inputProps={{
                     'onBlur': handleTimeBlur
                 }}

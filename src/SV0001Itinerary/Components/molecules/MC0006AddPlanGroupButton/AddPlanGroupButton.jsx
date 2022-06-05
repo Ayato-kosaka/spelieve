@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import { useContext } from 'react';
 import {
-    Styled_Wrrapper,
-    Styled_Fab,
+    StyledWrrapper,
+    StyledFab,
 }
 from './style.js';
 
@@ -45,15 +45,15 @@ export const MC0006AddPlanGroupButton = ({
     }
 
     return (
-        <Styled_Wrrapper>
-            <Styled_Fab
+        <StyledWrrapper>
+            <StyledFab
                 color='secondary'
                 aria-label='add'
                 onClick={handleAddPlanGroupClick}
             >
                 <AddIcon />
-            </Styled_Fab>
-        </Styled_Wrrapper>
+            </StyledFab>
+        </StyledWrrapper>
     )
 }
 export default MC0006AddPlanGroupButton

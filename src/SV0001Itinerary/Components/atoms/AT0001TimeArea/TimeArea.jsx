@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Styled_input } from './style.js'
+import { StyledInput } from './style.js'
 import { useEffect, useState } from 'react';
 
 
@@ -61,7 +61,7 @@ export const AT0001TimeArea = ({
     }
     return (
         <>
-            <Styled_input
+            <StyledInput
                 size='small'
                 inputProps={{
                     ...inputProps,

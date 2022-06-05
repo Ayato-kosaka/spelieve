@@ -4,7 +4,7 @@ import AT0001TimeArea from 'SV0001Itinerary/Components/atoms/AT0001TimeArea';
 
 import TextField from '@material-ui/core/TextField';
 
-export const Styled_AT0001TimeArea = styled(AT0001TimeArea)`
+export const StyledAT0001TimeArea = styled(AT0001TimeArea)`
     vertical-align: top;
     margin-left: 20px;
     margin-top: 8px;
@@ -14,6 +14,6 @@ export const Styled_AT0001TimeArea = styled(AT0001TimeArea)`
     }
 `
 
-export const Styled_TextField = styled(TextField)`
+export const StyledTextField = styled(TextField)`
     width: 60px;
 `

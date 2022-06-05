@@ -2,7 +2,7 @@ import * as useHK0001Utils from 'SV0000Common/Hooks/HK0001Utils'
 import { useTranslation } from 'react-i18next';
 import { useContext } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
-import { Styled_OG0005PlanGroup } from './style.js'
+import { StyledOG0005PlanGroup } from './style.js'
 
 import CT0001PlanGroups from 'SV0001Itinerary/Hooks/contexts/CT0001PlanGroups'
 import MC0006AddPlanGroupButton from 'SV0001Itinerary/Components/molecules/MC0006AddPlanGroupButton';
@@ -35,7 +35,7 @@ const OG0001PlanGroupList = (props) => {
                     return(
                         <>
                             { !!straddleDayNum && <Typography variant="h4">{ dayNumber }{t('日目')}</Typography> }
-                            <Styled_OG0005PlanGroup
+                            <StyledOG0005PlanGroup
                                 key={planGroup.id}
                                 index={index}
                             />

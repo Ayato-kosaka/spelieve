@@ -2,15 +2,15 @@ import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import {
-    Styled_TimelineDot,
-    Styled_AT0001TimeArea,
-    Styled_AddPlanArea,
-    Styled_BodyArea,
-    Styled_GridContainer,
-    Styled_StartTimeArea,
-    Styled_TimelineDotArea,
-    Styled_SpanArea,
-    Styled_ConnectorArea
+    StyledTimelineDot,
+    StyledAT0001TimeArea,
+    StyledAddPlanArea,
+    StyledBodyArea,
+    StyledGridContainer,
+    StyledStartTimeArea,
+    StyledTimelineDotArea,
+    StyledSpanArea,
+    StyledConnectorArea
 }
 from './style.js';
 import useMC0001 from './PlanLogic';
@@ -69,25 +69,25 @@ export const MC0001Plan = ({
     return (
         <Draggable draggableId={plan.id} index={index}>
             {(provided, snapshot) => (
-                <Styled_GridContainer
+                <StyledGridContainer
                     ref={provided.innerRef}
                     snapshot={snapshot}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     tabIndex='-1'
                 >
-                    <Styled_StartTimeArea>
+                    <StyledStartTimeArea>
                         <AT0006TimeP
                             value={ plan.startTime }
                             onClick={ handleStartTimeClick }
                         />
-                    </Styled_StartTimeArea>
+                    </StyledStartTimeArea>
 
-                    <Styled_TimelineDotArea>
-                        <Styled_TimelineDot {...(isRepresentativePlan ? { 'color': 'primary' } : {})} />
-                    </Styled_TimelineDotArea>
+                    <StyledTimelineDotArea>
+                        <StyledTimelineDot {...(isRepresentativePlan ? { 'color': 'primary' } : {})} />
+                    </StyledTimelineDotArea>
 
-                    <Styled_BodyArea>
+                    <StyledBodyArea>
                         <IconButton onClick={handleDeletePlanClick} tabIndex={-1} sx={{ px: 0 }} >
                             <CloseIcon />
                         </IconButton>
@@ -110,10 +110,10 @@ export const MC0001Plan = ({
                                 </InputAdornment>
                             }
                         />
-                    </Styled_BodyArea>
+                    </StyledBodyArea>
 
-                    <Styled_SpanArea style={showSpan ? {} : {'display': 'none'}}>
-                        <Styled_AT0001TimeArea
+                    <StyledSpanArea style={showSpan ? {} : {'display': 'none'}}>
+                        <StyledAT0001TimeArea
                             value={plan.span}
                             hourUnit='hr '
                             minUnit='min'
@@ -122,13 +122,13 @@ export const MC0001Plan = ({
                                 'onBlur': handleBlur
                             }}
                         />
-                    </Styled_SpanArea>
+                    </StyledSpanArea>
 
-                    <Styled_ConnectorArea style={showSpan||showAddPlan ? {} : {'display': 'none'}}>
+                    <StyledConnectorArea style={showSpan||showAddPlan ? {} : {'display': 'none'}}>
                         <TimelineConnector />
-                    </Styled_ConnectorArea>
+                    </StyledConnectorArea>
 
-                    <Styled_AddPlanArea onClick={handleAddPlanClick} style={showAddPlan ? {} : {'display': 'none'}}>
+                    <StyledAddPlanArea onClick={handleAddPlanClick} style={showAddPlan ? {} : {'display': 'none'}}>
                         <Button
                             variant='outlined'
                             color='grey'
@@ -137,11 +137,11 @@ export const MC0001Plan = ({
                         >
                             {t('予定を追加')}
                         </Button>
-                    </Styled_AddPlanArea>
+                    </StyledAddPlanArea>
 
 
 
-                </Styled_GridContainer>
+                </StyledGridContainer>
             )
             }
         </Draggable>
