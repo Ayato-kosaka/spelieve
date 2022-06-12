@@ -10,7 +10,10 @@ export const AT0006TimeP = ({
 }) => {
     const { t } = useTranslation();
     const display = () => {
-        let [hour, min] = [value && value.getHours(), value && value.getMinutes()].map((x) => (String(x).padStart((!minUnit) ? 2 : 1, '0')));
+        if(!value){
+            return '';
+        }
+        let [hour, min] = [value.getHours(), value.getMinutes()].map((x) => (String(x).padStart((!minUnit) ? 2 : 1, '0')));
         if (parseInt(hour)!=0 || !minUnit) {
             return (hour + hourUnit + (parseInt(min)!=0 || !minUnit ? min : ''));
         } else {

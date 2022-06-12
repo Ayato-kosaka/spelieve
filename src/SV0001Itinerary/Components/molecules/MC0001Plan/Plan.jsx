@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
-import { Draggable } from 'react-beautiful-dnd';
+import { useState, useEffect } from 'react';
 import {
     StyledTimelineDot,
     StyledAT0001TimeArea,
@@ -35,6 +34,10 @@ export const MC0001Plan = ({
     let index = props.index;
     let planGroupIndex = props.planGroupIndex;
     const [showAddPlan, setShowAddPlan] = useState(showAddPlanProps);
+    
+    useEffect(() => {
+        setShowAddPlan(showAddPlanProps);
+    }, [showAddPlanProps])
 
     const handleTitleChange = event => {
         const { name, value } = event.target;
@@ -63,85 +66,71 @@ export const MC0001Plan = ({
 
 
     return (
-        <Draggable draggableId={plan.id} index={index}>
-            {(provided, snapshot) => (
-                <StyledGridContainer
-                    ref={provided.innerRef}
-                    snapshot={snapshot}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    tabIndex='-1'
+        <StyledGridContainer>
+            <StyledStartTimeArea>
+                <AT0006TimeP
+                    value={ plan.startTime }
+                    onClick={ handleStartTimeClick }
+                    sx={ isRepresentativePlan ? { color: 'primary.main' } : {} }
+                />
+            </StyledStartTimeArea>
+
+            <StyledTimelineDotArea>
+                <StyledTimelineDot {...(isRepresentativePlan ? { 'color': 'primary' } : {})} />
+            </StyledTimelineDotArea>
+
+            <StyledBodyArea>
+                <IconButton onClick={handleDeletePlanClick} tabIndex={-1} sx={{ px: 0 }} >
+                    <CloseIcon />
+                </IconButton>
+                <OutlinedInput
+                    size='small'
+                    inputProps={{
+                        'name': 'title',
+                        'placeholder': t('カフェでひといき'),
+                        'value': plan.title,
+                        'onChange': handleTitleChange,
+                        'onBlur': handleBlur
+                    }}
+                    sx={{flexGrow: 1}}
+                    endAdornment={
+                        <InputAdornment position='end' >
+                            <DragIndicatorIcon
+                                size='small'
+                                style={{'cursor': 'default'}}
+                            />
+                        </InputAdornment>
+                    }
+                />
+            </StyledBodyArea>
+
+            <StyledSpanArea style={showSpan ? {} : {'display': 'none'}}>
+                <StyledAT0001TimeArea
+                    value={plan.span}
+                    hourUnit='hr '
+                    minUnit='min'
+                    inputProps={{
+                        'name': 'span',
+                        'onBlur': handleBlur
+                    }}
+                />
+            </StyledSpanArea>
+
+            <StyledConnectorArea style={showSpan||showAddPlan ? {} : {'display': 'none'}}>
+                <TimelineConnector />
+            </StyledConnectorArea>
+
+            <StyledAddPlanArea onClick={handleAddPlanClick} style={showAddPlan ? {} : {'display': 'none'}}>
+                <Button
+                    variant='outlined'
+                    color='grey'
+                    tabIndex={-1}
+                    startIcon={<AddIcon />}
                 >
-                    <StyledStartTimeArea>
-                        <AT0006TimeP
-                            value={ plan.startTime }
-                            onClick={ handleStartTimeClick }
-                            sx={ isRepresentativePlan ? { color: 'primary.main' } : {} }
-                        />
-                    </StyledStartTimeArea>
-
-                    <StyledTimelineDotArea>
-                        <StyledTimelineDot {...(isRepresentativePlan ? { 'color': 'primary' } : {})} />
-                    </StyledTimelineDotArea>
-
-                    <StyledBodyArea>
-                        <IconButton onClick={handleDeletePlanClick} tabIndex={-1} sx={{ px: 0 }} >
-                            <CloseIcon />
-                        </IconButton>
-                        <OutlinedInput
-                            size='small'
-                            inputProps={{
-                                'name': 'title',
-                                'placeholder': t('カフェでひといき'),
-                                'value': plan.title,
-                                'onChange': handleTitleChange,
-                                'onBlur': handleBlur
-                            }}
-                            sx={{flexGrow: 1}}
-                            endAdornment={
-                                <InputAdornment position='end' >
-                                    <DragIndicatorIcon
-                                        size='small'
-                                        style={{'cursor': 'default'}}
-                                    />
-                                </InputAdornment>
-                            }
-                        />
-                    </StyledBodyArea>
-
-                    <StyledSpanArea style={showSpan ? {} : {'display': 'none'}}>
-                        <StyledAT0001TimeArea
-                            value={plan.span}
-                            hourUnit='hr '
-                            minUnit='min'
-                            inputProps={{
-                                'name': 'span',
-                                'onBlur': handleBlur
-                            }}
-                        />
-                    </StyledSpanArea>
-
-                    <StyledConnectorArea style={showSpan||showAddPlan ? {} : {'display': 'none'}}>
-                        <TimelineConnector />
-                    </StyledConnectorArea>
-
-                    <StyledAddPlanArea onClick={handleAddPlanClick} style={showAddPlan ? {} : {'display': 'none'}}>
-                        <Button
-                            variant='outlined'
-                            color='grey'
-                            tabIndex={-1}
-                            startIcon={<AddIcon />}
-                        >
-                            {t('予定を追加')}
-                        </Button>
-                    </StyledAddPlanArea>
-
-
-
-                </StyledGridContainer>
-            )
-            }
-        </Draggable>
+                    {t('予定を追加')}
+                </Button>
+            </StyledAddPlanArea>
+        </StyledGridContainer>
     )
 }
 export default MC0001Plan;
