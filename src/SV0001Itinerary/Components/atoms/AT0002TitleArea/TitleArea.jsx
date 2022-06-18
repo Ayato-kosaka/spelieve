@@ -1,11 +1,11 @@
-import { Styled_input } from './style.js'
+import { StyledInput } from './style.js'
 
 export const AT0002TitleArea = ({
     className,
     onFocusout
 }) => {
     return (
-        <Styled_input 
+        <StyledInput 
             type='text' 
             className={className} 
             onBlur={onFocusout} 

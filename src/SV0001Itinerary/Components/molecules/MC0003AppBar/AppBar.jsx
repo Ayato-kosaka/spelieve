@@ -20,11 +20,11 @@ const MC0003AppBar = () => {
           >
             <MenuIcon />
           </IconButton> */}
-          <Typography variant='h6' component='div' sx={{ fontFamily: 'serif' }}>
+          <Typography variant='h6' component='div'>
             {t('PROJECT.NAME')}
           </Typography>
-          <Typography variant='h10' component='div' sx={{ flexGrow: 1, fontFamily: 'serif' }}>
-            {' ~' + t('旅のしおり創作サービス') + '~'}
+          <Typography variant='h10' component='div' sx={{ flexGrow: 1 }}>
+            {' ~' + t('旅のしおり簡単作成アプリ') + '~'}
           </Typography>
           {/* <Button color='inherit'>Login</Button> */}
         </Toolbar>

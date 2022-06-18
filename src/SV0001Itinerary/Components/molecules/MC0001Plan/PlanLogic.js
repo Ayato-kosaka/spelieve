@@ -1,8 +1,10 @@
-
+import { useTranslation } from 'react-i18next'
 import { useState, useEffect, useContext } from 'react';
 
 import CT0001PlanGroups from 'SV0001Itinerary/Hooks/contexts/CT0001PlanGroups'
 import CT0002Plans from 'SV0001Itinerary/Hooks/contexts/CT0002Plans'
+import CT0003Dialog from 'SV0000Common/Hooks/contexts/CT0003Dialog';
+import MC0005DateTime from 'SV0001Itinerary/Components/molecules/MC0005DateTime';
 
 export const useMC0001 = ({
     index,
@@ -11,58 +13,82 @@ export const useMC0001 = ({
     linkedIndexDiff,
     isDragging,
 }) => {
+    const { t } = useTranslation();
     const { plans, setPlans, ...useCT0002 } = useContext(CT0002Plans);
     const { planGroups, ...useCT0001 } = useContext(CT0001PlanGroups);
+    const useCT0003 = useContext(CT0003Dialog);
     const [plan, setPlan] = useState(plans[planId]);
-    const [linkedIndex, setLinkedIndex] = useState(index + linkedIndexDiff);
     const planGroup = planGroups[planGroupIndex];
     const isRepresentativePlan = !linkedIndexDiff;
     
+    const linkedSpan = (() => {
+        switch(linkedIndexDiff){
+            case 1: return plan.span;
+            case 0: return null;
+            case -1: return plans[planGroup.plans[index + linkedIndexDiff]]?.span
+        }
+    })()
+    
+    const linkedStartTime = plans[planGroup.plans[index + linkedIndexDiff]]?.startTime;
+    
     useEffect(() => {
         if(!isDragging){
-            setLinkedIndex(index + linkedIndexDiff)
+            if(isRepresentativePlan){
+                plan.startTime = planGroup.representiveStartTime;
+            }else if (linkedStartTime) {
+                plan.startTime = new Date(linkedStartTime)
+                plan.startTime.setHours(linkedStartTime.getHours() - linkedSpan.getHours() * linkedIndexDiff);
+                plan.startTime.setMinutes(linkedStartTime.getMinutes() - linkedSpan.getMinutes() * linkedIndexDiff);
+            }
+            setPlan(plan)
+            setPlans({ ...plans, [planId]: plan });
         }
-    }, [index + linkedIndexDiff])
-    
-    let linkedPlan = plans[planGroup.plans[linkedIndex]]
-    let linkedSpan = linkedIndexDiff == 1 ? plan.span : linkedPlan.span;
-    
-    useEffect(() => {
-        // console.log(`From useEffect, planID=>${planId}, catch=>${[(linkedPlan.startTime && linkedPlan.startTime.getTime()), (linkedSpan && linkedSpan.getTime())]}`)
-        if(isRepresentativePlan){
-            plan.startTime = planGroup.representiveStartTime;
-        }else if (linkedPlan && linkedPlan.startTime) {
-            plan.startTime = new Date(linkedPlan.startTime);
-            plan.startTime.setHours(plan.startTime.getHours() - linkedSpan.getHours() * linkedIndexDiff);
-            plan.startTime.setMinutes(plan.startTime.getMinutes() - linkedSpan.getMinutes() * linkedIndexDiff);
-        }
-        setPlan(plan)
-        setPlans({ ...plans, [planId]: plan });
-    }, [(linkedPlan.startTime && linkedPlan.startTime.getTime()), (linkedSpan && linkedSpan.getTime())]);
-    
+    }, [linkedStartTime?.getTime(), linkedSpan?.getTime(), linkedIndexDiff])
+
     const updatePlan = (plan) => {
         useCT0002.updatePlan(plan);
         setPlan(plan);
     }
-    
-    const updateRepresentiveStartTime = (hour, min) => {
-        plan.startTime = new Date(planGroup.representiveStartTime.getTime());
-        plan.startTime.setHours(hour);
-        plan.startTime.setMinutes(min);
-        planGroup.representiveStartTime = new Date(plan.startTime);
-        useCT0001.updatePlanGroup(planGroupIndex, planGroup)
-        setPlan(plan);
-        setPlans({ ...plans, [planId]: plan });
+
+    const openEditStartTimeDialog = () => {
+        const initialDate = new Date(planGroup.representiveStartTime.getTime());
+        initialDate.setHours(plan.startTime.getHours());
+        initialDate.setMinutes(plan.startTime.getMinutes());
+        useCT0003.setFormData({ date: initialDate })
+        useCT0003.openDialog({
+            title: t('代表プランを変更'),
+            content: `${t('代表プランを変更します')}\n${t('代表プランは自動計算の基準となります')}\n${t('何日目の何時に変更するか入力してください')}`,
+            formArea: (
+                <MC0005DateTime
+                    setFormData={
+                        (x) => {
+                            useCT0003.setFormData(x)
+                        }
+                    }
+                    initialDate={ initialDate }
+                    skipDateFocus
+                />
+            ),
+            submitButtonName: t('変更'),
+            onSubmit: (formData) => {
+                planGroup.representiveStartTime = formData.date
+                planGroup.representivePlanID = planId
+                useCT0001.updatePlanGroup(planGroupIndex, planGroup)
+                plan.startTime = new Date(planGroup.representiveStartTime.getTime());
+                setPlan(plan);
+                setPlans({ ...plans, [planId]: plan });
+            }
+        });
     }
 
     return{
-        plan, 
+        plan,
         setPlan,
         isRepresentativePlan,
         updatePlan,
-        updateRepresentiveStartTime,
         deletePlan: useCT0001.deletePlan,
         insertPlan: useCT0001.insertPlan,
+        openEditStartTimeDialog,
     }
 }
 export default useMC0001;

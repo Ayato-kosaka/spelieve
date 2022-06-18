@@ -1,50 +1,44 @@
+import * as useHK0001Utils from 'SV0000Common/Hooks/HK0001Utils'
 import { useTranslation } from 'react-i18next';
 import { useContext } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
-import { Styled_OG0005PlanGroup, Styled_Fab, Styled_WrrapAddPlanGroup } from './style.js'
+import { StyledOG0005PlanGroup } from './style.js'
 
 import CT0001PlanGroups from 'SV0001Itinerary/Hooks/contexts/CT0001PlanGroups'
+import MC0006AddPlanGroupButton from 'SV0001Itinerary/Components/molecules/MC0006AddPlanGroupButton';
 
-import AddIcon from '@material-ui/icons/Add';
-
-
+import Typography from '@material-ui/core/Typography';
 
 
 const OG0001PlanGroupList = (props) => {
-    const { planGroups, createPlanGroup, swapPlan, removePlan, insertPlan } = useContext(CT0001PlanGroups);
+    const { t } = useTranslation();
+    const { planGroups, ...useCT0001 } = useContext(CT0001PlanGroups);
+    let dayNumber = 0;
 
     const onDragEnd = (result) => {
         if (!result.destination) { return; }
-        if (result.source.droppableId == result.destination.droppableId) {
-            swapPlan(result.source.droppableId, result.source.index, result.destination.index);
-        }
-        else {
-            let removedPlanId = removePlan(result.source.droppableId, result.source.index);
-            insertPlan(result.destination.droppableId, result.destination.index, removedPlanId);
-        }
+        let removedPlanId = useCT0001.removePlan(result.source.droppableId, result.source.index, result.source.droppableId!==result.destination.droppableId);
+        useCT0001.insertPlan(result.destination.droppableId, result.destination.index, removedPlanId);
     };
 
     return (
-        <DragDropContext onDragEnd={onDragEnd}>
-        {planGroups.map((planGroup, index) => {
-            return(
-                <Styled_OG0005PlanGroup
-                    key={planGroup.id}
-                    index={index}
-                />
-            )
-        })}
-        
-        <Styled_WrrapAddPlanGroup>
-            <Styled_Fab 
-                color='primary' 
-                aria-label='add'
-                onClick={createPlanGroup}
-            >
-                <AddIcon />
-            </Styled_Fab>
-        </Styled_WrrapAddPlanGroup>
-    </DragDropContext>
+        <>
+            <DragDropContext onDragEnd={onDragEnd}>
+                {planGroups.map((planGroup, index) => {
+                    let straddleDayNum = Math.floor((planGroup.representiveStartTime - useHK0001Utils.zeroDate())/useHK0001Utils.milliSecondsADay) + 1 - dayNumber;
+                    dayNumber += straddleDayNum
+                    return(
+                        <div key={planGroup.id}>
+                            { !!straddleDayNum && <Typography variant="h4">{ dayNumber }{t('日目')}</Typography> }
+                            <StyledOG0005PlanGroup
+                                index={index}
+                            />
+                        </div>
+                    )
+                })}
+            </DragDropContext>
+            <MC0006AddPlanGroupButton />
+        </>
     )
 }
 export default OG0001PlanGroupList;

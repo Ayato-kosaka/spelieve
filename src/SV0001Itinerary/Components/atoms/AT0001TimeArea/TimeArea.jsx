@@ -1,21 +1,28 @@
-import { Styled_input, Styled_p } from './style.js'
+import { useTranslation } from 'react-i18next';
+import { StyledInput } from './style.js'
 import { useEffect, useState } from 'react';
 
 
 export const AT0001TimeArea = ({
-    isInput = true,
     onFocusout,
     className,
     inputProps,
     hourUnit = ':',
     minUnit = '',
+    onClick,
     ...props
 }) => {
+    const { t } = useTranslation();
     const [time, setTime] = useState([0,0]); //[hour, min]
     useEffect(() => {
         if(props.value){ setTime([props.value.getHours(), props.value.getMinutes()]); }
     }, [props.value]);
-    const handleFocus = (event) => event.target.select();
+    const handleFocus = (event) => {
+        if(!!onClick){
+            onClick();
+        }
+        event.target.select();
+    }
     const handleChanged = event => {
         let value = event.target.value;
         let displayString = display();
@@ -38,6 +45,12 @@ export const AT0001TimeArea = ({
         if (hour > 23) { hour %= 10; }
         setTime([hour, min]);
     };
+    const handleKeyDown = (event) => {
+        if(isNaN(event.key)){
+            event.target.select();
+            return;
+        }
+    }
     const display = () => {
         let [hour, min] = time.map((x) => (String(x).padStart((!minUnit) ? 2 : 1, '0')));
         if (parseInt(hour)!=0 || !minUnit) {
@@ -48,22 +61,19 @@ export const AT0001TimeArea = ({
     }
     return (
         <>
-            {isInput ?
-                <Styled_input
-                    size='small'
-                    inputProps={{
-                        ...inputProps,
-                        'type': 'tel',
-                        'value': display(),
-                        'onFocus': handleFocus,
-                        'onChange': handleChanged,
-                        'time': time
-                    }}
-                    className={className}
-                />
-                :
-                <Styled_p className={className}>{display()}</Styled_p>
-            }
+            <StyledInput
+                size='small'
+                inputProps={{
+                    ...inputProps,
+                    'type': 'tel',
+                    'value': display(),
+                    'onFocus': handleFocus,
+                    'onChange': handleChanged,
+                    'onKeyDown': handleKeyDown,
+                    'time': time,
+                }}
+                className={className}
+            />
         </>
     );
 };

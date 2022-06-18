@@ -3,10 +3,10 @@ import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 
 
-export const Styled_Link = styled(Link)`
+export const StyledLink = styled(Link)`
     text-decoration: none;
 `
 
-export const Styled_Container = styled(Container)`
+export const StyledContainer = styled(Container)`
     background-color: #1f2a37;
 `

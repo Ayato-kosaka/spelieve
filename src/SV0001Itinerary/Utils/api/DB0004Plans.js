@@ -1,3 +1,4 @@
+import * as useHK0001Utils from 'SV0000Common/Hooks/HK0001Utils'
 import db from '../fireB/firestore'
 import { doc, collection, getDocs, setDoc, addDoc, deleteDoc } from 'firebase/firestore';
 import * as DB0002Itineraries from 'SV0001Itinerary/Utils/api/DB0002Itineraries';
@@ -19,7 +20,7 @@ const dataHash = (id, itineraryId, data) => {
 const bodyHash = (data) => {
     return ({
         'title': data.title || '',
-        'span': (data.span instanceof Date) ? data.span : (data.span ? data.span.toDate() : new Date(1970, 1, 1, 0, 0, 0)),
+        'span': (data.span instanceof Date) ? data.span : (data.span ? data.span.toDate() : useHK0001Utils.zeroDate()),
     });
 }
 

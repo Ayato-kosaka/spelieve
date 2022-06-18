@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 import Input from '@material-ui/core/Input';
 
-export const Styled_input = styled(Input)`
+export const StyledInput = styled(Input)`
     width: 55px;
-`
-
-export const Styled_p = styled.p`
-    width: 55px;
-    margin: 0;
+    cursor: default;
+    & > input {
+        pointer-events: none;
+        caret-color: #ff000000;
+    }
 `

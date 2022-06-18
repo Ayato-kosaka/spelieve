@@ -26,46 +26,48 @@ export const CT0001PlanGroupsProvider = ({ itineraryId, children }) => {
         fetchData();
     }, [itineraryId]);
 
-    const createPlanGroup = async () => {
+    const createPlanGroup = async (representiveStartTime = new Date(1970, 0, 1, 0, 0, 0)) => {
         let plan = await useCT0002.createPlan();
         let planGroup = await DB0003PlanGroups.create(itineraryId);
         planGroup.representivePlanID = plan.id;
-        planGroup.representiveStartTime = new Date(1970, 1, 1, 0, 0, 0);
+        planGroup.representiveStartTime = representiveStartTime;
         planGroup.plans = [plan.id];
         DB0003PlanGroups.update(planGroup);
-        setPlanGroups([planGroup, ...planGroups]);
+        setPlanGroups([planGroup, ...planGroups].sort((a, b) => a.representiveStartTime - b.representiveStartTime));
     }
 
     const updatePlanGroup = async (index, planGroup) => {
         DB0003PlanGroups.update(planGroup);
         planGroups[index] = planGroup;
-        setPlanGroups(planGroups.sort((a, b) => b.representiveStartTime - a.representiveStartTime))
+        setPlanGroups(planGroups.sort((a, b) => a.representiveStartTime - b.representiveStartTime))
     }
 
-    const swapPlan = (index, planIndex_i, planIndex_j) => {
+    const deletePlanGroup = (index, planGroup) => {
+        DB0003PlanGroups.deleteData(planGroup);
+        setPlanGroups(planGroups.filter((x,i) => i != index));
+    }
+
+    const changeRepresentivePlanID = (index, planIndex) => {
         let planGroup = planGroups[index];
-        let tmp = planGroup.plans[planIndex_i]
-        planGroup.plans[planIndex_i] = planGroup.plans[planIndex_j]
-        planGroup.plans[planIndex_j] = tmp
-        DB0003PlanGroups.update(planGroup);
+        planGroup.representivePlanID = planGroup.plans[planIndex];
+        planGroup.representiveStartTime = plans[planGroup.representivePlanID].startTime;
         setPlanGroups([...planGroups.slice(0, index), planGroup, ...planGroups.slice(index + 1, planGroups.length)]);
     }
 
-    const removePlan = (index, planIndex) => {
+    const removePlan = (index, planIndex, isremoveFromPlanGroup=true) => {
         let planGroup = planGroups[index];
-        let [removed] = planGroup.plans.splice(planIndex, 1);
+        let [removedPlanId] = planGroup.plans.splice(planIndex, 1);
         if (planGroup.plans.length !== 0) {
-            if (removed === planGroup.representivePlanID) {
-                planGroup.representivePlanID = planGroup.plans[0];
-                planGroup.representiveStartTime = plans[planGroup.representivePlanID].startTime;
+            if (isremoveFromPlanGroup && removedPlanId === planGroup.representivePlanID) {
+                changeRepresentivePlanID(index, 0);
             }
             DB0003PlanGroups.update(planGroup);
+            setPlanGroups([...planGroups.slice(0, index), planGroup, ...planGroups.slice(index + 1, planGroups.length)]);
         }
         else {
-            DB0003PlanGroups.deleteData(planGroup);
+            deletePlanGroup(index, planGroup);
         }
-        setPlanGroups([...planGroups.slice(0, index), planGroup, ...planGroups.slice(index + 1, planGroups.length)]);
-        return removed;
+        return removedPlanId;
     }
 
     const deletePlan = (index, planIndex) => {
@@ -91,7 +93,8 @@ export const CT0001PlanGroupsProvider = ({ itineraryId, children }) => {
     const value = {
         planGroups,
         createPlanGroup,
-        swapPlan,
+        changeRepresentivePlanID,
+        // swapPlan,
         removePlan,
         deletePlan,
         insertPlan,

@@ -2776,6 +2776,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-helmet-async@^1.0.3":
+  "integrity" "sha512-DqbSuZPSHiH1l3XI/y8LbhrAGNh+Bpc9QY4MsYRM1yD4+qhax8bN4DInUMpv/tNyIdjsa+1V8XXmbRx8W5dB0w=="
+  "resolved" "https://registry.npmjs.org/@types/react-helmet-async/-/react-helmet-async-1.0.3.tgz"
+  "version" "1.0.3"
+  dependencies:
+    "react-helmet-async" "*"
+
 "@types/react-is@^16.7.1 || ^17.0.0":
   version "17.0.3"
   resolved "https://registry.npmjs.org/@types/react-is/-/react-is-17.0.3.tgz"
@@ -9120,6 +9127,66 @@ react-dev-utils@^12.0.0:
   integrity sha512-xBQkitdxozPxt1YZ9O1097EJiVpwHr9FoAuEVURCKV0Av8NBERovJauzP7bo1ThvuhZ4shsQ1AJiu4vQpoT1AQ==
   dependencies:
     "@babel/code-frame" "^7.16.0"
+<<<<<<< HEAD
+    "address" "^1.1.2"
+    "browserslist" "^4.18.1"
+    "chalk" "^4.1.2"
+    "cross-spawn" "^7.0.3"
+    "detect-port-alt" "^1.1.6"
+    "escape-string-regexp" "^4.0.0"
+    "filesize" "^8.0.6"
+    "find-up" "^5.0.0"
+    "fork-ts-checker-webpack-plugin" "^6.5.0"
+    "global-modules" "^2.0.0"
+    "globby" "^11.0.4"
+    "gzip-size" "^6.0.0"
+    "immer" "^9.0.7"
+    "is-root" "^2.1.0"
+    "loader-utils" "^3.2.0"
+    "open" "^8.4.0"
+    "pkg-up" "^3.1.0"
+    "prompts" "^2.4.2"
+    "react-error-overlay" "^6.0.10"
+    "recursive-readdir" "^2.2.2"
+    "shell-quote" "^1.7.3"
+    "strip-ansi" "^6.0.1"
+    "text-table" "^0.2.0"
+
+"react-dom@*", "react-dom@^16.6.0 || ^17.0.0 || ^18.0.0", "react-dom@^16.8.5 || ^17.0.0", "react-dom@^17.0.2", "react-dom@>= 16.8.0", "react-dom@>=16.6.0", "react-dom@>=16.8":
+  "integrity" "sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA=="
+  "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-17.0.2.tgz"
+  "version" "17.0.2"
+  dependencies:
+    "loose-envify" "^1.1.0"
+    "object-assign" "^4.1.1"
+    "scheduler" "^0.20.2"
+
+"react-error-overlay@^6.0.10":
+  "integrity" "sha512-mKR90fX7Pm5seCOfz8q9F+66VCc1PGsWSBxKbITjfKVQHMNF2zudxHnMdJiB1fRCb+XsbQV9sO9DCkgsMQgBIA=="
+  "resolved" "https://registry.npmjs.org/react-error-overlay/-/react-error-overlay-6.0.10.tgz"
+  "version" "6.0.10"
+
+"react-fast-compare@^3.2.0":
+  "integrity" "sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA=="
+  "resolved" "https://registry.npmjs.org/react-fast-compare/-/react-fast-compare-3.2.0.tgz"
+  "version" "3.2.0"
+
+"react-helmet-async@*", "react-helmet-async@^1.3.0":
+  "integrity" "sha512-9jZ57/dAn9t3q6hneQS0wukqC2ENOBgMNVEhb/ZG9ZSxUetzVIw4iAmEU38IaVg3QGYauQPhSeUTuIUtFglWpg=="
+  "resolved" "https://registry.npmjs.org/react-helmet-async/-/react-helmet-async-1.3.0.tgz"
+  "version" "1.3.0"
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    "invariant" "^2.2.4"
+    "prop-types" "^15.7.2"
+    "react-fast-compare" "^3.2.0"
+    "shallowequal" "^1.1.0"
+
+"react-i18next@^11.15.7":
+  "integrity" "sha512-zSWZ+21LhaG4T155GcvLdepG1j/qJqD9hUGztVtD1MGBc4/l9ft/LMbUX7oKXdVVLyKWjUhUFoDNAwB2402BIQ=="
+  "resolved" "https://registry.npmjs.org/react-i18next/-/react-i18next-11.15.7.tgz"
+  "version" "11.15.7"
+=======
     address "^1.1.2"
     browserslist "^4.18.1"
     chalk "^4.1.2"
@@ -9161,6 +9228,7 @@ react-i18next@11.17.2:
   version "11.17.2"
   resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.17.2.tgz#4ca77a20bedfa607e4e863dcc85963d1a180e2e9"
   integrity sha512-/HG4XSResWDY450cFmoUqLgCYDu8VYMFISGcMnZlxRSV05naj3+F7DoebwnPu6z/akA3Wd0Xe7KGTYdywL9z9g==
+>>>>>>> 16b0f4f21822865aa07ec06969efc22d21b6b224
   dependencies:
     "@babel/runtime" "^7.14.5"
     html-escaper "^2.0.2"
