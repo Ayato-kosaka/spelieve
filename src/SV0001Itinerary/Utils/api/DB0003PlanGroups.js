@@ -1,4 +1,4 @@
-import * as useHK0001Utils from 'SV0000Common/Hooks/HK0001Utils'
+import * as HK0001Utils from 'SV0000Common/Hooks/HK0001Utils'
 import db from '../fireB/firestore'
 import { doc, collection, getDocs, setDoc, addDoc, deleteDoc, query, orderBy } from 'firebase/firestore';
 import * as DB0002Itineraries from 'SV0001Itinerary/Utils/api/DB0002Itineraries';
@@ -21,7 +21,7 @@ const bodyHash = (data) => {
     return({
         'plans': Array.isArray(data.plans) ? data.plans : (data.plans ? data.plans.split(',') : []),
         'representivePlanID': data.representivePlanID || '',
-        'representiveStartTime': (data.representiveStartTime instanceof Date) ? data.representiveStartTime : ( data.representiveStartTime ? data.representiveStartTime.toDate() : useHK0001Utils.zeroDate() ),
+        'representiveStartTime': (data.representiveStartTime instanceof Date) ? data.representiveStartTime : ( data.representiveStartTime ? data.representiveStartTime.toDate() : HK0001Utils.initialDate() ),
     });
 }
 

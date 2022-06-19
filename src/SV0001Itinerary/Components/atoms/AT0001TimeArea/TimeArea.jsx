@@ -1,80 +1,84 @@
-import { useTranslation } from 'react-i18next';
 import { StyledInput } from './style.js'
 import { useEffect, useState } from 'react';
+import * as HK0001Utils from 'SV0000Common/Hooks/HK0001Utils'
 
 
 export const AT0001TimeArea = ({
-    onFocusout,
-    className,
     inputProps,
-    hourUnit = ':',
-    minUnit = '',
-    onClick,
+    displayValue,
     ...props
 }) => {
-    const { t } = useTranslation();
+    displayValue ||= HK0001Utils.formatDateToTime(props.value);
+    
     const [time, setTime] = useState([0,0]); //[hour, min]
     useEffect(() => {
         if(props.value){ setTime([props.value.getHours(), props.value.getMinutes()]); }
     }, [props.value]);
+    const date = new Date(1970, 0, 1, ...time);
+    
+    const [isActive, setIsActive] = useState(false);
+    const [target, setTarget] = useState();
     const handleFocus = (event) => {
-        if(!!onClick){
-            onClick();
-        }
-        event.target.select();
-    }
-    const handleChanged = event => {
-        let value = event.target.value;
-        let displayString = display();
-        let timeNum = parseInt(time.join(''));
-        if(!value){
-            timeNum = 0;
-        }else if(value===displayString.substr(0,displayString.length-1)){
-            timeNum = Math.floor(timeNum/10)
-        }else{
-            let inputNum = parseInt(value[value.length - 1])
-            if(isNaN(inputNum)){ return; }
-            else if((displayString+inputNum)===value){
-                timeNum = (timeNum*10 + inputNum) % 10000;
-            }else{
-                timeNum = inputNum;
-            }
-        }
-        let [hour, min] = [Math.floor(timeNum / 100) % 100, timeNum % 100];
-        if (min > 23 && min % 10 > 6) { min %= 10; }
-        if (hour > 23) { hour %= 10; }
-        setTime([hour, min]);
+        setIsActive(true);
+        setTarget(event.target);
     };
-    const handleKeyDown = (event) => {
-        if(isNaN(event.key)){
+    // Focus in 後のレンダリングで、表示文字が変更されるため、handleFocus 内でなく、useEffect 内で target.select() する
+    useEffect(() => {
+        if (isActive) {
+            target.select();
+        }
+    }, [isActive]);
+    
+    const handleBlur = (event) => {
+        setIsActive(false);
+        inputProps.onBlur(event);
+    }
+    
+    const handleChanged = event => {
+        const value = event.target.value;
+        const timeNum = (() => {
+            if (value.length==0) {
+                return 0;
+            }else if (value === display().substr(0,display().length-1)){ // BackSpace が入力された場合
+                return Math.floor(parseInt(time.join(''))/10)
+            } else {
+                const downedKey = parseInt(value[value.length - 1]);
+                if(isNaN(downedKey)){  // 数値以外が入力された場合
+                    return NaN;
+                } else if (value.length==1){ // 入力済みの値を削除し数値が入力された場合
+                    return downedKey;
+                } else { // 数値が追加入力された場合
+                    return (parseInt(time.join(''))*10 + downedKey) % 10000;
+                }
+            }
+        })();
+        if(isNaN(timeNum)){
             event.target.select();
             return;
         }
-    }
-    const display = () => {
-        let [hour, min] = time.map((x) => (String(x).padStart((!minUnit) ? 2 : 1, '0')));
-        if (parseInt(hour)!=0 || !minUnit) {
-            return (hour + hourUnit + (parseInt(min)!=0 || !minUnit ? min : ''));
-        } else {
-            return (min + minUnit);
-        }
-    }
+        setTime(function(hour, min){
+            return [
+                (hour > 23) ? hour % 10 : hour,
+                (min > 23 && min % 10 > 6) ? min % 10 : min
+            ]
+        }(Math.floor(timeNum / 100) % 100, timeNum % 100));
+    };
+    
+    const display = () => { return isActive ? HK0001Utils.formatDateToTime(date) : displayValue };
     return (
-        <>
-            <StyledInput
-                size='small'
-                inputProps={{
-                    ...inputProps,
-                    'type': 'tel',
-                    'value': display(),
-                    'onFocus': handleFocus,
-                    'onChange': handleChanged,
-                    'onKeyDown': handleKeyDown,
-                    'time': time,
-                }}
-                className={className}
-            />
-        </>
+        <StyledInput
+            size='small'
+            inputProps={{
+                ...inputProps,
+                'type': 'tel',
+                'value': display(),
+                'onFocus': handleFocus,
+                'onChange': handleChanged,
+                'onBlur': handleBlur,
+                'time': date,
+            }}
+            className={props.className}
+        />
     );
 };
 export default AT0001TimeArea;

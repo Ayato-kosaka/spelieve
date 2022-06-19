@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import * as DB0002Itineraries from 'SV0001Itinerary/Utils/api/DB0002Itineraries';
+import HK0002PageView from 'SV0000Common/Hooks/HK0002PageView';
 import { useParams } from 'react-router-dom';
 
 
@@ -10,6 +11,8 @@ export const usePA0002 = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(async () => {
+        HK0002PageView('ItineraryPage', window.location.pathname);
+        
         let id = params.itineraryId //L23yI08p6zqiyJ9E6R5M
         let itinerary = await DB0002Itineraries.read(id);
         if (!itinerary) {
@@ -32,7 +35,7 @@ export const useAlert = () => {
     const [open, setOpen] = useState(false);
     const copyURL = () => {
         setOpen(true);
-        navigator.clipboard.writeText(window.location.href);
+        window.navigator.clipboard.writeText(window.location.href);
     }
     const handleCloseAlert = (event, reason) => {
         if (reason === 'clickaway') { return; }
