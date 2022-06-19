@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import AT0001TimeArea from 'SV0001Itinerary/Components/atoms/AT0001TimeArea';
+import Box from '@material-ui/core/Box';
 import TimelineDot from '@material-ui/lab/TimelineDot';
 
 const gridX = {
@@ -8,7 +8,7 @@ const gridX = {
     3: 17,
     4: 2
 }
-export const StyledGridContainer = styled.div`
+export const StyledGridContainer = styled(Box)`
   display: grid;
   align-items: center;
   grid-template-columns: ${gridX[1]}px ${gridX[2]}px ${gridX[3]}px ${gridX[4]}px ${gridX[3]}px ${gridX[2]}px auto;
@@ -17,19 +17,18 @@ export const StyledGridContainer = styled.div`
                          'spanArea spanArea . connector . addPlan addPlan';
 
 `;
-export const StyledStartTimeArea = styled.div`
+export const StyledStartTimeArea = styled(Box)`
     grid-area: startTime;
 `;
-export const StyledTimelineDotArea = styled.div`
+export const StyledTimelineDotArea = styled(Box)`
     grid-area: timelineDot;
     justify-self: center;
 `;
-export const StyledBodyArea = styled.div`
+export const StyledBodyArea = styled(Box)`
     grid-area: bodyArea;
     display: flex;
-    flex-direction: row-reverse;
 `;
-export const StyledSpanArea = styled.div`
+export const StyledSpanArea = styled(Box)`
     grid-area: spanArea;
     justify-self: end;
     >.MuiInput-root{
@@ -38,13 +37,13 @@ export const StyledSpanArea = styled.div`
         }
     }
 `;
-export const StyledConnectorArea = styled.div`
+export const StyledConnectorArea = styled(Box)`
     grid-area: connector;
     display: flex;
     flex-direction: column;
     height: ${gridX[3]+gridX[4]+gridX[3] + 10}px;
 `;
-export const StyledAddPlanArea = styled.div`
+export const StyledAddPlanArea = styled(Box)`
     grid-area: addPlan;
     >* {
         padding: 4px 12px !important;
@@ -65,6 +64,3 @@ export const StyledTimelineDot = styled(TimelineDot)`
 
 
 export const halfHeight = 36;
-
-export const StyledAT0001TimeArea = styled(AT0001TimeArea)`
-`;

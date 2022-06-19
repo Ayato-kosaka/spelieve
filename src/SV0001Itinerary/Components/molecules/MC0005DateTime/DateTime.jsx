@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import { useState } from 'react';
 import {
-    StyledAT0001TimeArea,
     StyledTextField,
+    StyledAT0001TimeArea,
 }
 from './style.js';
 
@@ -18,7 +18,7 @@ export const MC0005DateTime = ({
     const [dateNum, setDateNum] = useState(initialDate.getDate());
 
     const handleDateChange = event => {
-        const { name, value } = event.target;
+        const { value } = event.target;
         let newDate = new Date(initialDate)
         newDate.setDate(value);
         newDate.setHours(date.getHours());
@@ -28,8 +28,8 @@ export const MC0005DateTime = ({
         setDate(newDate);
     }
     const handleTimeBlur = event => {
-        let [hour, min] = event.target.getAttribute('time').split(',');
-        let newDate = new Date(date.getTime())
+        let [hour, min] = function(d){ return[d.getHours(), d.getMinutes()] }(new Date(event.target.getAttribute('time')));
+        let newDate = new Date(date.getTime());
         newDate.setHours(hour);
         newDate.setMinutes(min);
         setFormData({ 'date': newDate });
@@ -49,7 +49,7 @@ export const MC0005DateTime = ({
                 onFocus={ handleFocus }
                 onChange={ handleDateChange }
                 InputProps={{
-                    startAdornment: <InputAdornment position="start">Day</InputAdornment>,
+                    startAdornment: <InputAdornment position="start">{t('Day')}</InputAdornment>,
                 }}
             />
             <StyledAT0001TimeArea
