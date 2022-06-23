@@ -28,7 +28,7 @@ module.exports = {
     modules: [
       './node_modules' // node_modules 内も対象とする
     ],
-    extensions: [".ts", ".tsx", ".js", "jsx"]
+    extensions: [".ts", ".tsx", ".js", ".jsx"]
   },
   target: ["web", "es5"]
 };
