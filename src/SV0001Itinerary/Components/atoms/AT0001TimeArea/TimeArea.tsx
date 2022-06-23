@@ -1,29 +1,33 @@
-import { useTranslation } from 'react-i18next';
-import { StyledInput } from './style.js'
-import { useEffect, useState } from 'react';
+// import { useTranslation } from 'react-i18next';
+import { StyledInput } from './style'
+import React, { FC, useEffect, useState, FocusEvent, ChangeEvent, KeyboardEvent } from 'react';
 
+type TimeAreaProps = {
+    className: string;
+    span: Date | null;
+    hourUnit: string;
+    minUnit: string;
+    inputProps: { [key: string]: any }; //役割???
+}
 
-export const AT0001TimeArea = ({
-    onFocusout,
+export const AT0001TimeArea: FC<TimeAreaProps> = ({
     className,
-    inputProps,
+    span,
     hourUnit = ':',
     minUnit = '',
-    onClick,
-    ...props
+    inputProps,
 }) => {
-    const { t } = useTranslation();
-    const [time, setTime] = useState([0,0]); //[hour, min]
+    const [time, setTime] = useState<[number, number]>([0,0]); //[hour, min]
     useEffect(() => {
-        if(props.value){ setTime([props.value.getHours(), props.value.getMinutes()]); }
-    }, [props.value]);
-    const handleFocus = (event) => {
-        if(!!onClick){
-            onClick();
-        }
+        if(span){ setTime([span?.getHours(), span?.getMinutes()]); }
+    }, [span]);
+    const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
+        // if(!!onClick){
+        //     onClick();
+        // }
         event.target.select();
     }
-    const handleChanged = event => {
+    const handleChanged = (event: ChangeEvent<HTMLInputElement>) => {
         let value = event.target.value;
         let displayString = display();
         let timeNum = parseInt(time.join(''));
@@ -45,9 +49,9 @@ export const AT0001TimeArea = ({
         if (hour > 23) { hour %= 10; }
         setTime([hour, min]);
     };
-    const handleKeyDown = (event) => {
-        if(isNaN(event.key)){
-            event.target.select();
+    const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+        if(event.key === ''){
+            // event.target; 
             return;
         }
     }
