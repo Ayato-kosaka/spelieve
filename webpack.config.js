@@ -4,7 +4,8 @@ module.exports = {
   mode: "development",
 
   // メインとなるJavaScriptファイル（エントリーポイント）
-  entry: "./src/index.ts",
+  entry: "./src/index.js",
+  target: "node",
   // ファイルの出力設定
   output: {
     //  出力ファイルのディレクトリ名
@@ -17,13 +18,17 @@ module.exports = {
       {
         // 拡張子 .ts の場合
         test: /\.ts$/,
-        // TypeScript をコンパイルする
+        // ts-loaderを使って、TypeScriptをコンパイル(トランスパイル）する
         use: "ts-loader"
       }
     ]
   },
   // import 文で .ts ファイルを解決するため
   resolve: {
-    extensions: [".ts", ".js"]
-  }
+    modules: [
+      './node_modules' // node_modules 内も対象とする
+    ],
+    extensions: [".ts", ".tsx", ".js", "jsx"]
+  },
+  target: ["web", "es5"]
 };
