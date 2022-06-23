@@ -1,12 +1,12 @@
 import { StyledInput } from './style'
 import React, { FC } from 'react';
 
-type TItleAreaProps = {
-    className: any;  // 一旦any
+type TitleAreaProps = {
+    className: string;  // 一旦any
     onFocusout: any; // 一旦any
 };
 
-export const AT0002TitleArea: FC<TItleAreaProps> = ({
+export const AT0002TitleArea: FC<TitleAreaProps> = ({
     className,
     onFocusout
 }) => {
