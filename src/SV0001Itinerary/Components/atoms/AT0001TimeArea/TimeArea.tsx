@@ -2,7 +2,7 @@
 import { StyledInput } from './style'
 import React, { FC, useEffect, useState, FocusEvent, ChangeEvent, KeyboardEvent } from 'react';
 
-type TimeAreaProps = {
+type AT0001TimeAreaProps = {
     className: string;
     span: Date | null;
     hourUnit: string;
@@ -10,7 +10,7 @@ type TimeAreaProps = {
     inputProps: { [key: string]: any }; //役割???
 }
 
-export const AT0001TimeArea: FC<TimeAreaProps> = ({
+export const AT0001TimeArea: FC<AT0001TimeAreaProps> = ({
     className,
     span,
     hourUnit = ':',
@@ -28,15 +28,15 @@ export const AT0001TimeArea: FC<TimeAreaProps> = ({
         event.target.select();
     }
     const handleChanged = (event: ChangeEvent<HTMLInputElement>) => {
-        let value = event.target.value;
-        let displayString = display();
-        let timeNum = parseInt(time.join(''));
+        let value: string = event.target.value;
+        let displayString: string = display();
+        let timeNum: number = parseInt(time.join(''));
         if(!value){
             timeNum = 0;
         }else if(value===displayString.substr(0,displayString.length-1)){
             timeNum = Math.floor(timeNum/10)
         }else{
-            let inputNum = parseInt(value[value.length - 1])
+            let inputNum: number = parseInt(value[value.length - 1])
             if(isNaN(inputNum)){ return; }
             else if((displayString+inputNum)===value){
                 timeNum = (timeNum*10 + inputNum) % 10000;
@@ -44,19 +44,19 @@ export const AT0001TimeArea: FC<TimeAreaProps> = ({
                 timeNum = inputNum;
             }
         }
-        let [hour, min] = [Math.floor(timeNum / 100) % 100, timeNum % 100];
+        let [hour, min]: [number, number] = [Math.floor(timeNum / 100) % 100, timeNum % 100];
         if (min > 23 && min % 10 > 6) { min %= 10; }
         if (hour > 23) { hour %= 10; }
         setTime([hour, min]);
     };
     const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
         if(event.key === ''){
-            // event.target; 
+            // event.target.select(); 
             return;
         }
     }
     const display = () => {
-        let [hour, min] = time.map((x) => (String(x).padStart((!minUnit) ? 2 : 1, '0')));
+        let [hour, min]: Array<string> = time.map((x) => (String(x).padStart((!minUnit) ? 2 : 1, '0')));
         if (parseInt(hour)!=0 || !minUnit) {
             return (hour + hourUnit + (parseInt(min)!=0 || !minUnit ? min : ''));
         } else {
