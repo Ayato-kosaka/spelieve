@@ -1,4 +1,4 @@
-import * as useHK0001Utils from 'SV0000Common/Hooks/HK0001Utils'
+import * as HK0001Utils from 'SV0000Common/Hooks/HK0001Utils'
 import { useTranslation } from 'react-i18next';
 import { useContext } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
@@ -25,7 +25,7 @@ const OG0001PlanGroupList = (props) => {
         <>
             <DragDropContext onDragEnd={onDragEnd}>
                 {planGroups.map((planGroup, index) => {
-                    let straddleDayNum = Math.floor((planGroup.representiveStartTime - useHK0001Utils.zeroDate())/useHK0001Utils.milliSecondsADay) + 1 - dayNumber;
+                    let straddleDayNum = Math.floor((planGroup.representiveStartTime - HK0001Utils.initialDate())/HK0001Utils.milliSecondsADay) + 1 - dayNumber;
                     dayNumber += straddleDayNum
                     return(
                         <div key={planGroup.id}>
