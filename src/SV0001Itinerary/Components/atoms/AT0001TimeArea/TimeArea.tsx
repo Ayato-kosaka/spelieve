@@ -4,7 +4,7 @@ import * as HK0001Utils from 'SV0000Common/Hooks/HK0001Utils'
 
 type AT0001TimeAreaProps = {
     className: string;
-    span: Date | undefined;
+    span: Date;
     inputProps: { 
         name: string;
         onBlur: (event: FocusEvent<HTMLInputElement> ) => void;
@@ -23,14 +23,17 @@ export const AT0001TimeArea: FC<AT0001TimeAreaProps> = ({
 
     const [time, setTime] = useState<[number, number]>([0, 0]); //[hour, min]
     const date: Date = new Date(1970, 0, 1, ...time);
-    useEffect(() => {
-        if (span) {
-            setTime([span.getHours(), span.getMinutes()])
-        };
-    }, [span]);
 
     const [isActive, setIsActive] = useState<boolean>(false);
-    const [target, setTarget] = useState<HTMLInputElement>(); // ?
+    const [target, setTarget] = useState<HTMLInputElement>();
+    
+    // Focus in 後のレンダリングで、表示文字が変更されるため、handleFocus 内でなく、useEffect 内で target.select() する
+    useEffect(() => {
+        if (isActive) {
+            target?.select();
+        }
+    }, [isActive]);
+
     const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
         setIsActive(true);
         setTarget(event.target);
@@ -39,15 +42,6 @@ export const AT0001TimeArea: FC<AT0001TimeAreaProps> = ({
         setIsActive(false);
         inputProps.onBlur(event);
     }
-
-    // Focus in 後のレンダリングで、表示文字が変更されるため、handleFocus 内でなく、useEffect 内で target.select() する
-    useEffect(() => {
-        if (isActive) {
-            target?.select();
-        }
-    }, [isActive]);
-
-    
 
     const handleChanged = (event: ChangeEvent<HTMLInputElement>) => {
         const value: string = event.target.value;
@@ -67,8 +61,8 @@ export const AT0001TimeArea: FC<AT0001TimeAreaProps> = ({
                 }
             }
         })();
-        if (isNaN(timeNum)) {
-            event.target.select();
+        if (isNaN(timeNum)) { 
+            event.target.select(); // selectされてない
             return;
         }
         setTime(function (hour: number, min: number): [number, number] {
