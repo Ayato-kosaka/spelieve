@@ -9,7 +9,7 @@ export const StyledWrrapper = styled.div`
 `
 
 export const StyledFab = styled(Fab)`
-    position: absolute;
+    position: absolute !important;
     bottom: 50px;
     right: 20px;
   z-index: 100;
