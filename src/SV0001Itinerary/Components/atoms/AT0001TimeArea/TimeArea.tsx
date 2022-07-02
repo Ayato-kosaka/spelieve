@@ -4,7 +4,7 @@ import * as HK0001Utils from 'SV0000Common/Hooks/HK0001Utils'
 
 type AT0001TimeAreaProps = {
     className: string;
-    span: Date;
+    dateTime: Date;
     inputProps: { 
         name: string;
         onBlur: (event: FocusEvent<HTMLInputElement> ) => void;
@@ -15,11 +15,11 @@ type AT0001TimeAreaProps = {
 
 export const AT0001TimeArea: FC<AT0001TimeAreaProps> = ({
     className,
-    span,
+    dateTime,
     inputProps,
     displayValue,
 }) => {
-    displayValue ||= HK0001Utils.formatDateToTime(span);
+    displayValue ||= HK0001Utils.formatDateToTime(dateTime);
 
     const [time, setTime] = useState<[number, number]>([0, 0]); //[hour, min]
     const date: Date = new Date(1970, 0, 1, ...time);
