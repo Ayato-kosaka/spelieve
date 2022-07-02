@@ -138,7 +138,7 @@ export const OG0006EditablePlan = ({
             SpanArea={(
                 !isDragging &&
                 <AT0001TimeArea
-                    span={plan.span}
+                    dateTime={plan.span}
                     displayValue={ plan.span ? HK0001Utils.formatDateToTime(plan.span, 'hr ', 'min') : '' }
                     inputProps={{
                         'name': 'span',

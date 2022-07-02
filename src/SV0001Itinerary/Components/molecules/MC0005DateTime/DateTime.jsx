@@ -53,7 +53,7 @@ export const MC0005DateTime = ({
                 }}
             />
             <StyledAT0001TimeArea
-                span={ initialDate }
+                dateTime={ initialDate }
                 inputProps={{
                     onBlur: handleTimeBlur,
                     autoFocus: skipDateFocus
