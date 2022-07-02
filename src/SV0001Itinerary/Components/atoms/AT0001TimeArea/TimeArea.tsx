@@ -26,6 +26,12 @@ export const AT0001TimeArea: FC<AT0001TimeAreaProps> = ({
 
     const [isActive, setIsActive] = useState<boolean>(false);
     const [target, setTarget] = useState<HTMLInputElement>();
+
+    useEffect(() => {
+        if (dateTime) {
+            setTime([dateTime.getHours(), dateTime.getMinutes()])
+        };
+    }, [dateTime]);
     
     // Focus in 後のレンダリングで、表示文字が変更されるため、handleFocus 内でなく、useEffect 内で target.select() する
     useEffect(() => {
