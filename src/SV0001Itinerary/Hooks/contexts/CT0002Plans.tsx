@@ -11,7 +11,9 @@ type PlanStateType = {
     [key: string]: DB0004PlanType;
 };
 
-export const CT0002PlansProvider = ({ itineraryID, children }: { itineraryID: string, children: ReactNode }) => {
+export const CT0002PlansProvider = ({ 
+    itineraryID, children }: { itineraryID: string, children: ReactNode 
+}) => {
     const [plans, setPlans] = useState<PlanStateType>({});
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
