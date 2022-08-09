@@ -1,5 +1,5 @@
 export type DB0002ItinerariesType = {
-    id: string;
+    readonly id: string;
     title: string;
 };
 
