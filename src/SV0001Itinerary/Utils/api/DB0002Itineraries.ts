@@ -7,10 +7,11 @@ export const collectionName = 'Itineraries';
 const collectionRef = collection(db, collectionName);
 
 export const read = async (id: collectionType["id"]): Promise<collectionType | undefined> => {
-    try {
-        let docSnap = await getDoc(doc(collectionRef, id));
-        return docSnap.data() as collectionType | undefined;
-    } catch {
+    const docSnap = await getDoc(doc(collectionRef, id));
+    if (docSnap.exists()) {
+        const collection = docSnap.data() as collectionType; // 一時的に型アサーションで回避
+        return collection;
+    } else {
         return undefined;
     }
 }
