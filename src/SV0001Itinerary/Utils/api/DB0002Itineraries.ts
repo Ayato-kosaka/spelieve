@@ -1,42 +1,36 @@
 import db from '../fireB/firestore'
 import { doc, collection, getDoc, setDoc, addDoc, deleteDoc, getDocs } from 'firebase/firestore';
-import type { DB0002ItineraryType } from 'SV0001Itinerary/Utils/types/DB0002ItineraryType';
-import { initItinerary } from 'SV0001Itinerary/Utils/types/DB0002ItineraryType';
+import type { DB0002ItinerariesType as collectionType } from 'SV0001Itinerary/Utils/types/DB0002ItinerariesType';
+import { initItinerary as initCollection } from 'SV0001Itinerary/Utils/types/DB0002ItinerariesType';
 
 export const collectionName = 'Itineraries';
 const collectionRef = collection(db, collectionName);
 
-export const read = async (id: DB0002ItineraryType["id"]): Promise<DB0002ItineraryType | undefined> => {
+export const read = async (id: collectionType["id"]): Promise<collectionType | undefined> => {
     try {
         let docSnap = await getDoc(doc(collectionRef, id));
-        const itinerary = docSnap.data() as DB0002ItineraryType | undefined;
-        return itinerary;
+        return docSnap.data() as collectionType | undefined;
     } catch {
         return undefined;
     }
 }
 
-export const readAll = async (): Promise<DB0002ItineraryType[]> => {
+export const readAll = async (): Promise<collectionType[]> => {
     const querySnapshot = await getDocs(collectionRef);
     return (querySnapshot.docs.map((doc) => {
-        const itinerary: DB0002ItineraryType = {
-            id: doc.data().id,
-            title: doc.data().title,
-        };
-        return itinerary;
+        return doc.data() as collectionType
     }));
 }
 
-export const create = async (): Promise<DB0002ItineraryType> => {
+export const create = async (): Promise<collectionType> => {
     let docRef = await addDoc(collectionRef, {});
-    const itinerary: DB0002ItineraryType = initItinerary(docRef.id);
-    return itinerary;
+    return initCollection(docRef.id);
 }
 
-export const update = async (itinerary: DB0002ItineraryType) => {
-    await setDoc(doc(collectionRef, itinerary.id), itinerary, { merge: true });
+export const update = async (collection: collectionType) => {
+    await setDoc(doc(collectionRef, collection.id), collection, { merge: true });
 }
 
-export const deleteData = async (itinerary: DB0002ItineraryType) => {
-    await deleteDoc(doc(collectionRef, itinerary.id));
+export const deleteData = async (collection: collectionType) => {
+    await deleteDoc(doc(collectionRef, collection.id));
 }
