@@ -6,16 +6,13 @@ import { initItinerary } from 'SV0001Itinerary/Utils/types/DB0002ItineraryType';
 export const collectionName = 'Itineraries';
 const collectionRef = collection(db, collectionName);
 
-export const read = async (id: string): Promise<DB0002ItineraryType | null> => {
+export const read = async (id: DB0002ItineraryType["id"]): Promise<DB0002ItineraryType | undefined> => {
     try {
         let docSnap = await getDoc(doc(collectionRef, id));
-        const itinerary: DB0002ItineraryType = {
-            id: id,
-            title: docSnap.data()?.title,
-        };
+        const itinerary = docSnap.data() as DB0002ItineraryType | undefined;
         return itinerary;
     } catch {
-        return null;
+        return undefined;
     }
 }
 
