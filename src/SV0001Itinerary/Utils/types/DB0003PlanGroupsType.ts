@@ -2,7 +2,7 @@ import * as HK0001Utils from 'SV0000Common/Hooks/HK0001Utils'
 
 export type DB0003PlanGroupsType = {
     readonly id: string;
-    itineraryID: string;
+    readonly itineraryID: string;
     plans: Array<string>;
     representativePlanID: string;
     representativeStartTime: Date;
