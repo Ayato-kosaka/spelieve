@@ -1,15 +1,15 @@
 import * as HK0001Utils from 'SV0000Common/Hooks/HK0001Utils'
 
-export type DB0003PlanGroupType = {
-    id: string;
+export type DB0003PlanGroupsType = {
+    readonly id: string;
     itineraryID: string;
     plans: Array<string>;
     representativePlanID: string;
     representativeStartTime: Date;
 };
 
-export const initPlanGroup = (id: string, itineraryID: string): DB0003PlanGroupType => {
-    const planGroup: DB0003PlanGroupType = {
+export const initPlanGroup = (id: string, itineraryID: string): DB0003PlanGroupsType => {
+    const planGroup: DB0003PlanGroupsType = {
         id: id,
         itineraryID: itineraryID,
         plans: [],
