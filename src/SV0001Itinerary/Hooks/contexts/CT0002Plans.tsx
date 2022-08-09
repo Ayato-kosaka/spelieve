@@ -1,7 +1,7 @@
 import React, { useState, createContext, useEffect, Dispatch, SetStateAction, ReactNode } from 'react';
 import * as DB0004Plans from 'SV0001Itinerary/Utils/api/DB0004Plans';
 import AT0005Loader from 'SV0001Itinerary/Components/atoms/AT0005Loader';
-import type { DB0004PlanType } from 'SV0001Itinerary/Utils/types/DB0004PlanType';
+import type { DB0004PlanType } from 'SV0001Itinerary/Utils/types/DB0004PlansType';
 
 type PlanStateType = {
     [key: string]: DB0004PlanType;
