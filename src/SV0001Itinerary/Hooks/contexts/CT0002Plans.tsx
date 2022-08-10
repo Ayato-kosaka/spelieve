@@ -1,23 +1,24 @@
 import React, { useState, createContext, useEffect, Dispatch, SetStateAction, ReactNode } from 'react';
 import * as DB0004Plans from 'SV0001Itinerary/Utils/api/DB0004Plans';
 import AT0005Loader from 'SV0001Itinerary/Components/atoms/AT0005Loader';
-import type { DB0004PlanType } from 'SV0001Itinerary/Utils/types/DB0004PlansType';
+import type { DB0002ItinerariesType } from 'SV0001Itinerary/Utils/types/DB0002ItinerariesType';
+import type { DB0004PlansType } from 'SV0001Itinerary/Utils/types/DB0004PlansType';
 
 type PlanStateType = {
-    [key: string]: DB0004PlanType;
+    [id: DB0004PlansType['id']]: DB0004PlansType;
 };
 
 type CT0002PlansProviderProps = {
-    itineraryID: string;
+    itineraryID: DB0002ItinerariesType['id'];
     children: ReactNode;
 };
 
 type valueType = {
     plans: PlanStateType,
     setPlans: Dispatch<SetStateAction<PlanStateType>>;
-    createPlan: () => Promise<DB0004PlanType>;
-    deletePlan: (id: string) => Promise<void>;
-    updatePlan: (plan: DB0004PlanType) => Promise<void>,
+    createPlan: () => Promise<DB0004PlansType>;
+    deletePlan: (id: DB0004PlansType['id']) => Promise<void>;
+    updatePlan: (plan: DB0004PlansType) => Promise<void>,
 };
 
 // createContextに型設定しないといけないっぽい?abCg
@@ -33,27 +34,27 @@ export const CT0002PlansProvider = (
 
     useEffect(() => {
         const fetchData = async () => {
-            let plans: DB0004PlanType[] = await DB0004Plans.readAll(itineraryID);
+            let plans: DB0004PlansType[] = await DB0004Plans.readAll(itineraryID);
             setPlans(Object.fromEntries(
-                plans.map((x: DB0004PlanType) => [x.id, x])
+                plans.map((x: DB0004PlansType) => [x.id, x])
             ));
             setIsLoading(false);
         }
         fetchData();
     }, [itineraryID]);
 
-    const createPlan = async (): Promise<DB0004PlanType> => {
-        let plan: DB0004PlanType = await DB0004Plans.create(itineraryID);
+    const createPlan = async (): Promise<DB0004PlansType> => {
+        let plan: DB0004PlansType = await DB0004Plans.create(itineraryID);
         setPlans({ ...plans, [plan.id]: plan });
         return plan;
     }
 
-    const deletePlan = async (id: string) => {
+    const deletePlan = async (id: DB0004PlansType['id']) => {
         DB0004Plans.deleteData(plans[id]);
         delete plans[id];
     }
 
-    const updatePlan = async (plan: DB0004PlanType) => {
+    const updatePlan = async (plan: DB0004PlansType) => {
         DB0004Plans.update(plan);
         setPlans({ ...plans, [plan.id]: plan });
     }
