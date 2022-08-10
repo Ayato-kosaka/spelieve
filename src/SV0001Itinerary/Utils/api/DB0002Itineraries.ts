@@ -6,11 +6,15 @@ import { initItinerary as initCollection } from 'SV0001Itinerary/Utils/types/DB0
 export const collectionName = 'Itineraries';
 const collectionRef = collection(db, collectionName);
 
-export const read = async (id: collectionType["id"]): Promise<collectionType | undefined> => {
-    const docSnap = await getDoc(doc(collectionRef, id));
-    if (docSnap.exists()) {
-        return docSnap.data() as collectionType; // 一時的に型アサーションで回避
-    } else {
+export const read = async (id: collectionType['id']): Promise<collectionType | undefined> => {
+    try {
+        const docSnap = await getDoc(doc(collectionRef, id));
+        if (docSnap.exists()) {
+            return docSnap.data() as collectionType; // 一時的に型アサーションで回避
+        } else {
+            return undefined;
+        }
+    } catch {
         return undefined;
     }
 }
