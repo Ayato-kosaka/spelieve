@@ -53,32 +53,32 @@ const PA0002ItineraryPage = (props) => {
                 }}
                 sx={{ my: 2 }}
             />
-            
-            <CT0002PlansProvider itineraryId={itinerary.id}>
-                <CT0001PlanGroupsProvider itineraryId={itinerary.id}>
+
+            <CT0002PlansProvider itineraryID={itinerary.id}>
+                <CT0001PlanGroupsProvider itineraryID={itinerary.id}>
                     <OG0001PlanGroupList />
                 </CT0001PlanGroupsProvider>
             </CT0002PlansProvider>
-            
+
             <Button
                 variant='outlined'
                 color='inherit'
                 tabIndex={-1}
                 fullWidth
-                style={{'borderRadius': '18px'}}
-                sx={{mb: 4}}
+                style={{ 'borderRadius': '18px' }}
+                sx={{ mb: 4 }}
                 onClick={copyURL}
             >
                 {t('URLをコピー')}
             </Button>
-            
+
             <Button
                 variant='outlined'
                 color='inherit'
                 tabIndex={-1}
                 fullWidth
-                style={{'borderRadius': '18px'}}
-                sx={{mb: 4}}
+                style={{ 'borderRadius': '18px' }}
+                sx={{ mb: 4 }}
                 onClick={returnTop}
             >
                 {t('一番上へ')}
