@@ -11,7 +11,7 @@ const collectionRef = (itineraryID: collectionType['itineraryID']) => collection
 
 
 export const readAll = async (itineraryID: collectionType['itineraryID']): Promise<collectionType[]> => {
-    const querySnapshot = await getDocs(query(collectionRef(itineraryID), orderBy('representiveStartTime')));
+    const querySnapshot = await getDocs(query(collectionRef(itineraryID), orderBy('representativeStartTime')));
     return (querySnapshot.docs.map((doc) => {
         return doc.data() as collectionType; // 一時的に型アサーションで回避
     }));
