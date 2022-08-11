@@ -45,10 +45,7 @@ export const CT0002PlansProvider = (
                         return [plan.id, plan];
                     })
                 )
-            })
-            setPlans(Object.fromEntries(
-                plans.map((x: DB0004PlansType) => [x.id, x])
-            ) as PlansStateType);
+            });
             setIsLoading(false);
         }
         fetchData();
