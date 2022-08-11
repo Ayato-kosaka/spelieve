@@ -1,0 +1,20 @@
+{
+  "firestore": {
+    "rules": "src/Common/Endpoint/firestore.rules",
+    "indexes": "src/Common/Endpoint/firestore.indexes.json"
+  },
+  "hosting": {
+    "public": "web-build",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
