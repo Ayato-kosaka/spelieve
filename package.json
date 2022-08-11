@@ -14,7 +14,7 @@
     "@testing-library/user-event": "14.4.3",
     "firebase": "9.9.2",
     "i18next": "21.9.0",
-    "i18next-browser-languagedetector": "6.1.4",
+    "i18next-browser-languagedetector": "6.1.5",
     "i18next-xhr-backend": "3.2.2",
     "install": "0.13.0",
     "npm": "8.17.0",
