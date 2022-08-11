@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import registerRootComponent from 'expo/build/launch/registerRootComponent';
 import { Provider as PaperProvider } from 'react-native-paper';
-import { Button } from 'react-native-paper';
+import COI000Test from '@/Itinerary/Components/COI000Test'
 
 export default function App() {
   return (
@@ -10,9 +10,7 @@ export default function App() {
       <View style={styles.container}>
         <Text>Open up App.tsx to start working on your app!</Text>
         <StatusBar style="auto" />
-        <Button icon="camera" mode="outlined" onPress={() => console.log('Pressed')}>
-          react-native-paper test
-        </Button>
+        <COI000Test/>
       </View>
     </PaperProvider>
   );
