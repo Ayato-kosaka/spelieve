@@ -4,6 +4,8 @@ import registerRootComponent from 'expo/build/launch/registerRootComponent';
 import { Provider as PaperProvider } from 'react-native-paper';
 import COI000Test from '@/Itinerary/Components/COI000Test'
 
+
+
 export default function App() {
   return (
     <PaperProvider>
