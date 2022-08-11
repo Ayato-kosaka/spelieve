@@ -17,7 +17,7 @@ const OG0001PlanGroupList = (props) => {
 
     const onDragEnd = (result) => {
         if (!result.destination) { return; }
-        let removedPlanId = useCT0001.removePlan(result.source.droppableId, result.source.index, result.source.droppableId!==result.destination.droppableId);
+        let removedPlanId = useCT0001.removePlan(result.source.droppableId, result.source.index, result.source.droppableId !== result.destination.droppableId);
         useCT0001.insertPlan(result.destination.droppableId, result.destination.index, removedPlanId);
     };
 
@@ -25,11 +25,11 @@ const OG0001PlanGroupList = (props) => {
         <>
             <DragDropContext onDragEnd={onDragEnd}>
                 {planGroups.map((planGroup, index) => {
-                    let straddleDayNum = Math.floor((planGroup.representiveStartTime - HK0001Utils.initialDate())/HK0001Utils.milliSecondsADay) + 1 - dayNumber;
+                    let straddleDayNum = Math.floor((planGroup.representativeStartTime - HK0001Utils.initialDate()) / HK0001Utils.milliSecondsADay) + 1 - dayNumber;
                     dayNumber += straddleDayNum
-                    return(
+                    return (
                         <div key={planGroup.id}>
-                            { !!straddleDayNum && <Typography variant="h4">{ dayNumber }{t('日目')}</Typography> }
+                            {!!straddleDayNum && <Typography variant="h4">{dayNumber}{t('日目')}</Typography>}
                             <StyledOG0005PlanGroup
                                 index={index}
                             />

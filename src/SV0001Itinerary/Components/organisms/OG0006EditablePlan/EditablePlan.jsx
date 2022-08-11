@@ -32,13 +32,13 @@ export const OG0006EditablePlan = ({
     const plan = plans[planId];
 
     const [title, setTitle] = useState(plan.title);
-    
+
     const handleStartTimeClick = () => {
         openEditStartTimeDialog();
     }
 
     const openEditStartTimeDialog = () => {
-        const initialDate = new Date(planGroup.representiveStartTime.getTime());
+        const initialDate = new Date(planGroup.representativeStartTime.getTime());
         initialDate.setHours(plan.startTime.getHours());
         initialDate.setMinutes(plan.startTime.getMinutes());
         useCT0003.setFormData({ date: initialDate })
@@ -52,16 +52,16 @@ export const OG0006EditablePlan = ({
                             useCT0003.setFormData(x)
                         }
                     }
-                    initialDate={ initialDate }
+                    initialDate={initialDate}
                     skipDateFocus
                 />
             ),
             submitButtonName: t('変更'),
             onSubmit: (formData) => {
-                planGroup.representiveStartTime = formData.date
-                planGroup.representivePlanID = planId
+                planGroup.representativeStartTime = formData.date
+                planGroup.representativePlanID = planId
                 useCT0001.updatePlanGroup(planGroupIndex, planGroup)
-                plan.startTime = new Date(planGroup.representiveStartTime.getTime());
+                plan.startTime = new Date(planGroup.representativeStartTime.getTime());
                 setPlans({ ...plans, [planId]: plan });
             }
         });
@@ -70,7 +70,7 @@ export const OG0006EditablePlan = ({
     const handleTitleChange = event => {
         setTitle(event.target.value);
     }
-    
+
     const handleBlur = async (event) => {
         let { name, value } = event.target;
         if (event.target.getAttribute('time')) {
@@ -78,13 +78,13 @@ export const OG0006EditablePlan = ({
         }
         useCT0002.updatePlan({ ...plan, [name]: value });
     }
-    
+
     useEffect(() => {
-        if ((planIndex === planGroup.plans.length -1) && !(plan.title==='' && plan.span.getTime()===HK0001Utils.initialDate().getTime())) {
+        if ((planIndex === planGroup.plans.length - 1) && !(plan.title === '' && plan.span.getTime() === HK0001Utils.initialDate().getTime())) {
             handleAddPlanClick();
         }
     }, [plan])
-    
+
     const handleDeletePlanClick = () => {
         useCT0001.deletePlan(planGroupIndex, planIndex);
     }
@@ -95,18 +95,18 @@ export const OG0006EditablePlan = ({
         await useCT0001.insertPlan(planGroupIndex, planIndex + 1)
         setShowAddPlan(true);
     }
-    
+
     return (
         <MC0001Plan
             StartTimeArea={
                 <Typography
-                    onClick={ handleStartTimeClick }
-                    sx={{ 
+                    onClick={handleStartTimeClick}
+                    sx={{
                         width: 55,
                         margin: 0
                     }}
                 >
-                    { plan.startTime ? HK0001Utils.formatDateToTime(plan.startTime) : '' }
+                    {plan.startTime ? HK0001Utils.formatDateToTime(plan.startTime) : ''}
                 </Typography>
             }
             BodyArea={
@@ -120,12 +120,12 @@ export const OG0006EditablePlan = ({
                             'onChange': handleTitleChange,
                             'onBlur': handleBlur
                         }}
-                        sx={{flexGrow: 1}}
+                        sx={{ flexGrow: 1 }}
                         endAdornment={
                             <InputAdornment position='end' >
                                 <DragIndicatorIcon
                                     size='small'
-                                    style={{'cursor': 'default'}}
+                                    style={{ 'cursor': 'default' }}
                                 />
                             </InputAdornment>
                         }
@@ -139,7 +139,7 @@ export const OG0006EditablePlan = ({
                 !isDragging &&
                 <AT0001TimeArea
                     dateTime={plan.span}
-                    displayValue={ plan.span ? HK0001Utils.formatDateToTime(plan.span, 'hr ', 'min') : '' }
+                    displayValue={plan.span ? HK0001Utils.formatDateToTime(plan.span, 'hr ', 'min') : ''}
                     inputProps={{
                         'name': 'span',
                         'onBlur': handleBlur
@@ -149,13 +149,13 @@ export const OG0006EditablePlan = ({
             AddPlanArea={(
                 showAddPlan && !isDragging &&
                 <AT0007AddPlanButton
-                    onClick={ handleAddPlanClick }
+                    onClick={handleAddPlanClick}
                 />
             )}
-            planGroupIndex={ planGroupIndex }
-            planIndex={ planIndex }
-            planId={ planId }
-            stopCalculating={ isDragging }
+            planGroupIndex={planGroupIndex}
+            planIndex={planIndex}
+            planId={planId}
+            stopCalculating={isDragging}
         />
     )
 };
