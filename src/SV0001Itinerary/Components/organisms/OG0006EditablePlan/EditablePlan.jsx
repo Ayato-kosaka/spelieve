@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { useState, useEffect, useContext } from 'react';
 
 import * as HK0001Utils from 'SV0000Common/Hooks/HK0001Utils'
+import AT0005Loader from 'SV0001Itinerary/Components/atoms/AT0005Loader';
 import AT0001TimeArea from 'SV0001Itinerary/Components/atoms/AT0001TimeArea';
 import AT0007AddPlanButton from 'SV0001Itinerary/Components/atoms/AT0007AddPlanButton';
 import MC0001Plan from 'SV0001Itinerary/Components/molecules/MC0001Plan';
@@ -30,6 +31,10 @@ export const OG0006EditablePlan = ({
     const { plans, setPlans, ...useCT0002 } = useContext(CT0002Plans);
     const useCT0003 = useContext(CT0003Dialog);
     const plan = plans[planId];
+    
+    if(!plan){
+        return <AT0005Loader />
+    }
 
     const [title, setTitle] = useState(plan.title);
     
