@@ -53,7 +53,6 @@ const PA0002ItineraryPage = (props) => {
                 }}
                 sx={{ my: 2 }}
             />
-
             <CT0002PlansProvider itineraryID={itinerary.id}>
                 <CT0001PlanGroupsProvider itineraryID={itinerary.id}>
                     <OG0001PlanGroupList />
