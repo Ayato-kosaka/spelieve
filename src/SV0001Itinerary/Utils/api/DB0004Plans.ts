@@ -8,10 +8,14 @@ const collectionName = 'Plans';
 const parentCollection = collection(db, DB0002Itineraries.collectionName)
 const collectionRef = (itineraryID: collectionType['itineraryID']) => collection(parentCollection, itineraryID, collectionName)
 
+const toDate = (span: Date | string) => {
+    ( span instanceof Date) ? span : (span ? span.toDate() : HK0001Utils.initialDate())
+}
+
 export const readAll = async (itineraryID: collectionType['itineraryID']): Promise<collectionType[]> => {
     const querySnapshot = await getDocs(collectionRef(itineraryID));
     return (querySnapshot.docs.map((doc) => {
-        return doc.data() as collectionType; // HACK: 一時的に型アサーションで回避
+        return { ...doc.data(), span: doc.data().span.toDate() } as collectionType; // HACK：[要検討]ここでDate型に変更しておかないといけない,一時的に型アサーションで回避
     }));
 }
 
