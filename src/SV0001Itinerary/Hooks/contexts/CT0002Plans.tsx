@@ -26,7 +26,7 @@ type CT0002PlansContextType = {
 };
 
 // createContextに型設定しないといけないっぽい?abCg
-const CT0002Plans = createContext<CT0002PlansContextType>({ plans: {} } as CT0002PlansContextType);
+const CT0002Plans = createContext<CT0002PlansContextType>({} as CT0002PlansContextType);
 export default CT0002Plans;
 
 

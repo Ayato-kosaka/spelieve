@@ -38,7 +38,6 @@ export const OG0005PlanGroup = (props) => {
                                     <div />
                             )}
                         />
-                        {console.log(planGroup.plans)}
                         {planGroup.plans.map((planID, index) => {
                             let isDragging = !!snapshot.draggingFromThisWith
                             let component = (
