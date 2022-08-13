@@ -11,7 +11,7 @@ const collectionRef = (itineraryID: collectionType['itineraryID']) => collection
 export const readAll = async (itineraryID: collectionType['itineraryID']): Promise<collectionType[]> => {
     const querySnapshot = await getDocs(collectionRef(itineraryID));
     return (querySnapshot.docs.map((doc) => {
-        return doc.data() as collectionType; // 一時的に型アサーションで回避
+        return doc.data() as collectionType; // HACK: 一時的に型アサーションで回避
     }));
 }
 
