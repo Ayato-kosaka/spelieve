@@ -2,9 +2,16 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import registerRootComponent from 'expo/build/launch/registerRootComponent';
 import { Provider as PaperProvider } from 'react-native-paper';
-import COI000Test from '@/Itinerary/Components/COI000Test'
+import COI000Test from '@/Itinerary/Components/COI000Test';
 
-
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 
 export default function App() {
   return (
@@ -17,14 +24,5 @@ export default function App() {
     </PaperProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 registerRootComponent(App);

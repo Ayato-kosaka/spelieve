@@ -13,6 +13,7 @@ npm-debug.*
 *.orig.*
 web-build/
 .firebase/
+.eslintcache
 
 # Env
 .envrc.local
