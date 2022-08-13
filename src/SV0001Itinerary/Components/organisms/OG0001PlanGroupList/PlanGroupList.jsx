@@ -17,8 +17,8 @@ const OG0001PlanGroupList = (props) => {
 
     const onDragEnd = (result) => {
         if (!result.destination) { return; }
-        let removedPlanId = useCT0001.removePlan(result.source.droppableId, result.source.index, result.source.droppableId !== result.destination.droppableId);
-        useCT0001.insertPlan(result.destination.droppableId, result.destination.index, removedPlanId);
+        let removedPlanID = useCT0001.removePlan(result.source.droppableId, result.source.index, result.source.droppableId !== result.destination.droppableId);
+        useCT0001.insertPlan(result.destination.droppableId, result.destination.index, removedPlanID);
     };
 
     return (
