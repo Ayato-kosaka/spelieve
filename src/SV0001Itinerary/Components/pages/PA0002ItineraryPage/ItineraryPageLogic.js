@@ -12,8 +12,8 @@ export const usePA0002 = () => {
 
     useEffect(async () => {
         HK0002PageView('ItineraryPage', window.location.pathname);
-        
-        let id = params.itineraryId //L23yI08p6zqiyJ9E6R5M
+
+        const id = params.itineraryID //L23yI08p6zqiyJ9E6R5M
         let itinerary = await DB0002Itineraries.read(id);
         if (!itinerary) {
             itinerary = await DB0002Itineraries.create();

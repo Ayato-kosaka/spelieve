@@ -6,13 +6,13 @@ import CT0002Plans from 'SV0001Itinerary/Hooks/contexts/CT0002Plans'
 export const useMC0001 = ({
     planGroupIndex = 0,
     planIndex,
-    planId,
+    planID,
     stopCalculating = true,
 }) => {
     const { planGroups } = useContext(CT0001PlanGroups);
     const planGroup = planGroups[planGroupIndex];
     const { plans, setPlans } = useContext(CT0002Plans);
-    const plan = plans[planId];
+    const plan = plans[planID];
 
     const representativePlanIndex = planGroup.plans.indexOf(planGroup.representativePlanID);
 
@@ -49,7 +49,7 @@ export const useMC0001 = ({
                 plan.startTime.setHours(linkedStartTime.getHours() - linkedSpan.getHours() * linkedIndexDiff);
                 plan.startTime.setMinutes(linkedStartTime.getMinutes() - linkedSpan.getMinutes() * linkedIndexDiff);
             }
-            setPlans({ ...plans, [planId]: plan });
+            setPlans({ ...plans, [planID]: plan });
         }
     }, [linkedStartTime?.getTime(), linkedSpan?.getTime(), linkedIndexDiff])
 

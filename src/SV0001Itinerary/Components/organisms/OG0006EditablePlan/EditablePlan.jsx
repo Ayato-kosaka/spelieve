@@ -20,7 +20,7 @@ import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 export const OG0006EditablePlan = ({
     planGroupIndex,
     planIndex,
-    planId,
+    planID,
     isDragging,
     ...props
 }) => {
@@ -29,7 +29,7 @@ export const OG0006EditablePlan = ({
     const planGroup = planGroups[planGroupIndex];
     const { plans, setPlans, ...useCT0002 } = useContext(CT0002Plans);
     const useCT0003 = useContext(CT0003Dialog);
-    const plan = plans[planId];
+    const plan = plans[planID];
 
     const [title, setTitle] = useState(plan.title);
 
@@ -59,10 +59,10 @@ export const OG0006EditablePlan = ({
             submitButtonName: t('変更'),
             onSubmit: (formData) => {
                 planGroup.representativeStartTime = formData.date
-                planGroup.representativePlanID = planId
+                planGroup.representativePlanID = planID
                 useCT0001.updatePlanGroup(planGroupIndex, planGroup)
                 plan.startTime = new Date(planGroup.representativeStartTime.getTime());
-                setPlans({ ...plans, [planId]: plan });
+                setPlans({ ...plans, [planID]: plan });
             }
         });
     }
@@ -154,7 +154,7 @@ export const OG0006EditablePlan = ({
             )}
             planGroupIndex={planGroupIndex}
             planIndex={planIndex}
-            planId={planId}
+            planID={planID}
             stopCalculating={isDragging}
         />
     )

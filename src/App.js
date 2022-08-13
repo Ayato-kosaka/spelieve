@@ -18,7 +18,7 @@ function App() {
                     <Routes>
                         <Route path='/' element={<PA0002ItineraryPage />} />
                         <Route path='/itineraries' element={<PA0002ItineraryPage />} >
-                            <Route path=':itineraryId' element={<PA0002ItineraryPage />} />
+                            <Route path=':itineraryID' element={<PA0002ItineraryPage />} />
                         </Route>
                     </Routes>
                     <MC0004Footer />
