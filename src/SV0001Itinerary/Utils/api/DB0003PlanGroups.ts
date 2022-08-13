@@ -23,8 +23,7 @@ export const create = async (itineraryID: collectionType['itineraryID']): Promis
 }
 
 export const update = async (collection: collectionType) => {
-    const setterConverter = (coll: collectionType) => ({ ...coll, 'plans': coll.plans.join() });
-    await setDoc(doc(collectionRef(collection.itineraryID), collection.id), setterConverter(collection), { merge: true });
+    await setDoc(doc(collectionRef(collection.itineraryID), collection.id), collection, { merge: true });
 }
 
 export const deleteData = async (collection: collectionType) => {
