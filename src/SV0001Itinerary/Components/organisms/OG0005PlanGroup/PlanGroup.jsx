@@ -20,52 +20,53 @@ export const OG0005PlanGroup = (props) => {
 
     return (
         <Droppable droppableId={`${props.index}`}>
-        {(provided, snapshot) => (
-            <div {...provided.droppableProps} 
-                ref={provided.innerRef} 
-                style={{'marginBottom': '50px', 'paddingTop': `${!snapshot.draggingFromThisWith ? 0: 46*planGroup.plans.indexOf(snapshot.draggingFromThisWith)}px`}}
-            >
-                <Timeline
-                    sx={{ px: 1 }}
-                    align='left'
+            {(provided, snapshot) => (
+                <div {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    style={{ 'marginBottom': '50px', 'paddingTop': `${!snapshot.draggingFromThisWith ? 0 : 46 * planGroup.plans.indexOf(snapshot.draggingFromThisWith)}px` }}
                 >
-                    <MC0001Plan
-                        AddPlanArea={(
-                            showAddPlan ?
-                            <AT0007AddPlanButton
-                                onClick={ addFirstPlan }
-                            /> :
-                            <div/>
-                        )}
-                    />
-                    {planGroup.plans.map((planId, index) => {
-                        let isDragging = !!snapshot.draggingFromThisWith
-                        let component = (
-                            <Draggable draggableId={planId} index={index} key={planId}>
-                                {(provided, snapshot) => (
-                                    <div 
-                                        ref={provided.innerRef}
-                                        snapshot={snapshot}
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                        tabIndex='-1'
-                                    >
-                                        <OG0006EditablePlan 
-                                            planGroupIndex={props.index}
-                                            planIndex={index} 
-                                            planId={planId}
-                                            isDragging={isDragging}
-                                        />
-                                    </div>
-                                )}
-                            </Draggable>
-                        )
-                        return(component)
-                    })}
-                </Timeline>
-                {provided.placeholder}
-            </div>
-        )}
+                    <Timeline
+                        sx={{ px: 1 }}
+                        align='left'
+                    >
+                        <MC0001Plan
+                            AddPlanArea={(
+                                showAddPlan ?
+                                    <AT0007AddPlanButton
+                                        onClick={addFirstPlan}
+                                    /> :
+                                    <div />
+                            )}
+                        />
+                        {console.log(planGroup.plans)}
+                        {planGroup.plans.map((planID, index) => {
+                            let isDragging = !!snapshot.draggingFromThisWith
+                            let component = (
+                                <Draggable draggableId={planID} index={index} key={planID}>
+                                    {(provided, snapshot) => (
+                                        <div
+                                            ref={provided.innerRef}
+                                            snapshot={snapshot}
+                                            {...provided.draggableProps}
+                                            {...provided.dragHandleProps}
+                                            tabIndex='-1'
+                                        >
+                                            <OG0006EditablePlan
+                                                planGroupIndex={props.index}
+                                                planIndex={index}
+                                                planID={planID}
+                                                isDragging={isDragging}
+                                            />
+                                        </div>
+                                    )}
+                                </Draggable>
+                            )
+                            return (component)
+                        })}
+                    </Timeline>
+                    {provided.placeholder}
+                </div>
+            )}
         </Droppable>
     )
 }
