@@ -7,25 +7,26 @@ import * as HK0001Utils from 'SV0000Common/Hooks/HK0001Utils'
 
 type CT0002PlansProviderProps = {
     itineraryID: DB0002ItinerariesType['id'];
-    children: ReactNode;
+    children:    ReactNode;
 };
 
+// &はインターセクション型（typeの拡張に使用)
 type FrontPlanType = DB0004PlansType & { startTime: Date; };
 
 type PlansStateType = {
     [id: DB0004PlansType['id']]: FrontPlanType;
 };
 
-type valueType = {
-    plans: PlansStateType,
-    setPlans: Dispatch<SetStateAction<PlansStateType>>;
+type CT0002PlansContextType = {
+    plans:      PlansStateType,
+    setPlans:   Dispatch<SetStateAction<PlansStateType>>;
     createPlan: () => Promise<FrontPlanType>;
     deletePlan: (id: FrontPlanType['id']) => Promise<void>;
     updatePlan: (plan: FrontPlanType) => Promise<void>,
 };
 
 // createContextに型設定しないといけないっぽい?abCg
-const CT0002Plans = createContext<valueType>({ plans: {} } as valueType);
+const CT0002Plans = createContext<CT0002PlansContextType>({ plans: {} } as CT0002PlansContextType);
 export default CT0002Plans;
 
 
@@ -41,7 +42,7 @@ export const CT0002PlansProvider = (
             setPlans(() => {
                 return Object.fromEntries(
                     plans.map((x: DB0004PlansType) => {
-                        const plan: FrontPlanType = planConverter(x);
+                        const plan: FrontPlanType = toFrontType(x);
                         return [plan.id, plan];
                     })
                 )
@@ -51,13 +52,19 @@ export const CT0002PlansProvider = (
         fetchData();
     }, [itineraryID]);
 
-    const planConverter = (plan: DB0004PlansType): FrontPlanType => {
+    // startTimeフィールドのないplanにする
+    const toFrontType = (plan: DB0004PlansType): FrontPlanType => {
         return { ...plan, startTime: HK0001Utils.initialDate() }
+    }
+    // startTimeフィールドのあるplanにする
+    const toDBType = (plan: FrontPlanType): DB0004PlansType => {
+        const { startTime, ...dbPlan } = plan;
+        return dbPlan;
     }
 
     const createPlan = async (): Promise<FrontPlanType> => {
         const plan: DB0004PlansType = await DB0004Plans.create(itineraryID);
-        const frontPlan: FrontPlanType = planConverter(plan);
+        const frontPlan: FrontPlanType = toFrontType(plan);
         setPlans({ ...plans, [frontPlan.id]: frontPlan });
         return frontPlan;
     }
@@ -68,14 +75,15 @@ export const CT0002PlansProvider = (
     }
 
     const updatePlan = async (plan: FrontPlanType) => {
-        DB0004Plans.update(plan);
+        const dbPlan: DB0004PlansType = toDBType(plan);
+        DB0004Plans.update(dbPlan);
         setPlans({ ...plans, [plan.id]: plan });
     }
 
     if (isLoading) {
         return <AT0005Loader />
     }
-    const value: valueType = {
+    const value: CT0002PlansContextType = {
         plans,
         setPlans,
         createPlan,
