@@ -1,5 +1,6 @@
-import { langIf } from './langIf';
-const ja: langIf = {
-    "welcome": "こんにちは",
-}
-export default ja
+import { LangIf } from './LangIf';
+
+const ja: LangIf = {
+  welcome: 'こんにちは',
+};
+export default ja;

@@ -1,5 +1,6 @@
-import { langIf } from './langIf';
-const en: langIf = {
-    "welcome": "Hello",
-}
-export default en
+import { LangIf } from './LangIf';
+
+const en: LangIf = {
+  welcome: 'Hello',
+};
+export default en;
