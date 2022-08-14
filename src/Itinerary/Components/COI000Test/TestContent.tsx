@@ -25,7 +25,6 @@ export default function COI000TestContent() {
   const swapRepresentativePlanID = () => {
     const data = querySnapshot.docs[0].data();
     const newPlanID = data.plans.find(x => x!=data.representativePlanID) || "";
-    console.log("setDoc", {...querySnapshot.docs[0].data(), representativePlanID: newPlanID})
     setDoc<ICT002PlanGroupsInterface>(
       querySnapshot.docs[0].ref, 
       {...querySnapshot.docs[0].data(), representativePlanID: newPlanID}

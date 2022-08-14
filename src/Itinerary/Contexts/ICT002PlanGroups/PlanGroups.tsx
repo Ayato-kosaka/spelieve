@@ -1,6 +1,6 @@
 import { ActivityIndicator } from 'react-native-paper';
 import { useState, createContext, useEffect, ReactNode } from 'react';
-import { collection, query, orderBy, QuerySnapshot, onSnapshot, addDoc } from 'firebase/firestore';
+import { collection, query, orderBy, QuerySnapshot, onSnapshot, addDoc, FieldPath } from 'firebase/firestore';
 
 import db from '@/Itinerary/Endpoint/firestore';
 import { IDB002PlanGroupsInterface } from '@/Itinerary/Interfaces/IDB002PlanGroupsInterface'
@@ -30,9 +30,9 @@ export const ICT002PlanGroupsProvider = ({
 
     useEffect(() => {
         const fetchData = async () => {
-            const orderField: keyof IDB002PlanGroupsInterface = 'representativeStartTime'
+            const orderField: keyof IDB002PlanGroupsInterface = 'representativeStartTime';
             const unsubscribe = onSnapshot(
-                query<ICT002PlanGroupsInterface>(collectionRef, orderBy('aaa')),
+                query<ICT002PlanGroupsInterface>(collectionRef, orderBy(orderField)),
                 (quertSnapshot) => {
                     if(quertSnapshot.empty){
                         createPlanGroup();

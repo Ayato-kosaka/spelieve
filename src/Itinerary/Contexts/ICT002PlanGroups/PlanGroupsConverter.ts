@@ -5,7 +5,6 @@ import { ICT002PlanGroupsInterface } from './PlanGroupsInterface';
 
 
 export const ICT002PlanGroupsConverter = (): FirestoreDataConverter<ICT002PlanGroupsInterface> => ({
-    // TODO data: WithFieldValue<ICT002PlanGroupsInterface> としなくてよいか？
     toFirestore: (data: ICT002PlanGroupsInterface): IDB002PlanGroupsInterface => {
       return {
           ...data,
