@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import registerRootComponent from 'expo/build/launch/registerRootComponent';
 import { Provider as PaperProvider } from 'react-native-paper';
-import COI000Test from '@/Itinerary/Components/COI000Test';
+import { IPA000Test } from '@/Itinerary/Pages/IPA000Test';
 
 const styles = StyleSheet.create({
   container: {
@@ -19,7 +19,7 @@ export default function App() {
       <View style={styles.container}>
         <Text>Open up App.tsx to start working on your app!</Text>
         <StatusBar style="auto" />
-        <COI000Test />
+        <IPA000Test />
       </View>
     </PaperProvider>
   );

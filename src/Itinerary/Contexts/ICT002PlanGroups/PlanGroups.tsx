@@ -1,32 +1,34 @@
 import { ActivityIndicator } from 'react-native-paper';
 import { useState, createContext, useEffect, ReactNode } from 'react';
-import { collection, query, orderBy, QuerySnapshot, onSnapshot, addDoc, FieldPath } from 'firebase/firestore';
+import { collection, query, orderBy, QuerySnapshot, onSnapshot, addDoc, DocumentReference } from 'firebase/firestore';
 
 import db from '@/Itinerary/Endpoint/firestore';
+import * as CHK001Utils from '@/Common/Hooks/CHK001Utils'
 import { IDB002PlanGroupsInterface } from '@/Itinerary/Interfaces/IDB002PlanGroupsInterface'
 
 import { ICT002PlanGroupsInterface } from './PlanGroupsInterface';
 import { ICT002PlanGroupsConverter } from './PlanGroupsConverter'
 
 
-type ICT002PlanGroupsProviderType = {
+type ICT002PlanGroupsValType = {
     querySnapshot: QuerySnapshot<ICT002PlanGroupsInterface>;
-    createPlanGroup: (representativeStartTime?: Date) => void;
+    create: (representativeStartTime?: Date) => void;
 }
-export const ICT002PlanGroups = createContext({} as ICT002PlanGroupsProviderType);
+export const ICT002PlanGroups = createContext({} as ICT002PlanGroupsValType);
 
 
 type ICT002PlanGroupsProviderPropsType = {
-    collectionPath: string;
+    parentDocRef: DocumentReference;
     children: ReactNode;
 }
 export const ICT002PlanGroupsProvider = ({
-    collectionPath,
+    parentDocRef,
     children
 }: ICT002PlanGroupsProviderPropsType) => {
-    const [querySnapshot, setQuerySnapshot] = useState<ICT002PlanGroupsProviderType['querySnapshot']>();
+    const collectionName: string = 'PlanGroups';
+    const [querySnapshot, setQuerySnapshot] = useState<ICT002PlanGroupsValType['querySnapshot']>();
     
-    const collectionRef = collection(db, collectionPath).withConverter(ICT002PlanGroupsConverter());
+    const collectionRef = collection(parentDocRef, collectionName).withConverter(ICT002PlanGroupsConverter());
 
     useEffect(() => {
         const fetchData = async () => {
@@ -35,7 +37,7 @@ export const ICT002PlanGroupsProvider = ({
                 query<ICT002PlanGroupsInterface>(collectionRef, orderBy(orderField)),
                 (quertSnapshot) => {
                     if(quertSnapshot.empty){
-                        createPlanGroup();
+                        create();
                     }
                     quertSnapshot.docs.forEach((queryDocumentSnapshot) => {
                         const data: ICT002PlanGroupsInterface = queryDocumentSnapshot.data();
@@ -48,9 +50,9 @@ export const ICT002PlanGroupsProvider = ({
             );
         }
         fetchData();
-    }, [collectionPath]);
+    }, [parentDocRef]);
 
-    const createPlanGroup: ICT002PlanGroupsProviderType['createPlanGroup'] = async (representativeStartTime = new Date(1970, 0, 1, 0, 0, 0)) => {
+    const create: ICT002PlanGroupsValType['create'] = async (representativeStartTime = CHK001Utils.initialDate()) => {
         addDoc<ICT002PlanGroupsInterface>(collectionRef, {
             plans: [],
             representativePlanID: '',
@@ -63,9 +65,9 @@ export const ICT002PlanGroupsProvider = ({
         return <ActivityIndicator animating={true} />
     }
     
-    const value: ICT002PlanGroupsProviderType = {
+    const value: ICT002PlanGroupsValType = {
         querySnapshot,
-        createPlanGroup,
+        create,
     }
     return <ICT002PlanGroups.Provider value={value}>{children}</ICT002PlanGroups.Provider>
 };
