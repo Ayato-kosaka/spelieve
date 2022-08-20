@@ -27,7 +27,7 @@ export const ICT001ItinerariesProvider = (
 
     useEffect(() => {
         const fetchData = async () => {
-            const docRef: DocumentReference<ICT001ItinerariesInterface> = doc(collectionRef, itineraryID || "");
+            const docRef: DocumentReference<ICT001ItinerariesInterface> = doc(collectionRef, itineraryID);
 
             const unsubscribe = onSnapshot(
                 docRef,
