@@ -33,17 +33,17 @@ export const ICT002PlanGroupsProvider = ({
         const fetchData = async () => {
             const unsubscribe = onSnapshot(
                 query<ICT002PlanGroupsInterface>(collectionRef, orderBy(IDB002PlanGroupsCols.representativeStartTime)),
-                (quertSnapshot) => {
-                    if(quertSnapshot.empty){
+                (querySnapshot) => {
+                    if(querySnapshot.empty){
                         create();
                     }
-                    quertSnapshot.docs.forEach((queryDocumentSnapshot) => {
+                    querySnapshot.docs.forEach((queryDocumentSnapshot) => {
                         const data: ICT002PlanGroupsInterface = queryDocumentSnapshot.data();
                         if(!data.plans.length){
                             // TODO addPlan
                         }
                     });
-                    setQuerySnapshot(quertSnapshot);
+                    setQuerySnapshot(querySnapshot);
                 }
             );
         }

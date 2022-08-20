@@ -30,9 +30,9 @@ export const ICT003PlansProvider = ({
         const fetchData = async () => {
             const unsubscribe = onSnapshot(
                 query<ICT003PlansInterface>(collectionRef),
-                (quertSnapshot) => {
+                (querySnapshot) => {
                     setDocumentSnapshots((documentSnapshots) => {
-                        quertSnapshot.docChanges().forEach((change) => {
+                        querySnapshot.docChanges().forEach((change) => {
                             if (change.type === "added") {
                                 documentSnapshots[change.doc.id] = change.doc;
                                 
