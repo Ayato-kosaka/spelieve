@@ -1,5 +1,5 @@
 import { FirestoreDataConverter, WithFieldValue, QueryDocumentSnapshot } from 'firebase/firestore';
-import { IDB002PlanGroupsInterface } from '@/Itinerary/Interfaces/IDB002PlanGroupsInterface'
+import { IDB002PlanGroupsInterface } from '@/Itinerary/Models/IDB002PlanGroups'
 
 import { ICT002PlanGroupsInterface } from './PlanGroupsInterface';
 

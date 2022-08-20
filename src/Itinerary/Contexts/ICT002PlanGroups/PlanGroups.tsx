@@ -4,7 +4,7 @@ import { collection, query, orderBy, QuerySnapshot, onSnapshot, addDoc, Document
 
 import db from '@/Itinerary/Endpoint/firestore';
 import * as CHK001Utils from '@/Common/Hooks/CHK001Utils'
-import { IDB002PlanGroupsInterface } from '@/Itinerary/Interfaces/IDB002PlanGroupsInterface'
+import { IDB002PlanGroupsInterface } from '@/Itinerary/Models/IDB002PlanGroups'
 
 import { ICT002PlanGroupsInterface } from './PlanGroupsInterface';
 import { ICT002PlanGroupsConverter } from './PlanGroupsConverter'
