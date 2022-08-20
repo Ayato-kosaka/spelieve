@@ -6,11 +6,11 @@ import { collection, onSnapshot, doc, addDoc, getDoc, DocumentReference, Documen
 import { ICT001ItinerariesInterface } from './ItinerariesInterface';
 import { ICT001ItinerariesConverter } from './ItinerariesConverter';
 
-interface ICTItinerariesValInterface {
+interface ICT001ItinerariesValInterface {
     documentSnapshot: DocumentSnapshot<ICT001ItinerariesInterface> | null;
     create: () => Promise<DocumentReference<ICT001ItinerariesInterface>>;
 }
-export const ICT001Itineraries = createContext({} as ICTItinerariesValInterface);
+export const ICT001Itineraries = createContext({} as ICT001ItinerariesValInterface);
 
 interface ICT001ItinerariesProviderPropsInterface {
     itineraryID: string;
@@ -21,7 +21,7 @@ export const ICT001ItinerariesProvider = (
     {itineraryID, children }: ICT001ItinerariesProviderPropsInterface
 ) => {
     const collectionName: string = 'Itineraries';
-    const [documentSnapshot, setDocumentSnapshot] = useState<ICTItinerariesValInterface['documentSnapshot']>(null);
+    const [documentSnapshot, setDocumentSnapshot] = useState<ICT001ItinerariesValInterface['documentSnapshot']>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const collectionRef = collection(db, collectionName).withConverter(ICT001ItinerariesConverter());
@@ -47,13 +47,13 @@ export const ICT001ItinerariesProvider = (
         fetchData();
     }, [itineraryID]);
 
-    const create: ICTItinerariesValInterface['create'] = async () => {
+    const create: ICT001ItinerariesValInterface['create'] = async () => {
         return await addDoc<ICT001ItinerariesInterface>(collectionRef, {
             title: '',
         });
     }
 
-    const value: ICTItinerariesValInterface = {
+    const value: ICT001ItinerariesValInterface = {
         documentSnapshot,
         create,
     }
