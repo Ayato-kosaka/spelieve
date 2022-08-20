@@ -22,7 +22,6 @@ export const ICT001ItinerariesProvider = (
 ) => {
     const collectionName: string = 'Itineraries';
     const [documentSnapshot, setDocumentSnapshot] = useState<ICT001ItinerariesValInterface['documentSnapshot']>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const collectionRef = collection(db, collectionName).withConverter(ICT001ItinerariesConverter());
 
