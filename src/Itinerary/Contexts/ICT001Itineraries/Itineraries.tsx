@@ -28,12 +28,6 @@ export const ICT001ItinerariesProvider = (
     useEffect(() => {
         const fetchData = async () => {
             const docRef: DocumentReference<ICT001ItinerariesInterface> = doc(collectionRef, itineraryID || "");
-            let docSnap: DocumentSnapshot<ICT001ItinerariesInterface> = await getDoc(docRef);
-            if (!docSnap.exists()) {
-                const docRef: DocumentReference<ICT001ItinerariesInterface> = await create();
-                docSnap = await getDoc(docRef);
-            }
-            setDocumentSnapshot(docSnap);
 
             const unsubscribe = onSnapshot(
                 docRef,
