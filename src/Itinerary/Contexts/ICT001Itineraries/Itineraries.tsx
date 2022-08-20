@@ -37,8 +37,12 @@ export const ICT001ItinerariesProvider = (
 
             const unsubscribe = onSnapshot(
                 docRef,
-                (doc) => {
-                    setDocumentSnapshot(doc);
+                (snapshot) => {
+                    if (!docSnap.exists()) {
+                        create();
+                    } else {
+                        setDocumentSnapshot(snapshot);
+                    }
                 }
             );
         }
