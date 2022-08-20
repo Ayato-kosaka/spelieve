@@ -34,7 +34,6 @@ export const ICT001ItinerariesProvider = (
                 docSnap = await getDoc(docRef);
             }
             setDocumentSnapshot(docSnap);
-            setIsLoading(false);
 
             const unsubscribe = onSnapshot(
                 docRef,
