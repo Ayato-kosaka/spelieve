@@ -7,22 +7,22 @@ import { ICT003PlansInterface } from './PlansInterface';
 import { ICT003PlansConverter } from './PlansConverter';
 
 
-type ICT003PlansValType = {
+interface ICT003PlansValInterface {
     documentSnapshots: {[id:string]: QueryDocumentSnapshot<ICT003PlansInterface>};
     create: (representativeStartTime?: Date) => void;
 }
-export const ICT003Plans = createContext({} as ICT003PlansValType);
+export const ICT003Plans = createContext({} as ICT003PlansValInterface);
 
 
-type ICT003PlansProviderPropsType = {
+interface ICT003PlansProviderPropsInterface {
     parentDocRef: DocumentReference;
     children: ReactNode;
 }
 export const ICT003PlansProvider = ({
     parentDocRef,
     children
-}: ICT003PlansProviderPropsType) => {
-    const [documentSnapshots, setDocumentSnapshots] = useState<ICT003PlansValType['documentSnapshots']>({});
+}: ICT003PlansProviderPropsInterface) => {
+    const [documentSnapshots, setDocumentSnapshots] = useState<ICT003PlansValInterface['documentSnapshots']>({});
     
     const collectionRef = collection(parentDocRef, collectionName).withConverter(ICT003PlansConverter());
 
@@ -52,14 +52,14 @@ export const ICT003PlansProvider = ({
         fetchData();
     }, [parentDocRef]);
 
-    const create: ICT003PlansValType['create'] = async () => {
+    const create: ICT003PlansValInterface['create'] = async () => {
         await addDoc<IDB003PlansInterface>(collectionRef, {
             title: '',
             span: CHK001Utils.initialDate(),
         })
     }
     
-    const value: ICT003PlansValType = {
+    const value: ICT003PlansValInterface = {
         documentSnapshots,
         create,
     }
