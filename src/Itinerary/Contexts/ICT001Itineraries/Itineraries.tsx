@@ -48,7 +48,7 @@ export const ICT001ItinerariesProvider = (
     }, [itineraryID]);
 
     const create: ICT001ItinerariesValInterface['create'] = async () => {
-        return await addDoc<ICT001ItinerariesInterface>(collectionRef, {
+        return await addDoc<IDB001ItinerariesInterface>(collectionRef, {
             title: '',
         });
     }
