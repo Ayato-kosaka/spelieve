@@ -52,7 +52,9 @@ export const ICT001ItinerariesProvider = (
             title: '',
         });
     }
-
+    if (!documentSnapshot) {
+        return <ActivityIndicator animating={true} />
+    }
     const value: ICT001ItinerariesValInterface = {
         documentSnapshot,
         create,
