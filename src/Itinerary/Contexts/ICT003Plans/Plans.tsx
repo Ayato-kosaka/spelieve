@@ -1,6 +1,6 @@
 import { useState, createContext, useEffect, ReactNode } from 'react';
 import { collection, query, QueryDocumentSnapshot, onSnapshot, addDoc, DocumentReference } from 'firebase/firestore';
-
+import { collectionName, IDB003PlansInterface } from '@/Itinerary/Models/IDB003Plans'
 import * as CHK001Utils from '@/Common/Hooks/CHK001Utils'
 
 import { ICT003PlansInterface } from './PlansInterface';
@@ -22,7 +22,6 @@ export const ICT003PlansProvider = ({
     parentDocRef,
     children
 }: ICT003PlansProviderPropsType) => {
-    const collectionName: string = 'Plans';
     const [documentSnapshots, setDocumentSnapshots] = useState<ICT003PlansValType['documentSnapshots']>({});
     
     const collectionRef = collection(parentDocRef, collectionName).withConverter(ICT003PlansConverter());
@@ -54,7 +53,7 @@ export const ICT003PlansProvider = ({
     }, [parentDocRef]);
 
     const create: ICT003PlansValType['create'] = async () => {
-        await addDoc<ICT003PlansInterface>(collectionRef, {
+        await addDoc<IDB003PlansInterface>(collectionRef, {
             title: '',
             span: CHK001Utils.initialDate(),
         })

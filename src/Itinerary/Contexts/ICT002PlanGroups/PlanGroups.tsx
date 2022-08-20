@@ -4,7 +4,7 @@ import { collection, query, orderBy, QuerySnapshot, onSnapshot, addDoc, Document
 
 import db from '@/Itinerary/Endpoint/firestore';
 import * as CHK001Utils from '@/Common/Hooks/CHK001Utils'
-import { IDB002PlanGroupsCols } from '@/Itinerary/Models/IDB002PlanGroups'
+import { IDB002PlanGroupsCols, collectionName } from '@/Itinerary/Models/IDB002PlanGroups'
 
 import { ICT002PlanGroupsInterface } from './PlanGroupsInterface';
 import { ICT002PlanGroupsConverter } from './PlanGroupsConverter'
@@ -25,7 +25,6 @@ export const ICT002PlanGroupsProvider = ({
     parentDocRef,
     children
 }: ICT002PlanGroupsProviderPropsType) => {
-    const collectionName: string = 'PlanGroups';
     const [querySnapshot, setQuerySnapshot] = useState<ICT002PlanGroupsValType['querySnapshot']>();
     
     const collectionRef = collection(parentDocRef, collectionName).withConverter(ICT002PlanGroupsConverter());
