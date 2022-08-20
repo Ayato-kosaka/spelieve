@@ -7,7 +7,7 @@ import { ICT001ItinerariesInterface } from './ItinerariesInterface';
 import { ICT001ItinerariesConverter } from './ItinerariesConverter';
 
 interface ICT001ItinerariesValInterface {
-    documentSnapshot: DocumentSnapshot<ICT001ItinerariesInterface> | null;
+    documentSnapshot: DocumentSnapshot<ICT001ItinerariesInterface>;
     create: () => Promise<DocumentReference<ICT001ItinerariesInterface>>;
 }
 export const ICT001Itineraries = createContext({} as ICT001ItinerariesValInterface);
