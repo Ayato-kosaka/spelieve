@@ -1,4 +1,4 @@
-import db from '../fireB/firestore'
+import db from '../../fireB/firestore'
 import { doc, collection, getDocs, setDoc, addDoc, deleteDoc, query, orderBy } from 'firebase/firestore';
 import * as DB0002Itineraries from 'SV0001Itinerary/Utils/api/DB0002Itineraries';
 import type { DB0003PlanGroupsType as collectionType } from '../types/DB0003PlanGroupsType';

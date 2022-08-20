@@ -1,4 +1,4 @@
-import db from '../fireB/firestore'
+import db from '../../fireB/firestore'
 import { doc, collection, getDocs, setDoc, addDoc, deleteDoc } from 'firebase/firestore';
 import * as DB0002Itineraries from 'SV0001Itinerary/Utils/api/DB0002Itineraries';
 import type { DB0004PlansType as collectionType } from '../types/DB0004PlansType';
@@ -8,9 +8,10 @@ const collectionName = 'Plans';
 const parentCollection = collection(db, DB0002Itineraries.collectionName)
 const collectionRef = (itineraryID: collectionType['itineraryID']) => collection(parentCollection, itineraryID, collectionName)
 
-const toDate = (span: Date | string) => {
-    ( span instanceof Date) ? span : (span ? span.toDate() : HK0001Utils.initialDate())
-}
+// HACK: エラーが出るが、設計変更したからいらない
+// const toDate = (span: Date | string) => {
+//     ( span instanceof Date) ? span : (span ? span.toDate() : HK0001Utils.initialDate())
+// }
 
 export const readAll = async (itineraryID: collectionType['itineraryID']): Promise<collectionType[]> => {
     const querySnapshot = await getDocs(collectionRef(itineraryID));
