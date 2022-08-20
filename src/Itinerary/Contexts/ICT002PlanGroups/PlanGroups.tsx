@@ -4,55 +4,53 @@ import { collection, query, orderBy, QuerySnapshot, onSnapshot, addDoc, Document
 
 import db from '@/Itinerary/Endpoint/firestore';
 import * as CHK001Utils from '@/Common/Hooks/CHK001Utils'
-import { IDB002PlanGroupsInterface } from '@/Itinerary/Interfaces/IDB002PlanGroupsInterface'
+import { IDB002PlanGroupsCols, collectionName } from '@/Itinerary/Models/IDB002PlanGroups'
 
 import { ICT002PlanGroupsInterface } from './PlanGroupsInterface';
 import { ICT002PlanGroupsConverter } from './PlanGroupsConverter'
 
 
-type ICT002PlanGroupsValType = {
+interface ICT002PlanGroupsValInterface {
     querySnapshot: QuerySnapshot<ICT002PlanGroupsInterface>;
     create: (representativeStartTime?: Date) => void;
 }
-export const ICT002PlanGroups = createContext({} as ICT002PlanGroupsValType);
+export const ICT002PlanGroups = createContext({} as ICT002PlanGroupsValInterface);
 
 
-type ICT002PlanGroupsProviderPropsType = {
+interface ICT002PlanGroupsProviderPropsInterface {
     parentDocRef: DocumentReference;
     children: ReactNode;
 }
 export const ICT002PlanGroupsProvider = ({
     parentDocRef,
     children
-}: ICT002PlanGroupsProviderPropsType) => {
-    const collectionName: string = 'PlanGroups';
-    const [querySnapshot, setQuerySnapshot] = useState<ICT002PlanGroupsValType['querySnapshot']>();
+}: ICT002PlanGroupsProviderPropsInterface) => {
+    const [querySnapshot, setQuerySnapshot] = useState<ICT002PlanGroupsValInterface['querySnapshot']>();
     
     const collectionRef = collection(parentDocRef, collectionName).withConverter(ICT002PlanGroupsConverter());
 
     useEffect(() => {
         const fetchData = async () => {
-            const orderField: keyof IDB002PlanGroupsInterface = 'representativeStartTime';
             const unsubscribe = onSnapshot(
-                query<ICT002PlanGroupsInterface>(collectionRef, orderBy(orderField)),
-                (quertSnapshot) => {
-                    if(quertSnapshot.empty){
+                query<ICT002PlanGroupsInterface>(collectionRef, orderBy(IDB002PlanGroupsCols.representativeStartTime)),
+                (querySnapshot) => {
+                    if(querySnapshot.empty){
                         create();
                     }
-                    quertSnapshot.docs.forEach((queryDocumentSnapshot) => {
+                    querySnapshot.docs.forEach((queryDocumentSnapshot) => {
                         const data: ICT002PlanGroupsInterface = queryDocumentSnapshot.data();
                         if(!data.plans.length){
                             // TODO addPlan
                         }
                     });
-                    setQuerySnapshot(quertSnapshot);
+                    setQuerySnapshot(querySnapshot);
                 }
             );
         }
         fetchData();
     }, [parentDocRef]);
 
-    const create: ICT002PlanGroupsValType['create'] = async (representativeStartTime = CHK001Utils.initialDate()) => {
+    const create: ICT002PlanGroupsValInterface['create'] = async (representativeStartTime = CHK001Utils.initialDate()) => {
         addDoc<ICT002PlanGroupsInterface>(collectionRef, {
             plans: [],
             representativePlanID: '',
@@ -65,7 +63,7 @@ export const ICT002PlanGroupsProvider = ({
         return <ActivityIndicator animating={true} />
     }
     
-    const value: ICT002PlanGroupsValType = {
+    const value: ICT002PlanGroupsValInterface = {
         querySnapshot,
         create,
     }
