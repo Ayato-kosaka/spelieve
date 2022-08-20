@@ -1,2 +1,3 @@
 export const collectionName: string = 'Plans';
-export * from './PlansInterface'
+export { IDB003PlansInterface } from './PlansInterface';
+export { IDB003PlansCols } from './PlansCols';

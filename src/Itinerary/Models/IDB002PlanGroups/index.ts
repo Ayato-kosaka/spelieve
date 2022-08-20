@@ -1,3 +1,3 @@
 export const collectionName: string = 'PlanGroups';
-export * from './PlanGroupsInterface'
-export * from './PlanGroupsCols'
+export { IDB002PlanGroupsInterface } from './PlanGroupsInterface';
+export { IDB002PlanGroupsCols } from './PlanGroupsCols';

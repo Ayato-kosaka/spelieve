@@ -1,3 +1,3 @@
 export const collectionName: string = 'Itineraries';
-export * from './ItinerariesInterface'
-export * from './ItinerariesCols'
+export { IDB001ItinerariesInterface } from './ItinerariesInterface';
+export { IDB001ItinerariesCols } from './ItinerariesCols';
