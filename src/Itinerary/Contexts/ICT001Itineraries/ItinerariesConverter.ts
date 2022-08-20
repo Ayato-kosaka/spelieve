@@ -1,5 +1,5 @@
 import { FirestoreDataConverter, QueryDocumentSnapshot } from 'firebase/firestore';
-import { IDB001ItinerariesInterface } from '@/Itinerary/Models/IDB001Itineraries/IDB001ItinerariesInterface';
+import { IDB001ItinerariesInterface } from '@/Itinerary/Models/IDB001Itineraries/ItinerariesInterface';
 
 import { ICT001ItinerariesInterface } from './ItinerariesInterface';
 
