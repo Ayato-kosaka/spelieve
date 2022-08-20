@@ -4,7 +4,7 @@ import { collection, query, orderBy, QuerySnapshot, onSnapshot, addDoc, Document
 
 import db from '@/Itinerary/Endpoint/firestore';
 import * as CHK001Utils from '@/Common/Hooks/CHK001Utils'
-import { IDB002PlanGroupsInterface } from '@/Itinerary/Models/IDB002PlanGroups'
+import { IDB002PlanGroupsCols } from '@/Itinerary/Models/IDB002PlanGroups'
 
 import { ICT002PlanGroupsInterface } from './PlanGroupsInterface';
 import { ICT002PlanGroupsConverter } from './PlanGroupsConverter'
@@ -32,9 +32,8 @@ export const ICT002PlanGroupsProvider = ({
 
     useEffect(() => {
         const fetchData = async () => {
-            const orderField: keyof IDB002PlanGroupsInterface = 'representativeStartTime';
             const unsubscribe = onSnapshot(
-                query<ICT002PlanGroupsInterface>(collectionRef, orderBy(orderField)),
+                query<ICT002PlanGroupsInterface>(collectionRef, orderBy(IDB002PlanGroupsCols.representativeStartTime)),
                 (quertSnapshot) => {
                     if(quertSnapshot.empty){
                         create();
