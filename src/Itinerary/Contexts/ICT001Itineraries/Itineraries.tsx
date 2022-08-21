@@ -12,7 +12,7 @@ import { ICT001ItinerariesBuild } from './ItinerariesBuild';
  */
 interface ICT001ItinerariesValInterface {
     documentSnapshot: DocumentSnapshot<ICT001ItinerariesInterface>;
-    create: () => void;
+    create: () => Promise<void>;
 }
 export const ICT001Itineraries = createContext({} as ICT001ItinerariesValInterface);
 

@@ -12,7 +12,7 @@ import { ICT002PlanGroupsBuild } from './PlanGroupsBuild';
  */
 interface ICT002PlanGroupsValInterface {
     querySnapshot: QuerySnapshot<ICT002PlanGroupsInterface>;
-    create: () => void;
+    create: () => Promise<void>;
 }
 export const ICT002PlanGroups = createContext({} as ICT002PlanGroupsValInterface);
 
