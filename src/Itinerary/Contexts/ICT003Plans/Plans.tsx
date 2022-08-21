@@ -62,10 +62,6 @@ export const ICT003PlansProvider = ({
     const create: ICT003PlansValInterface['create'] = async () => {
         addDoc<ICT003PlansInterface>(collectionRef, ICT003PlansBuild());
     }
-
-    if (!documentSnapshots) {
-        return <ActivityIndicator animating={true} />
-    }
     
     const value: ICT003PlansValInterface = {
         documentSnapshots,
