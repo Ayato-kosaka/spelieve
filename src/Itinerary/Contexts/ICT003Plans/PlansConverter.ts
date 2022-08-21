@@ -1,24 +1,31 @@
-import { FirestoreDataConverter, WithFieldValue, QueryDocumentSnapshot } from 'firebase/firestore';
-import { IDB003PlansInterface } from '@/Itinerary/Models/IDB003Plans'
-import * as CHK001Utils from '@/Common/Hooks/CHK001Utils'
-
+import { FirestoreDataConverter, QueryDocumentSnapshot, Timestamp } from 'firebase/firestore';
+import { IDB003PlansInterface } from '@/Itinerary/Models/IDB003Plans';
 import { ICT003PlansInterface } from './PlansInterface';
+import { ICT003PlansBuild } from './PlansBuild';
 
-
+/**
+* Export a FirestoreDataConverter to transform ICT003Plans into Firestore data.
+*/
 export const ICT003PlansConverter = (): FirestoreDataConverter<ICT003PlansInterface> => ({
+    /**
+    * Convert ICT003Plans before be saved to Firestore.
+    */
     toFirestore: (data: ICT003PlansInterface): IDB003PlansInterface => {
-      return {
-          ...data, // 【課題】ICT003PlansInterface をそのまま IDB003PlansInterface に型変換しているのに、error が出ないのはなぜ？このままでは、startTimeがサーバに渡る。要検討。
-      }
+        return {
+            title: data.title,
+            span: Timestamp.fromDate(data.span),
+        }
     },
+    
+    /**
+    * Convert the data from Firestore to match ICT003Plans.
+    */
     fromFirestore: (snapshot: QueryDocumentSnapshot<IDB003PlansInterface>): ICT003PlansInterface => {
-      const data: IDB003PlansInterface = {
-          title: snapshot.data().title,
-          span: snapshot.data().span,
-      };
-      return {
-          ...data,
-          startTime: CHK001Utils.initialDate()
-      }
+        const initData: ICT003PlansInterface = ICT003PlansBuild();
+        return {
+            title: snapshot.data().title || initData.title,
+            span: snapshot.data().span.toDate() || initData.span,
+            startTime: initData.startTime,
+        }
     }
 });
