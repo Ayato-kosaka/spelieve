@@ -12,7 +12,7 @@ import { ICT001ItinerariesBuild } from './ItinerariesBuild';
  */
 interface ICT001ItinerariesValInterface {
     documentSnapshot: DocumentSnapshot<ICT001ItinerariesInterface>;
-    create: () => Promise<void>;
+    create: () => Promise<DocumentReference>;
 }
 export const ICT001Itineraries = createContext({} as ICT001ItinerariesValInterface);
 
@@ -53,7 +53,7 @@ export const ICT001ItinerariesProvider = ({
     }, [parentDocRef, id]);
 
     const create: ICT001ItinerariesValInterface['create'] = async () => {
-        addDoc<ICT001ItinerariesInterface>(collectionRef, ICT001ItinerariesBuild());
+        return await addDoc<ICT001ItinerariesInterface>(collectionRef, ICT001ItinerariesBuild());
     }
 
     if (!documentSnapshot) {

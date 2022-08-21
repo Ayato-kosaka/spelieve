@@ -6,4 +6,5 @@ import { Weaken } from '@/Common/Hooks/CHK003TypeScript';
  */
 export interface ICT003PlansInterface extends Weaken<IDB003PlansInterface, 'span'> {
     span: Date;
+    startTime: Date;
 } 

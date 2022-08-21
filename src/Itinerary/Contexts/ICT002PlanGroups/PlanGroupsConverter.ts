@@ -12,7 +12,7 @@ export const ICT002PlanGroupsConverter = (): FirestoreDataConverter<ICT002PlanGr
     */
     toFirestore: (data: ICT002PlanGroupsInterface): IDB002PlanGroupsInterface => {
         return {
-            plans: data.plans,
+            plans: data.plans.join(),
             representativePlanID: data.representativePlanID,
             representativeStartTime: Timestamp.fromDate(data.representativeStartTime),
         }
@@ -24,7 +24,7 @@ export const ICT002PlanGroupsConverter = (): FirestoreDataConverter<ICT002PlanGr
     fromFirestore: (snapshot: QueryDocumentSnapshot<IDB002PlanGroupsInterface>): ICT002PlanGroupsInterface => {
         const initData: ICT002PlanGroupsInterface = ICT002PlanGroupsBuild();
         return {
-            plans: snapshot.data().plans || initData.plans,
+            plans: snapshot.data().plans.split(',') || initData.plans,
             representativePlanID: snapshot.data().representativePlanID || initData.representativePlanID,
             representativeStartTime: snapshot.data().representativeStartTime.toDate() || initData.representativeStartTime,
         }

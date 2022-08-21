@@ -25,6 +25,7 @@ export const ICT003PlansConverter = (): FirestoreDataConverter<ICT003PlansInterf
         return {
             title: snapshot.data().title || initData.title,
             span: snapshot.data().span.toDate() || initData.span,
+            startTime: initData.startTime,
         }
     }
 });
