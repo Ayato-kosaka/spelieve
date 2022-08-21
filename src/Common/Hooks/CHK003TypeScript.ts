@@ -10,11 +10,11 @@
 /**
 * Type T から プロパティ K の型を any に変換した type を返します。
 */
-export type Weaken<T, K extends keyof T > = {
+export type Weaken<T, K extends keyof T> = {
   [P in keyof T]: P extends K ? any : T[P]
 }
 
 /**
-* Type T の全プロパティの型を ype TYPE に変換した type を返します。
+* Type T の全プロパティの型を Type TYPE に変換した type を返します。
 */
 export type PropsWithType<T, TYPE> = { [P in keyof T]: TYPE };
