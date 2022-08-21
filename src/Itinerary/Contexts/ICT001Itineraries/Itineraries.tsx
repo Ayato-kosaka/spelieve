@@ -50,7 +50,7 @@ export const ICT001ItinerariesProvider = ({
             );
         }
         fetchData();
-    }, [parentDocRef]);
+    }, [parentDocRef, id]);
 
     const create: ICT001ItinerariesValInterface['create'] = async () => {
         addDoc<ICT001ItinerariesInterface>(collectionRef, ICT001ItinerariesBuild());
