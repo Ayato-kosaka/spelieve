@@ -1,3 +1,7 @@
+/**
+* The Firestore Collection name
+*/
 export const collectionName: string = 'Itineraries';
-export { IDB001ItinerariesInterface } from './ItinerariesInterface';
+
+export * from './ItinerariesInterface';
 export { IDB001ItinerariesCols } from './ItinerariesCols';

@@ -1,3 +1,7 @@
+/**
+* The Firestore Collection name
+*/
 export const collectionName: string = 'PlanGroups';
-export { IDB002PlanGroupsInterface } from './PlanGroupsInterface';
+
+export * from './PlanGroupsInterface';
 export { IDB002PlanGroupsCols } from './PlanGroupsCols';
