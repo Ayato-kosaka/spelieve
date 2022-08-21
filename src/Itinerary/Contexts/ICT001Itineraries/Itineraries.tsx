@@ -1,60 +1,68 @@
+import { ActivityIndicator } from 'react-native-paper';
 import { useState, createContext, useEffect, ReactNode } from 'react';
 import db from '@/Itinerary/Endpoint/firestore'
-
-import { collection, onSnapshot, doc, addDoc, getDoc, DocumentReference, DocumentSnapshot } from 'firebase/firestore';
-
+import { collection, doc, query, QuerySnapshot, onSnapshot, addDoc, DocumentReference, DocumentSnapshot, QueryDocumentSnapshot } from 'firebase/firestore';
+import { IDB001ItinerariesCols, collectionName, IDB001ItinerariesInterface } from '@/Itinerary/Models/IDB001Itineraries'
 import { ICT001ItinerariesInterface } from './ItinerariesInterface';
 import { ICT001ItinerariesConverter } from './ItinerariesConverter';
+import { ICT001ItinerariesBuild } from './ItinerariesBuild';
 
+/**
+ * Define value interface of useContext(ICT001Itineraries). 
+ */
 interface ICT001ItinerariesValInterface {
     documentSnapshot: DocumentSnapshot<ICT001ItinerariesInterface>;
-    create: () => Promise<DocumentReference<ICT001ItinerariesInterface>>;
+    create: () => void;
 }
 export const ICT001Itineraries = createContext({} as ICT001ItinerariesValInterface);
 
+/**
+ * Export Provider of ICT001Itineraries. 
+ */
 interface ICT001ItinerariesProviderPropsInterface {
-    itineraryID: string;
+    parentDocRef?: DocumentReference;
     children: ReactNode;
+    id: string;
 }
-
-export const ICT001ItinerariesProvider = (
-    {itineraryID, children }: ICT001ItinerariesProviderPropsInterface
-) => {
-    const collectionName: string = 'Itineraries';
-    const [documentSnapshot, setDocumentSnapshot] = useState<ICT001ItinerariesValInterface['documentSnapshot']>(null);
-
-    const collectionRef = collection(db, collectionName).withConverter(ICT001ItinerariesConverter());
+export const ICT001ItinerariesProvider = ({
+    parentDocRef,
+    children,
+    id,
+}: ICT001ItinerariesProviderPropsInterface) => {
+    
+    const [documentSnapshot, setDocumentSnapshot] = useState<ICT001ItinerariesValInterface['documentSnapshot'] | null>(null);
+    
+    const collectionRef = parentDocRef
+        ?   collection(parentDocRef, collectionName).withConverter(ICT001ItinerariesConverter())
+        :   collection(db, collectionName).withConverter(ICT001ItinerariesConverter());
 
     useEffect(() => {
         const fetchData = async () => {
-            const docRef: DocumentReference<ICT001ItinerariesInterface> = doc(collectionRef, itineraryID);
-
             const unsubscribe = onSnapshot(
-                docRef,
-                (snapshot) => {
-                    if (!docSnap.exists()) {
+                doc(collectionRef, id),
+                (documentSnapshot) => {
+                    if (!documentSnapshot.exists()) {
                         create();
                     } else {
-                        setDocumentSnapshot(snapshot);
+                        setDocumentSnapshot(documentSnapshot);
                     }
                 }
             );
         }
         fetchData();
-    }, [itineraryID]);
+    }, [parentDocRef]);
 
     const create: ICT001ItinerariesValInterface['create'] = async () => {
-        return await addDoc<IDB001ItinerariesInterface>(collectionRef, {
-            title: '',
-        });
+        addDoc<ICT001ItinerariesInterface>(collectionRef, ICT001ItinerariesBuild());
     }
+
     if (!documentSnapshot) {
         return <ActivityIndicator animating={true} />
     }
+    
     const value: ICT001ItinerariesValInterface = {
         documentSnapshot,
         create,
     }
-
     return <ICT001Itineraries.Provider value={value}>{children}</ICT001Itineraries.Provider>
 };

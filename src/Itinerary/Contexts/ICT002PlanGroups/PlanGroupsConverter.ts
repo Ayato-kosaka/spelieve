@@ -1,25 +1,32 @@
-import { FirestoreDataConverter, WithFieldValue, QueryDocumentSnapshot } from 'firebase/firestore';
-import { IDB002PlanGroupsInterface } from '@/Itinerary/Models/IDB002PlanGroups'
-
+import { FirestoreDataConverter, QueryDocumentSnapshot, Timestamp } from 'firebase/firestore';
+import { IDB002PlanGroupsInterface } from '@/Itinerary/Models/IDB002PlanGroups';
 import { ICT002PlanGroupsInterface } from './PlanGroupsInterface';
+import { ICT002PlanGroupsBuild } from './PlanGroupsBuild';
 
-
+/**
+* Export a FirestoreDataConverter to transform ICT002PlanGroups into Firestore data.
+*/
 export const ICT002PlanGroupsConverter = (): FirestoreDataConverter<ICT002PlanGroupsInterface> => ({
+    /**
+    * Convert ICT002PlanGroups before be saved to Firestore.
+    */
     toFirestore: (data: ICT002PlanGroupsInterface): IDB002PlanGroupsInterface => {
-      return {
-          ...data,
-          plans: data.plans.join()
-      }
+        return {
+            plans: data.plans,
+            representativePlanID: data.representativePlanID,
+            representativeStartTime: Timestamp.fromDate(data.representativeStartTime),
+        }
     },
+    
+    /**
+    * Convert the data from Firestore to match ICT002PlanGroups.
+    */
     fromFirestore: (snapshot: QueryDocumentSnapshot<IDB002PlanGroupsInterface>): ICT002PlanGroupsInterface => {
-      const data: IDB002PlanGroupsInterface = {
-          plans: snapshot.data().plans,
-          representativePlanID: snapshot.data().representativePlanID,
-          representativeStartTime: snapshot.data().representativeStartTime,
-      };
-      return {
-          ...data,
-          plans: data.plans.split(',')
-      }
+        const initData: ICT002PlanGroupsInterface = ICT002PlanGroupsBuild();
+        return {
+            plans: snapshot.data().plans || initData.plans,
+            representativePlanID: snapshot.data().representativePlanID || initData.representativePlanID,
+            representativeStartTime: snapshot.data().representativeStartTime.toDate() || initData.representativeStartTime,
+        }
     }
 });
