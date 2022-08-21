@@ -12,7 +12,7 @@ import { ICT003PlansBuild } from './PlansBuild';
  */
 interface ICT003PlansValInterface {
     documentSnapshots: {[id:string]: QueryDocumentSnapshot<ICT003PlansInterface>};
-    create: () => Promise<void>;
+    create: () => Promise<DocumentReference>;
 }
 export const ICT003Plans = createContext({} as ICT003PlansValInterface);
 
@@ -60,7 +60,7 @@ export const ICT003PlansProvider = ({
     }, [parentDocRef]);
 
     const create: ICT003PlansValInterface['create'] = async () => {
-        addDoc<ICT003PlansInterface>(collectionRef, ICT003PlansBuild());
+        return await addDoc<ICT003PlansInterface>(collectionRef, ICT003PlansBuild());
     }
     
     const value: ICT003PlansValInterface = {
