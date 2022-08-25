@@ -6868,10 +6868,10 @@ react-native-paper@4.12.4:
     color "^3.1.2"
     react-native-iphone-x-helper "^1.3.1"
 
-react-native-web@0.18.7:
-  version "0.18.7"
-  resolved "https://registry.npmjs.org/react-native-web/-/react-native-web-0.18.7.tgz"
-  integrity sha512-5DwcsrAqLjOvzJJk/XPozEtqCOF3hrCJ55buLOEPMxvS8lKxRdeMF9SZUI2zyqE8JcMFGtQzLhWAZGeaTrXaRg==
+react-native-web@0.18.8:
+  version "0.18.8"
+  resolved "https://registry.npmjs.org/react-native-web/-/react-native-web-0.18.8.tgz"
+  integrity sha512-NOjFgzD0eAldYCpLJIr47FreitcxkJka8CdGBYRmnZLvSU1AUwCR4PtxzHNbb4hAwO+/fKGh+aoRsGSwQo0cBA==
   dependencies:
     "@babel/runtime" "^7.18.6"
     create-react-class "^15.7.0"
