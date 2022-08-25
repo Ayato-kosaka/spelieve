@@ -4732,10 +4732,10 @@ hyphenate-style-name@^1.0.2:
   resolved "https://registry.npmjs.org/hyphenate-style-name/-/hyphenate-style-name-1.0.4.tgz"
   integrity sha512-ygGZLjmXfPHj+ZWh6LwbC37l43MhfztxetbFCoYTM2VjkIUpeHgSNn7QIyVFj7YQ1Wl9Cbw5sholVJPzWvC2MQ==
 
-i18n-js@4.1.0:
-  version "4.1.0"
-  resolved "https://registry.npmjs.org/i18n-js/-/i18n-js-4.1.0.tgz"
-  integrity sha512-p9U0+eGHUXagc3OqmNnJX96V+BFymBRde3GY8Emp5KfEi9gIa8x2LdAUQYtPkSS00gCSpNYuyDqso2oGdOp8gg==
+i18n-js@4.1.1:
+  version "4.1.1"
+  resolved "https://registry.npmjs.org/i18n-js/-/i18n-js-4.1.1.tgz"
+  integrity sha512-Uph8ghmfShexVhDcNtg5s40zprJZPrhW5iOEKsUwPiiBpIGN/0EJ9W7DTqhLFlWfAlpkFiaLxVxHsk8f+3KjIQ==
   dependencies:
     bignumber.js "*"
     lodash "*"
