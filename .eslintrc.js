@@ -34,5 +34,6 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'import/extensions': 'off',
     "@typescript-eslint/no-floating-promises": "warn",
+    "import/no-default-export": "error",
   },
 };
