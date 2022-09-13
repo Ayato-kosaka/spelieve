@@ -2204,10 +2204,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/i18n-js@3.8.2":
-  version "3.8.2"
-  resolved "https://registry.npmjs.org/@types/i18n-js/-/i18n-js-3.8.2.tgz"
-  integrity sha512-F+AuFCjllE1A0W/YUxJB13q2t7cWITMqXOTXQ/InfXxxT8nXrrqL7s/8Pv6XThGjFPemukElwk6QlMOKCEg7eQ==
+"@types/i18n-js@3.8.3":
+  version "3.8.3"
+  resolved "https://registry.npmjs.org/@types/i18n-js/-/i18n-js-3.8.3.tgz"
+  integrity sha512-Y20B7kgoNrchIYCfty20zQYeFFJMHdegwy9VopCEKdByp7Tlv0jtWrfoRb+3r2mIvgrwp/eMwXhhXOBYKEFkTA==
 
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0":
   version "2.0.4"
