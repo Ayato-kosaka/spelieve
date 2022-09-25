@@ -18,7 +18,8 @@ export const PCT011MPlacesListProvider = ({
     maxDistance,
 }: PCT011MPlacesListProviderPropsInterface) => {
     
-    const [querySnapshot, setQuerySnapshot] = useState<PCT011MPlacesListValInterface['querySnapshot'] | null>(null);
+    const [geopointState, setGeopointState] = useState<GeoPoint>(geopoint || new GeoPoint(0, 0));
+    const [maxDistanceState, setMaxDistanceState] = useState<number>(maxDistance || 30000);
     
     const collectionRef = parentDocRef
         ?   collection(parentDocRef, collectionName).withConverter(PCT011MPlacesListConverter())
@@ -27,43 +28,29 @@ export const PCT011MPlacesListProvider = ({
     const [placesList, setPlacesList] = useState<Array<PCT011MPlacesListInterface>>([]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            const unsubscribe = onSnapshot(
-                query<PCT011MPlacesListInterface>(collectionRef),
-                (querySnapshot) => {
-                    if(querySnapshot.empty){
-                        create();
-                    } else {
-                        setQuerySnapshot(querySnapshot);
-                    }
-                }
-            );
-        }
-        fetchData();
-    }, [parentDocRef]);
-
-    const create: PCT011MPlacesListValInterface['create'] = async () => {
-        return await addDoc<PCT011MPlacesListInterface>(collectionRef, PCT011MPlacesListBuild());
-    }
+        // const fetchData = async () => {
+        //     const unsubscribe = onSnapshot(
+        //         query<PCT011MPlacesListInterface>(collectionRef),
+        //         (querySnapshot) => {
+        //             if(querySnapshot.empty){
+        //                 create();
+        //             } else {
+        //                 setQuerySnapshot(querySnapshot);
+        //             }
+        //         }
+        //     );
+        // }
+        // fetchData();
+    }, [maxDistance]);
 
     if (!querySnapshot) {
         return <ActivityIndicator animating={true} />
     }
-
-    const setGeopoint = (geopoint: GeoPoint) => {
-
-    }
-
-    const setMaxDistance = (maxDistance: number) => {
-
-    }
     
     const value: PCT011MPlacesListValInterface = {
-        querySnapshot,
-        create,
         placesList,
-        setGeopoint,
-        setMaxDistance,
+        setGeopointState,
+        setMaxDistanceState,
     }
     return <PCT011MPlacesList.Provider value={value}>{children}</PCT011MPlacesList.Provider>
 };

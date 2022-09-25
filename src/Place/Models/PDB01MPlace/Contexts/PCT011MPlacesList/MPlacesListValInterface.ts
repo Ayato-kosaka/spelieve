@@ -3,6 +3,6 @@
  */
 export interface PCT011MPlacesListValInterface {
     placesList: Array<PCT011MPlacesListInterface>;
-    setGeopoint: (geopoint: GeoPoint) => void;
-    setMaxDistance: (maxDistance: number) => void;
+    setGeopointState: (geopoint: GeoPoint) => void;
+    setMaxDistanceState: (maxDistance: number) => void;
 } 
