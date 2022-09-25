@@ -18,8 +18,9 @@ export const PCT011MPlacesListProvider = ({
     maxDistance,
 }: PCT011MPlacesListProviderPropsInterface) => {
     
-    const [geopointState, setGeopointState] = useState<GeoPoint>(geopoint || new GeoPoint(0, 0));
-    const [maxDistanceState, setMaxDistanceState] = useState<number>(maxDistance || 30000);
+    const [querySnapshot, setQuerySnapshot] = useState<PCT011MPlacesListValInterface['querySnapshot'] | null>(null);
+    const [geopointState, setGeopointState] = useState<GeoPoint>(geopoint);
+    const [maxDistanceState, setMaxDistanceState] = useState<number>(maxDistance);
     
     const collectionRef = parentDocRef
         ?   collection(parentDocRef, collectionName).withConverter(PCT011MPlacesListConverter())
@@ -28,20 +29,44 @@ export const PCT011MPlacesListProvider = ({
     const [placesList, setPlacesList] = useState<Array<PCT011MPlacesListInterface>>([]);
 
     useEffect(() => {
-        // const fetchData = async () => {
-        //     const unsubscribe = onSnapshot(
-        //         query<PCT011MPlacesListInterface>(collectionRef),
-        //         (querySnapshot) => {
-        //             if(querySnapshot.empty){
-        //                 create();
-        //             } else {
-        //                 setQuerySnapshot(querySnapshot);
-        //             }
-        //         }
-        //     );
-        // }
-        // fetchData();
-    }, [maxDistance]);
+        const fetchData = async () => {
+            const center = [geopointState.latitude, geopointState.longitude];
+
+            const bounds = geohashQueryBounds(center, maxDistance * 1000);
+            const tasks = bounds.map((geohasies: Array<string>) => {
+                return db.collection('Mplaces') // TODO: firestore理解不足、修正必要
+                .orderBy('geohash')
+                .startAt(geohasies[0])
+                .endAt(geohasies[1])
+                .get();
+            });
+
+            let docs = [];
+            Promise.all(tasks).then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    const lat = doc.data().geopoint.latitude;
+                    const lon = doc.data().geopoint.longitude;
+                    const dist = distanceBetween([lat, lon], center)
+                    if (dist <= maxDistance) {
+                        docs.push(doc);
+                    }
+                });
+            });
+           setPlacesList(docs);
+
+            // const unsubscribe = onSnapshot(
+            //     query<PCT011MPlacesListInterface>(collectionRef),
+            //     (querySnapshot) => {
+            //         if(querySnapshot.empty){
+            //             create();
+            //         } else {
+            //             setQuerySnapshot(querySnapshot);
+            //         }
+            //     }
+            // );
+        }
+        fetchData();
+    }, [parentDocRef]);
 
     if (!querySnapshot) {
         return <ActivityIndicator animating={true} />
