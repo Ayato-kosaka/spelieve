@@ -2,4 +2,4 @@ blank_issues_enabled: true
 contact_links:
   - name: spelieve-issue
     about: Issue template
-    url: https://github.com/Ayato-kosaka/spelieve/issues/new?template=issue.md&projects=Ayato-kosaka/1
+    url: https://github.com/Ayato-kosaka/spelieve/issues/new?assignees=Ayato-kosaka%2C+Takapy1&template=issue.md&projects=Ayato-kosaka/1
