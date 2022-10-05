@@ -13,4 +13,7 @@ assignees: Ayato-kosaka, Takapy1
 
 ## (解決策をまとめる)
 
+## 子issue
+- [ ] 
+
 ## 参考
