@@ -7,7 +7,9 @@ assignees: Ayato-kosaka, Takapy1
 
 ---
 
-## 課題
+## Why
+
+## What
 
 ## (解決策をまとめる)
 
