@@ -1,4 +1,4 @@
-import { PDB01MPlaceInterface } from './MPlaceInterface';
+import { PDB01MPlaceInterface } from 'spelieve-common/Interface';
 import { PropsWithType } from '@/Common/Hooks/CHK003TypeScript';
 
 /**
