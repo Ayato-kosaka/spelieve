@@ -1,4 +1,5 @@
 import { PCT011MPlacesListInterface } from './MPlacesListInterface';
+import { GeoPoint } from "firebase/firestore/dist/firestore";
 import * as CHK001Utils from '@/Common/Hooks/CHK001Utils';
 
 /**
@@ -9,6 +10,7 @@ export const PCT011MPlacesListBuild = (): PCT011MPlacesListInterface => ({
     imageUrl: '',
     instagramAPIID: '',
     geometry: new GeoPoint ( latitude :  number , longitude :  number ),
+    geohash: '',
     mapUrl: '',
     website: '',
     address: '',

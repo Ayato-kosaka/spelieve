@@ -1,13 +1,11 @@
 import { ActivityIndicator } from 'react-native-paper';
 import { useState, createContext, useEffect, ReactNode } from 'react';
 import db from '@/Place/Endpoint/firestore'
-import { collection, doc, query, QuerySnapshot, onSnapshot, addDoc, DocumentReference, DocumentSnapshot, QueryDocumentSnapshot, GeoPoint } from 'firebase/firestore';
-import { PDB01MPlaceCols, collectionName, PDB01MPlaceInterface } from '@/Place/Models/PDB01MPlace'
-import { PCT011MPlacesListInterface } from './MPlacesListInterface';
+import { collection, doc, query, QuerySnapshot, onSnapshot, addDoc, DocumentReference, DocumentSnapshot, QueryDocumentSnapshot } from 'firebase/firestore';
+import { PDB01MPlaceCols, collectionName } from '@/Place/Models/PDB01MPlace'
+import { PDB01MPlaceInterface, PCT011MPlacesListInterface } from 'spelieve-common/Interface';
 import { PCT011MPlacesListConverter } from './MPlacesListConverter';
 import { PCT011MPlacesListBuild } from './MPlacesListBuild';
-import { PCT011MPlacesListValInterface } from './MPlacesListValInterface';
-import { PCT011MPlacesListProviderPropsInterface } from './MPlacesListProviderPropsInterface';
 
 export const PCT011MPlacesList = createContext({} as PCT011MPlacesListValInterface);
 
@@ -21,12 +19,11 @@ export const PCT011MPlacesListProvider = ({
     const [querySnapshot, setQuerySnapshot] = useState<PCT011MPlacesListValInterface['querySnapshot'] | null>(null);
     const [geopointState, setGeopointState] = useState<GeoPoint>(geopoint);
     const [maxDistanceState, setMaxDistanceState] = useState<number>(maxDistance);
-    
+
+
     const collectionRef = parentDocRef
         ?   collection(parentDocRef, collectionName).withConverter(PCT011MPlacesListConverter())
         :   collection(db, collectionName).withConverter(PCT011MPlacesListConverter());
-
-    const [placesList, setPlacesList] = useState<Array<PCT011MPlacesListInterface>>([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -67,6 +64,10 @@ export const PCT011MPlacesListProvider = ({
         }
         fetchData();
     }, [parentDocRef]);
+
+    const create: PCT011MPlacesListValInterface['create'] = async () => {
+        return await addDoc<PCT011MPlacesListInterface>(collectionRef, PCT011MPlacesListBuild());
+    }
 
     if (!querySnapshot) {
         return <ActivityIndicator animating={true} />

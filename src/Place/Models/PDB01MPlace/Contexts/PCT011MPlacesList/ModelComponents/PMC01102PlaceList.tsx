@@ -65,7 +65,7 @@ export const PMC01102PlacesList = () => {
                     // onValueChange={}
                 />
             </Modal>
-            <FlatList 
+            <FlatList
                 data={placeList}
                 renderItem={({item}) => 
                     <View>
