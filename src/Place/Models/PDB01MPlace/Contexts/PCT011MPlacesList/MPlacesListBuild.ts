@@ -9,7 +9,7 @@ export const PCT011MPlacesListBuild = (): PCT011MPlacesListInterface => ({
     name: '',
     imageUrl: '',
     instagramAPIID: '',
-    geometry: new GeoPoint ( latitude :  number , longitude :  number ),
+    geometry: new GeoPoint (0, 0),
     geohash: '',
     mapUrl: '',
     website: '',
