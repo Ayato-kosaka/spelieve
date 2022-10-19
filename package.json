@@ -2,6 +2,7 @@
   "name": "spelieve",
   "version": "1.0.0",
   "main": "src/App.tsx",
+  "private": true,
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -44,5 +45,16 @@
     "prettier": "2.7.1",
     "typescript": "4.8.4"
   },
-  "private": true
+  "eslintIgnore": [
+    "node_modules",
+    "test",
+    "dist",
+    "**/*spec.ts",
+    "build/",
+    "public/",
+    "*.config.js",
+    ".*lintrc.js",
+    "/*.*",
+    ".package.json"
+  ]
 }
