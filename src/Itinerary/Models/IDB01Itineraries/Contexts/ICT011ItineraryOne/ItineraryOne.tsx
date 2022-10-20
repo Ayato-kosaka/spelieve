@@ -30,8 +30,8 @@ export function ICT011ItineraryOneProvider({ parentDocRef, children, id }: Itine
 				setDocumentSnapshot(docSnap);
 			}
 		});
-		return unsubscribe();
-	}, [parentDocRef, id, collectionRef]);
+		return () => unsubscribe();
+	}, [parentDocRef, id]);
 
 	if (!documentSnapshot) {
 		return <ActivityIndicator animating />;
@@ -44,13 +44,9 @@ export function ICT011ItineraryOneProvider({ parentDocRef, children, id }: Itine
 	const update = async (itinerary: ItineraryOneInterface) =>
 		setDoc<ItineraryOneInterface>(documentSnapshot.ref, itinerary);
 
-	const value: ItineraryOneValInterface = useMemo(
-		() => ({
+	const value: ItineraryOneValInterface = {
 			itinerary: documentSnapshot.data()!,
 			reference: documentSnapshot.ref,
-			create,
-		}),
-		[documentSnapshot],
-	);
+		}
 	return <ICT011ItineraryOne.Provider value={value}>{children}</ICT011ItineraryOne.Provider>;
 }
