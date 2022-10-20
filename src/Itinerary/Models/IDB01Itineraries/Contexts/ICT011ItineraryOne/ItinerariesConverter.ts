@@ -1,28 +1,37 @@
-import { FirestoreDataConverter, QueryDocumentSnapshot, Timestamp } from 'firebase/firestore';
-import { IDB001ItinerariesInterface } from '@/Itinerary/Models/IDB001Itineraries';
-import { ICT011ItineraryOneInterface } from './ItinerariesInterface';
-import { ICT011ItineraryOneBuild } from './ItinerariesBuild';
+import { FirestoreDataConverter, QueryDocumentSnapshot, SnapshotOptions, Timestamp } from 'firebase/firestore';
+import { Itineraries } from 'spelieve-common/lib/Models/Itinerary/IDB01/Itineraries';
+import { ItineraryOneInterface } from 'spelieve-common/lib/Interfaces/Itinerary';
 
 /**
 * Export a FirestoreDataConverter to transform ICT011ItineraryOne into Firestore data.
 */
-export const ICT011ItineraryOneConverter = (): FirestoreDataConverter<ICT011ItineraryOneInterface> => ({
+export const ICT011ItineraryOneConverter = (): FirestoreDataConverter<ItineraryOneInterface> => ({
     /**
     * Convert ICT011ItineraryOne before be saved to Firestore.
     */
-    toFirestore: (data: ICT011ItineraryOneInterface): IDB001ItinerariesInterface => {
+    toFirestore: (data: ItineraryOneInterface): Itineraries => {
         return {
-            title: data.title,
-        }
+            ...data,
+            startDate: data.startDate ? Timestamp.fromDate(data.startDate) : undefined,
+            endDate: data.endDate ? Timestamp.fromDate(data.endDate) : undefined
+        };
     },
     
     /**
     * Convert the data from Firestore to match ICT011ItineraryOne.
     */
-    fromFirestore: (snapshot: QueryDocumentSnapshot<IDB001ItinerariesInterface>): ICT011ItineraryOneInterface => {
-        const initData: ICT011ItineraryOneInterface = ICT011ItineraryOneBuild();
+    fromFirestore: (snapshot: QueryDocumentSnapshot,
+        options: SnapshotOptions): ItineraryOneInterface => {
+        const json = snapshot.data(options)!;
+        // const itinerary = new Itineraries();
+        // itinerary.title = (typeof json.title === 'string') ? json.title : '';
+        // itinerary.caption = (typeof json.caption === 'string') ? json.caption : '';
+        // itinerary.tags = (itinerary.tags instanceof Array) ? itinerary.tags : undefined;
+
         return {
-            title: snapshot.data().title || initData.title,
+            ...(json as Itineraries),
+            startDate: json.startDate ? (json.startDate as Timestamp).toDate() : undefined,
+            endDate: json.endDate ? (json.endDate as Timestamp).toDate(): undefined
         }
     }
 });
