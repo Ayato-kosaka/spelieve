@@ -7,7 +7,7 @@ import {
 
 function InnerComponent1() {
 	const useICT011ItineraryOne = useContext(ICT011ItineraryOne);
-	return <ICT011ItineraryOneProvider id={'id'}>aaa</ICT011ItineraryOneProvider>;
+	return <ICT011ItineraryOneProvider id="id">aaa</ICT011ItineraryOneProvider>;
 }
 
 export function IPA001Itinerary() {

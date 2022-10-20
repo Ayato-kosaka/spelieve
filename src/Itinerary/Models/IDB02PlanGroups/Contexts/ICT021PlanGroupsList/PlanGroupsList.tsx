@@ -1,5 +1,5 @@
 import { collection, query, QuerySnapshot, onSnapshot, addDoc, orderBy, setDoc } from 'firebase/firestore';
-import { useState, createContext, useEffect, useContext } from 'react';
+import { useState, createContext, useEffect, useContext, useCallback } from 'react';
 import { ActivityIndicator } from 'react-native-paper';
 
 import {
@@ -26,45 +26,49 @@ export function ICT021PlanGroupsListProvider({ parentDocRef, children }: PlanGro
 
 	const useICT031PlansMap = useContext(ICT031PlansMap);
 
-	const create = async (representativeStartTime?: Date) => {
-		const initData: PlanGroupsListInterface = {
-			plans: [],
-			representativePlanID: '',
-			representativeStartTime: CHK001Utils.initialDate(),
-		};
-		if (representativeStartTime) {
-			initData.representativeStartTime = representativeStartTime;
-		}
-		await addDoc<PlanGroupsListInterface>(collectionRef, {
-			plans: [],
-			representativePlanID: '',
-			representativeStartTime: CHK001Utils.initialDate(),
-		});
-	};
+	const create = useCallback(
+		async (representativeStartTime?: Date) => {
+			const initData: PlanGroupsListInterface = {
+				plans: [],
+				representativePlanID: '',
+				representativeStartTime: CHK001Utils.initialDate(),
+			};
+			if (representativeStartTime) {
+				initData.representativeStartTime = representativeStartTime;
+			}
+			await addDoc<PlanGroupsListInterface>(collectionRef, {
+				plans: [],
+				representativePlanID: '',
+				representativeStartTime: CHK001Utils.initialDate(),
+			});
+		},
+		[collectionRef],
+	);
 
-	const insertPlan: PlanGroupsListValInterface['insertPlan'] = async (
-		index: number,
-		plansIndex = 0,
-		planId?: string,
-	) => {
-		const planGroup: PlanGroupsListInterface = querySnapshot.docs[index].data();
-		if (!planId) {
-			planId = (await useICT031PlansMap.create()).id;
-		}
-		planGroup.plans.splice(plansIndex, 0, planId);
-		setDoc<PlanGroupsListInterface>(querySnapshot.docs[index].ref, planGroup);
-	};
+	const insertPlan = useCallback(
+		async (index: number, plansIndex = 0, planId?: string): Promise<void> => {
+			const planGroup: PlanGroupsListInterface = querySnapshot!.docs[index].data();
+			if (!planId) {
+				planId = (await useICT031PlansMap.create()).id;
+			}
+			planGroup.plans.splice(plansIndex, 0, planId);
+			await setDoc<PlanGroupsListInterface>(querySnapshot!.docs[index].ref, planGroup);
+		},
+		[querySnapshot, useICT031PlansMap],
+	);
 
 	useEffect(() => {
 		const unsubscribe = onSnapshot(
 			query<PlanGroupsListInterface>(collectionRef, orderBy(PlanGroups.Cols.representativeStartTime)),
 			(querySnap) => {
 				if (querySnap.empty) {
+					/* eslint @typescript-eslint/no-floating-promises: 0 */
 					create();
 				} else {
 					querySnap.docs.forEach((queryDocumentSnapshot, index) => {
 						const data: PlanGroupsListInterface = queryDocumentSnapshot.data();
 						if (!data.plans.length) {
+							/* eslint @typescript-eslint/no-floating-promises: 0 */
 							insertPlan(index);
 						}
 					});
@@ -79,6 +83,7 @@ export function ICT021PlanGroupsListProvider({ parentDocRef, children }: PlanGro
 		return <ActivityIndicator animating />;
 	}
 
+	/* eslint react/jsx-no-constructed-context-values: 0 */
 	const value: PlanGroupsListValInterface = {
 		planGroupsQSnap: querySnapshot,
 		create,

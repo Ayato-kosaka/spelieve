@@ -44,19 +44,20 @@ export function ICT031PlansMapProvider({ parentDocRef, children }: PlansMapProvi
 		return () => unsubscribe();
 	}, [collectionRef]);
 
-	const create = async () => {
-		await addDoc<PlansMapInterface>(collectionRef, {
+	const create = async () =>
+		addDoc<PlansMapInterface>(collectionRef, {
 			placeSpan: CHK001Utils.initialDate(),
 			placeStartTime: CHK001Utils.initialDate(),
 			placeEndTime: CHK001Utils.initialDate(),
 			imageUrl: '',
 			transportationSpan: CHK001Utils.initialDate(),
 		});
-	};
 
+	/* eslint react/jsx-no-constructed-context-values: 0 */
 	const value: PlansMapValInterface = {
 		plansDocSnapMap,
 		create,
 	};
+
 	return <ICT031PlansMap.Provider value={value}>{children}</ICT031PlansMap.Provider>;
 }

@@ -25,6 +25,7 @@ export function ICT011ItineraryOneProvider({ parentDocRef, children, id }: Itine
 	useEffect(() => {
 		const unsubscribe = onSnapshot(doc(collectionRef, id), (docSnap) => {
 			if (!docSnap.exists()) {
+				/* eslint @typescript-eslint/no-floating-promises: 0 */
 				addDoc<ItineraryOneInterface>(collectionRef, { title: '', caption: '' });
 			} else {
 				setDocumentSnapshot(docSnap);
@@ -37,6 +38,7 @@ export function ICT011ItineraryOneProvider({ parentDocRef, children, id }: Itine
 		return <ActivityIndicator animating />;
 	}
 
+	/* eslint react/jsx-no-constructed-context-values: 0 */
 	const value: ItineraryOneValInterface = {
 		itineraryDocSnap: documentSnapshot,
 	};
