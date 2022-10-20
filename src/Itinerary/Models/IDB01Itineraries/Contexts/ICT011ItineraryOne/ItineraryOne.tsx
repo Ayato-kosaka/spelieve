@@ -1,5 +1,5 @@
-import { collection, doc, onSnapshot, DocumentSnapshot, setDoc } from 'firebase/firestore';
-import { useState, createContext, useEffect, useMemo } from 'react';
+import { collection, doc, onSnapshot, DocumentSnapshot, addDoc } from 'firebase/firestore';
+import { useState, createContext, useEffect } from 'react';
 import { ActivityIndicator } from 'react-native-paper';
 
 import {
@@ -25,28 +25,20 @@ export function ICT011ItineraryOneProvider({ parentDocRef, children, id }: Itine
 	useEffect(() => {
 		const unsubscribe = onSnapshot(doc(collectionRef, id), (docSnap) => {
 			if (!docSnap.exists()) {
-				create();
+				addDoc<ItineraryOneInterface>(collectionRef, { title: '', caption: '' });
 			} else {
 				setDocumentSnapshot(docSnap);
 			}
 		});
 		return () => unsubscribe();
-	}, [parentDocRef, id]);
+	}, [collectionRef, id]);
 
 	if (!documentSnapshot) {
 		return <ActivityIndicator animating />;
 	}
 
-	const create = async () => {
-		// return await addDoc<ICT011ItineraryOneInterface>(collectionRef, ICT011ItineraryOneBuild());
-	};
-
-	const update = async (itinerary: ItineraryOneInterface) =>
-		setDoc<ItineraryOneInterface>(documentSnapshot.ref, itinerary);
-
 	const value: ItineraryOneValInterface = {
-			itinerary: documentSnapshot.data()!,
-			reference: documentSnapshot.ref,
-		}
+		itineraryDocSnap: documentSnapshot,
+	};
 	return <ICT011ItineraryOne.Provider value={value}>{children}</ICT011ItineraryOne.Provider>;
 }

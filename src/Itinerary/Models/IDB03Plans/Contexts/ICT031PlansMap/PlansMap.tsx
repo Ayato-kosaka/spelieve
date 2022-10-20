@@ -1,63 +1,61 @@
-import { collection, query, onSnapshot, addDoc, DocumentReference, QueryDocumentSnapshot } from 'firebase/firestore';
-import { useState, createContext, useEffect, ReactNode } from 'react';
+import { collection, query, onSnapshot, addDoc, QueryDocumentSnapshot } from 'firebase/firestore';
+import { useState, createContext, useEffect } from 'react';
 
-import { ICT031PlansMapBuild } from './PlansBuild';
+import {
+	PlansMapInterface,
+	PlansMapProviderPropsInterface,
+	PlansMapValInterface,
+} from 'spelieve-common/lib/Interfaces/Itinerary';
+import { Plans } from 'spelieve-common/lib/Models/Itinerary/IDB03/Plans';
+
 import { ICT031PlansMapConverter } from './PlansConverter';
-import { ICT031PlansMapInterface } from './PlansInterface';
 
+import * as CHK001Utils from '@/Common/Hooks/CHK001Utils';
 import db from '@/Itinerary/Endpoint/firestore';
-import { collectionName } from '@/Itinerary/Models/IDB003Plans';
 
-/**
- * Define value interface of useContext(ICT031PlansMap).
- */
-interface ICT031PlansMapValInterface {
-	documentSnapshots: { [id: string]: QueryDocumentSnapshot<ICT031PlansMapInterface> };
-	create: () => Promise<DocumentReference>;
-}
-export const ICT031PlansMap = createContext({} as ICT031PlansMapValInterface);
+export const ICT031PlansMap = createContext({} as PlansMapValInterface);
 
-/**
- * Export Provider of ICT031PlansMap.
- */
-interface ICT031PlansMapProviderPropsInterface {
-	parentDocRef?: DocumentReference;
-	children: ReactNode;
-}
-export function ICT031PlansMapProvider({ parentDocRef, children }: ICT031PlansMapProviderPropsInterface) {
-	const [documentSnapshots, setDocumentSnapshots] = useState<ICT031PlansMapValInterface['documentSnapshots']>({});
+export function ICT031PlansMapProvider({ parentDocRef, children }: PlansMapProviderPropsInterface) {
+	const [plansDocSnapMap, setDocumentSnapshots] = useState<{ [id: string]: QueryDocumentSnapshot<PlansMapInterface> }>(
+		{},
+	);
 
 	const collectionRef = parentDocRef
-		? collection(parentDocRef, collectionName).withConverter(ICT031PlansMapConverter())
-		: collection(db, collectionName).withConverter(ICT031PlansMapConverter());
+		? collection(parentDocRef, Plans.modelName).withConverter(ICT031PlansMapConverter())
+		: collection(db, Plans.modelName).withConverter(ICT031PlansMapConverter());
 
 	useEffect(() => {
-		const fetchData = async () => {
-			const unsubscribe = onSnapshot(query<ICT031PlansMapInterface>(collectionRef), (querySnapshot) => {
-				setDocumentSnapshots((documentSnapshots) => {
-					querySnapshot.docChanges().forEach((change) => {
-						if (change.type === 'added') {
-							documentSnapshots[change.doc.id] = change.doc;
-						}
-						if (change.type === 'modified') {
-							documentSnapshots[change.doc.id] = change.doc;
-						}
-						if (change.type === 'removed') {
-							delete documentSnapshots[change.doc.id];
-						}
-					});
-					return { ...documentSnapshots };
+		const unsubscribe = onSnapshot(query<PlansMapInterface>(collectionRef), (querySnapshot) => {
+			setDocumentSnapshots((_plansDocSnapMap) => {
+				querySnapshot.docChanges().forEach((change) => {
+					if (change.type === 'added') {
+						_plansDocSnapMap[change.doc.id] = change.doc;
+					}
+					if (change.type === 'modified') {
+						_plansDocSnapMap[change.doc.id] = change.doc;
+					}
+					if (change.type === 'removed') {
+						delete _plansDocSnapMap[change.doc.id];
+					}
 				});
+				return { ..._plansDocSnapMap };
 			});
-		};
-		fetchData();
-	}, [parentDocRef]);
+		});
+		return () => unsubscribe();
+	}, [collectionRef]);
 
-	const create: ICT031PlansMapValInterface['create'] = async () =>
-		addDoc<ICT031PlansMapInterface>(collectionRef, ICT031PlansMapBuild());
+	const create = async () => {
+		await addDoc<PlansMapInterface>(collectionRef, {
+			placeSpan: CHK001Utils.initialDate(),
+			placeStartTime: CHK001Utils.initialDate(),
+			placeEndTime: CHK001Utils.initialDate(),
+			imageUrl: '',
+			transportationSpan: CHK001Utils.initialDate(),
+		});
+	};
 
-	const value: ICT031PlansMapValInterface = {
-		documentSnapshots,
+	const value: PlansMapValInterface = {
+		plansDocSnapMap,
 		create,
 	};
 	return <ICT031PlansMap.Provider value={value}>{children}</ICT031PlansMap.Provider>;
