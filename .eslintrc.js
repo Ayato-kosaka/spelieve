@@ -16,6 +16,7 @@ module.exports = {
   plugins: [
     'react',
     '@typescript-eslint',
+    'autofix',
     'import',
     'unused-imports'
   ],
@@ -30,6 +31,7 @@ module.exports = {
   ],
   "ignorePatterns": ["build"], 
   rules: {
+    "import/extensions": "off",
     'react/style-prop-object': 'off',
     'react/react-in-jsx-scope': 'off',
     '@typescript-eslint/interface-name-prefix': 'off',
