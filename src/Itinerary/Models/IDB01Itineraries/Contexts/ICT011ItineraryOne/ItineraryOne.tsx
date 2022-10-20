@@ -1,55 +1,56 @@
+import { collection, doc, onSnapshot, DocumentSnapshot, setDoc } from 'firebase/firestore';
+import { useState, createContext, useEffect, useMemo } from 'react';
 import { ActivityIndicator } from 'react-native-paper';
-import { useState, createContext, useEffect, ReactNode } from 'react';
-import db from '@/Itinerary/Endpoint/firestore'
-import { collection, doc, query, QuerySnapshot, onSnapshot, addDoc, DocumentReference, DocumentSnapshot, QueryDocumentSnapshot, setDoc } from 'firebase/firestore';
+
+import {
+	ItineraryOneInterface,
+	ItineraryOneProviderPropsInterface,
+	ItineraryOneValInterface,
+} from 'spelieve-common/lib/Interfaces/Itinerary';
+import { Itineraries } from 'spelieve-common/lib/Models/Itinerary/IDB01/Itineraries';
+
 import { ICT011ItineraryOneConverter } from './ItinerariesConverter';
-import { Itineraries } from 'spelieve-common/lib/Models/Itinerary/IDB01/Itineraries'
-import { ItineraryOneInterface, ItineraryOneProviderPropsInterface, ItineraryOneValInterface } from 'spelieve-common/lib/Interfaces/Itinerary'
+
+import db from '@/Itinerary/Endpoint/firestore';
 
 export const ICT011ItineraryOne = createContext({});
 
-export const ICT011ItineraryOneProvider = ({
-    parentDocRef,
-    children,
-    id,
-}: ItineraryOneProviderPropsInterface) => {
-    
-    const [documentSnapshot, setDocumentSnapshot] = useState<DocumentSnapshot<ItineraryOneInterface> | null>(null);
-    
-    const collectionRef = parentDocRef
-        ?   collection(parentDocRef, Itineraries.modelName).withConverter(ICT011ItineraryOneConverter())
-        :   collection(db, Itineraries.modelName).withConverter(ICT011ItineraryOneConverter());
+export function ICT011ItineraryOneProvider({ parentDocRef, children, id }: ItineraryOneProviderPropsInterface) {
+	const [documentSnapshot, setDocumentSnapshot] = useState<DocumentSnapshot<ItineraryOneInterface> | null>(null);
 
-    useEffect(() => {
-        const unsubscribe = onSnapshot(
-            doc(collectionRef, id),
-            (documentSnapshot) => {
-                if (!documentSnapshot.exists()) {
-                    create();
-                } else {
-                    setDocumentSnapshot(documentSnapshot);
-                }
-            }
-        );
-        return unsubscribe()
-    }, [parentDocRef, id]);
+	const collectionRef = parentDocRef
+		? collection(parentDocRef, Itineraries.modelName).withConverter(ICT011ItineraryOneConverter())
+		: collection(db, Itineraries.modelName).withConverter(ICT011ItineraryOneConverter());
 
-    if (!documentSnapshot) {
-        return <ActivityIndicator animating={true} />
-    }
+	useEffect(() => {
+		const unsubscribe = onSnapshot(doc(collectionRef, id), (docSnap) => {
+			if (!docSnap.exists()) {
+				create();
+			} else {
+				setDocumentSnapshot(docSnap);
+			}
+		});
+		return unsubscribe();
+	}, [parentDocRef, id, collectionRef]);
 
-    const create = async () => {
-        // return await addDoc<ICT011ItineraryOneInterface>(collectionRef, ICT011ItineraryOneBuild());
-    }
+	if (!documentSnapshot) {
+		return <ActivityIndicator animating />;
+	}
 
-    const update = async (itinerary: ItineraryOneInterface) => {
-        return await setDoc<ItineraryOneInterface>(documentSnapshot.ref, itinerary);
-    }
-    
-    const value: ItineraryOneValInterface = {
-        itinerary: documentSnapshot.data()!,
-        reference: documentSnapshot.ref,
-        create,
-    }
-    return <ICT011ItineraryOne.Provider value={value}>{children}</ICT011ItineraryOne.Provider>
-};
+	const create = async () => {
+		// return await addDoc<ICT011ItineraryOneInterface>(collectionRef, ICT011ItineraryOneBuild());
+	};
+
+	const update = async (itinerary: ItineraryOneInterface) =>
+		setDoc<ItineraryOneInterface>(documentSnapshot.ref, itinerary);
+
+	const value: ItineraryOneValInterface = useMemo(
+		() => ({
+			itinerary: documentSnapshot.data()!,
+			reference: documentSnapshot.ref,
+			create,
+		}),
+		[documentSnapshot],
+	);
+	return <ICT011ItineraryOne.Provider value={value}>{children}</ICT011ItineraryOne.Provider>;
+}

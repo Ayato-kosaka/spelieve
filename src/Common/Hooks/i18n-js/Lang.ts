@@ -1,6 +1,6 @@
 import { LangIf } from './LangIf';
 
 const lang: LangIf = {
-  welcome: 'welcome',
+	welcome: 'welcome',
 };
 export default lang;
