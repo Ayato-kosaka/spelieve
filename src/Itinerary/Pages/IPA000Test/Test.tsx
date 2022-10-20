@@ -4,8 +4,8 @@ import db from '@/Itinerary/Endpoint/firestore';
 import { ActivityIndicator, Text, Title } from 'react-native-paper';
 
 import { IPA000TestContent } from './TestContent'
-import { ICT002PlanGroupsProvider } from '@/Itinerary/Contexts/ICT002PlanGroups'
-import { ICT003PlansProvider } from '@/Itinerary/Contexts/ICT003Plans'
+import { ICT021PlanGroupsListProvider } from '@/Itinerary/Contexts/ICT021PlanGroupsList'
+import { ICT031PlansMapProvider } from '@/Itinerary/Contexts/ICT031PlansMap'
 
 export function IPA000Test() {
   const [itinerary, setItinerary] = useState<DocumentSnapshot>();
@@ -23,16 +23,16 @@ export function IPA000Test() {
   }
   
   return(
-    <ICT003PlansProvider
+    <ICT031PlansMapProvider
       parentDocRef={itinerary.ref}
     >
-      <ICT002PlanGroupsProvider
+      <ICT021PlanGroupsListProvider
         parentDocRef={itinerary.ref}
       >
         <Title>Itinerary</Title>
         <Text>{JSON.stringify(itinerary.data())}</Text>
         <IPA000TestContent />
-      </ICT002PlanGroupsProvider>
-    </ICT003PlansProvider>
+      </ICT021PlanGroupsListProvider>
+    </ICT031PlansMapProvider>
   )
 }
