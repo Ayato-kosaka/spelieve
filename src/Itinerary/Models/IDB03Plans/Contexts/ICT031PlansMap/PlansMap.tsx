@@ -1,5 +1,5 @@
 import { collection, query, onSnapshot, addDoc, QueryDocumentSnapshot } from 'firebase/firestore';
-import { useState, createContext, useEffect } from 'react';
+import { useState, createContext, useEffect, useMemo, useCallback } from 'react';
 
 import {
 	PlansMapInterface,
@@ -20,9 +20,13 @@ export function ICT031PlansMapProvider({ parentDocRef, children }: PlansMapProvi
 		{},
 	);
 
-	const collectionRef = parentDocRef
-		? collection(parentDocRef, Plans.modelName).withConverter(ICT031PlansMapConverter())
-		: collection(db, Plans.modelName).withConverter(ICT031PlansMapConverter());
+	const collectionRef = useMemo(
+		() =>
+			parentDocRef
+				? collection(parentDocRef, Plans.modelName).withConverter(ICT031PlansMapConverter())
+				: collection(db, Plans.modelName).withConverter(ICT031PlansMapConverter()),
+		[parentDocRef],
+	);
 
 	useEffect(() => {
 		const unsubscribe = onSnapshot(query<PlansMapInterface>(collectionRef), (querySnapshot) => {
@@ -44,14 +48,17 @@ export function ICT031PlansMapProvider({ parentDocRef, children }: PlansMapProvi
 		return () => unsubscribe();
 	}, [collectionRef]);
 
-	const create = async () =>
-		addDoc<PlansMapInterface>(collectionRef, {
-			placeSpan: CHK001Utils.initialDate(),
-			placeStartTime: CHK001Utils.initialDate(),
-			placeEndTime: CHK001Utils.initialDate(),
-			imageUrl: '',
-			transportationSpan: CHK001Utils.initialDate(),
-		});
+	const create = useCallback(
+		async () =>
+			addDoc<PlansMapInterface>(collectionRef, {
+				placeSpan: CHK001Utils.initialDate(),
+				placeStartTime: CHK001Utils.initialDate(),
+				placeEndTime: CHK001Utils.initialDate(),
+				imageUrl: '',
+				transportationSpan: CHK001Utils.initialDate(),
+			}),
+		[collectionRef],
+	);
 
 	/* eslint react/jsx-no-constructed-context-values: 0 */
 	const value: PlansMapValInterface = {
