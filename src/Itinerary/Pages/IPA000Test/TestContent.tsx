@@ -1,8 +1,8 @@
 import { StyleSheet, View } from 'react-native';
 import React, { FC, useEffect, useState, useContext } from 'react';
 import { doc, collection, getDoc, setDoc, addDoc, deleteDoc, getDocs } from 'firebase/firestore';
-import { ICT002PlanGroups, ICT002PlanGroupsInterface } from '@/Itinerary/Contexts/ICT002PlanGroups'
-import { ICT003Plans, ICT003PlansInterface } from '@/Itinerary/Contexts/ICT003Plans'
+import { ICT021PlanGroupsList, ICT021PlanGroupsListInterface } from '@/Itinerary/Contexts/ICT021PlanGroupsList'
+import { ICT031PlansMap, ICT031PlansMapInterface } from '@/Itinerary/Contexts/ICT031PlansMap'
 
 import { Button, Text, Title } from 'react-native-paper';
 import db from '@/Itinerary/Endpoint/firestore';
@@ -11,13 +11,13 @@ import i18n, { i18nLang } from '@/Common/Hooks/i18n-js';
 
 export function IPA000TestContent() {
     
-  const { querySnapshot } = useContext(ICT002PlanGroups);
-  const useICT003Plans = useContext(ICT003Plans);
+  const { querySnapshot } = useContext(ICT021PlanGroupsList);
+  const useICT031PlansMap = useContext(ICT031PlansMap);
   
   const swapRepresentativePlanID = () => {
     const data = querySnapshot.docs[0].data();
     const newPlanID = data.plans.find(x => x!=data.representativePlanID) || "";
-    setDoc<ICT002PlanGroupsInterface>(
+    setDoc<ICT021PlanGroupsListInterface>(
       querySnapshot.docs[0].ref, 
       {...querySnapshot.docs[0].data(), representativePlanID: newPlanID}
     )
@@ -55,20 +55,20 @@ export function IPA000TestContent() {
       
       <Title>Plans</Title>
       {
-        Object.keys(useICT003Plans.documentSnapshots).map((key) => (
+        Object.keys(useICT031PlansMap.documentSnapshots).map((key) => (
           <View key={key}>
             <Text>{key}</Text>
-            <Text>{JSON.stringify(useICT003Plans.documentSnapshots[key].data())}</Text>
-            <Button mode="contained" onPress={() => setDoc<ICT003PlansInterface>(useICT003Plans.documentSnapshots[key].ref, { ...useICT003Plans.documentSnapshots[key].data(), title:(new Date()).getTime().toString() })}>
+            <Text>{JSON.stringify(useICT031PlansMap.documentSnapshots[key].data())}</Text>
+            <Button mode="contained" onPress={() => setDoc<ICT031PlansMapInterface>(useICT031PlansMap.documentSnapshots[key].ref, { ...useICT031PlansMap.documentSnapshots[key].data(), title:(new Date()).getTime().toString() })}>
               update title
             </Button>
-            <Button mode="contained" onPress={() => deleteDoc(useICT003Plans.documentSnapshots[key].ref)}>
+            <Button mode="contained" onPress={() => deleteDoc(useICT031PlansMap.documentSnapshots[key].ref)}>
               delete
             </Button>
           </View>
         ))
       }
-      <Button mode="contained" onPress={() => useICT003Plans.create()}>
+      <Button mode="contained" onPress={() => useICT031PlansMap.create()}>
         Create Plan
       </Button>
     </View>

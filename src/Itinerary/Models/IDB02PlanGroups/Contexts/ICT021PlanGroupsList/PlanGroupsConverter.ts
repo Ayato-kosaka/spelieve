@@ -1,16 +1,16 @@
 import { FirestoreDataConverter, QueryDocumentSnapshot, Timestamp } from 'firebase/firestore';
 import { IDB002PlanGroupsInterface } from '@/Itinerary/Models/IDB002PlanGroups';
-import { ICT002PlanGroupsInterface } from './PlanGroupsInterface';
-import { ICT002PlanGroupsBuild } from './PlanGroupsBuild';
+import { ICT021PlanGroupsListInterface } from './PlanGroupsInterface';
+import { ICT021PlanGroupsListBuild } from './PlanGroupsBuild';
 
 /**
-* Export a FirestoreDataConverter to transform ICT002PlanGroups into Firestore data.
+* Export a FirestoreDataConverter to transform ICT021PlanGroupsList into Firestore data.
 */
-export const ICT002PlanGroupsConverter = (): FirestoreDataConverter<ICT002PlanGroupsInterface> => ({
+export const ICT021PlanGroupsListConverter = (): FirestoreDataConverter<ICT021PlanGroupsListInterface> => ({
     /**
-    * Convert ICT002PlanGroups before be saved to Firestore.
+    * Convert ICT021PlanGroupsList before be saved to Firestore.
     */
-    toFirestore: (data: ICT002PlanGroupsInterface): IDB002PlanGroupsInterface => {
+    toFirestore: (data: ICT021PlanGroupsListInterface): IDB002PlanGroupsInterface => {
         return {
             plans: data.plans.join(),
             representativePlanID: data.representativePlanID,
@@ -19,10 +19,10 @@ export const ICT002PlanGroupsConverter = (): FirestoreDataConverter<ICT002PlanGr
     },
     
     /**
-    * Convert the data from Firestore to match ICT002PlanGroups.
+    * Convert the data from Firestore to match ICT021PlanGroupsList.
     */
-    fromFirestore: (snapshot: QueryDocumentSnapshot<IDB002PlanGroupsInterface>): ICT002PlanGroupsInterface => {
-        const initData: ICT002PlanGroupsInterface = ICT002PlanGroupsBuild();
+    fromFirestore: (snapshot: QueryDocumentSnapshot<IDB002PlanGroupsInterface>): ICT021PlanGroupsListInterface => {
+        const initData: ICT021PlanGroupsListInterface = ICT021PlanGroupsListBuild();
         return {
             plans: snapshot.data().plans.split(',') || initData.plans,
             representativePlanID: snapshot.data().representativePlanID || initData.representativePlanID,
