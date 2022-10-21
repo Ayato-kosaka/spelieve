@@ -1,82 +1,104 @@
 import { ActivityIndicator } from 'react-native-paper';
-import { useState, createContext, useEffect, ReactNode } from 'react';
-import db from '@/Place/Endpoint/firestore'
-import { collection, doc, query, QuerySnapshot, onSnapshot, addDoc, DocumentReference, DocumentSnapshot, QueryDocumentSnapshot } from 'firebase/firestore';
-import { PDB01MPlaceCols, collectionName } from '@/Place/Models/PDB01MPlace'
-import { PDB01MPlaceInterface, PCT011MPlacesListInterface } from 'spelieve-common/Interface';
+import { useState, createContext, useEffect } from 'react';
+import db from '@/Endpoint/firestore'
+import { collection, doc, query, QuerySnapshot, onSnapshot, addDoc, where, DocumentReference, DocumentSnapshot, QueryDocumentSnapshot, getDoc, getDocs, orderBy, Query } from 'firebase/firestore';
+import { MPlace } from 'spelieve-common/lib/Models/Place/PDB01/MPlace';
+import {
+    MPlacesListInterface,
+    MPlacesListValInterface,
+    MPlacesListProviderPropsInterface,
+} from 'spelieve-common/lib/Interfaces/Place';
 import { PCT011MPlacesListConverter } from './MPlacesListConverter';
-import { PCT011MPlacesListBuild } from './MPlacesListBuild';
+import { GeoPoint } from 'firebase/firestore';
 
-export const PCT011MPlacesList = createContext({} as PCT011MPlacesListValInterface);
+export const PCT011MPlacesList = createContext({} as MPlacesListValInterface);
 
 export const PCT011MPlacesListProvider = ({
     parentDocRef,
     children,
-    geopoint,
-    maxDistance,
-}: PCT011MPlacesListProviderPropsInterface) => {
-    
-    const [querySnapshot, setQuerySnapshot] = useState<PCT011MPlacesListValInterface['querySnapshot'] | null>(null);
-    const [geopointState, setGeopointState] = useState<GeoPoint>(geopoint);
-    const [maxDistanceState, setMaxDistanceState] = useState<number>(maxDistance);
-
-
-    const collectionRef = parentDocRef
-        ?   collection(parentDocRef, collectionName).withConverter(PCT011MPlacesListConverter())
-        :   collection(db, collectionName).withConverter(PCT011MPlacesListConverter());
+    initialCountry,
+    initialAdministrativeAreaLevel1,
+    initialAdministrativeAreaLevel2,
+    initialLocality,
+}: MPlacesListProviderPropsInterface) => {
+    // temporary data
+    const initialplacesList: Array<MPlacesListInterface> = [
+        {
+            place_id: "001",
+            language: "ja",
+            name: '横浜駅',
+            imageUrl: './yokohama.jpeg',
+            instagramAPIID: 'aaa',
+            geometry: new GeoPoint(35.46606942124, 139.62261961841),
+            geohash: 'aaa',
+            mapUrl: 'aaa',
+            website: undefined,
+            address: 'aaa',
+            phoneNumber: 'aaa',
+            openingHours: [],
+            rating: 1,
+            popularTags: [],
+            averageStayTime: new Date(),
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        },
+        {
+            place_id: "002",
+            language: "ja",
+            name: '東京駅',
+            imageUrl: './tokyo_station.jpeg',
+            instagramAPIID: 'aaa',
+            geometry: new GeoPoint(35.6809591, 139.7673068),
+            geohash: 'aaa',
+            mapUrl: 'aaa',
+            website: undefined,
+            address: 'aaa',
+            phoneNumber: 'aaa',
+            openingHours: [],
+            rating: 1,
+            popularTags: [],
+            averageStayTime: new Date(),
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        },
+    ];
+    const [placesList, setPlacesList] = useState<MPlacesListInterface[]>(initialplacesList);
+    const [country, setCountry] = useState<string>(initialCountry);
+    const [administrativeAreaLevel1, setAdministrativeAreaLevel1] = useState<string>(initialAdministrativeAreaLevel1);
+    const [administrativeAreaLevel2, setAdministrativeAreaLevel2] = useState<string>(initialAdministrativeAreaLevel2);
+    const [locality, setLocality] = useState<string>(initialLocality);
 
     useEffect(() => {
         const fetchData = async () => {
-            const center = [geopointState.latitude, geopointState.longitude];
-
-            const bounds = geohashQueryBounds(center, maxDistance * 1000);
-            const tasks = bounds.map((geohasies: Array<string>) => {
-                return db.collection('Mplaces') // TODO: firestore理解不足、修正必要
-                .orderBy('geohash')
-                .startAt(geohasies[0])
-                .endAt(geohasies[1])
-                .get();
+            const placeCollectionRef = collection(db, MPlace.modelName).withConverter(PCT011MPlacesListConverter());
+            const q = query(
+                            placeCollectionRef,
+                            where(MPlace.Cols.country, '==', country),
+                            where(MPlace.Cols.administrativeAreaLevel1, '==', administrativeAreaLevel1),
+                            where(MPlace.Cols.administrativeAreaLevel2, '==', administrativeAreaLevel2),
+                            where(MPlace.Cols.locality, '==', locality),
+                            orderBy('rating', 'desc')
+                        );
+            const querySnapshot = await getDocs(q);
+            const places: MPlacesListInterface[] = [];
+            querySnapshot.forEach(doc => {
+                places.push(doc.data());
             });
-
-            let docs = [];
-            Promise.all(tasks).then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    const lat = doc.data().geopoint.latitude;
-                    const lon = doc.data().geopoint.longitude;
-                    const dist = distanceBetween([lat, lon], center)
-                    if (dist <= maxDistance) {
-                        docs.push(doc);
-                    }
-                });
-            });
-           setPlacesList(docs);
-
-            // const unsubscribe = onSnapshot(
-            //     query<PCT011MPlacesListInterface>(collectionRef),
-            //     (querySnapshot) => {
-            //         if(querySnapshot.empty){
-            //             create();
-            //         } else {
-            //             setQuerySnapshot(querySnapshot);
-            //         }
-            //     }
-            // );
+            setPlacesList(places);
         }
         fetchData();
-    }, [parentDocRef]);
+    }, [country, administrativeAreaLevel1, administrativeAreaLevel2, locality]);
 
-    const create: PCT011MPlacesListValInterface['create'] = async () => {
-        return await addDoc<PCT011MPlacesListInterface>(collectionRef, PCT011MPlacesListBuild());
-    }
-
-    if (!querySnapshot) {
+    if (placesList.length == 0) {
         return <ActivityIndicator animating={true} />
     }
-    
-    const value: PCT011MPlacesListValInterface = {
+
+    const value: MPlacesListValInterface = {
         placesList,
-        setGeopointState,
-        setMaxDistanceState,
+        setCountry,
+        setAdministrativeAreaLevel1,
+        setAdministrativeAreaLevel2,
+        setLocality,
     }
     return <PCT011MPlacesList.Provider value={value}>{children}</PCT011MPlacesList.Provider>
 };
