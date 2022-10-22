@@ -8,8 +8,8 @@ import {
 	ItineraryOneValInterface,
 } from 'spelieve-common/lib/Interfaces/Itinerary';
 import { Itineraries } from 'spelieve-common/lib/Models/Itinerary/IDB01/Itineraries';
+import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
-import { ICT011ItineraryOneConverter } from './ItinerariesConverter';
 
 import db from '@/Itinerary/Endpoint/firestore';
 
@@ -21,8 +21,20 @@ export function ICT011ItineraryOneProvider({ parentDocRef, children, id }: Itine
 	const collectionRef = useMemo(
 		() =>
 			parentDocRef
-				? collection(parentDocRef, Itineraries.modelName).withConverter(ICT011ItineraryOneConverter())
-				: collection(db, Itineraries.modelName).withConverter(ICT011ItineraryOneConverter()),
+				? collection(parentDocRef, Itineraries.modelName).withConverter(
+						FirestoreConverter<Itineraries, ItineraryOneInterface>(
+							Itineraries,
+							(data) => data,
+							(data) => data,
+						),
+				  )
+				: collection(db, Itineraries.modelName).withConverter(
+						FirestoreConverter<Itineraries, ItineraryOneInterface>(
+							Itineraries,
+							(data) => data,
+							(data) => data,
+						),
+				  ),
 		[parentDocRef],
 	);
 

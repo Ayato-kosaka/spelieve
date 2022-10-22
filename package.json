@@ -23,7 +23,7 @@
     "react-native": "0.69.5",
     "react-native-paper": "4.12.5",
     "react-native-web": "0.18.9",
-    "spelieve-common": "^1.1.30"
+    "spelieve-common": "^1.1.38"
   },
   "devDependencies": {
     "@babel/core": "7.19.6",
