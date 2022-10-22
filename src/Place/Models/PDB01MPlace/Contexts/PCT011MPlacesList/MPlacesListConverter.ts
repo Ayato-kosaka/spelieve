@@ -1,16 +1,16 @@
 import { FirestoreDataConverter, QueryDocumentSnapshot, Timestamp } from 'firebase/firestore';
-import { PDB01MPlaceInterface } from '@/Place/Models/PDB01MPlace';
-import { PCT011MPlacesListInterface } from './MPlacesListInterface';
-import { PCT011MPlacesListBuild } from './MPlacesListBuild';
-
+// import { PDB01MPlaceInterface } from '@/Place/Models/PDB01MPlace';
+import { MPlace } from 'spelieve-common/lib/Models/Place/PDB01/MPlace'
+import { MPlacesListInterface } from 'spelieve-common/lib/Interfaces';
+import { PCT011MPlacesListBuild } from '../../MPlacesListBuild';
 /**
 * Export a FirestoreDataConverter to transform PCT011MPlacesList into Firestore data.
 */
-export const PCT011MPlacesListConverter = (): FirestoreDataConverter<PCT011MPlacesListInterface> => ({
+export const PCT011MPlacesListConverter = (): FirestoreDataConverter<MPlacesListInterface> => ({
     /**
     * Convert PCT011MPlacesList before be saved to Firestore.
     */
-    toFirestore: (data: PCT011MPlacesListInterface): PDB01MPlaceInterface => {
+    toFirestore: (data: MPlacesListInterface): MPlace => {
         return {
             name: data.name,
             imageUrl: data.imageUrl,
@@ -33,8 +33,8 @@ export const PCT011MPlacesListConverter = (): FirestoreDataConverter<PCT011MPlac
     /**
     * Convert the data from Firestore to match PCT011MPlacesList.
     */
-    fromFirestore: (snapshot: QueryDocumentSnapshot<PDB01MPlaceInterface>): PCT011MPlacesListInterface => {
-        const initData: PCT011MPlacesListInterface = PCT011MPlacesListBuild();
+    fromFirestore: (snapshot: QueryDocumentSnapshot<MPlace>): MPlacesListInterface => {
+        const initData: MPlacesListInterface = PCT011MPlacesListBuild();
         return {
             name: snapshot.data().name || initData.name,
             imageUrl: snapshot.data().imageUrl || initData.imageUrl,
