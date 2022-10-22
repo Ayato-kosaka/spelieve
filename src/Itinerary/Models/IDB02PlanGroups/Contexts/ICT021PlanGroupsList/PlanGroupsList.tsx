@@ -1,5 +1,5 @@
 import { collection, query, QuerySnapshot, onSnapshot, addDoc, orderBy, setDoc } from 'firebase/firestore';
-import { useState, createContext, useEffect, useContext, useCallback, useMemo } from 'react';
+import { useState, createContext, useEffect, useContext, useMemo } from 'react';
 import { ActivityIndicator } from 'react-native-paper';
 
 import {
@@ -9,14 +9,11 @@ import {
 	PlansMapInterface,
 } from 'spelieve-common/lib/Interfaces/Itinerary';
 import { PlanGroups } from 'spelieve-common/lib/Models/Itinerary/IDB02/PlanGroups';
+import { Plans } from 'spelieve-common/lib/Models/Itinerary/IDB03/Plans';
+import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
-import { ICT021PlanGroupsListConverter } from './PlanGroupsConverter';
-
-import * as CHK001Utils from '@/Common/Hooks/CHK001Utils';
 import db from '@/Itinerary/Endpoint/firestore';
 import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap';
-import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
-import { Plans } from 'spelieve-common/lib/Models/Itinerary/IDB03/Plans';
 
 export const ICT021PlanGroupsList = createContext({} as PlanGroupsListValInterface);
 
@@ -26,8 +23,20 @@ export function ICT021PlanGroupsListProvider({ parentDocRef, children }: PlanGro
 	const planGroupsCRef = useMemo(
 		() =>
 			parentDocRef
-				? collection(parentDocRef, PlanGroups.modelName).withConverter(FirestoreConverter<PlanGroups,PlanGroupsListInterface>(PlanGroups, data=>data, data=>data))
-				: collection(db, PlanGroups.modelName).withConverter(FirestoreConverter<PlanGroups,PlanGroupsListInterface>(PlanGroups, data=>data, data=>data)),
+				? collection(parentDocRef, PlanGroups.modelName).withConverter(
+						FirestoreConverter<PlanGroups, PlanGroupsListInterface>(
+							PlanGroups,
+							(data) => data,
+							(data) => data,
+						),
+				  )
+				: collection(db, PlanGroups.modelName).withConverter(
+						FirestoreConverter<PlanGroups, PlanGroupsListInterface>(
+							PlanGroups,
+							(data) => data,
+							(data) => data,
+						),
+				  ),
 		[parentDocRef],
 	);
 
@@ -63,7 +72,7 @@ export function ICT021PlanGroupsListProvider({ parentDocRef, children }: PlanGro
 	// 	},
 	// 	[planGroupsQSnap, useICT031PlansMap],
 	// );
-	
+
 	useEffect(() => {
 		const unsubscribe = onSnapshot(
 			query(planGroupsCRef, orderBy(PlanGroups.Cols.representativeStartTime)),
@@ -72,10 +81,10 @@ export function ICT021PlanGroupsListProvider({ parentDocRef, children }: PlanGro
 					/* eslint @typescript-eslint/no-floating-promises: 0 */
 					addDoc(planGroupsCRef, PlanGroups.fromJSON({}));
 				} else {
-					querySnap.docs.forEach((queryDocumentSnapshot, index) => {
+					querySnap.docs.forEach(async (queryDocumentSnapshot, index) => {
 						const data: PlanGroupsListInterface = queryDocumentSnapshot.data();
 						if (!data.plans.length) {
-							const planDocRef = await addDoc<PlansMapInterface>(useICT031PlansMap.plansCRef, Plans.fromJSON({}))
+							const planDocRef = await addDoc<PlansMapInterface>(useICT031PlansMap.plansCRef, Plans.fromJSON({}));
 							data.plans.push(planDocRef.id);
 							/* eslint @typescript-eslint/no-floating-promises: 0 */
 							setDoc(queryDocumentSnapshot.ref, data);
@@ -86,7 +95,7 @@ export function ICT021PlanGroupsListProvider({ parentDocRef, children }: PlanGro
 			},
 		);
 		return () => unsubscribe();
-	}, [planGroupsCRef]);
+	}, [planGroupsCRef, useICT031PlansMap]);
 
 	if (!planGroupsQSnap) {
 		return <ActivityIndicator animating />;
@@ -95,7 +104,7 @@ export function ICT021PlanGroupsListProvider({ parentDocRef, children }: PlanGro
 	/* eslint react/jsx-no-constructed-context-values: 0 */
 	const value: PlanGroupsListValInterface = {
 		planGroupsQSnap,
-		planGroupsCRef
+		planGroupsCRef,
 	};
 	return <ICT021PlanGroupsList.Provider value={value}>{children}</ICT021PlanGroupsList.Provider>;
 }

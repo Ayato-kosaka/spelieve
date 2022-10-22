@@ -10,14 +10,13 @@ import {
 import { Itineraries } from 'spelieve-common/lib/Models/Itinerary/IDB01/Itineraries';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
-
 import db from '@/Itinerary/Endpoint/firestore';
 
 export const ICT011ItineraryOne = createContext({} as ItineraryOneValInterface);
 
 export function ICT011ItineraryOneProvider({ parentDocRef, children, id }: ItineraryOneProviderPropsInterface) {
 	const [itineraryDocSnap, setItineraryDocSnap] = useState<DocumentSnapshot<ItineraryOneInterface> | null>(null);
-	console.log("aaa")
+	console.log('aaa');
 
 	const collectionRef = useMemo(
 		() =>

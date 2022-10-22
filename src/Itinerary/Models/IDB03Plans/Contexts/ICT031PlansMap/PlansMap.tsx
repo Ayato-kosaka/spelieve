@@ -1,5 +1,5 @@
-import { collection, query, onSnapshot, addDoc, QueryDocumentSnapshot } from 'firebase/firestore';
-import { useState, createContext, useEffect, useMemo, useCallback } from 'react';
+import { collection, query, onSnapshot } from 'firebase/firestore';
+import { useState, createContext, useEffect, useMemo } from 'react';
 
 import {
 	PlansMapInterface,
@@ -7,24 +7,32 @@ import {
 	PlansMapValInterface,
 } from 'spelieve-common/lib/Interfaces/Itinerary';
 import { Plans } from 'spelieve-common/lib/Models/Itinerary/IDB03/Plans';
-
-import { ICT031PlansMapConverter } from './PlansConverter';
+import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
 import db from '@/Itinerary/Endpoint/firestore';
-import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
 export const ICT031PlansMap = createContext({} as PlansMapValInterface);
 
 export function ICT031PlansMapProvider({ parentDocRef, children }: PlansMapProviderPropsInterface) {
-	const [plansDocSnapMap, setDocumentSnapshots] = useState<PlansMapValInterface['plansDocSnapMap']>(
-		{},
-	);
+	const [plansDocSnapMap, setDocumentSnapshots] = useState<PlansMapValInterface['plansDocSnapMap']>({});
 
 	const plansCRef = useMemo(
 		() =>
 			parentDocRef
-				? collection(parentDocRef, Plans.modelName).withConverter(FirestoreConverter<Plans, PlansMapInterface>(Plans, (data) => data, (data) => data))
-				: collection(db, Plans.modelName).withConverter(FirestoreConverter<Plans, PlansMapInterface>(Plans, (data) => data, (data) => data)),
+				? collection(parentDocRef, Plans.modelName).withConverter(
+						FirestoreConverter<Plans, PlansMapInterface>(
+							Plans,
+							(data) => data,
+							(data) => data,
+						),
+				  )
+				: collection(db, Plans.modelName).withConverter(
+						FirestoreConverter<Plans, PlansMapInterface>(
+							Plans,
+							(data) => data,
+							(data) => data,
+						),
+				  ),
 		[parentDocRef],
 	);
 

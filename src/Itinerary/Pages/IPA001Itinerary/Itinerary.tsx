@@ -4,7 +4,10 @@ import {
 	ICT011ItineraryOne,
 	ICT011ItineraryOneProvider,
 } from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
-import { ICT021PlanGroupsList, ICT021PlanGroupsListProvider } from '@/Itinerary/Models/IDB02PlanGroups/Contexts/ICT021PlanGroupsList';
+import {
+	ICT021PlanGroupsList,
+	ICT021PlanGroupsListProvider,
+} from '@/Itinerary/Models/IDB02PlanGroups/Contexts/ICT021PlanGroupsList';
 import { ICT031PlansMap, ICT031PlansMapProvider } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap';
 
 function InnerComponent3() {
@@ -17,18 +20,20 @@ function InnerComponent3() {
 
 function InnerComponent2() {
 	const useICT011ItineraryOne = useContext(ICT011ItineraryOne);
-	// console.log(useICT011ItineraryOne.itineraryDocSnap.data())
 	return (
-		<ICT031PlansMapProvider parentDocRef={useICT011ItineraryOne.itineraryDocSnap.ref}><InnerComponent3 /></ICT031PlansMapProvider>
+		<ICT021PlanGroupsListProvider parentDocRef={useICT011ItineraryOne.itineraryDocSnap.ref}>
+			<InnerComponent3 />
+		</ICT021PlanGroupsListProvider>
 	);
 }
 
 function InnerComponent1() {
 	const useICT011ItineraryOne = useContext(ICT011ItineraryOne);
+	// console.log(useICT011ItineraryOne.itineraryDocSnap.data())
 	return (
-		<ICT021PlanGroupsListProvider parentDocRef={useICT011ItineraryOne.itineraryDocSnap.ref}>
+		<ICT031PlansMapProvider parentDocRef={useICT011ItineraryOne.itineraryDocSnap.ref}>
 			<InnerComponent2 />
-		</ICT021PlanGroupsListProvider>
+		</ICT031PlansMapProvider>
 	);
 }
 
