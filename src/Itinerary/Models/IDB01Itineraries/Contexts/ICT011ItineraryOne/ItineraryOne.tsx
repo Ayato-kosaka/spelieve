@@ -17,6 +17,7 @@ export const ICT011ItineraryOne = createContext({} as ItineraryOneValInterface);
 
 export function ICT011ItineraryOneProvider({ parentDocRef, children, id }: ItineraryOneProviderPropsInterface) {
 	const [itineraryDocSnap, setItineraryDocSnap] = useState<DocumentSnapshot<ItineraryOneInterface> | null>(null);
+	console.log("aaa")
 
 	const collectionRef = useMemo(
 		() =>
@@ -40,11 +41,11 @@ export function ICT011ItineraryOneProvider({ parentDocRef, children, id }: Itine
 
 	useEffect(() => {
 		const unsubscribe = onSnapshot(doc(collectionRef, id), (docSnap) => {
-			if (!docSnap.exists()) {
+			if (docSnap.exists()) {
+				setItineraryDocSnap(docSnap);
+			} else {
 				/* eslint @typescript-eslint/no-floating-promises: 0 */
 				addDoc<ItineraryOneInterface>(collectionRef, { title: '', caption: '' });
-			} else {
-				setItineraryDocSnap(docSnap);
 			}
 		});
 		return () => unsubscribe();

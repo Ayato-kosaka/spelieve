@@ -10,26 +10,26 @@ import { Plans } from 'spelieve-common/lib/Models/Itinerary/IDB03/Plans';
 
 import { ICT031PlansMapConverter } from './PlansConverter';
 
-import * as CHK001Utils from '@/Common/Hooks/CHK001Utils';
 import db from '@/Itinerary/Endpoint/firestore';
+import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
 export const ICT031PlansMap = createContext({} as PlansMapValInterface);
 
 export function ICT031PlansMapProvider({ parentDocRef, children }: PlansMapProviderPropsInterface) {
-	const [plansDocSnapMap, setDocumentSnapshots] = useState<{ [id: string]: QueryDocumentSnapshot<PlansMapInterface> }>(
+	const [plansDocSnapMap, setDocumentSnapshots] = useState<PlansMapValInterface['plansDocSnapMap']>(
 		{},
 	);
 
-	const collectionRef = useMemo(
+	const plansCRef = useMemo(
 		() =>
 			parentDocRef
-				? collection(parentDocRef, Plans.modelName).withConverter(ICT031PlansMapConverter())
-				: collection(db, Plans.modelName).withConverter(ICT031PlansMapConverter()),
+				? collection(parentDocRef, Plans.modelName).withConverter(FirestoreConverter<Plans, PlansMapInterface>(Plans, (data) => data, (data) => data))
+				: collection(db, Plans.modelName).withConverter(FirestoreConverter<Plans, PlansMapInterface>(Plans, (data) => data, (data) => data)),
 		[parentDocRef],
 	);
 
 	useEffect(() => {
-		const unsubscribe = onSnapshot(query<PlansMapInterface>(collectionRef), (querySnapshot) => {
+		const unsubscribe = onSnapshot(query(plansCRef), (querySnapshot) => {
 			setDocumentSnapshots((_plansDocSnapMap) => {
 				querySnapshot.docChanges().forEach((change) => {
 					if (change.type === 'added') {
@@ -46,24 +46,12 @@ export function ICT031PlansMapProvider({ parentDocRef, children }: PlansMapProvi
 			});
 		});
 		return () => unsubscribe();
-	}, [collectionRef]);
-
-	const create = useCallback(
-		async () =>
-			addDoc<PlansMapInterface>(collectionRef, {
-				placeSpan: CHK001Utils.initialDate(),
-				placeStartTime: CHK001Utils.initialDate(),
-				placeEndTime: CHK001Utils.initialDate(),
-				imageUrl: '',
-				transportationSpan: CHK001Utils.initialDate(),
-			}),
-		[collectionRef],
-	);
+	}, [plansCRef]);
 
 	/* eslint react/jsx-no-constructed-context-values: 0 */
 	const value: PlansMapValInterface = {
 		plansDocSnapMap,
-		create,
+		plansCRef,
 	};
 
 	return <ICT031PlansMap.Provider value={value}>{children}</ICT031PlansMap.Provider>;
