@@ -79,15 +79,16 @@ export function ICT021PlanGroupsListProvider({ parentDocRef, children }: PlanGro
 			(querySnap) => {
 				if (querySnap.empty) {
 					/* eslint @typescript-eslint/no-floating-promises: 0 */
-					addDoc(planGroupsCRef, PlanGroups.fromJSON({}));
+					addDoc(planGroupsCRef, { ...PlanGroups.fromJSON({}) });
 				} else {
-					querySnap.docs.forEach(async (queryDocumentSnapshot, index) => {
+					querySnap.docs.forEach((queryDocumentSnapshot, index) => {
 						const data: PlanGroupsListInterface = queryDocumentSnapshot.data();
 						if (!data.plans.length) {
-							const planDocRef = await addDoc<PlansMapInterface>(useICT031PlansMap.plansCRef, Plans.fromJSON({}));
-							data.plans.push(planDocRef.id);
-							/* eslint @typescript-eslint/no-floating-promises: 0 */
-							setDoc(queryDocumentSnapshot.ref, data);
+							addDoc<PlansMapInterface>(useICT031PlansMap.plansCRef, { ...Plans.fromJSON({}) }).then((planDocRef) => {
+								data.plans.push(planDocRef.id);
+								/* eslint @typescript-eslint/no-floating-promises: 0 */
+								setDoc(queryDocumentSnapshot.ref, { ...data });
+							});
 						}
 					});
 					setPlanGroupsQSnap(querySnap);
@@ -95,7 +96,7 @@ export function ICT021PlanGroupsListProvider({ parentDocRef, children }: PlanGro
 			},
 		);
 		return () => unsubscribe();
-	}, [planGroupsCRef, useICT031PlansMap]);
+	}, [planGroupsCRef, useICT031PlansMap.plansCRef]);
 
 	if (!planGroupsQSnap) {
 		return <ActivityIndicator animating />;

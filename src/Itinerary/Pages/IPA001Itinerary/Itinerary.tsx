@@ -14,7 +14,6 @@ function InnerComponent3() {
 	const useICT011ItineraryOne = useContext(ICT011ItineraryOne);
 	const useICT021PlanGroupsList = useContext(ICT021PlanGroupsList);
 	const useICT031PlansMap = useContext(ICT031PlansMap);
-	// console.log(useICT011ItineraryOne)
 	return <></>;
 }
 
@@ -29,7 +28,6 @@ function InnerComponent2() {
 
 function InnerComponent1() {
 	const useICT011ItineraryOne = useContext(ICT011ItineraryOne);
-	// console.log(useICT011ItineraryOne.itineraryDocSnap.data())
 	return (
 		<ICT031PlansMapProvider parentDocRef={useICT011ItineraryOne.itineraryDocSnap.ref}>
 			<InnerComponent2 />
