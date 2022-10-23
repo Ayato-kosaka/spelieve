@@ -1,7 +1,7 @@
 import { ActivityIndicator } from 'react-native-paper';
 import { useState, createContext, useEffect } from 'react';
-import db from '@/Endpoint/firestore'
-import { collection, doc, query, QuerySnapshot, onSnapshot, addDoc, where, DocumentReference, DocumentSnapshot, QueryDocumentSnapshot, getDoc, getDocs, orderBy, Query } from 'firebase/firestore';
+import db from '@/Place/Endpoint/firestore'
+import { collection, doc, query, QuerySnapshot, onSnapshot, addDoc, where, DocumentReference, DocumentData, DocumentSnapshot, QueryDocumentSnapshot, getDoc, getDocs, orderBy, Query } from 'firebase/firestore';
 import { MPlace } from 'spelieve-common/lib/Models/Place/PDB01/MPlace';
 import {
     MPlacesListInterface,
@@ -69,24 +69,53 @@ export const PCT011MPlacesListProvider = ({
     const [locality, setLocality] = useState<string>(initialLocality);
 
     useEffect(() => {
-        const fetchData = async () => {
-            const placeCollectionRef = collection(db, MPlace.modelName).withConverter(PCT011MPlacesListConverter());
-            const q = query(
-                            placeCollectionRef,
-                            where(MPlace.Cols.country, '==', country),
-                            where(MPlace.Cols.administrativeAreaLevel1, '==', administrativeAreaLevel1),
-                            where(MPlace.Cols.administrativeAreaLevel2, '==', administrativeAreaLevel2),
-                            where(MPlace.Cols.locality, '==', locality),
-                            orderBy('rating', 'desc')
-                        );
+        const createPlaceQuery = (): Query => {
+            // const collectionRef = parentDocRef
+            //         ? collection(parentDocRef, MPlace.modelName).withConverter(PCT011MPlacesListConverter())
+            //         : collection(db, MPlace.modelName).withConverter(PCT011MPlacesListConverter());
+            const placeCollectionRef = collection(db, MPlace.modelName);
+            let q: Query = query(
+                        placeCollectionRef,
+                        where(MPlace.Cols.country, '==', country),
+                        orderBy('rating', 'desc')
+                    );
+            
+            if (!administrativeAreaLevel1) return q;
+            q = query(
+                    placeCollectionRef,
+                    where(MPlace.Cols.country, '==', country),
+                    where(MPlace.Cols.administrativeAreaLevel1, '==', administrativeAreaLevel1),
+                    orderBy('rating', 'desc')
+                );
+            if (!administrativeAreaLevel2) return q;
+            q = query(
+                    placeCollectionRef,
+                    where(MPlace.Cols.country, '==', country),
+                    where(MPlace.Cols.administrativeAreaLevel1, '==', administrativeAreaLevel1),
+                    where(MPlace.Cols.administrativeAreaLevel2, '==', administrativeAreaLevel2),
+                    orderBy('rating', 'desc')
+                );
+            if (!locality) return q;
+            q = query(
+                    placeCollectionRef,
+                    where(MPlace.Cols.country, '==', country),
+                    where(MPlace.Cols.administrativeAreaLevel1, '==', administrativeAreaLevel1),
+                    where(MPlace.Cols.administrativeAreaLevel2, '==', administrativeAreaLevel2),
+                    where(MPlace.Cols.locality, '==', locality),
+                    orderBy('rating', 'desc')
+                );
+            return q;
+        }
+        const fetchData = async (q: Query) => {
             const querySnapshot = await getDocs(q);
             const places: MPlacesListInterface[] = [];
             querySnapshot.forEach(doc => {
-                places.push(doc.data());
+                places.push(doc.data() as MPlacesListInterface);
             });
             setPlacesList(places);
         }
-        fetchData();
+        const q: Query = createPlaceQuery();
+        fetchData(q);
     }, [country, administrativeAreaLevel1, administrativeAreaLevel2, locality]);
 
     if (placesList.length == 0) {
