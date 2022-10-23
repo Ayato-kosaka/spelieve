@@ -9,6 +9,7 @@ import { ICT003PlansProvider } from '@/Itinerary/Contexts/ICT003Plans'
 
 export function IPA000Test() {
   const [itinerary, setItinerary] = useState<DocumentSnapshot>();
+  console.log(process.env)
   
   useEffect(() => {
     const fetch = async () => {
@@ -23,16 +24,17 @@ export function IPA000Test() {
   }
   
   return(
-    <ICT003PlansProvider
-      parentDocRef={itinerary.ref}
-    >
-      <ICT002PlanGroupsProvider
-        parentDocRef={itinerary.ref}
-      >
-        <Title>Itinerary</Title>
-        <Text>{JSON.stringify(itinerary.data())}</Text>
-        <IPA000TestContent />
-      </ICT002PlanGroupsProvider>
-    </ICT003PlansProvider>
+    <><Title>Itinerary</Title><Text>{JSON.stringify(itinerary.data())}</Text></>
+    // <ICT003PlansProvider
+    //   parentDocRef={itinerary.ref}
+    // >
+    //   <ICT002PlanGroupsProvider
+    //     parentDocRef={itinerary.ref}
+    //   >
+    //     <Title>Itinerary</Title>
+    //     <Text>{JSON.stringify(itinerary.data())}</Text>
+    //     <IPA000TestContent />
+    //   </ICT002PlanGroupsProvider>
+    // </ICT003PlansProvider>
   )
 }
