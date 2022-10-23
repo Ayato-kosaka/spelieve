@@ -12,13 +12,13 @@ export const PlaceHttpPost = async <T, U>(target: string, body: T): Promise<U | 
 		});
 		const resJSON: U = (await res.json()) as U;
 		if (ENV.HTTP_POST_LOG) {
-			/* eslint no-console: 0 */
+			// eslint-disable-next-line no-console
 			console.log(resJSON);
 		}
 		return resJSON;
 	} catch (e) {
 		if (ENV.HTTP_POST_LOG) {
-			/* eslint no-console: 0 */
+			// eslint-disable-next-line no-console
 			console.error(e);
 		}
 		return e;

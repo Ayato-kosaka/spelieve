@@ -55,7 +55,7 @@ export function PCT012MPlaceOneProvider({
 			}
 			setPlace(querySnap.docs[0].data());
 		};
-		/* eslint @typescript-eslint/no-floating-promises: 0 */
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		fetchData();
 	}, [collectionRef, place_id, language]);
 
@@ -63,7 +63,7 @@ export function PCT012MPlaceOneProvider({
 		return <ActivityIndicator animating />;
 	}
 
-	/* eslint react/jsx-no-constructed-context-values: 0 */
+	// eslint-disable-next-line react/jsx-no-constructed-context-values
 	const value: MPlaceOneValInterface = {
 		place,
 	};
