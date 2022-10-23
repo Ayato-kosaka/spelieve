@@ -2,7 +2,7 @@ import { ENV } from '@/ENV';
 
 export const PlaceHttpPost = async <T, U>(target: string, body: T): Promise<U | unknown> => {
 	try {
-		const res = await fetch(ENV.PLACE_ENDPOINT + target, {
+		const res = await fetch(ENV.BACKEND_PLACE_ENDPOINT + target, {
 			method: 'POST',
 			headers: {
 				Accept: 'application/json',
