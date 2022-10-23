@@ -1,8 +1,12 @@
+import { collection, doc } from 'firebase/firestore';
 import React, { useContext } from 'react';
 import { View } from 'react-native';
 import { Appbar, Text } from 'react-native-paper';
 
+import { Itineraries } from 'spelieve-common/lib/Models/Itinerary/IDB01/Itineraries';
+
 import i18n from '@/Common/Hooks/i18n-js';
+import db from '@/Itinerary/Endpoint/firestore';
 import {
 	ICT011ItineraryOne,
 	ICT011ItineraryOneProvider,
@@ -13,6 +17,7 @@ import {
 } from '@/Itinerary/Models/IDB02PlanGroups/Contexts/ICT021PlanGroupsList';
 import { ICT031PlansMapProvider } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap';
 import { IMC03101PlanEdit } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03101PlanEdit';
+
 
 function InnerComponent3() {
 	const useICT011ItineraryOne = useContext(ICT011ItineraryOne);
@@ -30,9 +35,9 @@ function InnerComponent3() {
 				<Text>{i18n.t('編集')}</Text>
 				<Text>{i18n.t('プレビュー')}</Text>
 			</View>
-			{useICT021PlanGroupsList.planGroupsQSnap.docs.map((doc) => (
+			{useICT021PlanGroupsList.planGroupsQSnap.docs.map((planGroupsDoc) => (
 				<>
-					{doc.data().plans.map((planID) => (
+					{planGroupsDoc.data().plans.map((planID) => (
 						<IMC03101PlanEdit planID={planID} />
 					))}
 				</>
@@ -59,10 +64,12 @@ function InnerComponent1() {
 	);
 }
 
-export function IPA001Itinerary() {
-	const id = 'nzEQO5MhckDefM4MsAC7';
+export function IPA001Itinerary({
+	id = 'nzEQO5MhckDefM4MsAC7' // TODO: ''に修正する。
+}) {
+	const docRef = doc(collection(db, Itineraries.modelName), id);
 	return (
-		<ICT011ItineraryOneProvider id={id}>
+		<ICT011ItineraryOneProvider docRef={docRef}>
 			<InnerComponent1 />
 		</ICT011ItineraryOneProvider>
 	);

@@ -1,5 +1,5 @@
-import { collection, doc, onSnapshot, DocumentSnapshot, addDoc } from 'firebase/firestore';
-import { useState, createContext, useEffect, useMemo } from 'react';
+import { onSnapshot, DocumentSnapshot, addDoc } from 'firebase/firestore';
+import { useState, createContext, useEffect } from 'react';
 import { ActivityIndicator } from 'react-native-paper';
 
 import {
@@ -10,44 +10,31 @@ import {
 import { Itineraries } from 'spelieve-common/lib/Models/Itinerary/IDB01/Itineraries';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
-import db from '@/Itinerary/Endpoint/firestore';
-
 export const ICT011ItineraryOne = createContext({} as ItineraryOneValInterface);
 
-export function ICT011ItineraryOneProvider({ parentDocRef, children, id }: ItineraryOneProviderPropsInterface) {
+export function ICT011ItineraryOneProvider({ docRef, children }: ItineraryOneProviderPropsInterface) {
 	const [itineraryDocSnap, setItineraryDocSnap] = useState<DocumentSnapshot<ItineraryOneInterface> | null>(null);
 
-	const collectionRef = useMemo(
-		() =>
-			parentDocRef
-				? collection(parentDocRef, Itineraries.modelName).withConverter(
-						FirestoreConverter<Itineraries, ItineraryOneInterface>(
-							Itineraries,
-							(data) => data,
-							(data) => data,
-						),
-				  )
-				: collection(db, Itineraries.modelName).withConverter(
-						FirestoreConverter<Itineraries, ItineraryOneInterface>(
-							Itineraries,
-							(data) => data,
-							(data) => data,
-						),
-				  ),
-		[parentDocRef],
-	);
-
 	useEffect(() => {
-		const unsubscribe = onSnapshot(doc(collectionRef, id), (docSnap) => {
-			if (docSnap.exists()) {
-				setItineraryDocSnap(docSnap);
-			} else {
-				/* eslint @typescript-eslint/no-floating-promises: 0 */
-				addDoc<ItineraryOneInterface>(collectionRef, { title: '', caption: '' });
-			}
-		});
+		const unsubscribe = onSnapshot(
+			docRef.withConverter(
+				FirestoreConverter<Itineraries, ItineraryOneInterface>(
+					Itineraries,
+					(data) => data,
+					(data) => data,
+				),
+			),
+			(docSnap) => {
+				if (docSnap.exists()) {
+					setItineraryDocSnap(docSnap);
+				} else {
+					/* eslint @typescript-eslint/no-floating-promises: 0 */
+					addDoc<ItineraryOneInterface>(docSnap.ref.parent, { title: '', caption: '' });
+				}
+			},
+		);
 		return () => unsubscribe();
-	}, [collectionRef, id]);
+	}, [docRef]);
 
 	if (!itineraryDocSnap) {
 		return <ActivityIndicator animating />;

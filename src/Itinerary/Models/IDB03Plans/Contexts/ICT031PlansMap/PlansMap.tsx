@@ -18,21 +18,13 @@ export function ICT031PlansMapProvider({ parentDocRef, children }: PlansMapProvi
 
 	const plansCRef = useMemo(
 		() =>
-			parentDocRef
-				? collection(parentDocRef, Plans.modelName).withConverter(
-						FirestoreConverter<Plans, PlansMapInterface>(
-							Plans,
-							(data) => data,
-							(data) => data,
-						),
-				  )
-				: collection(db, Plans.modelName).withConverter(
-						FirestoreConverter<Plans, PlansMapInterface>(
-							Plans,
-							(data) => data,
-							(data) => data,
-						),
-				  ),
+			(parentDocRef ? collection(parentDocRef, Plans.modelName) : collection(db, Plans.modelName)).withConverter(
+				FirestoreConverter<Plans, PlansMapInterface>(
+					Plans,
+					(data) => data,
+					(data) => data,
+				),
+			),
 		[parentDocRef],
 	);
 
