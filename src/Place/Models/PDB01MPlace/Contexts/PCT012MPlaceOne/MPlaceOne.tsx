@@ -12,7 +12,7 @@ import {
 import { MPlace } from 'spelieve-common/lib/Models/Place/PDB01/MPlace';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
-import db from '@/Itinerary/Endpoint/firestore';
+import db from '@/Place/Endpoint/firestore';
 import { PlaceHttpPost } from '@/Place/Endpoint/PlaceHttpPost';
 
 export const PCT012MPlaceOne = createContext({} as MPlaceOneValInterface);
