@@ -1,6 +1,6 @@
 import { ENV } from '@/ENV';
 
-export const PlaceHttpPost = async <T, U>(target: string, body: T): Promise<U | unknown> => {
+export const PlaceHttpPost = async <RequestBodyType, ResponseType>(target: string, body: RequestBodyType): Promise<ResponseType | unknown> => {
 	try {
 		const res = await fetch(ENV.BACKEND_PLACE_ENDPOINT + target, {
 			method: 'POST',
@@ -10,7 +10,7 @@ export const PlaceHttpPost = async <T, U>(target: string, body: T): Promise<U | 
 			},
 			body: JSON.stringify(body),
 		});
-		const resJSON: U = (await res.json()) as U;
+		const resJSON = (await res.json()) as ResponseType;
 		if (ENV.HTTP_POST_LOG) {
 			// eslint-disable-next-line no-console
 			console.log(resJSON);
