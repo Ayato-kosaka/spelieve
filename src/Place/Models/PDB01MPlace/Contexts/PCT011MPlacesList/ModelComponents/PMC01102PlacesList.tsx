@@ -12,15 +12,25 @@ export const PMC01102PlacesList: FC = () => {
             flex: 1,
             flexDirection: 'row',
             flexWrap: 'wrap',
-            marginHorizontal: 10,
+            position: 'absolute',
+            top: '42%',
+            // marginHorizontal: 10,
+            zIndex: -1,
             width: '100%',
-            alignSelf: "center",
-            alignContentnItems: "flex-start",
+            // alignSelf: "center",
+            // alignContentnItems: "flex-start",
         },
         image: {
             height: 200,
-            width: 'auto',
+            width: 215,
             // marginHorizontal: 10,
+        },
+        placeName: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            color: 'black',
+            backgroundColor: 'darkgrey'
         }
     });
 
@@ -29,11 +39,11 @@ export const PMC01102PlacesList: FC = () => {
             <FlatList
                 data={placesList}
                 renderItem={itemData => {
-                    // const imageUrl = require(`${itemData.item.imageUrl}`);
                     return (
                         <View>
-                            <Image source={{ uri: itemData.item.imageUrl}} style={styles.image} />
-                            <Text style={{ color: 'black' }}>{itemData.item.name}</Text>
+                            {/* <Image source={{ uri: itemData.item.photoUrls[0] }} style={styles.image} /> */}
+                            {/* <Image source={require('./yokohama.jpeg') } style={styles.image} /> */}
+                            <Text style={styles.placeName}>{itemData.item.name}</Text>
                         </View>
                     )
                 }}

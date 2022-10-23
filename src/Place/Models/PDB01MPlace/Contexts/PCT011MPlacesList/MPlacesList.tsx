@@ -27,7 +27,8 @@ export const PCT011MPlacesListProvider = ({
             place_id: "001",
             language: "ja",
             name: '横浜駅',
-            imageUrl: './yokohama.jpeg',
+            // imageUrl: '',
+            photoUrls: [''],
             instagramAPIID: 'aaa',
             geometry: new GeoPoint(35.46606942124, 139.62261961841),
             geohash: 'aaa',
@@ -46,7 +47,7 @@ export const PCT011MPlacesListProvider = ({
             place_id: "002",
             language: "ja",
             name: '東京駅',
-            imageUrl: './tokyo_station.jpeg',
+            photoUrls: [''],
             instagramAPIID: 'aaa',
             geometry: new GeoPoint(35.6809591, 139.7673068),
             geohash: 'aaa',
@@ -68,45 +69,57 @@ export const PCT011MPlacesListProvider = ({
     const [administrativeAreaLevel2, setAdministrativeAreaLevel2] = useState<string>(initialAdministrativeAreaLevel2);
     const [locality, setLocality] = useState<string>(initialLocality);
 
+    console.log("placelist: ", placesList);
+    console.log("country: ", country);
+    console.log("administrativeAreaLevel1:", administrativeAreaLevel1)
+    console.log("administrativeAreaLevel2:", administrativeAreaLevel2)
+    console.log("locality:", locality);
+
     useEffect(() => {
         const createPlaceQuery = (): Query => {
             // const collectionRef = parentDocRef
             //         ? collection(parentDocRef, MPlace.modelName).withConverter(PCT011MPlacesListConverter())
             //         : collection(db, MPlace.modelName).withConverter(PCT011MPlacesListConverter());
-            const placeCollectionRef = collection(db, MPlace.modelName);
+            const placeCollectionRef = collection(db, MPlace.modelName).withConverter(PCT011MPlacesListConverter());
             let q: Query = query(
+                                placeCollectionRef,
+                                where(MPlace.Cols.country, '==', country),
+                                orderBy('rating', 'desc')
+                            );
+            if (locality) {
+                q = query(
                         placeCollectionRef,
                         where(MPlace.Cols.country, '==', country),
+                        where(MPlace.Cols.administrativeAreaLevel1, '==', administrativeAreaLevel1),
+                        where(MPlace.Cols.locality, '==', locality),
+                        // where(MPlace.Cols.administrativeAreaLevel2, '==', administrativeAreaLevel2),
                         orderBy('rating', 'desc')
                     );
-            
-            if (!administrativeAreaLevel1) return q;
-            q = query(
-                    placeCollectionRef,
-                    where(MPlace.Cols.country, '==', country),
-                    where(MPlace.Cols.administrativeAreaLevel1, '==', administrativeAreaLevel1),
-                    orderBy('rating', 'desc')
-                );
-            if (!administrativeAreaLevel2) return q;
-            q = query(
-                    placeCollectionRef,
-                    where(MPlace.Cols.country, '==', country),
-                    where(MPlace.Cols.administrativeAreaLevel1, '==', administrativeAreaLevel1),
-                    where(MPlace.Cols.administrativeAreaLevel2, '==', administrativeAreaLevel2),
-                    orderBy('rating', 'desc')
-                );
-            if (!locality) return q;
-            q = query(
-                    placeCollectionRef,
-                    where(MPlace.Cols.country, '==', country),
-                    where(MPlace.Cols.administrativeAreaLevel1, '==', administrativeAreaLevel1),
-                    where(MPlace.Cols.administrativeAreaLevel2, '==', administrativeAreaLevel2),
-                    where(MPlace.Cols.locality, '==', locality),
-                    orderBy('rating', 'desc')
-                );
+                return q;
+            };
+            if (administrativeAreaLevel2){
+                q = query(
+                        placeCollectionRef,
+                        where(MPlace.Cols.country, '==', country),
+                        where(MPlace.Cols.administrativeAreaLevel1, '==', administrativeAreaLevel1),
+                        where(MPlace.Cols.administrativeAreaLevel2, '==', administrativeAreaLevel2),
+                        orderBy('rating', 'desc')
+                    );
+                return q;
+            }
+            if (administrativeAreaLevel1){
+                q = query(
+                        placeCollectionRef,
+                        where(MPlace.Cols.country, '==', country),
+                        where(MPlace.Cols.administrativeAreaLevel1, '==', administrativeAreaLevel1),
+                        orderBy('rating', 'desc')
+                    );
+                return q;
+            }
             return q;
         }
-        const fetchData = async (q: Query) => {
+
+        const fetchUpData = async (q: Query) => {
             const querySnapshot = await getDocs(q);
             const places: MPlacesListInterface[] = [];
             querySnapshot.forEach(doc => {
@@ -114,8 +127,9 @@ export const PCT011MPlacesListProvider = ({
             });
             setPlacesList(places);
         }
+
         const q: Query = createPlaceQuery();
-        fetchData(q);
+        fetchUpData(q);
     }, [country, administrativeAreaLevel1, administrativeAreaLevel2, locality]);
 
     if (placesList.length == 0) {

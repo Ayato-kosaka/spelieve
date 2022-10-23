@@ -13,7 +13,7 @@ import { ICT003Plans, ICT003PlansInterface } from '@/Itinerary/Contexts/ICT003Pl
  */
 interface ICT002PlanGroupsValInterface {
     querySnapshot: QuerySnapshot<ICT002PlanGroupsInterface>;
-    create: (representativeStartTime?: Date) => Promise<DocumentReference>; 
+    create: (representativeStartTime?: Date) => Promise<DocumentReference>;
     insertPlan: (index: number, plansIndex?: number, planId?: string) => Promise<void>;
 }
 export const ICT002PlanGroups = createContext({} as ICT002PlanGroupsValInterface);
@@ -29,13 +29,13 @@ export const ICT002PlanGroupsProvider = ({
     parentDocRef,
     children,
 }: ICT002PlanGroupsProviderPropsInterface) => {
-    
+
     const [querySnapshot, setQuerySnapshot] = useState<ICT002PlanGroupsValInterface['querySnapshot'] | null>(null);
-    
+
     const collectionRef = parentDocRef
-        ?   collection(parentDocRef, collectionName).withConverter(ICT002PlanGroupsConverter())
-        :   collection(db, collectionName).withConverter(ICT002PlanGroupsConverter());
-        
+        ? collection(parentDocRef, collectionName).withConverter(ICT002PlanGroupsConverter())
+        : collection(db, collectionName).withConverter(ICT002PlanGroupsConverter());
+
     const useICT003Plans = useContext(ICT003Plans);
 
     useEffect(() => {
@@ -43,12 +43,12 @@ export const ICT002PlanGroupsProvider = ({
             const unsubscribe = onSnapshot(
                 query<ICT002PlanGroupsInterface>(collectionRef, orderBy(IDB002PlanGroupsCols.representativeStartTime)),
                 (querySnapshot) => {
-                    if(querySnapshot.empty){
+                    if (querySnapshot.empty) {
                         create();
                     } else {
                         querySnapshot.docs.forEach((queryDocumentSnapshot, index) => {
                             const data: ICT002PlanGroupsInterface = queryDocumentSnapshot.data();
-                            if(!data.plans.length){
+                            if (!data.plans.length) {
                                 insertPlan(index);
                             }
                         });
@@ -62,7 +62,7 @@ export const ICT002PlanGroupsProvider = ({
 
     const create: ICT002PlanGroupsValInterface['create'] = async (representativeStartTime?: Date) => {
         const initData: ICT002PlanGroupsInterface = ICT002PlanGroupsBuild();
-        if(representativeStartTime){
+        if (representativeStartTime) {
             initData.representativeStartTime = representativeStartTime;
         }
         return await addDoc<ICT002PlanGroupsInterface>(collectionRef, ICT002PlanGroupsBuild());
@@ -71,8 +71,8 @@ export const ICT002PlanGroupsProvider = ({
     if (!querySnapshot) {
         return <ActivityIndicator animating={true} />
     }
-    
-    const insertPlan: ICT002PlanGroupsValInterface['insertPlan'] = async(index: number, plansIndex: number = 0, planId?: string) => {
+
+    const insertPlan: ICT002PlanGroupsValInterface['insertPlan'] = async (index: number, plansIndex: number = 0, planId?: string) => {
         let planGroup: ICT002PlanGroupsInterface = querySnapshot.docs[index].data();
         if (!planId) {
             planId = (await useICT003Plans.create()).id;
@@ -80,7 +80,7 @@ export const ICT002PlanGroupsProvider = ({
         planGroup.plans.splice(plansIndex, 0, planId);
         setDoc<ICT002PlanGroupsInterface>(querySnapshot.docs[index].ref, planGroup);
     }
-    
+
     const value: ICT002PlanGroupsValInterface = {
         querySnapshot,
         create,

@@ -11,7 +11,7 @@ import { ICT003PlansBuild } from './PlansBuild';
  * Define value interface of useContext(ICT003Plans). 
  */
 interface ICT003PlansValInterface {
-    documentSnapshots: {[id:string]: QueryDocumentSnapshot<ICT003PlansInterface>};
+    documentSnapshots: { [id: string]: QueryDocumentSnapshot<ICT003PlansInterface> };
     create: () => Promise<DocumentReference>;
 }
 export const ICT003Plans = createContext({} as ICT003PlansValInterface);
@@ -27,12 +27,12 @@ export const ICT003PlansProvider = ({
     parentDocRef,
     children,
 }: ICT003PlansProviderPropsInterface) => {
-    
+
     const [documentSnapshots, setDocumentSnapshots] = useState<ICT003PlansValInterface['documentSnapshots']>({});
-    
+
     const collectionRef = parentDocRef
-        ?   collection(parentDocRef, collectionName).withConverter(ICT003PlansConverter())
-        :   collection(db, collectionName).withConverter(ICT003PlansConverter());
+        ? collection(parentDocRef, collectionName).withConverter(ICT003PlansConverter())
+        : collection(db, collectionName).withConverter(ICT003PlansConverter());
 
     useEffect(() => {
         const fetchData = async () => {
@@ -62,7 +62,7 @@ export const ICT003PlansProvider = ({
     const create: ICT003PlansValInterface['create'] = async () => {
         return await addDoc<ICT003PlansInterface>(collectionRef, ICT003PlansBuild());
     }
-    
+
     const value: ICT003PlansValInterface = {
         documentSnapshots,
         create,

@@ -5,7 +5,7 @@ import { PCT011MPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPl
 export const PCO001SearchPlace = (
     { onAutoCompleteClicked, hideDistinct }: SearchPlacePropsInterface
 ) => {
-
+    
     return (
         <GooglePlacesAutocomplete
             placeholder='地点を入力'

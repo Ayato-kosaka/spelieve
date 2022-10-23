@@ -29,12 +29,12 @@ export const ICT001ItinerariesProvider = ({
     children,
     id,
 }: ICT001ItinerariesProviderPropsInterface) => {
-    
+
     const [documentSnapshot, setDocumentSnapshot] = useState<ICT001ItinerariesValInterface['documentSnapshot'] | null>(null);
-    
+
     const collectionRef = parentDocRef
-        ?   collection(parentDocRef, collectionName).withConverter(ICT001ItinerariesConverter())
-        :   collection(db, collectionName).withConverter(ICT001ItinerariesConverter());
+        ? collection(parentDocRef, collectionName).withConverter(ICT001ItinerariesConverter())
+        : collection(db, collectionName).withConverter(ICT001ItinerariesConverter());
 
     useEffect(() => {
         const fetchData = async () => {
@@ -59,7 +59,7 @@ export const ICT001ItinerariesProvider = ({
     if (!documentSnapshot) {
         return <ActivityIndicator animating={true} />
     }
-    
+
     const value: ICT001ItinerariesValInterface = {
         documentSnapshot,
         create,

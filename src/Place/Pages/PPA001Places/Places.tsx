@@ -4,36 +4,46 @@ import { doc, collection, getDoc, setDoc, addDoc, deleteDoc, DocumentSnapshot } 
 import { ActivityIndicator, Text, Title } from 'react-native-paper';
 
 import { PCT011MPlacesListProvider, PCT011MPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
-import { PPA001PlacesPropsInterface } from 'spelieve-common/lib/Interface';
+import { PlacesPropsInterface } from 'spelieve-common/lib/Interfaces';
 import { PMC01101GoogleMapPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList/ModelComponents/PMC01101GoogleMapPlacesList';
 import { PCO001SearchPlace } from '@/Place/Components/PCO001SearchPlace/SearchPlace';
 import { PMC01102PlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList/ModelComponents/PMC01102PlacesList';
 import { PPA001PlacesController } from './PlacesController';
 
-export const PPA001Places = ({
-  geopoint,
-  maxDistance,
-  navigation
-}: PPA001PlacesPropsInterface) => {
-  
+const InnerComponent = () => {
   const { onAutoCompleteClicked, onPlaceSelected } = PPA001PlacesController();
+
+  return (
+    <>
+        <PMC01101GoogleMapPlacesList />
+        <PCO001SearchPlace
+          onAutoCompleteClicked={onAutoCompleteClicked}
+        />
+        <PMC01102PlacesList />
+    </>
+  )
+};
+
+export const PPA001Places = ({
+    country,
+    administrativeAreaLevel1, 
+    administrativeAreaLevel2,
+    locality, 
+    navigation,
+}: PlacesPropsInterface) => {
   // if(!placesList){
   //     return <ActivityIndicator animating={true} />
   // }
 
   return (
     <PCT011MPlacesListProvider
-      parentDocRef={undefined}
-      initialCountry={"日本"}
-      initialAdministrativeAreaLevel1={"東京都"}
-      initialAdministrativeAreaLevel2={""}
-      initialLocality={"渋谷区"}
+        parentDocRef={undefined}
+        initialCountry={country}
+        initialAdministrativeAreaLevel1={administrativeAreaLevel1 || ""}
+        initialAdministrativeAreaLevel2={administrativeAreaLevel2 || ""}
+        initialLocality={locality || ""}
     >
-      <PMC01101GoogleMapPlacesList />
-      <PCO001SearchPlace
-        onAutoCompleteClicked={onAutoCompleteClicked}
-      />
-      <PMC01102PlacesList />
+      <InnerComponent />
     </PCT011MPlacesListProvider>
   )
 };
