@@ -17,6 +17,7 @@ web-build/
 
 # Env
 .envrc.local
+src/ENV.ts
 
 # Expo web env
 .env.local
