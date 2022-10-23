@@ -1,4 +1,4 @@
 export interface LangIf {
-  /** welcome */
-  welcome: string;
+	/** welcome */
+	welcome: string;
 }

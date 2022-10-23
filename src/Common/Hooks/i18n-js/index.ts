@@ -1,13 +1,12 @@
-import * as Localization from 'expo-localization';
 import { I18n } from 'i18n-js';
+
+import en from './en';
+import ja from './ja';
 import Lang from './Lang';
 
-import ja from './ja';
-import en from './en';
-
 const i18n = new I18n({
-  ja,
-  en,
+	ja,
+	en,
 });
 
 i18n.defaultLocale = 'ja';
