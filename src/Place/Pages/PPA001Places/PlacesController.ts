@@ -13,7 +13,7 @@ export const PPA001PlacesController = (): PlacesControllerInterface => {
         const isIncludes = (arr: Array<string>, target: Array<string>) => arr.some(el => target.includes(el));
 
         if (isIncludes(data.types, ['establishment' || 'street_address'])) { // 地点
-            onPlaceSelected();
+            onPlaceSelected(data.place_id);
 
         } else { // 地名
             const addressParts: AddressComponent[] = details.address_components;
@@ -43,9 +43,12 @@ export const PPA001PlacesController = (): PlacesControllerInterface => {
         }
     }
 
-    const onPlaceSelected = () => {
+    const onPlaceSelected = (place_id: string) => {
         // PPA002 に遷移
-        navigation.navigate('PPA002Place');
+        navigation.navigate('PPA002Place', {
+            place_id: place_id,
+            language: 'ja',
+        });
     }
 
     return { onAutoCompleteClicked, onPlaceSelected };
