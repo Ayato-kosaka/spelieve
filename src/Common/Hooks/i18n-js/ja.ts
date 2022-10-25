@@ -1,6 +1,6 @@
 import { LangIf } from './LangIf';
 
 const ja: LangIf = {
-  welcome: 'こんにちは',
+	welcome: 'こんにちは',
 };
 export default ja;

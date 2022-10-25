@@ -1,17 +1,4 @@
 module.exports = {
-  env: {
-    browser: true,
-    es2021: true,
-  },
-  extends: [
-    'plugin:react/recommended',
-    'airbnb',
-    'airbnb-typescript',
-    'airbnb/hooks',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
-    'prettier',
-  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
@@ -22,18 +9,53 @@ module.exports = {
     tsconfigRootDir: './',
     project: ['./tsconfig.json']
   },
+  env: {
+    browser: true,
+    es2021: true,
+  },
   plugins: [
     'react',
     '@typescript-eslint',
+    'autofix',
+    'import',
     'unused-imports'
+  ],
+  extends: [
+    'plugin:react/recommended',
+    'airbnb',
+    'airbnb-typescript',
+    'airbnb/hooks',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'prettier',
   ],
   "ignorePatterns": ["build"], 
   rules: {
-    '@typescript-eslint/no-use-before-define': 'off',
+    "import/extensions": "off",
     'react/style-prop-object': 'off',
     'react/react-in-jsx-scope': 'off',
-    'import/extensions': 'off',
-    "@typescript-eslint/no-floating-promises": "warn",
-    "import/no-default-export": "error",
+    '@typescript-eslint/interface-name-prefix': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    "@typescript-eslint/no-unused-vars": "off",
+    '@typescript-eslint/no-non-null-assertion': 'off',
+    'no-param-reassign': 'off',
+    "unused-imports/no-unused-imports": "warn",
+    "autofix/no-plusplus": "error",
+    "import/prefer-default-export": 'off',
+    "import/order": [
+      "warn",
+      {
+        "groups": ["builtin", "external", "internal", "parent", "sibling", "index", "object", "type"],
+        "newlines-between": "always",
+        "pathGroupsExcludedImportTypes": ["builtin"],
+        "alphabetize": { "order": "asc", "caseInsensitive": true },
+        "pathGroups": [
+          { "pattern": "@nestjs/**", "group": "internal", "position": "before" },
+          { "pattern": "spelieve-common/**", "group": "internal", "position": "before" },
+        ]
+      }
+    ]
   },
 };
