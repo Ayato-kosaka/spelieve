@@ -1,11 +1,12 @@
 import React, { FC, useContext } from 'react';
-import { Text, View, StyleSheet, FlatList, Image } from 'react-native';
+import { Text, View, StyleSheet, FlatList, Image, Button, TouchableOpacity } from 'react-native';
 
 import { PCT011MPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
-
+import { useNavigation } from "@react-navigation/native";
 
 export const PMC01102PlacesList: FC = () => {
     const { placesList } = useContext(PCT011MPlacesList);
+    const navigation = useNavigation();
 
     const styles = StyleSheet.create({
         list: {
@@ -31,6 +32,7 @@ export const PMC01102PlacesList: FC = () => {
             left: 0,
             color: 'black',
             backgroundColor: 'darkgrey'
+            
         }
     });
 
@@ -38,19 +40,16 @@ export const PMC01102PlacesList: FC = () => {
         <View style={styles.list}>
             <FlatList
                 data={placesList}
-                renderItem={itemData => {
-                    return (
+                renderItem={itemData => (
                         <View>
-                            {/* <Image source={{ uri: itemData.item.photoUrls[0] }} style={styles.image} /> */}
-                            {/* <Image source={require('./yokohama.jpeg') } style={styles.image} /> */}
-                            <Text style={styles.placeName}>{itemData.item.name}</Text>
+                            <TouchableOpacity onPress={() => navigation.navigate('PPA002Place')}>
+                                <Image source={{ uri: itemData.item.photoUrls[0] }} style={styles.image} />
+                                <Text style={styles.placeName}>{itemData.item.name}</Text>
+                            </TouchableOpacity>
                         </View>
-                    )
-                }}
+                    )}
                 numColumns={2}
             />
         </View>
     )
-
-
 }

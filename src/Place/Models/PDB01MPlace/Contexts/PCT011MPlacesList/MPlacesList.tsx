@@ -1,6 +1,5 @@
 import { ActivityIndicator } from 'react-native-paper';
 import { useState, createContext, useEffect } from 'react';
-import db from '@/Place/Endpoint/firestore'
 import { collection, doc, query, QuerySnapshot, onSnapshot, addDoc, where, DocumentReference, DocumentData, DocumentSnapshot, QueryDocumentSnapshot, getDoc, getDocs, orderBy, Query } from 'firebase/firestore';
 import { MPlace } from 'spelieve-common/lib/Models/Place/PDB01/MPlace';
 import {
@@ -9,112 +8,119 @@ import {
     MPlacesListProviderPropsInterface,
 } from 'spelieve-common/lib/Interfaces/Place';
 import { PCT011MPlacesListConverter } from './MPlacesListConverter';
-import { GeoPoint } from 'firebase/firestore';
+import db from '@/Place/Endpoint/firestore'
 
 export const PCT011MPlacesList = createContext({} as MPlacesListValInterface);
 
-export const PCT011MPlacesListProvider = ({
+export function PCT011MPlacesListProvider({
     parentDocRef,
     children,
     initialCountry,
     initialAdministrativeAreaLevel1,
     initialAdministrativeAreaLevel2,
     initialLocality,
-}: MPlacesListProviderPropsInterface) => {
+}: MPlacesListProviderPropsInterface) {
     // temporary data
-    const initialplacesList: Array<MPlacesListInterface> = [
-        {
-            place_id: "001",
-            language: "ja",
-            name: '横浜駅',
-            // imageUrl: '',
-            photoUrls: [''],
-            instagramAPIID: 'aaa',
-            geometry: new GeoPoint(35.46606942124, 139.62261961841),
-            geohash: 'aaa',
-            mapUrl: 'aaa',
-            website: undefined,
-            address: 'aaa',
-            phoneNumber: 'aaa',
-            openingHours: [],
-            rating: 1,
-            popularTags: [],
-            averageStayTime: new Date(),
-            createdAt: new Date(),
-            updatedAt: new Date(),
-        },
-        {
-            place_id: "002",
-            language: "ja",
-            name: '東京駅',
-            photoUrls: [''],
-            instagramAPIID: 'aaa',
-            geometry: new GeoPoint(35.6809591, 139.7673068),
-            geohash: 'aaa',
-            mapUrl: 'aaa',
-            website: undefined,
-            address: 'aaa',
-            phoneNumber: 'aaa',
-            openingHours: [],
-            rating: 1,
-            popularTags: [],
-            averageStayTime: new Date(),
-            createdAt: new Date(),
-            updatedAt: new Date(),
-        },
-    ];
-    const [placesList, setPlacesList] = useState<MPlacesListInterface[]>(initialplacesList);
-    const [country, setCountry] = useState<string>(initialCountry);
-    const [administrativeAreaLevel1, setAdministrativeAreaLevel1] = useState<string>(initialAdministrativeAreaLevel1);
-    const [administrativeAreaLevel2, setAdministrativeAreaLevel2] = useState<string>(initialAdministrativeAreaLevel2);
-    const [locality, setLocality] = useState<string>(initialLocality);
+    // const initialplacesList: Array<MPlacesListInterface> = [
+    //     {
+    //         place_id: "001",
+    //         language: "ja",
+    //         name: '横浜駅',
+    //         // imageUrl: '',
+    //         photoUrls: [''],
+    //         instagramAPIID: 'aaa',
+    //         geometry: new GeoPoint(35.46606942124, 139.62261961841),
+    //         geohash: 'aaa',
+    //         mapUrl: 'aaa',
+    //         website: undefined,
+    //         address: 'aaa',
+    //         phoneNumber: 'aaa',
+    //         openingHours: [],
+    //         rating: 1,
+    //         popularTags: [],
+    //         averageStayTime: new Date(),
+    //         createdAt: new Date(),
+    //         updatedAt: new Date(),
+    //     },
+    //     {
+    //         place_id: "002",
+    //         language: "ja",
+    //         name: '東京駅',
+    //         photoUrls: [''],
+    //         // instagramAPIID: 'aaa',
+    //         geometry: new GeoPoint(35.6809591, 139.7673068),
+    //         // geohash: 'aaa',
+    //         mapUrl: 'aaa',
+    //         website: undefined,
+    //         address: 'aaa',
+    //         phoneNumber: 'aaa',
+    //         openingHours: [],
+    //         rating: 1,
+    //         popularTags: [],
+    //         averageStayTime: new Date(),
+    //         createdAt: new Date(),
+    //         updatedAt: new Date(),
+    //     },
+    // ];
 
-    console.log("placelist: ", placesList);
-    console.log("country: ", country);
-    console.log("administrativeAreaLevel1:", administrativeAreaLevel1)
-    console.log("administrativeAreaLevel2:", administrativeAreaLevel2)
-    console.log("locality:", locality);
+    const initialAddress = {
+        country: initialCountry,
+        administrativeAreaLevel1: initialAdministrativeAreaLevel1,
+        administrativeAreaLevel2: initialAdministrativeAreaLevel2,
+        locality: initialLocality,
+    }
+    const [placesList, setPlacesList] = useState<MPlacesListInterface[]>([]);
+    const [searchedAddress, setSearchedAddress] = useState(initialAddress);
 
-    useEffect(() => {
+    useEffect(()=> {
         const createPlaceQuery = (): Query => {
             // const collectionRef = parentDocRef
             //         ? collection(parentDocRef, MPlace.modelName).withConverter(PCT011MPlacesListConverter())
             //         : collection(db, MPlace.modelName).withConverter(PCT011MPlacesListConverter());
-            const placeCollectionRef = collection(db, MPlace.modelName).withConverter(PCT011MPlacesListConverter());
+            const placeCollectionRef = collection(db, MPlace.modelName); // .withConverter(PCT011MPlacesListConverter());
             let q: Query = query(
                                 placeCollectionRef,
-                                where(MPlace.Cols.country, '==', country),
+                                where(MPlace.Cols.country, '==', searchedAddress.country),
                                 orderBy('rating', 'desc')
                             );
-            if (locality) {
+            if (searchedAddress.administrativeAreaLevel1 !== ''){
                 q = query(
                         placeCollectionRef,
-                        where(MPlace.Cols.country, '==', country),
-                        where(MPlace.Cols.administrativeAreaLevel1, '==', administrativeAreaLevel1),
-                        where(MPlace.Cols.locality, '==', locality),
-                        // where(MPlace.Cols.administrativeAreaLevel2, '==', administrativeAreaLevel2),
+                        where(MPlace.Cols.country, '==', searchedAddress.country),
+                        where(MPlace.Cols.administrativeAreaLevel1, '==', searchedAddress.administrativeAreaLevel1),
                         orderBy('rating', 'desc')
                     );
-                return q;
-            };
-            if (administrativeAreaLevel2){
-                q = query(
-                        placeCollectionRef,
-                        where(MPlace.Cols.country, '==', country),
-                        where(MPlace.Cols.administrativeAreaLevel1, '==', administrativeAreaLevel1),
-                        where(MPlace.Cols.administrativeAreaLevel2, '==', administrativeAreaLevel2),
-                        orderBy('rating', 'desc')
-                    );
-                return q;
             }
-            if (administrativeAreaLevel1){
+
+            if (searchedAddress.administrativeAreaLevel2 !== ''){
                 q = query(
                         placeCollectionRef,
-                        where(MPlace.Cols.country, '==', country),
-                        where(MPlace.Cols.administrativeAreaLevel1, '==', administrativeAreaLevel1),
+                        where(MPlace.Cols.country, '==', searchedAddress.country),
+                        where(MPlace.Cols.administrativeAreaLevel1, '==', searchedAddress.administrativeAreaLevel1),
+                        where(MPlace.Cols.administrativeAreaLevel2, '==', searchedAddress.administrativeAreaLevel2),
                         orderBy('rating', 'desc')
                     );
-                return q;
+            }
+
+            if (searchedAddress.administrativeAreaLevel2 !== '' && searchedAddress.locality !== '') { // index済
+                q = query(
+                        placeCollectionRef,
+                        where(MPlace.Cols.country, '==', searchedAddress.country),
+                        where(MPlace.Cols.administrativeAreaLevel1, '==', searchedAddress.administrativeAreaLevel1),
+                        where(MPlace.Cols.administrativeAreaLevel2, '==', searchedAddress.administrativeAreaLevel2),
+                        where(MPlace.Cols.locality, '==', searchedAddress.locality),
+                        orderBy('rating', 'desc')
+                    );
+            }
+
+            if (searchedAddress.administrativeAreaLevel2 === '' && searchedAddress.locality !== '') { // index済
+                q = query(
+                    placeCollectionRef,
+                    where(MPlace.Cols.country, '==', searchedAddress.country),
+                    where(MPlace.Cols.administrativeAreaLevel1, '==', searchedAddress.administrativeAreaLevel1),
+                    where(MPlace.Cols.locality, '==', searchedAddress.locality),
+                    orderBy('rating', 'desc')
+                );
             }
             return q;
         }
@@ -130,18 +136,19 @@ export const PCT011MPlacesListProvider = ({
 
         const q: Query = createPlaceQuery();
         fetchUpData(q);
-    }, [country, administrativeAreaLevel1, administrativeAreaLevel2, locality]);
+    }, [searchedAddress]);
 
-    if (placesList.length == 0) {
-        return <ActivityIndicator animating={true} />
-    }
+    // if (placesList.length == 0) {
+    //     return <ActivityIndicator animating />
+    // }
 
     const value: MPlacesListValInterface = {
         placesList,
-        setCountry,
-        setAdministrativeAreaLevel1,
-        setAdministrativeAreaLevel2,
-        setLocality,
+        setSearchedAddress,
+        // setCountry,
+        // setAdministrativeAreaLevel1,
+        // setAdministrativeAreaLevel2,
+        // setLocality,
     }
     return <PCT011MPlacesList.Provider value={value}>{children}</PCT011MPlacesList.Provider>
-};
+}

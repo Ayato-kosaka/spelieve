@@ -3,15 +3,18 @@ import { doc, collection, getDoc, setDoc, addDoc, deleteDoc, DocumentSnapshot } 
 // import db from '@/Itinerary/Endpoint/firestore';
 import { ActivityIndicator, Text, Title } from 'react-native-paper';
 
-import { PCT011MPlacesListProvider, PCT011MPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
 import { PlacesPropsInterface } from 'spelieve-common/lib/Interfaces';
+import { PCT011MPlacesListProvider, PCT011MPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
 import { PMC01101GoogleMapPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList/ModelComponents/PMC01101GoogleMapPlacesList';
 import { PCO001SearchPlace } from '@/Place/Components/PCO001SearchPlace/SearchPlace';
 import { PMC01102PlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList/ModelComponents/PMC01102PlacesList';
 import { PPA001PlacesController } from './PlacesController';
 
-const InnerComponent = () => {
+function InnerComponent() {
   const { onAutoCompleteClicked, onPlaceSelected } = PPA001PlacesController();
+
+  // const { placesList } = useContext(PCT011MPlacesList);
+  
 
   return (
     <>
@@ -22,19 +25,16 @@ const InnerComponent = () => {
         <PMC01102PlacesList />
     </>
   )
-};
+}
 
-export const PPA001Places = ({
+export function PPA001Places({
     country,
     administrativeAreaLevel1, 
     administrativeAreaLevel2,
     locality, 
     navigation,
-}: PlacesPropsInterface) => {
-  // if(!placesList){
-  //     return <ActivityIndicator animating={true} />
-  // }
-
+}: PlacesPropsInterface) {
+  
   return (
     <PCT011MPlacesListProvider
         parentDocRef={undefined}
@@ -46,4 +46,4 @@ export const PPA001Places = ({
       <InnerComponent />
     </PCT011MPlacesListProvider>
   )
-};
+}
