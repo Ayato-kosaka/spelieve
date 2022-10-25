@@ -71,6 +71,12 @@ export function PCT011MPlacesListProvider({
     }
     const [placesList, setPlacesList] = useState<MPlacesListInterface[]>([]);
     const [searchedAddress, setSearchedAddress] = useState(initialAddress);
+    console.log(placesList);
+    console.log(searchedAddress);
+    // const [country, setCountry] = useState<MPlacesListProviderPropsInterface['initialCountry']>(initialCountry);
+    // const [administrativeAreaLevel1, setAdministrativeAreaLevel1] = useState<MPlacesListProviderPropsInterface['initialAdministrativeAreaLevel1']>(initialAdministrativeAreaLevel1);
+    // const [administrativeAreaLevel2, setAdministrativeAreaLevel2] = useState<MPlacesListProviderPropsInterface['initialAdministrativeAreaLevel2']>(initialAdministrativeAreaLevel2);
+    // const [locality, setLocality] = useState<MPlacesListProviderPropsInterface['initialLocality']>(initialLocality);
 
     useEffect(()=> {
         const createPlaceQuery = (): Query => {

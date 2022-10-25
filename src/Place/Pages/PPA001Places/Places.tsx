@@ -11,10 +11,7 @@ import { PMC01102PlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MP
 import { PPA001PlacesController } from './PlacesController';
 
 function InnerComponent() {
-  const { onAutoCompleteClicked, onPlaceSelected } = PPA001PlacesController();
-
-  // const { placesList } = useContext(PCT011MPlacesList);
-  
+  const { onAutoCompleteClicked } = PPA001PlacesController();
 
   return (
     <>
@@ -38,10 +35,10 @@ export function PPA001Places({
   return (
     <PCT011MPlacesListProvider
         parentDocRef={undefined}
-        initialCountry={country}
-        initialAdministrativeAreaLevel1={administrativeAreaLevel1 || ""}
-        initialAdministrativeAreaLevel2={administrativeAreaLevel2 || ""}
-        initialLocality={locality || ""}
+        initialCountry={country || ''}
+        initialAdministrativeAreaLevel1={administrativeAreaLevel1 || ''}
+        initialAdministrativeAreaLevel2={administrativeAreaLevel2 || ''}
+        initialLocality={locality || ''}
     >
       <InnerComponent />
     </PCT011MPlacesListProvider>

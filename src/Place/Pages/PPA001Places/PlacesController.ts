@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react";
+import { useContext } from "react";
 import { PlacesControllerInterface } from "spelieve-common/lib/Interfaces";
 import { GooglePlaceData, GooglePlaceDetail, AddressComponent } from "react-native-google-places-autocomplete";
 import { PCT011MPlacesList } from "@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList";

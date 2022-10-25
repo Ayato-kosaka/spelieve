@@ -10,8 +10,7 @@ export const PCT011MPlacesListConverter = (): FirestoreDataConverter<MPlacesList
     /**
     * Convert PCT011MPlacesList before be saved to Firestore.
     */
-    toFirestore: (data: MPlacesListInterface): MPlace => {
-        return {
+    toFirestore: (data: MPlacesListInterface): MPlace => ({
             name: data.name,
             imageUrl: data.imageUrl,
             instagramAPIID: data.instagramAPIID,
@@ -27,8 +26,7 @@ export const PCT011MPlacesListConverter = (): FirestoreDataConverter<MPlacesList
             averageStayTime: Timestamp.fromDate(data.averageStayTime),
             createdAt: Timestamp.fromDate(data.createdAt),
             updatedAt: Timestamp.fromDate(data.updatedAt),
-        }
-    },
+        }),
     
     /**
     * Convert the data from Firestore to match PCT011MPlacesList.

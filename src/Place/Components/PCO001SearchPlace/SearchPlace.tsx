@@ -7,13 +7,12 @@ export function PCO001SearchPlace({ onAutoCompleteClicked }: SearchPlacePropsInt
         <GooglePlacesAutocomplete
             placeholder='地点を入力'
             onPress={onAutoCompleteClicked}
-            autoFocus={true}
             query={{
                 key: process.env.GCP_API_KEY,
                 type: ['(cities)', 'establishment'], // TODO: 地名と地点
                 language: 'ja'
             }}
-            fetchDetails={true}
+            fetchDetails
         />
     )
 }
