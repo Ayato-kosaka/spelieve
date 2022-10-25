@@ -33,18 +33,18 @@ export default function App() {
             <Stack.Screen name='IPA000Test' component={IPA000Test} />
             <Stack.Screen name='PPA001Places'>
               {(props) => <PPA001Places  // TODO: 現在値or初期値決定して渡すべき
-                    country='日本'
-                    administrativeAreaLevel1='東京都'
-                    administrativeAreaLevel2=''
-                    locality='渋谷区'
+                    country={'日本'}
+                    administrativeAreaLevel1={''}
+                    administrativeAreaLevel2={''}
+                    locality={''}
                 />
               }
             </Stack.Screen>
 
             <Stack.Screen name='PPA002Place'>
               {(props) => <PPA002Place
-                    place_id={props.place_id}
-                    language={props.language}
+                    place_id={props.route.params.place_id}
+                    language={props.route.params.language}
                 />
               }
             </Stack.Screen>
