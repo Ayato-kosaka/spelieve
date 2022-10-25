@@ -25,7 +25,7 @@ export function PMC01101GoogleMapPlacesList() {
 
     return (
         <MapView
-            style={{ width: '100%', height: 300 }}
+            style={{ width: '100%', height: 200 }}
             provider={PROVIDER_GOOGLE}
             initialRegion={{
                 latitude: centerLat,

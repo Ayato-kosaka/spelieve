@@ -23,7 +23,7 @@ export const PMC01102PlacesList: FC = () => {
         },
         image: {
             height: 200,
-            width: 215,
+            width: 190,
             // marginHorizontal: 10,
         },
         placeName: {
@@ -42,7 +42,12 @@ export const PMC01102PlacesList: FC = () => {
                 data={placesList}
                 renderItem={itemData => (
                         <View>
-                            <TouchableOpacity onPress={() => navigation.navigate('PPA002Place')}>
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate('PPA002Place', {
+                                    place_id: itemData.item.place_id,
+                                    language: 'ja',
+                                })}
+                            >
                                 <Image source={{ uri: itemData.item.photoUrls[0] }} style={styles.image} />
                                 <Text style={styles.placeName}>{itemData.item.name}</Text>
                             </TouchableOpacity>
