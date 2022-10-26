@@ -12,7 +12,7 @@ export const PPA001PlacesController = (): PlacesControllerInterface => {
     const onAutoCompleteClicked = (data: GooglePlaceData, details: GooglePlaceDetail) => {
         const isIncludes = (arr: Array<string>, target: Array<string>) => arr.some(el => target.includes(el));
 
-        if (isIncludes(data.types, ['establishment' || 'street_address'])) { // 地点
+        if (isIncludes(data.types, ['establishment', 'street_address'])) { // 地点
             onPlaceSelected(data.place_id);
 
         } else { // 地名
@@ -44,7 +44,7 @@ export const PPA001PlacesController = (): PlacesControllerInterface => {
     }
 
     const onPlaceSelected = (place_id: string) => {
-        // PPA002 に遷移
+        // PPA002 へ遷移
         navigation.navigate('PPA002Place', {
             place_id: place_id,
             language: 'ja',
