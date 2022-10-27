@@ -29,12 +29,8 @@ export function PCT011MPlacesListProvider({
     }
     const [placesList, setPlacesList] = useState<MPlacesListInterface[]>([]);
     const [searchedAddress, setSearchedAddress] = useState(initialAddress);
-    console.log(placesList);
+    // console.log(placesList);
     console.log(searchedAddress);
-    // const [country, setCountry] = useState<MPlacesListProviderPropsInterface['initialCountry']>(initialCountry);
-    // const [administrativeAreaLevel1, setAdministrativeAreaLevel1] = useState<MPlacesListProviderPropsInterface['initialAdministrativeAreaLevel1']>(initialAdministrativeAreaLevel1);
-    // const [administrativeAreaLevel2, setAdministrativeAreaLevel2] = useState<MPlacesListProviderPropsInterface['initialAdministrativeAreaLevel2']>(initialAdministrativeAreaLevel2);
-    // const [locality, setLocality] = useState<MPlacesListProviderPropsInterface['initialLocality']>(initialLocality);
 
     useEffect(()=> {
         const createPlaceQuery = (): Query => {
@@ -100,7 +96,7 @@ export function PCT011MPlacesListProvider({
 
         const q: Query = createPlaceQuery();
         fetchUpData(q);
-    }, [searchedAddress]);
+    }, []);
 
     // if (placesList.length == 0) {
     //     return <ActivityIndicator animating />
@@ -109,10 +105,6 @@ export function PCT011MPlacesListProvider({
     const value: MPlacesListValInterface = {
         placesList,
         setSearchedAddress,
-        // setCountry,
-        // setAdministrativeAreaLevel1,
-        // setAdministrativeAreaLevel2,
-        // setLocality,
     }
     return <PCT011MPlacesList.Provider value={value}>{children}</PCT011MPlacesList.Provider>
 }
