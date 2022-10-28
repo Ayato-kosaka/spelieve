@@ -10,10 +10,20 @@ export const PPA001PlacesController = (): PlacesControllerInterface => {
 	const { setSearchedAddress } = useContext(PCT011MPlacesList);
 	const navigation = useNavigation();
 
+	const onPlaceSelected = (place_id: string) => {
+		// PPA002 へ遷移
+		navigation.navigate('PPA002Place', {
+			place_id,
+			language: 'ja',
+		});
+	};
+
 	const onAutoCompleteClicked = (data: GooglePlaceData, details: GooglePlaceDetail) => {
 		const isIncludes = (arr: Array<string>, target: Array<string>) => arr.some((el) => target.includes(el));
+		const pointType: Array<string> = ['establishment', 'street_address'];
+		const sendedDataTypes: Array<string> = data.types;
 
-		if (isIncludes(data.types, ['establishment', 'street_address'])) {
+		if (isIncludes(sendedDataTypes, pointType)) {
 			// 地点
 			onPlaceSelected(data.place_id);
 		} else {
@@ -47,14 +57,6 @@ export const PPA001PlacesController = (): PlacesControllerInterface => {
 			});
 			setSearchedAddress(searchedAddress);
 		}
-	};
-
-	const onPlaceSelected = (place_id: string) => {
-		// PPA002 へ遷移
-		navigation.navigate('PPA002Place', {
-			place_id,
-			language: 'ja',
-		});
 	};
 
 	return { onAutoCompleteClicked, onPlaceSelected };

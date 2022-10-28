@@ -1,12 +1,4 @@
-import {
-	collection,
-	query,
-	where,
-	getDocs,
-	orderBy,
-	Query,
-    QueryConstraint,
-} from 'firebase/firestore';
+import { collection, query, where, getDocs, orderBy, Query, QueryConstraint } from 'firebase/firestore';
 import { useState, createContext, useEffect } from 'react';
 
 import {
@@ -36,8 +28,6 @@ export function PCT011MPlacesListProvider({
 	};
 	const [placesList, setPlacesList] = useState<MPlacesListInterface[]>([]);
 	const [searchedAddress, setSearchedAddress] = useState(initialAddress);
-	// console.log(placesList);
-	console.log(searchedAddress);
 
 	useEffect(() => {
 		const createPlaceQuery = (): Query => {
@@ -45,55 +35,60 @@ export function PCT011MPlacesListProvider({
 			//         ? collection(parentDocRef, MPlace.modelName).withConverter(PCT011MPlacesListConverter())
 			//         : collection(db, MPlace.modelName).withConverter(PCT011MPlacesListConverter());
 			const qc: QueryConstraint[] = [];
-            qc.push(where(MPlace.Cols.country, '==', searchedAddress.country));
-			
+			qc.push(where(MPlace.Cols.country, '==', searchedAddress.country));
+
 			if (searchedAddress.administrativeAreaLevel1 !== '') {
 				// index済
-				qc.push(where(MPlace.Cols.administrativeAreaLevel1, '==', searchedAddress.administrativeAreaLevel1))
+				qc.push(where(MPlace.Cols.administrativeAreaLevel1, '==', searchedAddress.administrativeAreaLevel1));
 			}
-			
+
 			if (searchedAddress.administrativeAreaLevel2 !== '') {
-				qc.push(where(MPlace.Cols.administrativeAreaLevel2, '==', searchedAddress.administrativeAreaLevel2))
+				qc.push(where(MPlace.Cols.administrativeAreaLevel2, '==', searchedAddress.administrativeAreaLevel2));
 			}
-			
+
 			if (searchedAddress.locality !== '') {
 				// index済
-				qc.push(where(MPlace.Cols.locality, '==', searchedAddress.locality))
+				qc.push(where(MPlace.Cols.locality, '==', searchedAddress.locality));
 			}
-			
-			qc.push(orderBy(MPlace.Cols.rating, 'desc'))
+
+			qc.push(orderBy(MPlace.Cols.rating, 'desc'));
 			const placeCollectionRef = collection(db, MPlace.modelName); // .withConverter(PCT011MPlacesListConverter());
 
 			return query(placeCollectionRef, ...qc);
 		};
 
 		const fetchUpData = async (q: Query) => {
-			const querySnapshot = await getDocs(q);
 			const places: MPlacesListInterface[] = [];
-			querySnapshot.forEach((doc) => {
-				places.push(doc.data() as MPlacesListInterface);
-			});
+			await getDocs(q)
+				.then((querySnapshot) => {
+					querySnapshot.forEach((doc) => {
+						places.push(doc.data() as MPlacesListInterface);
+					});
+				})
+				.catch((e) => {
+					console.log(e);
+				});
 			setPlacesList(places);
 		};
 
 		const q: Query = createPlaceQuery();
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		fetchUpData(q);
 	}, [searchedAddress]);
 
-    // const retrieveMore = async () => {
-    //     // setRefreshing(true);
+	// const retrieveMore = async () => {
+	//     // setRefreshing(true);
 
-    //     // Cloud Firestore: Query (Additional Query)
-    //     const placeCollectionRef = collection(db, MPlace.modelName)
-    //     let additionalQuery = query(
-    //         placeCollectionRef,
-    //         where('id', '<=', 20),
-    //         orderBy('id'),
-    //         startAfter(this.state.lastVisible),
-    //         limit(10),
+	//     // Cloud Firestore: Query (Additional Query)
+	//     const placeCollectionRef = collection(db, MPlace.modelName)
+	//     let additionalQuery = query(
+	//         placeCollectionRef,
+	//         where('id', '<=', 20),
+	//         orderBy('id'),
+	//         startAfter(this.state.lastVisible),
+	//         limit(10),
 
-    // }
-
+	// }
 
 	// if (placesList.length == 0) {
 	//     return <ActivityIndicator animating />

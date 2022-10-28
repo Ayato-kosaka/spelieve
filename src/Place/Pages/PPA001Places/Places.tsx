@@ -9,7 +9,6 @@ import { PCT011MPlacesListProvider } from '@/Place/Models/PDB01MPlace/Contexts/P
 import { PMC01101GoogleMapPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList/ModelComponents/PMC01101GoogleMapPlacesList';
 import { PMC01102PlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList/ModelComponents/PMC01102PlacesList';
 
-
 function InnerComponent() {
 	const { onAutoCompleteClicked } = PPA001PlacesController();
 
