@@ -53,7 +53,6 @@ export function PCT012MPlaceOneProvider({
 				await PlaceHttpPost<UpsertPlaceDataBodyInterface, never>('PBL002', { place_id, language });
 				querySnap = await getDocs(q);
 			}
-			console.log("doc: ", querySnap.docs[0])
 			setPlace(querySnap.docs[0].data());
 		};
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
