@@ -12,7 +12,7 @@ export function PCO001SearchPlace({ onAutoCompleteClicked }: SearchPlacePropsInt
 			onPress={onAutoCompleteClicked}
 			query={{
 				key: ENV.GCP_API_KEY,
-				type: ['(cities)', 'establishment'], // TODO: 地名と地点
+				type: ['(cities)', 'establishment'],
 				language: 'ja',
 			}}
 			fetchDetails
