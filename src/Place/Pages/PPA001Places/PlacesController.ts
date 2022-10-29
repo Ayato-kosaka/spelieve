@@ -36,25 +36,11 @@ export const PPA001PlacesController = (): PlacesControllerInterface => {
 				administrativeAreaLevel2: '',
 				locality: '',
 			};
-
-			const toCamelCase = (
-				str: string,
-			): string => // スネークケース->キャメルケース
-				str
-					.split('_')
-					.map((word, index) => {
-						if (index === 0) {
-							return word.toLowerCase();
-						}
-						return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-					})
-					.join('');
-
-			addressParts.forEach((part) => {
-				const val = part.long_name;
-				const type = toCamelCase(part.types[0]);
-				searchedAddress = { ...searchedAddress, [type]: val };
-			});
+			
+			searchedAddress.country = addressParts.find(addressPart => addressPart.types.includes('country'))?.long_name || '';
+			searchedAddress.administrativeAreaLevel1 = addressParts.find(addressPart => addressPart.types.includes('administrative_area_level_1'))?.long_name || '';
+			searchedAddress.administrativeAreaLevel2 = addressParts.find(addressPart => addressPart.types.includes('administrative_area_level_2'))?.long_name || '';
+			searchedAddress.locality = addressParts.find(addressPart => addressPart.types.includes('locality'))?.long_name || '';
 			setSearchedAddress(searchedAddress);
 		}
 	};
