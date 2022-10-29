@@ -1,4 +1,15 @@
-import { collection, query, where, getDocs, orderBy, Query, QueryConstraint, startAfter, limit, DocumentSnapshot, QueryDocumentSnapshot, DocumentData } from 'firebase/firestore';
+import {
+	collection,
+	query,
+	where,
+	getDocs,
+	orderBy,
+	Query,
+	QueryConstraint,
+	startAfter,
+	limit,
+	DocumentSnapshot,
+} from 'firebase/firestore';
 import { useState, createContext, useEffect } from 'react';
 import { ActivityIndicator } from 'react-native-paper';
 
@@ -8,20 +19,20 @@ import {
 	MPlacesListProviderPropsInterface,
 } from 'spelieve-common/lib/Interfaces/Place';
 import { MPlace } from 'spelieve-common/lib/Models/Place/PDB01/MPlace';
+import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
 import db from '@/Place/Endpoint/firestore';
-import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
 export const PCT011MPlacesList = createContext({} as MPlacesListValInterface);
 
-export function PCT011MPlacesListProvider({
+export const PCT011MPlacesListProvider = ({
 	parentDocRef,
 	children,
 	initialCountry,
 	initialAdministrativeAreaLevel1,
 	initialAdministrativeAreaLevel2,
 	initialLocality,
-}: MPlacesListProviderPropsInterface) {
+}: MPlacesListProviderPropsInterface) => {
 	const initialAddress = {
 		country: initialCountry,
 		administrativeAreaLevel1: initialAdministrativeAreaLevel1,
@@ -38,13 +49,11 @@ export function PCT011MPlacesListProvider({
 	const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
 	const createBasicQueryConstraint = (): QueryConstraint[] => {
-		// const collectionRef = parentDocRef
-		//         ? collection(parentDocRef, MPlace.modelName).withConverter(PCT011MPlacesListConverter())
-		//         : collection(db, MPlace.modelName).withConverter(PCT011MPlacesListConverter());
 		const qc: QueryConstraint[] = [];
 		qc.push(where(MPlace.Cols.country, '==', searchedAddress.country));
 
-		if (searchedAddress.administrativeAreaLevel1 !== '') {// index済
+		if (searchedAddress.administrativeAreaLevel1 !== '') {
+			// index済
 			qc.push(where(MPlace.Cols.administrativeAreaLevel1, '==', searchedAddress.administrativeAreaLevel1));
 		}
 
@@ -52,7 +61,8 @@ export function PCT011MPlacesListProvider({
 			qc.push(where(MPlace.Cols.administrativeAreaLevel2, '==', searchedAddress.administrativeAreaLevel2));
 		}
 
-		if (searchedAddress.locality !== '') {// index済
+		if (searchedAddress.locality !== '') {
+			// index済
 			qc.push(where(MPlace.Cols.locality, '==', searchedAddress.locality));
 		}
 
@@ -61,61 +71,54 @@ export function PCT011MPlacesListProvider({
 	};
 
 	const fetchUpPlaces = async (query: Query<MPlacesListInterface>) => {
-		// const places: MPlacesListInterface[] = [];
 		let lastDoc: DocumentSnapshot;
 		await getDocs(query)
 			.then((querySnapshot) => {
-				if (!querySnapshot.empty) {
-					setPlacesList([...placesList, ...querySnapshot.docs.map((doc, index) => {
-						if (index == querySnapshot.size-1) {
-							lastDoc = doc;
-						}
-						return doc.data()
-					})]);
-				}
+				lastDoc = querySnapshot.docs[querySnapshot.docs.length-1]
+				setPlacesList([
+					...placesList,
+					...querySnapshot.docs.map((doc) => doc.data()),
+				]);
+				setLastVisible(lastDoc);
 			})
 			.catch((e) => {
 				console.log(e);
 			});
-		setLastVisible(lastDoc);
-		setPlacesList([...placesList, ...places]);
 	};
 
-	const toQuery = (qc: QueryConstraint[]): Query<MPlacesListInterface> => {
-		return query(placeCollectionRef, ...qc).withConverter(
+	const toQuery = (qc: QueryConstraint[]): Query<MPlacesListInterface> => query(placeCollectionRef, ...qc).withConverter(
 			FirestoreConverter<MPlace, MPlacesListInterface>(
 				MPlace,
 				(data) => data,
 				(data) => data,
 			),
 		);
-	}
 
 	const retrieveMore = async () => {
 		setIsRefreshing(true);
-		let qc: QueryConstraint[] = createBasicQueryConstraint();
+		const qc: QueryConstraint[] = createBasicQueryConstraint();
 		qc.push(startAfter(lastVisible));
 		qc.push(limit(10));
 		const q: Query<MPlacesListInterface> = toQuery(qc);
 		try {
 			await fetchUpPlaces(q);
 			setIsRefreshing(false);
-		} catch(e) {
+		} catch (e) {
 			console.log(e);
 		}
-	}
+	};
 
 	useEffect(() => {
 		const qc: QueryConstraint[] = createBasicQueryConstraint();
 		qc.push(limit(10));
-		const q: Query<MPlacesListInterface> = toQuery(qc)
+		const q: Query<MPlacesListInterface> = toQuery(qc);
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		fetchUpPlaces(q);
 		setIsLoading(false);
 	}, [searchedAddress]);
 
 	if (isLoading) {
-	    return <ActivityIndicator animating />
+		return <ActivityIndicator animating />;
 	}
 
 	const value: MPlacesListValInterface = {

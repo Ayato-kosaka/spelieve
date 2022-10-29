@@ -1,15 +1,17 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, StatusBar } from 'react-native';
 
 export const styles = StyleSheet.create({
 	list: {
 		flex: 1,
 		flexDirection: 'row',
-		flexWrap: 'wrap',
-		position: 'absolute',
-		top: '42%',
+		// flexWrap: 'wrap',
+		// position: 'absolute', scrollできなくなる
+		top: -150,
 		// marginHorizontal: 10,
 		zIndex: -1,
 		width: '100%',
+
+		// marginTop: StatusBar.currentHeight || 0,
 		// alignSelf: "center",
 		// alignContentnItems: "flex-start",
 	},

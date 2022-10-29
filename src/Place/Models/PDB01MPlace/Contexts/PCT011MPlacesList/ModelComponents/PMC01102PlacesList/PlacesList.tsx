@@ -32,6 +32,7 @@ export const PMC01102PlacesList: FC = () => {
 				numColumns={2}
 				onEndReached={retrieveMore}
 				onEndReachedThreshold={0}
+				keyExtractor={place => place.place_id}
 			/>
 		</View>
 	);
