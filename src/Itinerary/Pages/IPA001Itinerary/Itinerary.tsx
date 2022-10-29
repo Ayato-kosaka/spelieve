@@ -1,16 +1,13 @@
-import { collection, doc } from 'firebase/firestore';
-import React, { useContext } from 'react';
-import { View } from 'react-native';
-import { Appbar, Text } from 'react-native-paper';
+import { addDoc } from 'firebase/firestore';
+import React, { useContext, useEffect } from 'react';
+import { ActivityIndicator, View } from 'react-native';
+import { Appbar, Text, Title } from 'react-native-paper';
 
-import { Itineraries } from 'spelieve-common/lib/Models/Itinerary/IDB01/Itineraries';
+import { ItineraryOneInterface } from 'spelieve-common/lib/Interfaces';
 
+import { CCT002Modal } from '@/Common/Context/CCT002Modal';
 import i18n from '@/Common/Hooks/i18n-js';
-import db from '@/Itinerary/Endpoint/firestore';
-import {
-	ICT011ItineraryOne,
-	ICT011ItineraryOneProvider,
-} from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
+import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
 import {
 	ICT021PlanGroupsList,
 	ICT021PlanGroupsListProvider,
@@ -19,18 +16,21 @@ import { ICT031PlansMap, ICT031PlansMapProvider } from '@/Itinerary/Models/IDB03
 import { IMC03101PlanEdit } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03101PlanEdit';
 import { IMC03102TrafficMovementEdit } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03102TrafficMovementEdit';
 import { PCT012MPlaceOneProvider } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/MPlaceOne';
-import { CCT002Modal } from '@/Common/Context/CCT002Modal';
 
 function InnerComponent2() {
 	const { itineraryDocSnap } = useContext(ICT011ItineraryOne);
 	const itinerary = itineraryDocSnap.data();
 	const { planGroupsQSnap } = useContext(ICT021PlanGroupsList);
 	const { plansDocSnapMap } = useContext(ICT031PlansMap);
-	const { setModalVal} = useContext(CCT002Modal);
+	const { setModalVal } = useContext(CCT002Modal);
 
 	const onSettingClicked = () => {
-		setModalVal(val => ({...val, visible: true, modalContent: <Text>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</Text>}))
-	}
+		setModalVal((val) => ({
+			...val,
+			visible: true,
+			modalContent: <Text>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</Text>,
+		}));
+	};
 	return (
 		<>
 			<Appbar.Header>
@@ -71,10 +71,17 @@ function InnerComponent1() {
 export function IPA001Itinerary({
 	id = 'uMFhF6OQph2UUuKEsKNa', // TODO: ''に修正する。
 }) {
-	const docRef = doc(collection(db, Itineraries.modelName), id);
-	return (
-		<ICT011ItineraryOneProvider docRef={docRef}>
-			<InnerComponent1 />
-		</ICT011ItineraryOneProvider>
-	);
+	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
+	useEffect(() => {
+		setItineraryID(id);
+	}, [id, setItineraryID]);
+	if (!itineraryDocSnap) {
+		return <ActivityIndicator animating />;
+	}
+	if (!itineraryDocSnap.exists()) {
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
+		addDoc<ItineraryOneInterface>(itineraryDocSnap.ref.parent, { title: '', caption: '' });
+		return <ActivityIndicator animating />;
+	}
+	return <Title>{itineraryDocSnap.data().title}</Title>;
 }

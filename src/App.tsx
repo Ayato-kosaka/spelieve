@@ -20,11 +20,13 @@ const styles = StyleSheet.create({
 export default function App() {
 	return (
 		<PaperProvider>
+			<ICT011ItineraryOneProvider>
 				<View style={styles.container}>
 					<Text>Open up App.tsx to start working on your app!</Text>
 					<StatusBar style="auto" />
 					<IPA001Itinerary />
 				</View>
+			</ICT011ItineraryOneProvider>
 		</PaperProvider>
 	);
 }
