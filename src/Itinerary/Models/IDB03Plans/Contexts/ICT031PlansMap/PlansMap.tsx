@@ -11,7 +11,7 @@ export const ICT031PlansMap = createContext({} as PlansMapValInterface);
 
 export function ICT031PlansMapProvider({ children }: { children: ReactNode }) {
 	const [plansDocSnapMap, setDocumentSnapshots] = useState<PlansMapValInterface['plansDocSnapMap']>({});
-	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isPlansLoading, setIsPlansLoading] = useState<boolean>(true);
 
 	const { itineraryDocSnap } = useContext(ICT011ItineraryOne);
 
@@ -32,7 +32,7 @@ export function ICT031PlansMapProvider({ children }: { children: ReactNode }) {
 		if (plansCRef) {
 			const unsubscribe = onSnapshot(query(plansCRef), (querySnapshot) => {
 				setDocumentSnapshots((_plansDocSnapMap) => {
-					setIsLoading(true);
+					setIsPlansLoading(true);
 					querySnapshot.docChanges().forEach((change) => {
 						if (change.type === 'added') {
 							_plansDocSnapMap[change.doc.id] = change.doc;
@@ -44,7 +44,7 @@ export function ICT031PlansMapProvider({ children }: { children: ReactNode }) {
 							delete _plansDocSnapMap[change.doc.id];
 						}
 					});
-					setIsLoading(false);
+					setIsPlansLoading(false);
 					return { ..._plansDocSnapMap };
 				});
 			});
@@ -57,7 +57,7 @@ export function ICT031PlansMapProvider({ children }: { children: ReactNode }) {
 	const value: PlansMapValInterface = {
 		plansDocSnapMap,
 		plansCRef,
-		isLoading,
+		isPlansLoading,
 	};
 
 	return <ICT031PlansMap.Provider value={value}>{children}</ICT031PlansMap.Provider>;
