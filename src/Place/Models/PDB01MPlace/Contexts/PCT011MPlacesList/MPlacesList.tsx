@@ -60,19 +60,18 @@ export function PCT011MPlacesListProvider({
 		return qc;
 	};
 
-	const fetchUpPlaces = async (q: Query) => {
-		const places: MPlacesListInterface[] = [];
+	const fetchUpPlaces = async (query: Query<MPlacesListInterface>) => {
+		// const places: MPlacesListInterface[] = [];
 		let lastDoc: DocumentSnapshot;
-		await getDocs(q)
+		await getDocs(query)
 			.then((querySnapshot) => {
 				if (!querySnapshot.empty) {
-					const docSize = querySnapshot.size;
-					querySnapshot.forEach((doc, index) => {
-						if (index == docSize-1) {
+					setPlacesList([...placesList, ...querySnapshot.docs.map((doc, index) => {
+						if (index == querySnapshot.size-1) {
 							lastDoc = doc;
 						}
-						places.push(doc.data() as MPlacesListInterface);
-					});
+						return doc.data()
+					})]);
 				}
 			})
 			.catch((e) => {
