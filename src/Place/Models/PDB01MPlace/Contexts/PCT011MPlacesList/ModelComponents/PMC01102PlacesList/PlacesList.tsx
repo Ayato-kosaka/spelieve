@@ -1,10 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { FC, useContext } from 'react';
-import { Text, View, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
+
+import { styles } from './PlacesListStyle';
 
 import { PCT011MPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
 
-import { styles } from './PlacesListStyle';
 
 export const PMC01102PlacesList: FC = () => {
 	const { placesList, retrieveMore } = useContext(PCT011MPlacesList);

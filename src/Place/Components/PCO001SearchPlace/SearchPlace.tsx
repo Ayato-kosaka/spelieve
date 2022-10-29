@@ -2,11 +2,10 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 
 import { SearchPlacePropsInterface } from 'spelieve-common/lib/Interfaces';
 
-import { ENV } from '@/ENV';
 import i18n from '@/Common/Hooks/i18n-js';
+import { ENV } from '@/ENV';
 
-export function PCO001SearchPlace({ onAutoCompleteClicked }: SearchPlacePropsInterface) {
-	return (
+export const PCO001SearchPlace = ({ onAutoCompleteClicked }: SearchPlacePropsInterface) => (
 		<GooglePlacesAutocomplete
 			placeholder={i18n.t('地点を入力')}
 			onPress={onAutoCompleteClicked}
@@ -17,13 +16,11 @@ export function PCO001SearchPlace({ onAutoCompleteClicked }: SearchPlacePropsInt
 			}}
 			requestUrl={{
 				useOnPlatform: 'web',
-				url:
-				ENV.PROXY_SERVER_URL + 'https://maps.googleapis.com/maps/api',
-										headers: {
-											'Access-Control-Allow-Origin': '*',
-										}
+				url: `${ENV.PROXY_SERVER_URL  }https://maps.googleapis.com/maps/api`,
+				headers: {
+					'Access-Control-Allow-Origin': '*',
+				},
 			}}
 			fetchDetails
 		/>
-	);
-}
+	)

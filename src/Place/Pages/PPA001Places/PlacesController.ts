@@ -30,17 +30,21 @@ export const PPA001PlacesController = (): PlacesControllerInterface => {
 			// 地名
 			const addressParts: AddressComponent[] = details.address_components;
 
-			let searchedAddress = {
+			const searchedAddress = {
 				country: '',
 				administrativeAreaLevel1: '',
 				administrativeAreaLevel2: '',
 				locality: '',
 			};
-			
-			searchedAddress.country = addressParts.find(addressPart => addressPart.types.includes('country'))?.long_name || '';
-			searchedAddress.administrativeAreaLevel1 = addressParts.find(addressPart => addressPart.types.includes('administrative_area_level_1'))?.long_name || '';
-			searchedAddress.administrativeAreaLevel2 = addressParts.find(addressPart => addressPart.types.includes('administrative_area_level_2'))?.long_name || '';
-			searchedAddress.locality = addressParts.find(addressPart => addressPart.types.includes('locality'))?.long_name || '';
+
+			searchedAddress.country =
+				addressParts.find((addressPart) => addressPart.types.includes('country'))?.long_name || '';
+			searchedAddress.administrativeAreaLevel1 =
+				addressParts.find((addressPart) => addressPart.types.includes('administrative_area_level_1'))?.long_name || '';
+			searchedAddress.administrativeAreaLevel2 =
+				addressParts.find((addressPart) => addressPart.types.includes('administrative_area_level_2'))?.long_name || '';
+			searchedAddress.locality =
+				addressParts.find((addressPart) => addressPart.types.includes('locality'))?.long_name || '';
 			setSearchedAddress(searchedAddress);
 		}
 	};

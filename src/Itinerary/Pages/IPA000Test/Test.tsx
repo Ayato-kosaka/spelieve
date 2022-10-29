@@ -4,7 +4,7 @@ import { ActivityIndicator, Text, Title } from 'react-native-paper';
 
 import db from '@/Itinerary/Endpoint/firestore';
 
-export function IPA000Test({ navigation }) {
+export const IPA000Test = ({ navigation }) => {
 	const [itinerary, setItinerary] = useState<DocumentSnapshot>();
 	console.log(process.env);
 

@@ -3,7 +3,7 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import { PCT011MPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
 
-export function PMC01101GoogleMapPlacesList() {
+export const PMC01101GoogleMapPlacesList = () => {
 	const { placesList } = useContext(PCT011MPlacesList);
 	const [ref, setRef] = useState<MapView | null>(null);
 

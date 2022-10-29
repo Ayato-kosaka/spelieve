@@ -36,7 +36,7 @@ interface ICT002PlanGroupsProviderPropsInterface {
 	parentDocRef?: DocumentReference;
 	children: ReactNode;
 }
-export function ICT002PlanGroupsProvider({ parentDocRef, children }: ICT002PlanGroupsProviderPropsInterface) {
+export const ICT002PlanGroupsProvider = ({ parentDocRef, children }: ICT002PlanGroupsProviderPropsInterface) => {
 	const [querySnapshot, setQuerySnapshot] = useState<ICT002PlanGroupsValInterface['querySnapshot'] | null>(null);
 
 	const collectionRef = parentDocRef

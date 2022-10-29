@@ -7,9 +7,9 @@ import { PPA001PlacesController } from './PlacesController';
 import { PCO001SearchPlace } from '@/Place/Components/PCO001SearchPlace/SearchPlace';
 import { PCT011MPlacesListProvider } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
 import { PMC01101GoogleMapPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList/ModelComponents/PMC01101GoogleMapPlacesList';
-import { PMC01102PlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList/ModelComponents/PMC01102PlacesList';
+import { PMC01102PlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList/ModelComponents/PMC01102PlacesList/PlacesList';
 
-function InnerComponent() {
+const InnerComponent = () => {
 	const { onAutoCompleteClicked } = PPA001PlacesController();
 
 	return (
@@ -21,14 +21,13 @@ function InnerComponent() {
 	);
 }
 
-export function PPA001Places({
+export const PPA001Places = ({
 	country,
 	administrativeAreaLevel1,
 	administrativeAreaLevel2,
 	locality,
 	navigation,
-}: PlacesPropsInterface) {
-	return (
+}: PlacesPropsInterface) => (
 		<PCT011MPlacesListProvider
 			parentDocRef={undefined}
 			initialCountry={country || ''}
@@ -37,5 +36,4 @@ export function PPA001Places({
 			initialLocality={locality || ''}>
 			<InnerComponent />
 		</PCT011MPlacesListProvider>
-	);
-}
+	)
