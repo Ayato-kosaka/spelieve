@@ -1,6 +1,5 @@
 import { useState, createContext, useMemo, ReactNode } from 'react';
 import { Modal, TouchableWithoutFeedback, View } from 'react-native';
-import { Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const CCT002Modal = createContext({} as ModalValInterface);
@@ -39,16 +38,15 @@ export function CCT002ModalProvider({ children }: ModalProviderPropsInterface) {
 				animationType="slide"
 				onDismiss={() => console.log('on ddismiss')}
 				onRequestClose={() => setModalVal({ ...modalVal, visible: false })}
-        style={{
-          margin: 0, 
-          backgroundColor: 'white', 
-          height: 100, 
-          flex:0 , 
-          bottom: 0, 
-          position: 'absolute',
-          width: '100%'
-        }}
-        >
+				style={{
+					margin: 0,
+					backgroundColor: 'white',
+					height: 100,
+					flex: 0,
+					bottom: 0,
+					position: 'absolute',
+					width: '100%',
+				}}>
 				<View style={{ flex: 1 }}>
 					<TouchableWithoutFeedback
 						onPressOut={(e) => {

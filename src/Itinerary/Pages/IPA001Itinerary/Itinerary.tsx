@@ -3,7 +3,8 @@ import React, { useContext, useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { Appbar, Text, Title } from 'react-native-paper';
 
-import { ItineraryOneInterface } from 'spelieve-common/lib/Interfaces';
+import { ItineraryOneInterface, ItinerarypropsInterface } from 'spelieve-common/lib/Interfaces';
+import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 
 import { CCT002Modal } from '@/Common/Context/CCT002Modal';
 import i18n from '@/Common/Hooks/i18n-js';
@@ -69,18 +70,25 @@ function InnerComponent1() {
 }
 
 export function IPA001Itinerary({
-	id = 'uMFhF6OQph2UUuKEsKNa', // TODO: ''に修正する。
-}) {
+	itinearyID = 'uMFhF6OQph2UUuKEsKNa', // TODO: ''に修正する。
+}: ItinerarypropsInterface) {
 	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
 	useEffect(() => {
-		setItineraryID(id);
-	}, [id, setItineraryID]);
+		if (itinearyID) {
+			setItineraryID(itinearyID);
+		}
+	}, [itinearyID, setItineraryID]);
 	if (!itineraryDocSnap) {
 		return <ActivityIndicator animating />;
 	}
 	if (!itineraryDocSnap.exists()) {
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		addDoc<ItineraryOneInterface>(itineraryDocSnap.ref.parent, { title: '', caption: '' });
+		addDoc<ItineraryOneInterface>(itineraryDocSnap.ref.parent, {
+			title: '',
+			caption: '',
+			createdAt: DateUtils.initialDate(),
+			updatedAt: DateUtils.initialDate(),
+		});
 		return <ActivityIndicator animating />;
 	}
 	return <Title>{itineraryDocSnap.data().title}</Title>;
