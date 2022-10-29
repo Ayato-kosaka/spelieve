@@ -10,6 +10,7 @@ import {
 import { MPlace } from 'spelieve-common/lib/Models/Place/PDB01/MPlace';
 
 import db from '@/Place/Endpoint/firestore';
+import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
 export const PCT011MPlacesList = createContext({} as MPlacesListValInterface);
 
@@ -81,12 +82,22 @@ export function PCT011MPlacesListProvider({
 		setPlacesList([...placesList, ...places]);
 	};
 
+	const toQuery = (qc: QueryConstraint[]): Query => {
+		return query(placeCollectionRef, ...qc).withConverter(
+			FirestoreConverter<MPlace, MPlacesListInterface>(
+				MPlace,
+				(data) => data,
+				(data) => data,
+			),
+		);
+	}
+
 	const retrieveMore = async () => {
 		setIsRefreshing(true);
 		let qc: QueryConstraint[] = createBasicQueryConstraint();
 		qc.push(startAfter(lastVisible));
 		qc.push(limit(10));
-		const q: Query = query(placeCollectionRef, ...qc);
+		const q: Query = toQuery(qc);
 		try {
 			await fetchUpPlaces(q);
 			setIsRefreshing(false);
@@ -98,7 +109,7 @@ export function PCT011MPlacesListProvider({
 	useEffect(() => {
 		const qc: QueryConstraint[] = createBasicQueryConstraint();
 		qc.push(limit(10));
-		const q: Query = query(placeCollectionRef, ...qc);
+		const q: Query = toQuery(qc)
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		fetchUpPlaces(q);
 		setIsLoading(false);
