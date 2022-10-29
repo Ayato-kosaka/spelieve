@@ -73,12 +73,13 @@ export function IPA001Itinerary({
 	itinearyID = 'uMFhF6OQph2UUuKEsKNa', // TODO: ''に修正する。
 }: ItinerarypropsInterface) {
 	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
+	const useICT031PlansMap = useContext(ICT031PlansMap);
 	useEffect(() => {
 		if (itinearyID) {
 			setItineraryID(itinearyID);
 		}
 	}, [itinearyID, setItineraryID]);
-	if (!itineraryDocSnap) {
+	if (!itineraryDocSnap || useICT031PlansMap.isLoading) {
 		return <ActivityIndicator animating />;
 	}
 	if (!itineraryDocSnap.exists()) {

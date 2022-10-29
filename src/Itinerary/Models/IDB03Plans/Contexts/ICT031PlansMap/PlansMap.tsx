@@ -1,64 +1,66 @@
 import { collection, query, onSnapshot } from 'firebase/firestore';
-import { useState, createContext, useEffect, useMemo } from 'react';
-import { ActivityIndicator } from 'react-native-paper';
+import { useState, createContext, useEffect, useMemo, useContext, ReactNode } from 'react';
 
 import {
 	PlansMapInterface,
-	PlansMapProviderPropsInterface,
 	PlansMapValInterface,
 } from 'spelieve-common/lib/Interfaces/Itinerary';
 import { Plans } from 'spelieve-common/lib/Models/Itinerary/IDB03/Plans';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
-import db from '@/Itinerary/Endpoint/firestore';
+import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
 
 export const ICT031PlansMap = createContext({} as PlansMapValInterface);
 
-export function ICT031PlansMapProvider({ parentDocRef, children }: PlansMapProviderPropsInterface) {
+export function ICT031PlansMapProvider({ children }: { children: ReactNode }) {
 	const [plansDocSnapMap, setDocumentSnapshots] = useState<PlansMapValInterface['plansDocSnapMap']>({});
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
-	const plansCRef = useMemo(
-		() =>
-			(parentDocRef ? collection(parentDocRef, Plans.modelName) : collection(db, Plans.modelName)).withConverter(
+	const { itineraryDocSnap } = useContext(ICT011ItineraryOne);
+
+	const plansCRef = useMemo(() => {
+		if (itineraryDocSnap) {
+			return collection(itineraryDocSnap.ref, Plans.modelName).withConverter(
 				FirestoreConverter<Plans, PlansMapInterface>(
 					Plans,
 					(data) => data,
 					(data) => data,
 				),
-			),
-		[parentDocRef],
-	);
+			);
+		}
+		return undefined;
+	}, [itineraryDocSnap]);
 
 	useEffect(() => {
-		const unsubscribe = onSnapshot(query(plansCRef), (querySnapshot) => {
-			setDocumentSnapshots((_plansDocSnapMap) => {
-				querySnapshot.docChanges().forEach((change) => {
-					if (change.type === 'added') {
-						_plansDocSnapMap[change.doc.id] = change.doc;
-					}
-					if (change.type === 'modified') {
-						_plansDocSnapMap[change.doc.id] = change.doc;
-					}
-					if (change.type === 'removed') {
-						delete _plansDocSnapMap[change.doc.id];
-					}
+		if (plansCRef) {
+			const unsubscribe = onSnapshot(query(plansCRef), (querySnapshot) => {
+				setDocumentSnapshots((_plansDocSnapMap) => {
+					setIsLoading(true);
+					querySnapshot.docChanges().forEach((change) => {
+						if (change.type === 'added') {
+							_plansDocSnapMap[change.doc.id] = change.doc;
+						}
+						if (change.type === 'modified') {
+							_plansDocSnapMap[change.doc.id] = change.doc;
+						}
+						if (change.type === 'removed') {
+							delete _plansDocSnapMap[change.doc.id];
+						}
+					});
+					setIsLoading(false);
+					return { ..._plansDocSnapMap };
 				});
-				setIsLoading(false);
-				return { ..._plansDocSnapMap };
 			});
-		});
-		return () => unsubscribe();
+			return () => unsubscribe();
+		}
+		return () => undefined;
 	}, [plansCRef]);
-
-	if (isLoading) {
-		return <ActivityIndicator animating />;
-	}
 
 	/* eslint react/jsx-no-constructed-context-values: 0 */
 	const value: PlansMapValInterface = {
 		plansDocSnapMap,
 		plansCRef,
+		isLoading,
 	};
 
 	return <ICT031PlansMap.Provider value={value}>{children}</ICT031PlansMap.Provider>;
