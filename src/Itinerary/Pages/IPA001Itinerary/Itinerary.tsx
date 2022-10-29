@@ -74,14 +74,17 @@ export function IPA001Itinerary({
 }: ItinerarypropsInterface) {
 	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
 	const useICT031PlansMap = useContext(ICT031PlansMap);
+	
 	useEffect(() => {
 		if (itinearyID) {
 			setItineraryID(itinearyID);
 		}
 	}, [itinearyID, setItineraryID]);
+
 	if (!itineraryDocSnap || useICT031PlansMap.isLoading) {
 		return <ActivityIndicator animating />;
 	}
+
 	if (!itineraryDocSnap.exists()) {
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		addDoc<ItineraryOneInterface>(itineraryDocSnap.ref.parent, {
@@ -92,5 +95,6 @@ export function IPA001Itinerary({
 		});
 		return <ActivityIndicator animating />;
 	}
+
 	return <Title>{itineraryDocSnap.data().title}</Title>;
 }
