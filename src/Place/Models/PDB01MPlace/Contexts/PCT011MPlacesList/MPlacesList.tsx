@@ -81,7 +81,7 @@ export function PCT011MPlacesListProvider({
 		setPlacesList([...placesList, ...places]);
 	};
 
-	const toQuery = (qc: QueryConstraint[]): Query => {
+	const toQuery = (qc: QueryConstraint[]): Query<MPlacesListInterface> => {
 		return query(placeCollectionRef, ...qc).withConverter(
 			FirestoreConverter<MPlace, MPlacesListInterface>(
 				MPlace,
@@ -96,7 +96,7 @@ export function PCT011MPlacesListProvider({
 		let qc: QueryConstraint[] = createBasicQueryConstraint();
 		qc.push(startAfter(lastVisible));
 		qc.push(limit(10));
-		const q: Query = toQuery(qc);
+		const q: Query<MPlacesListInterface> = toQuery(qc);
 		try {
 			await fetchUpPlaces(q);
 			setIsRefreshing(false);
@@ -108,7 +108,7 @@ export function PCT011MPlacesListProvider({
 	useEffect(() => {
 		const qc: QueryConstraint[] = createBasicQueryConstraint();
 		qc.push(limit(10));
-		const q: Query = toQuery(qc)
+		const q: Query<MPlacesListInterface> = toQuery(qc)
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		fetchUpPlaces(q);
 		setIsLoading(false);
