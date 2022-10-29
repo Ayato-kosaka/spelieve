@@ -1,5 +1,6 @@
 import { collection, query, onSnapshot } from 'firebase/firestore';
 import { useState, createContext, useEffect, useMemo } from 'react';
+import { ActivityIndicator } from 'react-native-paper';
 
 import {
 	PlansMapInterface,
@@ -15,6 +16,7 @@ export const ICT031PlansMap = createContext({} as PlansMapValInterface);
 
 export function ICT031PlansMapProvider({ parentDocRef, children }: PlansMapProviderPropsInterface) {
 	const [plansDocSnapMap, setDocumentSnapshots] = useState<PlansMapValInterface['plansDocSnapMap']>({});
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const plansCRef = useMemo(
 		() =>
@@ -42,11 +44,16 @@ export function ICT031PlansMapProvider({ parentDocRef, children }: PlansMapProvi
 						delete _plansDocSnapMap[change.doc.id];
 					}
 				});
+				setIsLoading(false);
 				return { ..._plansDocSnapMap };
 			});
 		});
 		return () => unsubscribe();
 	}, [plansCRef]);
+
+	if (isLoading) {
+		return <ActivityIndicator animating />;
+	}
 
 	/* eslint react/jsx-no-constructed-context-values: 0 */
 	const value: PlansMapValInterface = {

@@ -48,7 +48,7 @@ export function PCT012MPlaceOneProvider({
 			let querySnap = await getDocs(q);
 			if (
 				querySnap.empty ||
-				new Date().getDate() - querySnap.docs[0].data().updatedAt.getDate() < HowManyDaysToLimitPlaceUpserts
+				new Date().getDate() - querySnap.docs[0].data().updatedAt.getDate() > HowManyDaysToLimitPlaceUpserts
 			) {
 				await PlaceHttpPost<UpsertPlaceDataBodyInterface, never>('PBL002', { place_id, language });
 				querySnap = await getDocs(q);

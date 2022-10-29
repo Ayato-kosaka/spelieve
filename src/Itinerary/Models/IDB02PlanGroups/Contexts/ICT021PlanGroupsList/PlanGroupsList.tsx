@@ -42,37 +42,6 @@ export function ICT021PlanGroupsListProvider({ parentDocRef, children }: PlanGro
 
 	const useICT031PlansMap = useContext(ICT031PlansMap);
 
-	// const create = useCallback(
-	// 	async (representativeStartTime?: Date) => {
-	// 		const initData: PlanGroupsListInterface = {
-	// 			plans: [],
-	// 			representativePlanID: '',
-	// 			representativeStartTime: CHK001Utils.initialDate(),
-	// 		};
-	// 		if (representativeStartTime) {
-	// 			initData.representativeStartTime = representativeStartTime;
-	// 		}
-	// 		await addDoc<PlanGroupsListInterface>(planGroupsCRef, {
-	// 			plans: [],
-	// 			representativePlanID: '',
-	// 			representativeStartTime: CHK001Utils.initialDate(),
-	// 		});
-	// 	},
-	// 	[planGroupsCRef],
-	// );
-
-	// const insertPlan = useCallback(
-	// 	async (index: number, plansIndex = 0, planId?: string): Promise<void> => {
-	// 		const planGroup: PlanGroupsListInterface = planGroupsQSnap!.docs[index].data();
-	// 		if (!planId) {
-	// 			planId = (await useICT031PlansMap.create()).id;
-	// 		}
-	// 		planGroup.plans.splice(plansIndex, 0, planId);
-	// 		await setDoc(planGroupsQSnap!.docs[index].ref, planGroup);
-	// 	},
-	// 	[planGroupsQSnap, useICT031PlansMap],
-	// );
-
 	useEffect(() => {
 		const unsubscribe = onSnapshot(
 			query(planGroupsCRef, orderBy(PlanGroups.Cols.representativeStartTime)),

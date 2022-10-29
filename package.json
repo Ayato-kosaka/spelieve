@@ -22,14 +22,16 @@
     "react-dom": "18.0.0",
     "react-native": "0.69.5",
     "react-native-paper": "4.12.5",
+    "react-native-vector-icons": "^9.2.0",
     "react-native-web": "0.18.9",
-    "spelieve-common": "^1.1.40"
+    "spelieve-common": "^1.1.44"
   },
   "devDependencies": {
     "@babel/core": "7.19.6",
     "@types/i18n-js": "3.8.3",
     "@types/react": "18.0.24",
     "@types/react-native": "0.70.6",
+    "@types/react-native-vector-icons": "^6.4.12",
     "@typescript-eslint/eslint-plugin": "5.41.0",
     "@typescript-eslint/parser": "5.41.0",
     "babel-plugin-module-resolver": "4.1.0",
