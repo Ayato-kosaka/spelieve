@@ -3,7 +3,7 @@ import registerRootComponent from 'expo/build/launch/registerRootComponent';
 import { StyleSheet, Text, View } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 
-import { CCT002ModalProvider } from './Common/Context/CCT002Modal';
+import { ICT011ItineraryOneProvider } from './Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
 
 import { IPA001Itinerary } from '@/Itinerary/Pages/IPA001Itinerary';
 
@@ -17,17 +17,13 @@ const styles = StyleSheet.create({
 	},
 });
 
-const Stack = createNativeStackNavigator();
-
 export default function App() {
 	return (
 		<PaperProvider>
-		<View style={styles.container}>
-			<CCT002ModalProvider>
+				<View style={styles.container}>
 					<Text>Open up App.tsx to start working on your app!</Text>
 					<StatusBar style="auto" />
 					<IPA001Itinerary />
-			</CCT002ModalProvider>
 				</View>
 		</PaperProvider>
 	);
