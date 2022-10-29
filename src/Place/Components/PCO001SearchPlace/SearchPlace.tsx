@@ -3,11 +3,12 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { SearchPlacePropsInterface } from 'spelieve-common/lib/Interfaces';
 
 import { ENV } from '@/ENV';
+import i18n from '@/Common/Hooks/i18n-js';
 
 export function PCO001SearchPlace({ onAutoCompleteClicked }: SearchPlacePropsInterface) {
 	return (
 		<GooglePlacesAutocomplete
-			placeholder="地点を入力"
+			placeholder={i18n.t('地点を入力')}
 			onPress={onAutoCompleteClicked}
 			query={{
 				key: ENV.GCP_API_KEY,
