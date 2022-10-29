@@ -31,6 +31,7 @@ export function ICT011ItineraryOneProvider({ children }: { children: ReactNode }
 			);
 			return () => unsubscribe();
 		}
+		return undefined;
 	}, [itineraryID]);
 
 	/* eslint react/jsx-no-constructed-context-values: 0 */

@@ -1,10 +1,7 @@
 import { collection, query, onSnapshot } from 'firebase/firestore';
 import { useState, createContext, useEffect, useMemo, useContext, ReactNode } from 'react';
 
-import {
-	PlansMapInterface,
-	PlansMapValInterface,
-} from 'spelieve-common/lib/Interfaces/Itinerary';
+import { PlansMapInterface, PlansMapValInterface } from 'spelieve-common/lib/Interfaces/Itinerary';
 import { Plans } from 'spelieve-common/lib/Models/Itinerary/IDB03/Plans';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
