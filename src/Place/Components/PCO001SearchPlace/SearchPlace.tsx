@@ -15,6 +15,14 @@ export function PCO001SearchPlace({ onAutoCompleteClicked }: SearchPlacePropsInt
 				type: ['(cities)', 'establishment'],
 				language: 'ja',
 			}}
+			requestUrl={{
+				useOnPlatform: 'web',
+				url:
+				ENV.PROXY_SERVER_URL + 'https://maps.googleapis.com/maps/api',
+										headers: {
+											'Access-Control-Allow-Origin': '*',
+										}
+			}}
 			fetchDetails
 		/>
 	);
