@@ -56,6 +56,10 @@ module.exports = {
           { "pattern": "spelieve-common/**", "group": "internal", "position": "before" },
         ]
       }
+    ],
+    "react/function-component-definition": [
+      2,
+      { "namedComponents": "arrow-function" }
     ]
   },
 };
