@@ -8,8 +8,6 @@ import i18n from './Common/Hooks/i18n-js';
 import { ItineraryPageNavigator, ItineraryStackParamList } from './Itinerary/Pages/ItineraryPageNavigator';
 import { PlacePageNavigator, PlaceStackParamList } from './Place/Page/PlacePageNavigator';
 
-const styles = StyleSheet.create({});
-
 export type BottomTabParamList = {
 	Itinerary: NavigatorScreenParams<ItineraryStackParamList>;
 	Place: NavigatorScreenParams<PlaceStackParamList>;
