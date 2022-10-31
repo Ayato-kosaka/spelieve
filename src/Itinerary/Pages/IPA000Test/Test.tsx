@@ -3,12 +3,11 @@ import React from 'react';
 import { Button, View } from 'react-native';
 import { Title } from 'react-native-paper';
 
-
 import { BottomTabParamList } from '@/App';
 
 export function IPA000Test({ route, navigation }: NativeStackScreenProps<BottomTabParamList, 'Test'>) {
 	console.log(route.params);
-	const { name = '' } = route.params;
+	const { name } = route.params;
 	// const [itinerary, setItinerary] = useState<DocumentSnapshot>();
 	// console.log(process.env);
 
