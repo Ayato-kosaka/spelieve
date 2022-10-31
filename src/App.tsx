@@ -1,5 +1,5 @@
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, NavigatorScreenParams } from '@react-navigation/native';
 import registerRootComponent from 'expo/build/launch/registerRootComponent';
 import { StyleSheet } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
@@ -8,33 +8,40 @@ import { PPA000DummyPage } from './Place/Page/PPA000DummyPage';
 
 import { IPA000Test } from '@/Itinerary/Pages/IPA000Test';
 import i18n from './Common/Hooks/i18n-js';
+import { ItineraryPageNavigator, ItineraryStackParamList } from './Itinerary/Pages/ItineraryPageNavigator';
+import { PlacePageNavigator, PlaceStackParamList } from './Place/Page/PlacePageNavigator';
 
 const styles = StyleSheet.create({});
 
-const Tab = createMaterialBottomTabNavigator();
+export type BottomTabParamList = {
+	Itinerary: NavigatorScreenParams<ItineraryStackParamList>
+	Place: NavigatorScreenParams<PlaceStackParamList>
+}
+
+const BottomTab = createMaterialBottomTabNavigator<BottomTabParamList>();
 
 export default function App() {
 	return (
 		<NavigationContainer>
 			<PaperProvider>
-				<Tab.Navigator initialRouteName="Itinerary">
-					<Tab.Screen
+				<BottomTab.Navigator initialRouteName="Itinerary">
+					<BottomTab.Screen
 						name="Itinerary"
-						component={IPA000Test}
+						component={ItineraryPageNavigator}
 						options={{
 							tabBarLabel: i18n.t('Itinerary'),
 							tabBarIcon: 'book',
 						}}
 					/>
-					<Tab.Screen
+					<BottomTab.Screen
 						name="Place"
-						component={PPA000DummyPage}
+						component={PlacePageNavigator}
 						options={{
 							tabBarLabel: i18n.t('Place'),
 							tabBarIcon: 'map-search',
 						}}
 					/>
-				</Tab.Navigator>
+				</BottomTab.Navigator>
 			</PaperProvider>
 		</NavigationContainer>
 	);

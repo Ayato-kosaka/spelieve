@@ -1,8 +1,11 @@
+import { BottomTabParamList } from '@/App';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
-import { View } from 'react-native';
+import { Button, View } from 'react-native';
 import { Title } from 'react-native-paper';
+import { ItineraryStackParamList } from '../ItineraryPageNavigator';
 
-export function IPA000Test() {
+export function IPA000Test({navigation}: NativeStackScreenProps<BottomTabParamList, 'Itinerary', 'Test'>) {
 	// const [itinerary, setItinerary] = useState<DocumentSnapshot>();
 	// console.log(process.env);
 
@@ -22,6 +25,24 @@ export function IPA000Test() {
 		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 			<Title>Itinerary</Title>
 			{/* <Text>{JSON.stringify(itinerary.data())}</Text> */}
+      <Button
+        title="Go to DummyPage"
+        onPress={() =>
+          navigation.navigate('Place', {
+            screen: 'DummyPage',
+            params: {},
+          })
+        }
+      />
+      <Button
+        title="Go to DummyPage2"
+        onPress={() =>
+          navigation.navigate('Place', {
+            screen: 'DummyPage2',
+            params: {},
+          })
+        }
+      />
 		</View>
 		// <ICT003PlansProvider
 		//   parentDocRef={itinerary.ref}
