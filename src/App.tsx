@@ -4,25 +4,27 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 
 import { IPA000Test } from '@/Itinerary/Pages/IPA000Test';
+import { NavigationContainer } from '@react-navigation/native';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { PPA000DummyPage } from './Place/Page/PPA000DummyPage';
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#fff',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
 });
+
+const Tab = createMaterialBottomTabNavigator();
 
 export default function App() {
 	return (
-		<PaperProvider>
-			<View style={styles.container}>
-				<Text>Open up App.tsx to start working on your app!</Text>
-				<StatusBar style="auto" />
-				<IPA000Test />
-			</View>
-		</PaperProvider>
+		<NavigationContainer>
+			<PaperProvider>
+					<Tab.Navigator
+					initialRouteName="Itinerary"
+					>
+						<Tab.Screen name="Itinerary" component={IPA000Test} />
+						<Tab.Screen name="Place" component={PPA000DummyPage} />
+					</Tab.Navigator>
+			</PaperProvider>
+		</NavigationContainer>
 	);
 }
 
