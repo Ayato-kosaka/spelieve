@@ -1,1 +1,3 @@
-export interface TestPropsInterface {}
+export interface TestPropsInterface {
+	name: string;
+}

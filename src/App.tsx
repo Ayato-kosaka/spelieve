@@ -4,19 +4,19 @@ import registerRootComponent from 'expo/build/launch/registerRootComponent';
 import { StyleSheet } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 
-import { PPA000DummyPage } from './Place/Page/PPA000DummyPage';
 
-import { IPA000Test } from '@/Itinerary/Pages/IPA000Test';
+
 import i18n from './Common/Hooks/i18n-js';
+import { TestPropsInterface } from './Itinerary/Pages/IPA000Test/TestPropsInterface';
 import { ItineraryPageNavigator, ItineraryStackParamList } from './Itinerary/Pages/ItineraryPageNavigator';
 import { PlacePageNavigator, PlaceStackParamList } from './Place/Page/PlacePageNavigator';
 
 const styles = StyleSheet.create({});
 
 export type BottomTabParamList = {
-	Itinerary: NavigatorScreenParams<ItineraryStackParamList>
-	Place: NavigatorScreenParams<PlaceStackParamList>
-}
+	Itinerary: ItineraryStackParamList;
+	Place: NavigatorScreenParams<PlaceStackParamList>;
+} & ItineraryStackParamList;
 
 const BottomTab = createMaterialBottomTabNavigator<BottomTabParamList>();
 
@@ -24,7 +24,7 @@ export default function App() {
 	return (
 		<NavigationContainer>
 			<PaperProvider>
-				<BottomTab.Navigator initialRouteName="Itinerary">
+				<BottomTab.Navigator initialRouteName="Place">
 					<BottomTab.Screen
 						name="Itinerary"
 						component={ItineraryPageNavigator}
