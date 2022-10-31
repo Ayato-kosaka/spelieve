@@ -1,9 +1,6 @@
-import { doc, collection, getDoc, DocumentSnapshot } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Text, Title } from 'react-native-paper';
-
-import db from '@/Itinerary/Endpoint/firestore';
+import React from 'react';
 import { View } from 'react-native';
+import { Title } from 'react-native-paper';
 
 export function IPA000Test() {
 	// const [itinerary, setItinerary] = useState<DocumentSnapshot>();

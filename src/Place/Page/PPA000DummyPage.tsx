@@ -1,8 +1,10 @@
-import { View } from "react-native"
-import { Title } from "react-native-paper"
+import { View } from 'react-native';
+import { Title } from 'react-native-paper';
 
-export const PPA000DummyPage = () => {
-  return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Title>Dummy Place Page</Title>
-    </View>
+export function PPA000DummyPage() {
+	return (
+		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+			<Title>Dummy Place Page</Title>
+		</View>
+	);
 }
