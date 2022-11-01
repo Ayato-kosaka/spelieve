@@ -1,7 +1,6 @@
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { NavigationContainer, NavigatorScreenParams } from '@react-navigation/native';
 import registerRootComponent from 'expo/build/launch/registerRootComponent';
-import { StyleSheet } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 
 import i18n from './Common/Hooks/i18n-js';
@@ -11,7 +10,8 @@ import { PlacePageNavigator, PlaceStackParamList } from './Place/Page/PlacePageN
 export type BottomTabParamList = {
 	Itinerary: NavigatorScreenParams<ItineraryStackParamList>;
 	Place: NavigatorScreenParams<PlaceStackParamList>;
-} & ItineraryStackParamList;
+} & ItineraryStackParamList &
+	PlaceStackParamList;
 
 const BottomTab = createMaterialBottomTabNavigator<BottomTabParamList>();
 
