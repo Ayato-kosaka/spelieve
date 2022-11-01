@@ -43,11 +43,11 @@ export const PCT011MPlacesListProvider = ({
 		? collection(parentDocRef, MPlace.modelName)
 		: collection(db, MPlace.modelName);
 	const [placesList, setPlacesList] = useState<MPlacesListInterface[]>([]);
-	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isFirstLoading, setIsFirstLoading] = useState<boolean>(true);
 	const [searchedAddress, setSearchedAddress] = useState(initialAddress);
 	const [lastVisible, setLastVisible] = useState<DocumentSnapshot | null>(null);
 	const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
-
+	
 	const createBasicQueryConstraint = (): QueryConstraint[] => {
 		const qc: QueryConstraint[] = [];
 		qc.push(where(MPlace.Cols.country, '==', searchedAddress.country));
@@ -70,16 +70,14 @@ export const PCT011MPlacesListProvider = ({
 		return qc;
 	};
 
-	const fetchUpPlaces = async (query: Query<MPlacesListInterface>) => {
-		let lastDoc: DocumentSnapshot;
+	const fetchSetPlaces = async (query: Query<MPlacesListInterface>, currentPlacesList) => {
 		await getDocs(query)
 			.then((querySnapshot) => {
-				lastDoc = querySnapshot.docs[querySnapshot.docs.length-1]
 				setPlacesList([
-					...placesList,
+					...currentPlacesList,
 					...querySnapshot.docs.map((doc) => doc.data()),
 				]);
-				setLastVisible(lastDoc);
+				setLastVisible(querySnapshot.docs[querySnapshot.docs.length-1]);
 			})
 			.catch((e) => {
 				console.log(e);
@@ -101,23 +99,27 @@ export const PCT011MPlacesListProvider = ({
 		qc.push(limit(10));
 		const q: Query<MPlacesListInterface> = toQuery(qc);
 		try {
-			await fetchUpPlaces(q);
-			setIsRefreshing(false);
+			await fetchSetPlaces(q, placesList);
 		} catch (e) {
 			console.log(e);
 		}
+		setIsRefreshing(false);
 	};
 
 	useEffect(() => {
+		const fetchFirstPlaces = async () => {
+			await fetchSetPlaces(q, []);
+			setIsFirstLoading(false);
+		}
+		setIsFirstLoading(true);
 		const qc: QueryConstraint[] = createBasicQueryConstraint();
 		qc.push(limit(10));
 		const q: Query<MPlacesListInterface> = toQuery(qc);
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		fetchUpPlaces(q);
-		setIsLoading(false);
+		fetchFirstPlaces();
 	}, [searchedAddress]);
 
-	if (isLoading) {
+	if (isFirstLoading) {
 		return <ActivityIndicator animating />;
 	}
 
@@ -125,6 +127,7 @@ export const PCT011MPlacesListProvider = ({
 		placesList,
 		setSearchedAddress,
 		retrieveMore,
+		setIsFirstLoading,
 	};
 	return <PCT011MPlacesList.Provider value={value}>{children}</PCT011MPlacesList.Provider>;
 }

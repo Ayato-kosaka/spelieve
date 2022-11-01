@@ -24,7 +24,7 @@ export const PMC01102PlacesList: FC = () => {
 									language: 'ja',
 								})
 							}>
-							<Image source={{ uri: itemData.item.photoUrls[0] }} style={styles.image} />
+							<Image source={{ uri: itemData.item.photoUrls[0]}} style={styles.image} />
 							<Text style={styles.placeName}>{itemData.item.name}</Text>
 						</TouchableOpacity>
 					</View>
