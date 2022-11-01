@@ -1,6 +1,9 @@
 import { ENV } from '@/ENV';
 
-export const PlaceHttpPost = async <RequestBodyType, ResponseType>(target: string, body: RequestBodyType): Promise<ResponseType | unknown> => {
+export const PlaceHttpPost = async <RequestBodyType, ResponseType>(
+	target: string,
+	body: RequestBodyType,
+): Promise<ResponseType | unknown> => {
 	try {
 		const res = await fetch(ENV.BACKEND_PLACE_ENDPOINT + target, {
 			method: 'POST',
