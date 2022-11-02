@@ -17,12 +17,12 @@ import { PlaceHttpPost } from '@/Place/Endpoint/PlaceHttpPost';
 
 export const PCT012MPlaceOne = createContext({} as MPlaceOneValInterface);
 
-export function PCT012MPlaceOneProvider({
+export const PCT012MPlaceOneProvider = ({
 	parentDocRef,
 	place_id,
 	language,
 	children,
-}: MPlaceOneProviderPropsInterface) {
+}: MPlaceOneProviderPropsInterface) => {
 	const [place, setPlace] = useState<MPlaceOneInterface | null>(null);
 
 	const collectionRef = useMemo(() => {
