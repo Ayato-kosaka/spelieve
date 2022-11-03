@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { FC, useContext } from 'react';
 import { Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
 
@@ -6,10 +5,8 @@ import { styles } from './PlacesListStyle';
 
 import { PCT011MPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
 
-
 export const PMC01102PlacesList: FC = () => {
-	const { placesList, retrieveMore } = useContext(PCT011MPlacesList);
-	const navigation = useNavigation();
+	const { placesList, retrieveMore, onPlaceSelected } = useContext(PCT011MPlacesList);
 
 	return (
 		<View style={styles.list}>
@@ -18,13 +15,11 @@ export const PMC01102PlacesList: FC = () => {
 				renderItem={(itemData) => (
 					<View>
 						<TouchableOpacity
-							onPress={() =>
-								navigation.navigate('PPA002Place', {
-									place_id: itemData.item.place_id,
-									language: 'ja',
-								})
-							}>
-							<Image source={{ uri: itemData.item.photoUrls[0]}} style={styles.image} />
+							onPress={() => {
+								const placeId = itemData.item.place_id;
+								onPlaceSelected(placeId);
+							}}>
+							<Image source={{ uri: itemData.item.imageUrl }} style={styles.image} />
 							<Text style={styles.placeName}>{itemData.item.name}</Text>
 						</TouchableOpacity>
 					</View>
@@ -32,7 +27,7 @@ export const PMC01102PlacesList: FC = () => {
 				numColumns={2}
 				onEndReached={retrieveMore}
 				onEndReachedThreshold={0}
-				keyExtractor={place => place.place_id}
+				keyExtractor={(place) => place.place_id}
 			/>
 		</View>
 	);

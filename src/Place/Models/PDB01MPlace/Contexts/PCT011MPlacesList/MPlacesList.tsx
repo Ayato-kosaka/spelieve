@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import {
 	collection,
 	query,
@@ -10,7 +11,7 @@ import {
 	limit,
 	DocumentSnapshot,
 } from 'firebase/firestore';
-import { useState, createContext, useEffect } from 'react';
+import { useState, createContext, useEffect, useContext } from 'react';
 import { ActivityIndicator } from 'react-native-paper';
 
 import {
@@ -20,6 +21,8 @@ import {
 } from 'spelieve-common/lib/Interfaces/Place';
 import { MPlace } from 'spelieve-common/lib/Models/Place/PDB01/MPlace';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
+
+import { PCT012MPlaceOne } from '../PCT012MPlaceOne/MPlaceOne';
 
 import db from '@/Place/Endpoint/firestore';
 
@@ -47,7 +50,10 @@ export const PCT011MPlacesListProvider = ({
 	const [searchedAddress, setSearchedAddress] = useState(initialAddress);
 	const [lastVisible, setLastVisible] = useState<DocumentSnapshot | null>(null);
 	const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
-	
+
+	const navigation = useNavigation();
+	const { setPlaceId } = useContext(PCT012MPlaceOne);
+
 	const createBasicQueryConstraint = (): QueryConstraint[] => {
 		const qc: QueryConstraint[] = [];
 		qc.push(where(MPlace.Cols.country, '==', searchedAddress.country));
@@ -70,21 +76,19 @@ export const PCT011MPlacesListProvider = ({
 		return qc;
 	};
 
-	const fetchSetPlaces = async (query: Query<MPlacesListInterface>, currentPlacesList) => {
-		await getDocs(query)
+	const fetchSetPlaces = async (q: Query<MPlacesListInterface>, currentPlacesList) => {
+		await getDocs(q)
 			.then((querySnapshot) => {
-				setPlacesList([
-					...currentPlacesList,
-					...querySnapshot.docs.map((doc) => doc.data()),
-				]);
-				setLastVisible(querySnapshot.docs[querySnapshot.docs.length-1]);
+				setPlacesList([...currentPlacesList, ...querySnapshot.docs.map((doc) => doc.data())]);
+				setLastVisible(querySnapshot.docs[querySnapshot.docs.length - 1]);
 			})
 			.catch((e) => {
 				console.log(e);
 			});
 	};
 
-	const toQuery = (qc: QueryConstraint[]): Query<MPlacesListInterface> => query(placeCollectionRef, ...qc).withConverter(
+	const toQuery = (qc: QueryConstraint[]): Query<MPlacesListInterface> =>
+		query(placeCollectionRef, ...qc).withConverter(
 			FirestoreConverter<MPlace, MPlacesListInterface>(
 				MPlace,
 				(data) => data,
@@ -107,17 +111,34 @@ export const PCT011MPlacesListProvider = ({
 	};
 
 	useEffect(() => {
-		const fetchFirstPlaces = async () => {
-			await fetchSetPlaces(q, []);
-			setIsFirstLoading(false);
+		if (initialCountry === '') {
+			return;
 		}
+		
 		setIsFirstLoading(true);
 		const qc: QueryConstraint[] = createBasicQueryConstraint();
 		qc.push(limit(10));
 		const q: Query<MPlacesListInterface> = toQuery(qc);
+
+		const fetchFirstPlaces = async () => {
+			await fetchSetPlaces(q, []);
+			setIsFirstLoading(false);
+		};
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		fetchFirstPlaces();
 	}, [searchedAddress]);
+
+	const onPlaceSelected = (place_id: string) => {
+		setPlaceId(place_id);
+		// PPA002 へ遷移
+		navigation.navigate('Place', {
+			screen: 'PPA002Place',
+			params: {
+				place_id,
+				language: 'ja',
+			},
+		});
+	};
 
 	if (isFirstLoading) {
 		return <ActivityIndicator animating />;
@@ -128,6 +149,7 @@ export const PCT011MPlacesListProvider = ({
 		setSearchedAddress,
 		retrieveMore,
 		setIsFirstLoading,
+		onPlaceSelected,
 	};
 	return <PCT011MPlacesList.Provider value={value}>{children}</PCT011MPlacesList.Provider>;
-}
+};

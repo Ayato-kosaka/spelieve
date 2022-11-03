@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
 import { useContext } from 'react';
 import { GooglePlaceData, GooglePlaceDetail, AddressComponent } from 'react-native-google-places-autocomplete';
 
@@ -7,16 +6,7 @@ import { PlacesControllerInterface } from 'spelieve-common/lib/Interfaces';
 import { PCT011MPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
 
 export const PPA001PlacesController = (): PlacesControllerInterface => {
-	const { setSearchedAddress } = useContext(PCT011MPlacesList);
-	const navigation = useNavigation();
-
-	const onPlaceSelected = (place_id: string) => {
-		// PPA002 へ遷移
-		navigation.navigate('PPA002Place', {
-			place_id,
-			language: 'ja',
-		});
-	};
+	const { setSearchedAddress, onPlaceSelected } = useContext(PCT011MPlacesList);
 
 	const onAutoCompleteClicked = (data: GooglePlaceData, details: GooglePlaceDetail) => {
 		const isIncludes = (arr: Array<string>, target: Array<string>) => arr.some((el) => target.includes(el));
@@ -49,5 +39,5 @@ export const PPA001PlacesController = (): PlacesControllerInterface => {
 		}
 	};
 
-	return { onAutoCompleteClicked, onPlaceSelected };
+	return { onAutoCompleteClicked };
 };

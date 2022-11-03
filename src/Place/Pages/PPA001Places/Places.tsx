@@ -1,16 +1,16 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
-
-import { PlacesPropsInterface } from 'spelieve-common/lib/Interfaces';
 
 import { PPA001PlacesController } from './PlacesController';
 
+import { BottomTabParamList } from '@/App';
 import { PCO001SearchPlace } from '@/Place/Components/PCO001SearchPlace/SearchPlace';
-import { PCT011MPlacesListProvider } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
 import { PMC01101GoogleMapPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList/ModelComponents/PMC01101GoogleMapPlacesList';
 import { PMC01102PlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList/ModelComponents/PMC01102PlacesList/PlacesList';
 
-const InnerComponent = () => {
+export const PPA001Places = ({ navigation, route }: NativeStackScreenProps<BottomTabParamList, 'PPA001Places'>) => {
 	const { onAutoCompleteClicked } = PPA001PlacesController();
+	const { country, administrativeAreaLevel1, administrativeAreaLevel2, locality } = route.params;
 
 	return (
 		<>
@@ -19,21 +19,4 @@ const InnerComponent = () => {
 			<PMC01102PlacesList />
 		</>
 	);
-}
-
-export const PPA001Places = ({
-	country,
-	administrativeAreaLevel1,
-	administrativeAreaLevel2,
-	locality,
-	navigation,
-}: PlacesPropsInterface) => (
-		<PCT011MPlacesListProvider
-			parentDocRef={undefined}
-			initialCountry={country || ''}
-			initialAdministrativeAreaLevel1={administrativeAreaLevel1 || ''}
-			initialAdministrativeAreaLevel2={administrativeAreaLevel2 || ''}
-			initialLocality={locality || ''}>
-			<InnerComponent />
-		</PCT011MPlacesListProvider>
-	)
+};

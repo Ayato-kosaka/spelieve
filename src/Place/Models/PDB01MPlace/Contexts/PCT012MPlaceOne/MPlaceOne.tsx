@@ -1,6 +1,5 @@
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { useState, createContext, useEffect, useMemo } from 'react';
-import { ActivityIndicator } from 'react-native-paper';
 
 import { HowManyDaysToLimitPlaceUpserts } from 'spelieve-common/lib/Consts/Place';
 import {
@@ -19,11 +18,12 @@ export const PCT012MPlaceOne = createContext({} as MPlaceOneValInterface);
 
 export const PCT012MPlaceOneProvider = ({
 	parentDocRef,
-	place_id,
+	initialPlaceId,
 	language,
 	children,
 }: MPlaceOneProviderPropsInterface) => {
 	const [place, setPlace] = useState<MPlaceOneInterface | null>(null);
+	const [place_id, setPlaceId] = useState<string>(initialPlaceId);
 
 	const collectionRef = useMemo(() => {
 		if (parentDocRef) {
@@ -33,6 +33,9 @@ export const PCT012MPlaceOneProvider = ({
 	}, [parentDocRef]);
 
 	useEffect(() => {
+		if (place_id === '' || language === '') {
+			return;
+		}
 		const fetchData = async () => {
 			const q = query(
 				collectionRef,
@@ -59,13 +62,10 @@ export const PCT012MPlaceOneProvider = ({
 		fetchData();
 	}, [collectionRef, place_id, language]);
 
-	if (!place) {
-		return <ActivityIndicator animating />;
-	}
-
 	// eslint-disable-next-line react/jsx-no-constructed-context-values
 	const value: MPlaceOneValInterface = {
 		place,
+		setPlaceId,
 	};
 	return <PCT012MPlaceOne.Provider value={value}>{children}</PCT012MPlaceOne.Provider>;
-}
+};
