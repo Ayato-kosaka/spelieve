@@ -51,9 +51,6 @@ export const PCT011MPlacesListProvider = ({
 	const [lastVisible, setLastVisible] = useState<DocumentSnapshot | null>(null);
 	const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
-	const navigation = useNavigation();
-	const { setPlaceId } = useContext(PCT012MPlaceOne);
-
 	const createBasicQueryConstraint = (): QueryConstraint[] => {
 		const qc: QueryConstraint[] = [];
 		qc.push(where(MPlace.Cols.country, '==', searchedAddress.country));
@@ -128,18 +125,6 @@ export const PCT011MPlacesListProvider = ({
 		fetchFirstPlaces();
 	}, [searchedAddress]);
 
-	const onPlaceSelected = (place_id: string) => {
-		setPlaceId(place_id);
-		// PPA002 へ遷移
-		navigation.navigate('Place', {
-			screen: 'PPA002Place',
-			params: {
-				place_id,
-				language: 'ja',
-			},
-		});
-	};
-
 	if (isFirstLoading) {
 		return <ActivityIndicator animating />;
 	}
@@ -149,7 +134,6 @@ export const PCT011MPlacesListProvider = ({
 		setSearchedAddress,
 		retrieveMore,
 		setIsFirstLoading,
-		onPlaceSelected,
 	};
 	return <PCT011MPlacesList.Provider value={value}>{children}</PCT011MPlacesList.Provider>;
 };

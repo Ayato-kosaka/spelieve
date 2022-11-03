@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Text, ActivityIndicator } from 'react-native-paper';
 
 import { BottomTabParamList } from '@/App';
@@ -8,8 +8,12 @@ import { PMC01203PlaceImage } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MP
 import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/MPlaceOne';
 
 export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<BottomTabParamList, 'PPA002Place'>) => {
-	const { place } = useContext(PCT012MPlaceOne);
+	const { place, setPlaceId } = useContext(PCT012MPlaceOne);
 	const { place_id, language } = route.params;
+
+	useEffect(() => {
+		setPlaceId(place_id);
+	}, [place_id])
 
 	if (!place) {
 		return <ActivityIndicator animating />;
