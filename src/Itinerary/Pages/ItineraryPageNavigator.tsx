@@ -9,10 +9,8 @@ export type ItineraryStackParamList = {
 
 const Stack = createNativeStackNavigator<ItineraryStackParamList>();
 
-export function ItineraryPageNavigator() {
-	return (
-		<Stack.Navigator initialRouteName="Test">
-			<Stack.Screen name="Test" component={IPA000Test} initialParams={{ name: '' }} />
-		</Stack.Navigator>
-	);
-}
+export const ItineraryPageNavigator = () => (
+	<Stack.Navigator initialRouteName="Test">
+		<Stack.Screen name="Test" component={IPA000Test} initialParams={{ name: '' }} />
+	</Stack.Navigator>
+);

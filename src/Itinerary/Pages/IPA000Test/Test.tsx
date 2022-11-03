@@ -59,4 +59,4 @@ export const IPA000Test = ({ route, navigation }: NativeStackScreenProps<BottomT
 		//   </ICT002PlanGroupsProvider>
 		// </ICT003PlansProvider>
 	);
-}
+};

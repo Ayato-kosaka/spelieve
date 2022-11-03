@@ -15,34 +15,33 @@ export type BottomTabParamList = {
 
 const BottomTab = createMaterialBottomTabNavigator<BottomTabParamList>();
 
-export default function App() {
-	return (
-		<NavigationContainer
-			linking={{
-				prefixes: ['spelieve.com'],
-			}}>
-			<PaperProvider>
-				<BottomTab.Navigator initialRouteName="Itinerary">
-					<BottomTab.Screen
-						name="Itinerary"
-						component={ItineraryPageNavigator}
-						options={{
-							tabBarLabel: i18n.t('Itinerary'),
-							tabBarIcon: 'book',
-						}}
-					/>
-					<BottomTab.Screen
-						name="Place"
-						component={PlacePageNavigator}
-						options={{
-							tabBarLabel: i18n.t('Place'),
-							tabBarIcon: 'map-search',
-						}}
-					/>
-				</BottomTab.Navigator>
-			</PaperProvider>
-		</NavigationContainer>
-	);
-}
+export const App = () => (
+	<NavigationContainer
+		linking={{
+			prefixes: ['spelieve.com'],
+		}}>
+		<PaperProvider>
+			<BottomTab.Navigator initialRouteName="Itinerary">
+				<BottomTab.Screen
+					name="Itinerary"
+					component={ItineraryPageNavigator}
+					options={{
+						tabBarLabel: i18n.t('Itinerary'),
+						tabBarIcon: 'book',
+					}}
+				/>
+				<BottomTab.Screen
+					name="Place"
+					component={PlacePageNavigator}
+					options={{
+						tabBarLabel: i18n.t('Place'),
+						tabBarIcon: 'map-search',
+					}}
+				/>
+			</BottomTab.Navigator>
+		</PaperProvider>
+	</NavigationContainer>
+);
+export default App;
 
 registerRootComponent(App);

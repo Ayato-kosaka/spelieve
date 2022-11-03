@@ -11,10 +11,6 @@ export const PMC01101GoogleMapPlacesList = () => {
 	const centerLat = center ? center.geometry.latitude : 35.6809591;
 	const centerLng = center ? center.geometry.longitude : 139.7673068;
 
-	// useEffect(() => {
-	// 	ref?.fitToSuppliedMarkers(placesList.map((p) => p.place_id))
-	// },[placesList])
-
 	return (
 		<MapView
 			style={{ width: '100%', height: 200 }}
@@ -38,4 +34,4 @@ export const PMC01101GoogleMapPlacesList = () => {
 			})}
 		</MapView>
 	);
-}
+};

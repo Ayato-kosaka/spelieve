@@ -4,19 +4,17 @@ import { Title } from 'react-native-paper';
 
 import { BottomTabParamList } from '@/App';
 
-export function PPA000DummyPage2({ navigation }: NativeStackScreenProps<BottomTabParamList>) {
-	return (
-		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-			<Title>Dummy Place Page 2</Title>
-			<Button
-				title="Go to Test"
-				onPress={() =>
-					navigation.navigate('Itinerary', {
-						screen: 'Test',
-						params: { name: 'from Dummy Page2' },
-					})
-				}
-			/>
-		</View>
-	);
-}
+export const PPA000DummyPage2 = ({ navigation }: NativeStackScreenProps<BottomTabParamList>) => (
+	<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+		<Title>Dummy Place Page 2</Title>
+		<Button
+			title="Go to Test"
+			onPress={() =>
+				navigation.navigate('Itinerary', {
+					screen: 'Test',
+					params: { name: 'from Dummy Page2' },
+				})
+			}
+		/>
+	</View>
+);

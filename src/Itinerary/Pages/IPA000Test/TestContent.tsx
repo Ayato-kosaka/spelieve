@@ -70,4 +70,4 @@ export const IPA000TestContent = () => {
 			</Button>
 		</View>
 	);
-}
+};
