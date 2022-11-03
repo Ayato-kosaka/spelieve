@@ -1,9 +1,8 @@
 import { collection, query, QuerySnapshot, onSnapshot, addDoc, orderBy, setDoc } from 'firebase/firestore';
-import { useState, createContext, useEffect, useContext, useMemo } from 'react';
+import { useState, createContext, useEffect, useContext, useMemo, ReactNode } from 'react';
 
 import {
 	PlanGroupsListInterface,
-	PlanGroupsListProviderPropsInterface,
 	PlanGroupsListValInterface,
 	PlansMapInterface,
 } from 'spelieve-common/lib/Interfaces/Itinerary';
@@ -16,7 +15,7 @@ import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031Pla
 
 export const ICT021PlanGroupsList = createContext({} as PlanGroupsListValInterface);
 
-export function ICT021PlanGroupsListProvider({ parentDocRef, children }: PlanGroupsListProviderPropsInterface) {
+export function ICT021PlanGroupsListProvider({ children }: { children: ReactNode }) {
 	const [planGroupsQSnap, setPlanGroupsQSnap] = useState<QuerySnapshot<PlanGroupsListInterface> | undefined>(undefined);
 
 	const { itineraryDocSnap } = useContext(ICT011ItineraryOne);
@@ -38,7 +37,7 @@ export function ICT021PlanGroupsListProvider({ parentDocRef, children }: PlanGro
 	useEffect(() => {
 		if (planGroupsCRef && plansCRef) {
 			const unsubscribe = onSnapshot(
-				query(planGroupsCRef, orderBy(PlanGroups.Cols.representativeStartTime)),
+				query(planGroupsCRef, orderBy(PlanGroups.Cols.representativeStartDateTime)),
 				(querySnap) => {
 					if (querySnap.empty) {
 						/* eslint @typescript-eslint/no-floating-promises: 0 */

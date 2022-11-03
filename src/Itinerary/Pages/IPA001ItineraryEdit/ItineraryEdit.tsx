@@ -1,11 +1,13 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { addDoc } from 'firebase/firestore';
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { Appbar, Text } from 'react-native-paper';
 
-import { ItineraryOneInterface, ItinerarypropsInterface } from 'spelieve-common/lib/Interfaces';
+import { ItineraryOneInterface } from 'spelieve-common/lib/Interfaces';
 import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 
+import { BottomTabParamList } from '@/App';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
 import { ICT021PlanGroupsList } from '@/Itinerary/Models/IDB02PlanGroups/Contexts/ICT021PlanGroupsList';
@@ -15,17 +17,20 @@ import { IMC03102TrafficMovementEdit } from '@/Itinerary/Models/IDB03Plans/Conte
 import { PCT012MPlaceOneProvider } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/MPlaceOne';
 
 export function IPA001ItineraryEdit({
-	itinearyID = 'uMFhF6OQph2UUuKEsKNa', // TODO: ''に修正する。
-}: ItinerarypropsInterface) {
+	route,
+	navigation,
+}: NativeStackScreenProps<BottomTabParamList, 'IPA001ItineraryEdit'>) {
 	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
 	const { isPlansLoading, plansDocSnapMap } = useContext(ICT031PlansMap);
 	const { planGroupsQSnap, planGroupsCRef } = useContext(ICT021PlanGroupsList);
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	const { itineraryID, isPreview, place_id, placeName } = route.params;
 
 	useEffect(() => {
-		if (itinearyID) {
-			setItineraryID(itinearyID);
+		if (itineraryID) {
+			setItineraryID(itineraryID);
 		}
-	}, [itinearyID, setItineraryID]);
+	}, [itineraryID, setItineraryID]);
 
 	if (!itineraryDocSnap || isPlansLoading || !planGroupsQSnap) {
 		return <ActivityIndicator animating />;
@@ -35,7 +40,10 @@ export function IPA001ItineraryEdit({
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		addDoc<ItineraryOneInterface>(itineraryDocSnap.ref.parent, {
 			title: '',
+			startDate: new Date(),
+			tags: [],
 			caption: '',
+			isUpdatable: true,
 			createdAt: DateUtils.initialDate(),
 			updatedAt: DateUtils.initialDate(),
 		});
