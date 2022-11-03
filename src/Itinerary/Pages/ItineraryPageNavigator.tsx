@@ -20,7 +20,7 @@ export function ItineraryPageNavigator() {
 			<ICT031PlansMapProvider>
 				<ICT021PlanGroupsListProvider>
 					<Stack.Navigator initialRouteName="IPA001ItineraryEdit">
-						<Stack.Screen name="IPA001ItineraryEdit" component={IPA001ItineraryEdit} />
+						<Stack.Screen name="IPA001ItineraryEdit" component={IPA001ItineraryEdit} initialParams={{}} />
 					</Stack.Navigator>
 				</ICT021PlanGroupsListProvider>
 			</ICT031PlansMapProvider>

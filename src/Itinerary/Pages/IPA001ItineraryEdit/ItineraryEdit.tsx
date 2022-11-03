@@ -26,6 +26,8 @@ export function IPA001ItineraryEdit({
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	const { itineraryID, isPreview, place_id, placeName } = route.params;
 
+	// ?itineraryID=uMFhF6OQph2UUuKEsKNa
+
 	useEffect(() => {
 		if (itineraryID) {
 			setItineraryID(itineraryID);
