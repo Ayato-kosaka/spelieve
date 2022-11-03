@@ -1,39 +1,47 @@
-import { StatusBar } from 'expo-status-bar';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { NavigationContainer, NavigatorScreenParams } from '@react-navigation/native';
 import registerRootComponent from 'expo/build/launch/registerRootComponent';
-import { StyleSheet, Text, View } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 
-import { ICT011ItineraryOneProvider } from './Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
-import { ICT021PlanGroupsListProvider } from './Itinerary/Models/IDB02PlanGroups/Contexts/ICT021PlanGroupsList';
-import { ICT031PlansMapProvider } from './Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap';
+import i18n from './Common/Hooks/i18n-js';
+import { ItineraryPageNavigator, ItineraryStackParamList } from './Itinerary/Pages/ItineraryPageNavigator';
+import { PlacePageNavigator, PlaceStackParamList } from './Place/Page/PlacePageNavigator';
 
-import { IPA001Itinerary } from '@/Itinerary/Pages/IPA001Itinerary';
+export type BottomTabParamList = {
+	Itinerary: NavigatorScreenParams<ItineraryStackParamList>;
+	Place: NavigatorScreenParams<PlaceStackParamList>;
+} & ItineraryStackParamList &
+	PlaceStackParamList;
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#fff',
-		width: '100%',
-		maxWidth: '450px',
-		marginHorizontal: 'auto',
-	},
-});
+const BottomTab = createMaterialBottomTabNavigator<BottomTabParamList>();
 
 export default function App() {
 	return (
-		<PaperProvider>
-			<ICT011ItineraryOneProvider>
-				<ICT031PlansMapProvider>
-					<ICT021PlanGroupsListProvider>
-						<View style={styles.container}>
-							<Text>Open up App.tsx to start working on your app!</Text>
-							<StatusBar style="auto" />
-							<IPA001Itinerary />
-						</View>
-					</ICT021PlanGroupsListProvider>
-				</ICT031PlansMapProvider>
-			</ICT011ItineraryOneProvider>
-		</PaperProvider>
+		<NavigationContainer
+			linking={{
+				prefixes: ['spelieve.com'],
+			}}>
+			<PaperProvider>
+				<BottomTab.Navigator initialRouteName="Itinerary">
+					<BottomTab.Screen
+						name="Itinerary"
+						component={ItineraryPageNavigator}
+						options={{
+							tabBarLabel: i18n.t('Itinerary'),
+							tabBarIcon: 'book',
+						}}
+					/>
+					<BottomTab.Screen
+						name="Place"
+						component={PlacePageNavigator}
+						options={{
+							tabBarLabel: i18n.t('Place'),
+							tabBarIcon: 'map-search',
+						}}
+					/>
+				</BottomTab.Navigator>
+			</PaperProvider>
+		</NavigationContainer>
 	);
 }
 
