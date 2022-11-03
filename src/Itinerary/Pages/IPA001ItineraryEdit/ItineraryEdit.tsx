@@ -14,7 +14,7 @@ import { IMC03101PlanEdit } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031P
 import { IMC03102TrafficMovementEdit } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03102TrafficMovementEdit';
 import { PCT012MPlaceOneProvider } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/MPlaceOne';
 
-export function IPA001Itinerary({
+export function IPA001ItineraryEdit({
 	itinearyID = 'uMFhF6OQph2UUuKEsKNa', // TODO: ''に修正する。
 }: ItinerarypropsInterface) {
 	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
