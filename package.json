@@ -32,7 +32,7 @@
     "spelieve-common": "^1.1.40"
   },
   "devDependencies": {
-    "@babel/core": "7.19.6",
+    "@babel/core": "7.20.2",
     "@types/i18n-js": "3.8.3",
     "@types/react": "18.0.25",
     "@types/react-native": "0.70.6",
