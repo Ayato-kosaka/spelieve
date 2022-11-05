@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { setDoc } from 'firebase/firestore';
 import { useContext, useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Image, TextInputChangeEventData } from 'react-native';
+import { ActivityIndicator, FlatList, Image, TextInputChangeEventData, ScrollView } from 'react-native';
 import { Chip, TextInput } from 'react-native-paper';
 
 import { ItineraryOneInterface } from 'spelieve-common/lib/Interfaces';
@@ -10,21 +10,17 @@ import { BottomTabParamList } from '@/App';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
 
-
-
-
-
 export function IPA002ItineraryCover({
 	route,
 	navigation,
 }: NativeStackScreenProps<BottomTabParamList, 'IPA002ItineraryCover'>) {
-	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
-	// eslint-disable-next-line @typescript-eslint/naming-convention
 	const { itineraryID } = route.params;
 
 	// TODO: あとで消す ?itineraryID=uMFhF6OQph2UUuKEsKNa
 
+	// ここから Controller
 	const [pageItinerary, setPageItinerary] = useState<ItineraryOneInterface | undefined>(undefined);
+	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
 	useEffect(() => {
 		if (itineraryID) {
 			setItineraryID(itineraryID);
@@ -37,29 +33,33 @@ export function IPA002ItineraryCover({
 		}
 	}, [itineraryDocSnap]);
 
+	const updateItinerary = () => {
+		setDoc<ItineraryOneInterface>(itineraryDocSnap!.ref, { ...pageItinerary! });
+	};
+
+	const handleOnChange =
+		(column: keyof ItineraryOneInterface) =>
+		({ nativeEvent }: { nativeEvent: TextInputChangeEventData }) => {
+			setPageItinerary({ ...pageItinerary!, [column]: nativeEvent.text });
+		};
+		
+	const isLoading = !itineraryDocSnap;
+
 	if (!itineraryID || (itineraryDocSnap && !itineraryDocSnap.exists())) {
 		navigation.navigate('Itinerary', { screen: 'IPA001ItineraryEdit', params: { itineraryID } });
-		return <></>;
 	}
+	
+	// ここまでController
 
-	if (!itineraryDocSnap || !pageItinerary) {
+	if (isLoading || !pageItinerary) {
 		return <ActivityIndicator animating />;
 	}
 
-	const updateItinerary = () => {
-		setDoc<ItineraryOneInterface>(itineraryDocSnap.ref, pageItinerary);
-	};
-
-	const handleOnChange = (column: keyof ItineraryOneInterface) => ({ nativeEvent }: { nativeEvent: TextInputChangeEventData }) => {
-			setPageItinerary({ ...pageItinerary, [column]: nativeEvent.text });
-		};
-
-	const itinerary: ItineraryOneInterface = itineraryDocSnap.data();
 	return (
-		<>
-			{itinerary.imageUrl && (
+		<ScrollView>
+			{pageItinerary.imageUrl && (
 				<Image
-					source={{ uri: itinerary.imageUrl }}
+					source={{ uri: pageItinerary.imageUrl }}
 					style={{
 						height: '100vw',
 						width: '100vw',
@@ -78,7 +78,10 @@ export function IPA002ItineraryCover({
 				onChange={handleOnChange('subTitle')}
 				onBlur={updateItinerary}
 			/>
-			<FlatList data={pageItinerary.tags} renderItem={(renderItemInfo) => <Chip>{renderItemInfo.item}</Chip>} />
+			<FlatList data={pageItinerary.tags} horizontal
+			renderItem={(renderItemInfo) => 
+			(<Chip selected closeIcon='close-circle' onClose={()=>console.log(renderItemInfo.index)}
+			>{renderItemInfo.item}</Chip>)} />
 			<TextInput
 				label={i18n.t('滞在開始日')}
 				value={`${pageItinerary.startDate.getMonth() + 1}/${pageItinerary.startDate.getDate()}`}
@@ -93,6 +96,6 @@ export function IPA002ItineraryCover({
 				onBlur={updateItinerary}
 				multiline
 			/>
-		</>
+		</ScrollView>
 	);
 }
