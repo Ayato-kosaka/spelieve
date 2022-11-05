@@ -89,7 +89,7 @@ export function IPA002ItineraryCover({
 				data={pageItinerary.tags}
 				horizontal
 				renderItem={(renderItemInfo) => (
-					<Chip closeIcon="close-circle" onClose={() => console.log(renderItemInfo.index)}>
+					<Chip closeIcon="close-circle" onClose={() => deleteTag(renderItemInfo.index)}>
 						{renderItemInfo.item}
 					</Chip>
 				)}
@@ -103,7 +103,7 @@ export function IPA002ItineraryCover({
 				onChange={handleOnChange('startDate')}
 				onBlur={updateItinerary}
 			/>
-			{/* TODO: DatePicker に修正する。 */}
+			{/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/299 */}
 			<TextInput
 				label={i18n.t('キャプション')}
 				value={pageItinerary.caption}
