@@ -1,12 +1,12 @@
+import { GoogleMap, LoadScript, Marker as MarkerWeb } from '@react-google-maps/api';
 import { useContext, useState } from 'react';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { GoogleMap, LoadScript, Marker as MarkerWeb } from '@react-google-maps/api'
-
-import { PCT011MPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
 import { Platform } from 'react-native';
-import { ENV } from '@/ENV';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import { stylesWeb, stylesNative } from './GoogleMapPlacesListStyle';
+
+import { ENV } from '@/ENV';
+import { PCT011MPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
 
 export const PMC01101GoogleMapPlacesList = () => {
 	const { placesList } = useContext(PCT011MPlacesList);
@@ -31,31 +31,30 @@ export const PMC01101GoogleMapPlacesList = () => {
 						return <MarkerWeb position={coordinate} title={place.name} key={place.place_id} />;
 					})}
 				</GoogleMap>
-        	</LoadScript>
-		);
-	} else {
-		return (
-			<MapView
-				style={stylesNative.mapview}
-				provider={PROVIDER_GOOGLE}
-				ref={(r) => setRef(r)}
-				initialRegion={{
-					latitude: centerLat,
-					longitude: centerLng,
-					latitudeDelta: 0.2522, // 地図表示範囲内の北端と南端の緯度の差 大→範囲広
-					longitudeDelta: 0.0521, // 地図表示範囲内の東端と西端の経度の差
-				}}
-				region={{
-					latitude: centerLat,
-					longitude: centerLng,
-					latitudeDelta: 0.2522, // 地図表示範囲内の北端と南端の緯度の差 大→範囲広
-					longitudeDelta: 0.0521, // 地図表示範囲内の東端と西端の経度の差
-				}}>
-				{placesList.map((place) => {
-					const coordinate = { latitude: place.geometry.latitude, longitude: place.geometry.longitude };
-					return <Marker coordinate={coordinate} title={place.name} key={place.place_id} />;
-				})}
-			</MapView>
+			</LoadScript>
 		);
 	}
+	return (
+		<MapView
+			style={stylesNative.mapview}
+			provider={PROVIDER_GOOGLE}
+			ref={(r) => setRef(r)}
+			initialRegion={{
+				latitude: centerLat,
+				longitude: centerLng,
+				latitudeDelta: 0.2522, // 地図表示範囲内の北端と南端の緯度の差 大→範囲広
+				longitudeDelta: 0.0521, // 地図表示範囲内の東端と西端の経度の差
+			}}
+			region={{
+				latitude: centerLat,
+				longitude: centerLng,
+				latitudeDelta: 0.2522, // 地図表示範囲内の北端と南端の緯度の差 大→範囲広
+				longitudeDelta: 0.0521, // 地図表示範囲内の東端と西端の経度の差
+			}}>
+			{placesList.map((place) => {
+				const coordinate = { latitude: place.geometry.latitude, longitude: place.geometry.longitude };
+				return <Marker coordinate={coordinate} title={place.name} key={place.place_id} />;
+			})}
+		</MapView>
+	);
 };

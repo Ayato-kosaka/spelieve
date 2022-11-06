@@ -5,7 +5,7 @@ import { styles } from './PlacesListStyle';
 
 import { PCT011MPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
 
-export const PMC01102PlacesList: FC = ({onPlaceSelected}) => {
+export const PMC01102PlacesList: FC = ({ onPlaceSelected }) => {
 	const { placesList, retrieveMore } = useContext(PCT011MPlacesList);
 
 	return (

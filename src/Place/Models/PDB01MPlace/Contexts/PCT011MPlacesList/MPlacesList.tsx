@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
 import {
 	collection,
 	query,
@@ -11,7 +10,7 @@ import {
 	limit,
 	DocumentSnapshot,
 } from 'firebase/firestore';
-import { useState, createContext, useEffect, useContext } from 'react';
+import { useState, createContext, useEffect } from 'react';
 import { ActivityIndicator } from 'react-native-paper';
 
 import {
@@ -21,8 +20,6 @@ import {
 } from 'spelieve-common/lib/Interfaces/Place';
 import { MPlace } from 'spelieve-common/lib/Models/Place/PDB01/MPlace';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
-
-import { PCT012MPlaceOne } from '../PCT012MPlaceOne/MPlaceOne';
 
 import db from '@/Place/Endpoint/firestore';
 
@@ -111,7 +108,7 @@ export const PCT011MPlacesListProvider = ({
 		if (initialCountry === '') {
 			return;
 		}
-		
+
 		setIsFirstLoading(true);
 		const qc: QueryConstraint[] = createBasicQueryConstraint();
 		qc.push(limit(10));

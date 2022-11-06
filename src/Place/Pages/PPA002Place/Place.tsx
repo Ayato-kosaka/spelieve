@@ -13,7 +13,7 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 
 	useEffect(() => {
 		setPlaceId(place_id);
-	}, [place_id])
+	}, [place_id]);
 
 	if (!place) {
 		return <ActivityIndicator animating />;
