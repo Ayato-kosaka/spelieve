@@ -6,6 +6,7 @@ import { ICT011ItineraryOneProvider } from '../Models/IDB01Itineraries/Contexts/
 import { ICT021PlanGroupsListProvider } from '../Models/IDB02PlanGroups/Contexts/ICT021PlanGroupsList';
 import { ICT031PlansMapProvider } from '../Models/IDB03Plans/Contexts/ICT031PlansMap';
 
+import { IPA001ItineraryEdit } from './IPA001ItineraryEdit';
 import { IPA002ItineraryCover } from './IPA002ItineraryCover';
 
 import i18n from '@/Common/Hooks/i18n-js';
@@ -22,7 +23,13 @@ export function ItineraryPageNavigator() {
 		<ICT011ItineraryOneProvider>
 			<ICT031PlansMapProvider>
 				<ICT021PlanGroupsListProvider>
-					<Stack.Navigator initialRouteName="IPA002ItineraryCover">
+					<Stack.Navigator initialRouteName="IPA001ItineraryEdit">
+						<Stack.Screen
+							name="IPA001ItineraryEdit"
+							component={IPA001ItineraryEdit}
+							initialParams={{}}
+							options={{ title: '' }}
+						/>
 						<Stack.Screen
 							name="IPA002ItineraryCover"
 							component={IPA002ItineraryCover}
