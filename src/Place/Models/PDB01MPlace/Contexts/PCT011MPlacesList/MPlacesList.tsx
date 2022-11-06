@@ -70,7 +70,7 @@ export const PCT011MPlacesListProvider = ({
 		return qc;
 	};
 
-	const fetchSetPlaces = async (q: Query<MPlacesListInterface>, currentPlacesList) => {
+	const fetchSetPlaces = async (q: Query<MPlacesListInterface>, currentPlacesList: MPlacesListInterface[]) => {
 		await getDocs(q)
 			.then((querySnapshot) => {
 				setPlacesList([...currentPlacesList, ...querySnapshot.docs.map((doc) => doc.data())]);

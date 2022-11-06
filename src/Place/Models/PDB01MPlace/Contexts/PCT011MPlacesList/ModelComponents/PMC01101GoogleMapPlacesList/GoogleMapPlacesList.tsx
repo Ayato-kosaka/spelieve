@@ -16,7 +16,7 @@ export const PMC01101GoogleMapPlacesList = () => {
 	const centerLat = center ? center.geometry.latitude : 35.6809591;
 	const centerLng = center ? center.geometry.longitude : 139.7673068;
 
-	if (Platform.OS == 'web') {
+	if (Platform.OS === 'web') {
 		console.log('webが読み込まれた');
 
 		const centerPoint = {
