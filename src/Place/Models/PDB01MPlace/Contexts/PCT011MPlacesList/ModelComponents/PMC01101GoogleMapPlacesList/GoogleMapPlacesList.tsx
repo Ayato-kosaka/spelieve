@@ -6,6 +6,8 @@ import { PCT011MPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPl
 import { Platform } from 'react-native';
 import { ENV } from '@/ENV';
 
+import { stylesWeb, stylesNative } from './GoogleMapPlacesListStyle';
+
 export const PMC01101GoogleMapPlacesList = () => {
 	const { placesList } = useContext(PCT011MPlacesList);
 	const [ref, setRef] = useState<MapView | null>(null);
@@ -16,10 +18,6 @@ export const PMC01101GoogleMapPlacesList = () => {
 
 	if (Platform.OS == 'web') {
 		console.log('webが読み込まれた');
-		const containerStyle = {
-			height: "300px",
-			width: "100%",
-		  };
 
 		const centerPoint = {
 			lat: centerLat,
@@ -27,7 +25,7 @@ export const PMC01101GoogleMapPlacesList = () => {
 		};
 		return (
 			<LoadScript googleMapsApiKey={ENV.GCP_API_KEY}>
-				<GoogleMap mapContainerStyle={containerStyle} center={centerPoint} zoom={10}>
+				<GoogleMap mapContainerStyle={stylesWeb.containerStyle} center={centerPoint} zoom={10}>
 					{placesList.map((place) => {
 						const coordinate = { lat: place.geometry.latitude, lng: place.geometry.longitude };
 						return <MarkerWeb position={coordinate} title={place.name} key={place.place_id} />;
@@ -38,7 +36,7 @@ export const PMC01101GoogleMapPlacesList = () => {
 	} else {
 		return (
 			<MapView
-				style={{ width: '100%', height: 200 }}
+				style={stylesNative.mapview}
 				provider={PROVIDER_GOOGLE}
 				ref={(r) => setRef(r)}
 				initialRegion={{
