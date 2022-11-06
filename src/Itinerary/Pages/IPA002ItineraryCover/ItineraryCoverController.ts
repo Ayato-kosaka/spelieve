@@ -2,11 +2,17 @@ import { setDoc } from 'firebase/firestore';
 import { useState, useContext, useEffect } from 'react';
 import { TextInputChangeEventData } from 'react-native';
 
-import { ItineraryCoverPropsInterface, ItineraryOneInterface } from 'spelieve-common/lib/Interfaces';
+import {
+	ItineraryCoverPropsInterface,
+	ItineraryOneInterface,
+	ItineraryCoverControllerInterface,
+} from 'spelieve-common/lib/Interfaces';
 
 import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
 
-export function IPA002ItineraryCoverController({ itineraryID }: ItineraryCoverPropsInterface) {
+export function IPA002ItineraryCoverController({
+	itineraryID,
+}: ItineraryCoverPropsInterface): ItineraryCoverControllerInterface {
 	const [pageItinerary, setPageItinerary] = useState<ItineraryOneInterface | undefined>(undefined);
 	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
 
@@ -22,7 +28,7 @@ export function IPA002ItineraryCoverController({ itineraryID }: ItineraryCoverPr
 		}
 	}, [itineraryDocSnap]);
 
-	const updateItinerary = () => {
+	const updateItinerary = (): void => {
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		setDoc<ItineraryOneInterface>(itineraryDocSnap!.ref, { ...pageItinerary! });
 	};

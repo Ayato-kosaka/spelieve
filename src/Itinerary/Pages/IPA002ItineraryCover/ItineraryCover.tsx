@@ -22,7 +22,7 @@ export function IPA002ItineraryCover({
 	if (isLoading || !pageItinerary) {
 		return <ActivityIndicator animating />;
 	}
-	
+
 	/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/300 Itinerary の style を修正する */
 
 	return (
