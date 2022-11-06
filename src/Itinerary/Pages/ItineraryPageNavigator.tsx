@@ -6,15 +6,15 @@ import { ICT011ItineraryOneProvider } from '../Models/IDB01Itineraries/Contexts/
 import { ICT021PlanGroupsListProvider } from '../Models/IDB02PlanGroups/Contexts/ICT021PlanGroupsList';
 import { ICT031PlansMapProvider } from '../Models/IDB03Plans/Contexts/ICT031PlansMap';
 
-import { IPA001ItineraryEdit } from './IPA001ItineraryEdit';
 import { IPA002ItineraryCover } from './IPA002ItineraryCover';
+import { TopTabNavigator, TopTabParamList } from './TopTabNavigator';
 
 import i18n from '@/Common/Hooks/i18n-js';
 
 export type ItineraryStackParamList = {
-	IPA001ItineraryEdit: ItineraryEditPropsInterface;
 	IPA002ItineraryCover: ItineraryCoverPropsInterface;
-};
+	TopTabNavigator: ItineraryEditPropsInterface;
+} & TopTabParamList;
 
 const Stack = createNativeStackNavigator<ItineraryStackParamList>();
 
@@ -24,12 +24,12 @@ export function ItineraryPageNavigator() {
 			<ICT031PlansMapProvider>
 				<ICT021PlanGroupsListProvider>
 					{/* TODO: PCT012MPlaceOneProvider を設定する */}
-					<Stack.Navigator initialRouteName="IPA001ItineraryEdit">
+					<Stack.Navigator initialRouteName="TopTabNavigator">
 						<Stack.Screen
-							name="IPA001ItineraryEdit"
-							component={IPA001ItineraryEdit}
+							name="TopTabNavigator"
+							component={TopTabNavigator}
 							initialParams={{}}
-							options={{ title: '' }}
+							options={{ title: 'TopTabNavigator' }}
 						/>
 						<Stack.Screen
 							name="IPA002ItineraryCover"
