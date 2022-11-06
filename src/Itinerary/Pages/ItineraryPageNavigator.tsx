@@ -23,6 +23,7 @@ export function ItineraryPageNavigator() {
 		<ICT011ItineraryOneProvider>
 			<ICT031PlansMapProvider>
 				<ICT021PlanGroupsListProvider>
+					{/* TODO: PCT012MPlaceOneProvider を設定する */}
 					<Stack.Navigator initialRouteName="IPA001ItineraryEdit">
 						<Stack.Screen
 							name="IPA001ItineraryEdit"

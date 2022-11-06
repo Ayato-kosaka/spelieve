@@ -20,19 +20,22 @@ export function IPA001ItineraryEdit({
 	route,
 	navigation,
 }: NativeStackScreenProps<BottomTabParamList, 'IPA001ItineraryEdit'>) {
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	const { itineraryID, isPreview, place_id, placeName } = route.params;
+	
+
+	// TOD: あとで消す ?itineraryID=uMFhF6OQph2UUuKEsKNa
+
+	// TODO: Controller に移動する（ここから）
 	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
 	const { isPlansLoading, plansDocSnapMap } = useContext(ICT031PlansMap);
 	const { planGroupsQSnap, planGroupsCRef } = useContext(ICT021PlanGroupsList);
-	// eslint-disable-next-line @typescript-eslint/naming-convention
-	const { itineraryID, isPreview, place_id, placeName } = route.params;
-
-	// ?itineraryID=uMFhF6OQph2UUuKEsKNa
-
 	useEffect(() => {
 		if (itineraryID) {
 			setItineraryID(itineraryID);
 		}
 	}, [itineraryID, setItineraryID]);
+	// TODO: Controller に移動する（ここまで）
 
 	if (!itineraryDocSnap || isPlansLoading || !planGroupsQSnap) {
 		return <ActivityIndicator animating />;
@@ -51,8 +54,11 @@ export function IPA001ItineraryEdit({
 		});
 		return <ActivityIndicator animating />;
 	}
+	
 
 	const itinerary: ItineraryOneInterface = itineraryDocSnap.data();
+	
+	navigation.setOptions({title: itinerary.title,})
 
 	return (
 		<>
@@ -68,12 +74,10 @@ export function IPA001ItineraryEdit({
 			{planGroupsQSnap.docs.map((planGroupsDoc) => (
 				<View key={planGroupsDoc.id} style={{ width: '100%' }}>
 					{planGroupsDoc.data().plans.map((planID) => (
-						<PCT012MPlaceOneProvider place_id={plansDocSnapMap[planID].data().place_id} language="ja" key={planID}>
-							{/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/286 Provider を App.tsxに移動する */}
-							{/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/281　初期language検討 */}
+						<>
 							<IMC03101PlanEdit planID={planID} />
 							<IMC03102TrafficMovementEdit planID={planID} />
-						</PCT012MPlaceOneProvider>
+						</>
 					))}
 				</View>
 			))}
