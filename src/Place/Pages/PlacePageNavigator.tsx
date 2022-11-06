@@ -10,6 +10,9 @@ import { PPA002Place } from './PPA002Place/Place';
 import { BottomTabParamList } from '@/App';
 import { PCT011MPlacesListProvider } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
 
+import { LoadScript } from '@react-google-maps/api';
+import { ENV } from '@/ENV';
+
 export type PlaceStackParamList = {
 	PPA001Places: PlacesPropsInterface; // 本来は PagePropsInterface を設定する
 	PPA002Place: PlacePropsInterface; // 本来は PagePropsInterface を設定する
@@ -25,14 +28,16 @@ export const PlacePageNavigator = ({ navigation }: NativeStackScreenProps<Bottom
 			initialAdministrativeAreaLevel1=""
 			initialAdministrativeAreaLevel2=""
 			initialLocality="">
-			<Stack.Navigator initialRouteName="PPA001Places">
-				<Stack.Screen
-					name="PPA001Places"
-					component={PPA001Places}
-					initialParams={{ country: '', administrativeAreaLevel1: '', administrativeAreaLevel2: '', locality: '' }}
-				/>
-				<Stack.Screen name="PPA002Place" component={PPA002Place} initialParams={{ place_id: '', language: '' }} />
-			</Stack.Navigator>
+			{/* <LoadScript googleMapsApiKey={ENV.GCP_API_KEY}> */}
+				<Stack.Navigator initialRouteName="PPA001Places">
+					<Stack.Screen
+						name="PPA001Places"
+						component={PPA001Places}
+						initialParams={{ country: '', administrativeAreaLevel1: '', administrativeAreaLevel2: '', locality: '' }}
+					/>
+					<Stack.Screen name="PPA002Place" component={PPA002Place} initialParams={{ place_id: '', language: '' }} />
+				</Stack.Navigator>
+			{/* </LoadScript> */}
 		</PCT011MPlacesListProvider>
 	</PCT012MPlaceOneProvider>
 );

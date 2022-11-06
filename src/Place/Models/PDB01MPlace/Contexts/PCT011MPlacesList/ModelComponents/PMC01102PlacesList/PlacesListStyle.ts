@@ -10,7 +10,6 @@ export const styles = StyleSheet.create({
 		// marginHorizontal: 10,
 		zIndex: -1,
 		width: '100%',
-
 		// marginTop: StatusBar.currentHeight || 0,
 		// alignSelf: "center",
 		// alignContentnItems: "flex-start",

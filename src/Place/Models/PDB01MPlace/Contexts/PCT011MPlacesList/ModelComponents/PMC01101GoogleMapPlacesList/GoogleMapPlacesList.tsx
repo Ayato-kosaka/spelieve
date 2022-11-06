@@ -24,14 +24,12 @@ export const PMC01101GoogleMapPlacesList = () => {
 			lng: centerLng,
 		};
 		return (
-			<LoadScript googleMapsApiKey={ENV.GCP_API_KEY}>
-				<GoogleMap mapContainerStyle={stylesWeb.containerStyle} center={centerPoint} zoom={10}>
-					{placesList.map((place) => {
-						const coordinate = { lat: place.geometry.latitude, lng: place.geometry.longitude };
-						return <MarkerWeb position={coordinate} title={place.name} key={place.place_id} />;
-					})}
-				</GoogleMap>
-			</LoadScript>
+			<GoogleMap mapContainerStyle={stylesWeb.containerStyle} center={centerPoint} zoom={10}>
+				{placesList.map((place) => {
+					const coordinate = { lat: place.geometry.latitude, lng: place.geometry.longitude };
+					return <MarkerWeb position={coordinate} title={place.name} key={place.place_id} />;
+				})}
+			</GoogleMap>
 		);
 	}
 	return (
