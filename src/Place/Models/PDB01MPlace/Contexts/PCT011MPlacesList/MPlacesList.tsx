@@ -16,7 +16,7 @@ import { ActivityIndicator } from 'react-native-paper';
 import {
 	MPlacesListInterface,
 	MPlacesListValInterface,
-	MPlacesListProviderPropsInterface,
+	MPlacesListAddressInterface,
 } from 'spelieve-common/lib/Interfaces/Place';
 import { MPlace } from 'spelieve-common/lib/Models/Place/PDB01/MPlace';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
@@ -26,44 +26,31 @@ import db from '@/Place/Endpoint/firestore';
 export const PCT011MPlacesList = createContext({} as MPlacesListValInterface);
 
 export const PCT011MPlacesListProvider = ({
-	parentDocRef,
 	children,
-	initialCountry,
-	initialAdministrativeAreaLevel1,
-	initialAdministrativeAreaLevel2,
-	initialLocality,
-}: MPlacesListProviderPropsInterface) => {
-	const initialAddress = {
-		country: initialCountry,
-		administrativeAreaLevel1: initialAdministrativeAreaLevel1,
-		administrativeAreaLevel2: initialAdministrativeAreaLevel2,
-		locality: initialLocality,
-	};
-	const placeCollectionRef = parentDocRef
-		? collection(parentDocRef, MPlace.modelName)
-		: collection(db, MPlace.modelName);
+}) => {
+	const placeCollectionRef = collection(db, MPlace.modelName);
 	const [placesList, setPlacesList] = useState<MPlacesListInterface[]>([]);
 	const [isFirstLoading, setIsFirstLoading] = useState<boolean>(true);
-	const [searchedAddress, setSearchedAddress] = useState(initialAddress);
+	const [address, setAddress] = useState<MPlacesListAddressInterface>({});
 	const [lastVisible, setLastVisible] = useState<DocumentSnapshot | null>(null);
 	const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
 	const createBasicQueryConstraint = (): QueryConstraint[] => {
 		const qc: QueryConstraint[] = [];
-		qc.push(where(MPlace.Cols.country, '==', searchedAddress.country));
+		qc.push(where(MPlace.Cols.country, '==', address.country));
 
-		if (searchedAddress.administrativeAreaLevel1 !== '') {
+		if (address.administrativeAreaLevel1 !== '') {
 			// index済
-			qc.push(where(MPlace.Cols.administrativeAreaLevel1, '==', searchedAddress.administrativeAreaLevel1));
+			qc.push(where(MPlace.Cols.administrativeAreaLevel1, '==', address.administrativeAreaLevel1));
 		}
 
-		if (searchedAddress.administrativeAreaLevel2 !== '') {
-			qc.push(where(MPlace.Cols.administrativeAreaLevel2, '==', searchedAddress.administrativeAreaLevel2));
+		if (address.administrativeAreaLevel2 !== '') {
+			qc.push(where(MPlace.Cols.administrativeAreaLevel2, '==', address.administrativeAreaLevel2));
 		}
 
-		if (searchedAddress.locality !== '') {
+		if (address.locality !== '') {
 			// index済
-			qc.push(where(MPlace.Cols.locality, '==', searchedAddress.locality));
+			qc.push(where(MPlace.Cols.locality, '==', address.locality));
 		}
 
 		qc.push(orderBy(MPlace.Cols.rating, 'desc'));
@@ -105,7 +92,7 @@ export const PCT011MPlacesListProvider = ({
 	};
 
 	useEffect(() => {
-		if (initialCountry === '') {
+		if (address.country === '') {
 			return;
 		}
 
@@ -120,7 +107,7 @@ export const PCT011MPlacesListProvider = ({
 		};
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		fetchFirstPlaces();
-	}, [searchedAddress]);
+	}, [address]);
 
 	if (isFirstLoading) {
 		return <ActivityIndicator animating />;
@@ -128,9 +115,8 @@ export const PCT011MPlacesListProvider = ({
 
 	const value: MPlacesListValInterface = {
 		placesList,
-		setSearchedAddress,
+		setAddress,
 		retrieveMore,
-		setIsFirstLoading,
 	};
 	return <PCT011MPlacesList.Provider value={value}>{children}</PCT011MPlacesList.Provider>;
 };
