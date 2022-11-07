@@ -25,9 +25,7 @@ import db from '@/Place/Endpoint/firestore';
 
 export const PCT011MPlacesList = createContext({} as MPlacesListValInterface);
 
-export const PCT011MPlacesListProvider = ({
-	children,
-}) => {
+export const PCT011MPlacesListProvider = ({ children }) => {
 	const placeCollectionRef = collection(db, MPlace.modelName);
 	const [placesList, setPlacesList] = useState<MPlacesListInterface[]>([]);
 	const [isFirstLoading, setIsFirstLoading] = useState<boolean>(true);

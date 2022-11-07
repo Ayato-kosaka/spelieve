@@ -1,11 +1,10 @@
-import { GoogleMap, LoadScript, Marker as MarkerWeb } from '@react-google-maps/api';
+import { GoogleMap, Marker as MarkerWeb } from '@react-google-maps/api';
 import { useContext, useState } from 'react';
 import { Platform } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import { stylesWeb, stylesNative } from './GoogleMapPlacesListStyle';
 
-import { ENV } from '@/ENV';
 import { PCT011MPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
 
 export const PMC01101GoogleMapPlacesList = () => {
