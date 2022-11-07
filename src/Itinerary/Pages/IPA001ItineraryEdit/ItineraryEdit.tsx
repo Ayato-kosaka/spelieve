@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { addDoc } from 'firebase/firestore';
-import React, { useContext, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import { View, ScrollView, ActivityIndicator } from 'react-native';
 
 import { ItineraryOneInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT011';
@@ -32,21 +32,27 @@ export function IPA001ItineraryEdit({
 		}
 	}, [itineraryID, setItineraryID]);
 
+	const createItinerary = useCallback(async () => {
+		if(itineraryDocSnap){
+			const itineray = await addDoc<ItineraryOneInterface>(itineraryDocSnap.ref.parent, {
+				title: '',
+				startDate: new Date(),
+				tags: [],
+				caption: '',
+				isUpdatable: true,
+				createdAt: DateUtils.initialDate(),
+				updatedAt: DateUtils.initialDate(),
+			});
+			setItineraryID(itineray.id);
+		}
+	}, [itineraryDocSnap])
+
 	if (!itineraryDocSnap || isPlansLoading || !planGroupsQSnap) {
 		return <ActivityIndicator animating />;
 	}
 
 	if (!itineraryDocSnap.exists()) {
-		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		addDoc<ItineraryOneInterface>(itineraryDocSnap.ref.parent, {
-			title: '',
-			startDate: new Date(),
-			tags: [],
-			caption: '',
-			isUpdatable: true,
-			createdAt: DateUtils.initialDate(),
-			updatedAt: DateUtils.initialDate(),
-		});
+		createItinerary();
 		return <ActivityIndicator animating />;
 	}
 

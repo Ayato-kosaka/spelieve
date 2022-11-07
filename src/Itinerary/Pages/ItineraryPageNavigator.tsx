@@ -1,19 +1,19 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { ItineraryCoverPropsInterface, ItineraryEditPropsInterface } from 'spelieve-common/lib/Interfaces';
+import { ItineraryCoverPropsInterface, ItineraryTopTabNavigatorPropsInterface } from 'spelieve-common/lib/Interfaces';
 
 import { ICT011ItineraryOneProvider } from '../Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
 import { ICT021PlanGroupsListProvider } from '../Models/IDB02PlanGroups/Contexts/ICT021PlanGroupsList';
 import { ICT031PlansMapProvider } from '../Models/IDB03Plans/Contexts/ICT031PlansMap';
 
 import { IPA002ItineraryCover } from './IPA002ItineraryCover';
-import { TopTabNavigator, TopTabParamList } from './TopTabNavigator';
+import { TopTabNavigator, TopTabParamList } from '../Navigator/INV002ItineraryTopTabNavigator';
 
 import i18n from '@/Common/Hooks/i18n-js';
 
 export type ItineraryStackParamList = {
 	IPA002ItineraryCover: ItineraryCoverPropsInterface;
-	TopTabNavigator: ItineraryEditPropsInterface;
+	TopTabNavigator: ItineraryTopTabNavigatorPropsInterface;
 } & TopTabParamList;
 
 const Stack = createNativeStackNavigator<ItineraryStackParamList>();
