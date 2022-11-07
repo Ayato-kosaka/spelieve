@@ -28,6 +28,7 @@ export function IPA002ItineraryCover({
 	return (
 		<ScrollView>
 			{pageItinerary.imageUrl && (
+				/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/303 IPA002ItineraryCover の画像を修正可能にする */
 				<Image
 					source={{ uri: pageItinerary.imageUrl }}
 					style={{
