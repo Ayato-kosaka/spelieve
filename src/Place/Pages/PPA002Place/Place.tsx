@@ -1,16 +1,15 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useContext, useEffect } from 'react';
-
+import { FlatList, View, Image, Linking } from 'react-native';
 import { Text, ActivityIndicator } from 'react-native-paper';
 
+import { styles } from './PlaceStyle';
+
 import { BottomTabParamList } from '@/App';
+import i18n from '@/Common/Hooks/i18n-js';
 import { PMC01201GoogleMapPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/ModelComponents/PMC01201GoogleMapPlaceOne';
 import { PMC01203PlaceImage } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/ModelComponents/PMC01203PlaceImage';
 import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/MPlaceOne';
-import { FlatList, View, Image, Linking } from 'react-native';
-import i18n from '@/Common/Hooks/i18n-js';
-
-import { styles } from './PlaceStyle';
 
 export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<BottomTabParamList, 'PPA002Place'>) => {
 	const { place, setPlaceId } = useContext(PCT012MPlaceOne);
@@ -32,7 +31,9 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 				<PMC01203PlaceImage />
 				<Text style={styles.infoText}>{place.name}</Text>
 				<Text style={styles.infoText}>{place.formatted_address}</Text>
-				<Text style={styles.urlLink} onPress={() => Linking.openURL(`${place.website}`)}>{place.website}</Text>
+				<Text style={styles.urlLink} onPress={() => Linking.openURL(`${place.website}`)}>
+					{place.website}
+				</Text>
 				<Text style={styles.infoText}>{place.formatted_phone_number}</Text>
 				{/* {place.openingHours?.forEach(openingHour => {
 					return (
