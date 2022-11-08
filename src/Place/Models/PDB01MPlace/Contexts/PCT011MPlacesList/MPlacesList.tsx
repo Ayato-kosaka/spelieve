@@ -74,18 +74,21 @@ export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode })
 			),
 		);
 
-	const retrieveMore = async () => {
+	const retrieveMore = () => {
 		setIsRefreshing(true);
 		const qc: QueryConstraint[] = createBasicQueryConstraint();
 		qc.push(startAfter(lastVisible));
 		qc.push(limit(10));
 		const q: Query<MPlacesListInterface> = toQuery(qc);
-		try {
-			await fetchSetPlaces(q, placesList);
-		} catch (e) {
-			console.log(e);
-		}
-		setIsRefreshing(false);
+		const fetchAdditionalPlaces = async () => {
+			try {
+				await fetchSetPlaces(q, placesList);
+			} catch (e) {
+				console.log(e);
+			}
+			setIsRefreshing(false);
+		};
+		fetchAdditionalPlaces();
 	};
 
 	useEffect(() => {
@@ -103,6 +106,7 @@ export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode })
 		};
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		fetchFirstPlaces();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [address]);
 
 	const value: MPlacesListValInterface = {
