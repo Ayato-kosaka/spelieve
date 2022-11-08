@@ -1,3 +1,4 @@
+import * as Localization from 'expo-localization';
 import { I18n } from 'i18n-js';
 
 import en from './en';
@@ -19,6 +20,9 @@ i18n.enableFallback = true;
 
 // デフォルトではメッセージが画面に設定されるため、guessで上書く。そのまま表示は出来ない。guessはピリオドが入ると非表示になるため、defaultValueを利用する。
 i18n.missingBehavior = 'guess';
+
+// 端末の言語設定をi18nに設定
+i18n.locale = Localization.locale;
 
 export default i18n;
 export const i18nLang = Lang;

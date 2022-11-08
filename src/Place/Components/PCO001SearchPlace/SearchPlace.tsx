@@ -7,7 +7,7 @@ import { ENV } from '@/ENV';
 
 export const PCO001SearchPlace = ({ onAutoCompleteClicked }: SearchPlacePropsInterface) => (
 	<GooglePlacesAutocomplete
-		placeholder={i18n.t('地点を入力')}
+		placeholder={i18n.t('searchPlaceText')}
 		onPress={onAutoCompleteClicked}
 		query={{
 			key: ENV.GCP_API_KEY,

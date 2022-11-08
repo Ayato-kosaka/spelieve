@@ -10,7 +10,7 @@ import {
 	limit,
 	DocumentSnapshot,
 } from 'firebase/firestore';
-import { useState, createContext, useEffect } from 'react';
+import { useState, createContext, useEffect, ReactNode } from 'react';
 
 import {
 	MPlacesListInterface,
@@ -24,7 +24,7 @@ import db from '@/Place/Endpoint/firestore';
 
 export const PCT011MPlacesList = createContext({} as MPlacesListValInterface);
 
-export const PCT011MPlacesListProvider = ({ children }) => {
+export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode }) => {
 	const placeCollectionRef = collection(db, MPlace.modelName);
 	const [placesList, setPlacesList] = useState<MPlacesListInterface[]>([]);
 	const [isFirstLoading, setIsFirstLoading] = useState<boolean>(true);
