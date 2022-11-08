@@ -2,6 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useContext, useEffect } from 'react';
 
 import { PPA001PlacesController } from './PlacesController';
+import { ActivityIndicator } from 'react-native-paper';
 
 import { BottomTabParamList } from '@/App';
 import { PCO001SearchPlace } from '@/Place/Components/PCO001SearchPlace/SearchPlace';
@@ -11,18 +12,21 @@ import { PMC01102PlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MP
 
 export const PPA001Places = ({ navigation, route }: NativeStackScreenProps<BottomTabParamList, 'PPA001Places'>) => {
 	const { onAutoCompleteClicked, onPlaceSelected } = PPA001PlacesController();
-	const { setAddress } = useContext(PCT011MPlacesList);
+	const { setAddress, isFirstLoading } = useContext(PCT011MPlacesList);
 	const { country, administrativeAreaLevel1, administrativeAreaLevel2, locality } = route.params;
 
 	useEffect(() => {
-		if (country) {
-			setAddress({ country, administrativeAreaLevel1, administrativeAreaLevel2, locality });
-		} else {
+		if (country === '') {
 			// TODO: 現在地から取得
-			setAddress({ country: '日本', administrativeAreaLevel1: '神奈川県', locality: '横浜市' });
+			setAddress({ country: '日本', administrativeAreaLevel1: '神奈川県', administrativeAreaLevel2: '', locality: '横浜市' });
+		} else {
+			setAddress({ country, administrativeAreaLevel1, administrativeAreaLevel2, locality });
 		}
 	}, [country, administrativeAreaLevel1, administrativeAreaLevel2, locality]);
 
+	if (isFirstLoading) {
+		return <ActivityIndicator animating />;
+	}
 	return (
 		<>
 			<PMC01101GoogleMapPlacesList />

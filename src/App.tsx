@@ -5,7 +5,7 @@ import { Provider as PaperProvider } from 'react-native-paper';
 
 import i18n from './Common/Hooks/i18n-js';
 import { ItineraryPageNavigator, ItineraryStackParamList } from './Itinerary/Pages/ItineraryPageNavigator';
-import { PlacePageNavigator, PlaceStackParamList } from './Place/Pages/PlacePageNavigator';
+import { PlacePageNavigator, PlaceStackParamList } from './Place/Pages/PlacePageNavigator/PlacePageNavigator';
 
 export type BottomTabParamList = {
 	Itinerary: NavigatorScreenParams<ItineraryStackParamList>;

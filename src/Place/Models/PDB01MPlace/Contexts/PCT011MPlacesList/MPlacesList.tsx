@@ -11,7 +11,7 @@ import {
 	DocumentSnapshot,
 } from 'firebase/firestore';
 import { useState, createContext, useEffect } from 'react';
-import { ActivityIndicator } from 'react-native-paper';
+
 
 import {
 	MPlacesListInterface,
@@ -90,10 +90,11 @@ export const PCT011MPlacesListProvider = ({ children }) => {
 	};
 
 	useEffect(() => {
-		if (address.country === '') {
+		if (!address.country) {
 			return;
 		}
 
+		console.log("aaa: ", address.country, address.administrativeAreaLevel1, address.administrativeAreaLevel2, address.locality)
 		setIsFirstLoading(true);
 		const qc: QueryConstraint[] = createBasicQueryConstraint();
 		qc.push(limit(10));
@@ -107,14 +108,11 @@ export const PCT011MPlacesListProvider = ({ children }) => {
 		fetchFirstPlaces();
 	}, [address]);
 
-	if (isFirstLoading) {
-		return <ActivityIndicator animating />;
-	}
-
 	const value: MPlacesListValInterface = {
 		placesList,
 		setAddress,
 		retrieveMore,
+		isFirstLoading,
 	};
 	return <PCT011MPlacesList.Provider value={value}>{children}</PCT011MPlacesList.Provider>;
 };
