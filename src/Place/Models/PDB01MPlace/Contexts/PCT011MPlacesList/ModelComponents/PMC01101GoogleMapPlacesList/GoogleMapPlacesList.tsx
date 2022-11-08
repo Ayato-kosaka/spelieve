@@ -6,7 +6,6 @@ import { styles } from './GoogleMapPlacesListStyle';
 import { PCT011MPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
 
 export const PMC01101GoogleMapPlacesList = () => {
-	console.log("native gogole mapが読み込み")
 	const { placesList } = useContext(PCT011MPlacesList);
 	const [ref, setRef] = useState<MapView | null>(null);
 

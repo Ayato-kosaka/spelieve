@@ -1,8 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useContext, useEffect } from 'react';
+import { ActivityIndicator } from 'react-native-paper';
 
 import { PPA001PlacesController } from './PlacesController';
-import { ActivityIndicator } from 'react-native-paper';
 
 import { BottomTabParamList } from '@/App';
 import { PCO001SearchPlace } from '@/Place/Components/PCO001SearchPlace/SearchPlace';
@@ -18,7 +18,12 @@ export const PPA001Places = ({ navigation, route }: NativeStackScreenProps<Botto
 	useEffect(() => {
 		if (country === '') {
 			// TODO: 現在地から取得
-			setAddress({ country: '日本', administrativeAreaLevel1: '神奈川県', administrativeAreaLevel2: '', locality: '横浜市' });
+			setAddress({
+				country: '日本',
+				administrativeAreaLevel1: '神奈川県',
+				administrativeAreaLevel2: '',
+				locality: '横浜市',
+			});
 		} else {
 			setAddress({ country, administrativeAreaLevel1, administrativeAreaLevel2, locality });
 		}

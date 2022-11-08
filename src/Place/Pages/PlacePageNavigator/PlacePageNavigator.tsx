@@ -3,13 +3,11 @@ import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navig
 import { PlacesPropsInterface, PlacePropsInterface } from 'spelieve-common/lib/Interfaces';
 
 import { PCT012MPlaceOneProvider } from '../../Models/PDB01MPlace/Contexts/PCT012MPlaceOne/MPlaceOne';
-
 import { PPA001Places } from '../PPA001Places';
 import { PPA002Place } from '../PPA002Place/Place';
 
 import { BottomTabParamList } from '@/App';
 import { PCT011MPlacesListProvider } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
-
 
 export type PlaceStackParamList = {
 	PPA001Places: PlacesPropsInterface; // 本来は PagePropsInterface を設定する

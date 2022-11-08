@@ -12,7 +12,6 @@ import {
 } from 'firebase/firestore';
 import { useState, createContext, useEffect } from 'react';
 
-
 import {
 	MPlacesListInterface,
 	MPlacesListValInterface,
@@ -93,8 +92,6 @@ export const PCT011MPlacesListProvider = ({ children }) => {
 		if (!address.country) {
 			return;
 		}
-
-		console.log("aaa: ", address.country, address.administrativeAreaLevel1, address.administrativeAreaLevel2, address.locality)
 		setIsFirstLoading(true);
 		const qc: QueryConstraint[] = createBasicQueryConstraint();
 		qc.push(limit(10));
