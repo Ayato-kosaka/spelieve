@@ -5,7 +5,7 @@ import { Title } from 'react-native-paper';
 
 import { BottomTabParamList } from '@/App';
 
-export function IPA000Test({ route, navigation }: NativeStackScreenProps<BottomTabParamList, 'Test'>) {
+export const IPA000Test = ({ route, navigation }: NativeStackScreenProps<BottomTabParamList, 'Test'>) => {
 	console.log(route.params);
 	const { name } = route.params;
 	// const [itinerary, setItinerary] = useState<DocumentSnapshot>();
@@ -59,4 +59,4 @@ export function IPA000Test({ route, navigation }: NativeStackScreenProps<BottomT
 		//   </ICT002PlanGroupsProvider>
 		// </ICT003PlansProvider>
 	);
-}
+};

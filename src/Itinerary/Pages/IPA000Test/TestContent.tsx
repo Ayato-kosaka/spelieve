@@ -7,7 +7,7 @@ import i18n, { i18nLang } from '@/Common/Hooks/i18n-js';
 import { ICT002PlanGroups, ICT002PlanGroupsInterface } from '@/Itinerary/Contexts/ICT002PlanGroups';
 import { ICT003Plans, ICT003PlansInterface } from '@/Itinerary/Contexts/ICT003Plans';
 
-export function IPA000TestContent() {
+export const IPA000TestContent = () => {
 	const { querySnapshot } = useContext(ICT002PlanGroups);
 	const useICT003Plans = useContext(ICT003Plans);
 
@@ -70,4 +70,4 @@ export function IPA000TestContent() {
 			</Button>
 		</View>
 	);
-}
+};

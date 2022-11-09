@@ -1,6 +1,5 @@
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { useState, createContext, useEffect, useMemo } from 'react';
-import { ActivityIndicator } from 'react-native-paper';
 
 import { HowManyDaysToLimitPlaceUpserts } from 'spelieve-common/lib/Consts/Place';
 import {
@@ -17,13 +16,14 @@ import { PlaceHttpPost } from '@/Place/Endpoint/PlaceHttpPost';
 
 export const PCT012MPlaceOne = createContext({} as MPlaceOneValInterface);
 
-export function PCT012MPlaceOneProvider({
+export const PCT012MPlaceOneProvider = ({
 	parentDocRef,
-	place_id,
+	initialPlaceId,
 	language,
 	children,
-}: MPlaceOneProviderPropsInterface) {
+}: MPlaceOneProviderPropsInterface) => {
 	const [place, setPlace] = useState<MPlaceOneInterface | null>(null);
+	const [place_id, setPlaceId] = useState<string>(initialPlaceId);
 
 	const collectionRef = useMemo(() => {
 		if (parentDocRef) {
@@ -33,6 +33,9 @@ export function PCT012MPlaceOneProvider({
 	}, [parentDocRef]);
 
 	useEffect(() => {
+		if (place_id === '' || language === '') {
+			return;
+		}
 		const fetchData = async () => {
 			const q = query(
 				collectionRef,
@@ -48,7 +51,7 @@ export function PCT012MPlaceOneProvider({
 			let querySnap = await getDocs(q);
 			if (
 				querySnap.empty ||
-				new Date().getDate() - querySnap.docs[0].data().updatedAt.getDate() < HowManyDaysToLimitPlaceUpserts
+				new Date().getDate() - querySnap.docs[0].data().updatedAt.getDate() > HowManyDaysToLimitPlaceUpserts
 			) {
 				await PlaceHttpPost<UpsertPlaceDataBodyInterface, never>('PBL002', { place_id, language });
 				querySnap = await getDocs(q);
@@ -59,13 +62,10 @@ export function PCT012MPlaceOneProvider({
 		fetchData();
 	}, [collectionRef, place_id, language]);
 
-	if (!place) {
-		return <ActivityIndicator animating />;
-	}
-
 	// eslint-disable-next-line react/jsx-no-constructed-context-values
 	const value: MPlaceOneValInterface = {
 		place,
+		setPlaceId,
 	};
 	return <PCT012MPlaceOne.Provider value={value}>{children}</PCT012MPlaceOne.Provider>;
-}
+};

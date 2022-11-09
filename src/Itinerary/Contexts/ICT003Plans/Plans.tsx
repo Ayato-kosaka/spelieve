@@ -24,7 +24,7 @@ interface ICT003PlansProviderPropsInterface {
 	parentDocRef?: DocumentReference;
 	children: ReactNode;
 }
-export function ICT003PlansProvider({ parentDocRef, children }: ICT003PlansProviderPropsInterface) {
+export const ICT003PlansProvider = ({ parentDocRef, children }: ICT003PlansProviderPropsInterface) => {
 	const [documentSnapshots, setDocumentSnapshots] = useState<ICT003PlansValInterface['documentSnapshots']>({});
 
 	const collectionRef = parentDocRef
@@ -61,4 +61,4 @@ export function ICT003PlansProvider({ parentDocRef, children }: ICT003PlansProvi
 		create,
 	};
 	return <ICT003Plans.Provider value={value}>{children}</ICT003Plans.Provider>;
-}
+};

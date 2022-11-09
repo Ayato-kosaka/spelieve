@@ -26,7 +26,8 @@ interface ICT001ItinerariesProviderPropsInterface {
 	children: ReactNode;
 	id: string;
 }
-export function ICT001ItinerariesProvider({ parentDocRef, children, id }: ICT001ItinerariesProviderPropsInterface) {
+
+export const ICT001ItinerariesProvider = ({ parentDocRef, children, id }: ICT001ItinerariesProviderPropsInterface) => {
 	const [documentSnapshot, setDocumentSnapshot] = useState<ICT001ItinerariesValInterface['documentSnapshot'] | null>(
 		null,
 	);
@@ -60,4 +61,4 @@ export function ICT001ItinerariesProvider({ parentDocRef, children, id }: ICT001
 		create,
 	};
 	return <ICT001Itineraries.Provider value={value}>{children}</ICT001Itineraries.Provider>;
-}
+};
