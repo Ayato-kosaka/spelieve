@@ -7,7 +7,7 @@ import { PPA001Places } from '../PPA001Places';
 import { PPA002Place } from '../PPA002Place/Place';
 
 import { BottomTabParamList } from '@/App';
-import { PCT011MPlacesListProvider } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
+// import { PCT011MPlacesListProvider } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
 
 export type PlaceStackParamList = {
 	PPA001Places: PlacesPropsInterface; // 本来は PagePropsInterface を設定する
@@ -18,7 +18,7 @@ const Stack = createNativeStackNavigator<PlaceStackParamList>();
 
 export const PlacePageNavigator = ({ navigation }: NativeStackScreenProps<BottomTabParamList, 'Place'>) => (
 	<PCT012MPlaceOneProvider parentDocRef={undefined} initialPlaceId="" language="ja">
-		<PCT011MPlacesListProvider>
+		{/* <PCT011MPlacesListProvider> */}
 			<Stack.Navigator initialRouteName="PPA001Places">
 				<Stack.Screen
 					name="PPA001Places"
@@ -27,6 +27,6 @@ export const PlacePageNavigator = ({ navigation }: NativeStackScreenProps<Bottom
 				/>
 				<Stack.Screen name="PPA002Place" component={PPA002Place} initialParams={{ place_id: '', language: '' }} />
 			</Stack.Navigator>
-		</PCT011MPlacesListProvider>
+		{/* </PCT011MPlacesListProvider> */}
 	</PCT012MPlaceOneProvider>
 );
