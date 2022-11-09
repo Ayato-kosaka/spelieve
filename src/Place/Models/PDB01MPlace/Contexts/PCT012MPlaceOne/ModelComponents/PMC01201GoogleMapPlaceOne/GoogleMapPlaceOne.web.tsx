@@ -5,7 +5,6 @@ import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlac
 import { styles } from './GoogleMapPlaceOneStyle.web';
 
 export const PMC01201GoogleMapPlaceOne = () => {
-    console.log("[PPA002] web google map読み込み")
 	const { place } = useContext(PCT012MPlaceOne);
 
     const center = {
