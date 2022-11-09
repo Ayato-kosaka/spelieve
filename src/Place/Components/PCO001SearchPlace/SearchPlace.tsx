@@ -6,13 +6,14 @@ import i18n from '@/Common/Hooks/i18n-js';
 import { ENV } from '@/ENV';
 
 export const PCO001SearchPlace = ({ onAutoCompleteClicked }: SearchPlacePropsInterface) => (
+	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/309 Web用プロキシサーバ立てる
 	<GooglePlacesAutocomplete
 		placeholder={i18n.t('searchPlaceText')}
 		onPress={onAutoCompleteClicked}
 		query={{
 			key: ENV.GCP_API_KEY,
 			type: ['(cities)', 'establishment'],
-			language: 'ja',
+			language: 'ja', // TODO: https://github.com/Ayato-kosaka/spelieve/issues/281 端末言語情報グローバルに持つ
 		}}
 		requestUrl={{
 			useOnPlatform: 'web',

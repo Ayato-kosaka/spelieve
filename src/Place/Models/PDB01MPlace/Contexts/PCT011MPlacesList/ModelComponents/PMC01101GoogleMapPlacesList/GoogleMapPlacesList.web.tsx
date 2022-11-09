@@ -6,6 +6,7 @@ import { styles } from './GoogleMapPlacesListStyle.web';
 import { PCT011MPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
 
 export const PMC01101GoogleMapPlacesList = () => {
+	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/274 マップ範囲調整
 	const { placesList } = useContext(PCT011MPlacesList);
 
 	const center = placesList[0];
