@@ -35,7 +35,7 @@ export const PPA001Places = ({ navigation, route }: NativeStackScreenProps<Botto
 	return (
 		<>
 			<PMC01101GoogleMapPlacesList />
-			<PCO001SearchPlace onAutoCompleteClicked={onAutoCompleteClicked} />
+			<PCO001SearchPlace onAutoCompleteClicked={onAutoCompleteClicked} hideCities={false} />
 			<PMC01102PlacesList onPlaceSelected={onPlaceSelected} />
 		</>
 	);
