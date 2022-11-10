@@ -10,7 +10,7 @@ import {
 	limit,
 	DocumentSnapshot,
 } from 'firebase/firestore';
-import { useState, createContext, useEffect, ReactNode, useMemo } from 'react';
+import { useState, createContext, useEffect, ReactNode, useMemo, useCallback } from 'react';
 
 import {
 	MPlacesListInterface,
@@ -49,6 +49,7 @@ export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode })
 		}
 
 		qc.push(orderBy(MPlace.Cols.rating, 'desc'));
+		qc.push(limit(10)); // TODO: https://github.com/Ayato-kosaka/spelieve/issues/310 表示枚数定数切り出し
 		return qc;
 	};
 
@@ -72,23 +73,25 @@ export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode })
 			),
 		);
 
-	const retrieveMore = () => {
-		setIsRefreshing(true);
-		const qc: QueryConstraint[] = createBasicQueryConstraint();
-		qc.push(startAfter(lastVisible));
-		qc.push(limit(10));
-		const q: Query<MPlacesListInterface> = toQuery(qc);
-		const fetchAdditionalPlaces = async () => {
-			try {
-				await fetchSetPlaces(q, placesList);
-			} catch (e) {
-				console.log(e); // eslint-disable-line no-console
-			}
-			setIsRefreshing(false);
-		};
-		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		fetchAdditionalPlaces();
-	};
+	const retrieveMore = useCallback(
+		() => {
+			setIsRefreshing(true);
+			const qc: QueryConstraint[] = createBasicQueryConstraint();
+			qc.push(startAfter(lastVisible));
+			const q: Query<MPlacesListInterface> = toQuery(qc);
+			const fetchAdditionalPlaces = async () => {
+				try {
+					await fetchSetPlaces(q, placesList);
+				} catch (e) {
+					console.log(e); // eslint-disable-line no-console
+				}
+				setIsRefreshing(false);
+			};
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			fetchAdditionalPlaces();
+		},
+		[]
+	);
 
 	useEffect(() => {
 		if (!address.country) {
@@ -96,7 +99,6 @@ export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode })
 		}
 		setIsFirstLoading(true);
 		const qc: QueryConstraint[] = createBasicQueryConstraint();
-		qc.push(limit(10));
 		const q: Query<MPlacesListInterface> = toQuery(qc);
 
 		const fetchFirstPlaces = async () => {
