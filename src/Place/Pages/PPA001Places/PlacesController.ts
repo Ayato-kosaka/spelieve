@@ -26,7 +26,7 @@ export const PPA001PlacesController = (): PlacesControllerInterface => {
 	const onAutoCompleteClicked = (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
 		const isIncludes = (arr: Array<string>, target: Array<string>) => arr.some((el) => target.includes(el));
 		const pointType: Array<string> = ['establishment', 'street_address'];
-		const sendedDataTypes: Array<string> = data.types;
+		const sendedDataTypes: Array<string>= details?.types || [];
 
 		if (isIncludes(sendedDataTypes, pointType)) {
 			// 地点
