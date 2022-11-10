@@ -20,11 +20,7 @@ export const PlacePageNavigator = ({ navigation }: NativeStackScreenProps<Bottom
 	<PCT012MPlaceOneProvider parentDocRef={undefined} initialPlaceId="" language="ja">
 		<PCT011MPlacesListProvider>
 			<Stack.Navigator initialRouteName="PPA001Places">
-				<Stack.Screen
-					name="PPA001Places"
-					component={PPA001Places}
-					initialParams={{ country: '', administrativeAreaLevel1: '', administrativeAreaLevel2: '', locality: '' }}
-				/>
+				<Stack.Screen name="PPA001Places" component={PPA001Places} initialParams={{}} />
 				<Stack.Screen name="PPA002Place" component={PPA002Place} initialParams={{ place_id: '', language: '' }} />
 			</Stack.Navigator>
 		</PCT011MPlacesListProvider>

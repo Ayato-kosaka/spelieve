@@ -23,11 +23,7 @@ export const PlacePageNavigator = ({ navigation }: NativeStackScreenProps<Bottom
 		<PCT011MPlacesListProvider>
 			<LoadScript googleMapsApiKey={ENV.GCP_API_KEY}>
 				<Stack.Navigator initialRouteName="PPA001Places">
-					<Stack.Screen
-						name="PPA001Places"
-						component={PPA001Places}
-						initialParams={{ country: '', administrativeAreaLevel1: '', administrativeAreaLevel2: '', locality: '' }}
-					/>
+					<Stack.Screen name="PPA001Places" component={PPA001Places} initialParams={{}} />
 					<Stack.Screen name="PPA002Place" component={PPA002Place} initialParams={{ place_id: '', language: '' }} />
 				</Stack.Navigator>
 			</LoadScript>
