@@ -16,10 +16,7 @@ export const PMC01102PlacesList = ({ onPlaceSelected }: PlacesListPropsInterface
 				renderItem={(itemData) => (
 					<View>
 						<TouchableOpacity
-							onPress={() => {
-								const placeId = itemData.item.place_id;
-								onPlaceSelected(placeId);
-							}}>
+							onPress={() => onPlaceSelected(itemData.item.place_id)}>
 							<Image source={{ uri: itemData.item.imageUrl }} style={styles.image} />
 							<Text style={styles.placeName}>{itemData.item.name}</Text>
 						</TouchableOpacity>
