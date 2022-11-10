@@ -4,8 +4,9 @@ import { Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
 import { styles } from './PlacesListStyle';
 
 import { PCT011MPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
+import { PlacesListPropsInterface, PlacesPropsInterface } from 'spelieve-common/lib/Interfaces';
 
-export const PMC01102PlacesList: FC = ({ onPlaceSelected }) => {
+export const PMC01102PlacesList = ({ onPlaceSelected }: PlacesListPropsInterface) => {
 	const { placesList, retrieveMore } = useContext(PCT011MPlacesList);
 
 	return (
