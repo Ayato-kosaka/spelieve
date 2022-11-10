@@ -59,7 +59,7 @@ export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode })
 				setLastVisible(querySnapshot.docs[querySnapshot.docs.length - 1]);
 			})
 			.catch((e) => {
-				console.log(e);
+				console.log(e);// eslint-disable-line no-console
 			});
 	};
 
