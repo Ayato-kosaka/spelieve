@@ -37,7 +37,6 @@ export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode })
 		qc.push(where(MPlace.Cols.country, '==', address.country));
 
 		if (address.administrativeAreaLevel1 !== '') {
-			// index済
 			qc.push(where(MPlace.Cols.administrativeAreaLevel1, '==', address.administrativeAreaLevel1));
 		}
 
@@ -46,7 +45,6 @@ export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode })
 		}
 
 		if (address.locality !== '') {
-			// index済
 			qc.push(where(MPlace.Cols.locality, '==', address.locality));
 		}
 
