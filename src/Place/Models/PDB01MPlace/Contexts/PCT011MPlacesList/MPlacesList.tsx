@@ -82,7 +82,7 @@ export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode })
 			try {
 				await fetchSetPlaces(q, placesList);
 			} catch (e) {
-				console.log(e);
+				console.log(e); // eslint-disable-line no-console
 			}
 			setIsRefreshing(false);
 		};
