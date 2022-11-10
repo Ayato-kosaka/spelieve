@@ -17,7 +17,7 @@ export const PPA001Places = ({ navigation, route }: NativeStackScreenProps<Botto
 
 	useEffect(() => {
 		if (country === '') {
-			// TODO: https://github.com/Ayato-kosaka/spelieve/issues/305 現在地からGepoint取得 
+			// TODO: https://github.com/Ayato-kosaka/spelieve/issues/305 現在地からGepoint取得
 			setAddress({
 				country: '日本',
 				administrativeAreaLevel1: '神奈川県',
