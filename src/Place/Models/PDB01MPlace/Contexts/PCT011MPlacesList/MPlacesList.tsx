@@ -10,7 +10,7 @@ import {
 	limit,
 	DocumentSnapshot,
 } from 'firebase/firestore';
-import { useState, createContext, useEffect, ReactNode } from 'react';
+import { useState, createContext, useEffect, ReactNode, useMemo } from 'react';
 
 import {
 	MPlacesListInterface,
@@ -59,7 +59,7 @@ export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode })
 				setLastVisible(querySnapshot.docs[querySnapshot.docs.length - 1]);
 			})
 			.catch((e) => {
-				console.log(e);// eslint-disable-line no-console
+				console.log(e); // eslint-disable-line no-console
 			});
 	};
 
@@ -86,6 +86,7 @@ export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode })
 			}
 			setIsRefreshing(false);
 		};
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		fetchAdditionalPlaces();
 	};
 
@@ -107,11 +108,14 @@ export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode })
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [address]);
 
-	const value: MPlacesListValInterface = {
-		placesList,
-		setAddress,
-		retrieveMore,
-		isFirstLoading,
-	};
+	const value: MPlacesListValInterface = useMemo(
+		() => ({
+			placesList,
+			setAddress,
+			retrieveMore,
+			isFirstLoading,
+		}),
+		[placesList, setAddress, retrieveMore, isFirstLoading,]
+	);
 	return <PCT011MPlacesList.Provider value={value}>{children}</PCT011MPlacesList.Provider>;
 };
