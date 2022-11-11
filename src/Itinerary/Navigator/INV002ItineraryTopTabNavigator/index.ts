@@ -1,1 +1,1 @@
-export * from './TopTabNavigator'
+export * from './TopTabNavigator';
