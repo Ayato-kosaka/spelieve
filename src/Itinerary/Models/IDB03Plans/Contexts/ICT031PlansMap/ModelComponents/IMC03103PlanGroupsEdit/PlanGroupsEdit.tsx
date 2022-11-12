@@ -58,7 +58,7 @@ export function IMC03103PlanGroupsEdit({
 					setDoc(planGroupsDoc.ref, {
 						...planGroups,
 						representativeStartDateTime: new Date((parseInt(nativeEvent.text, 10) || 0) - 32400000),
-						updatedAt: new Date()
+						updatedAt: new Date(),
 					});
 				}}
 			/>
@@ -75,7 +75,11 @@ export function IMC03103PlanGroupsEdit({
 				})();
 				return (
 					<View key={planID}>
-						<IMC03101PlanEdit planID={planID} beforeAfterRepresentativeType={beforeAfterRepresentativeType} planGroupsDoc={planGroupsDoc} />
+						<IMC03101PlanEdit
+							planID={planID}
+							beforeAfterRepresentativeType={beforeAfterRepresentativeType}
+							planGroupsDoc={planGroupsDoc}
+						/>
 						<IMC03102TrafficMovementEdit planID={planID} />
 						<Button
 							title={i18n.t('予定を追加')}
