@@ -1,9 +1,10 @@
-import { setDoc } from 'firebase/firestore';
+import { QueryDocumentSnapshot, setDoc } from 'firebase/firestore';
 import React, { useContext, useEffect, useState } from 'react';
 import { FlatList, TextInputChangeEventData, View } from 'react-native';
 import { Chip, Text, TextInput } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import { PlanGroupsListInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT021';
 import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 
 import { ICT031PlansMap } from '../..';
@@ -34,15 +35,31 @@ export const add = (base: Date, addition: Date, types: ('Month' | 'Date' | 'Hour
 export function IMC03101PlanEdit({
 	planID,
 	beforeAfterRepresentativeType,
+	planGroupsDoc,
 }: {
 	planID: string;
 	beforeAfterRepresentativeType: 'before' | 'representative' | 'after';
+	planGroupsDoc: QueryDocumentSnapshot<PlanGroupsListInterface>;
 }) {
 	const useICT031PlansMap = useContext(ICT031PlansMap);
 	const planDocSnap = useICT031PlansMap.plansDocSnapMap[planID];
 	const plan = planDocSnap.data();
 
 	const [isMounted, setIsMounted] = useState<boolean>(false);
+
+	// representative の placeStartTime を設定する
+	useEffect(() => {
+		if (isMounted && beforeAfterRepresentativeType === 'representative') {
+			console.log('debug', 'representative の placeStartTime を設定する');
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			setDoc(planDocSnap.ref, {
+				...plan,
+				placeStartTime: planGroupsDoc.data().representativeStartDateTime,
+				updatedAt: new Date(),
+			});
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [planGroupsDoc.data().representativeStartDateTime.getTime()]);
 
 	// representative, before の placeEndTime を設定する
 	useEffect(() => {
@@ -52,6 +69,7 @@ export function IMC03101PlanEdit({
 			setDoc(planDocSnap.ref, {
 				...plan,
 				placeEndTime: add(plan.placeStartTime, plan.placeSpan, ['Hours', 'Minutes']),
+				updatedAt: new Date(),
 			});
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -64,7 +82,17 @@ export function IMC03101PlanEdit({
 	return (
 		<View style={{ borderWidth: 1 }}>
 			<MaterialCommunityIcons name="map-marker" />
-			<Text>{planID}</Text>
+			<Text>
+				props=
+				{JSON.stringify(
+					{
+						planID,
+						beforeAfterRepresentativeType,
+					},
+					null,
+					'\t',
+				)}
+			</Text>
 			<Text>{plan.title}</Text>
 			<Text>
 				{DateUtils.formatToHHMM(plan.placeStartTime)}~{DateUtils.formatToHHMM(plan.placeEndTime)}
