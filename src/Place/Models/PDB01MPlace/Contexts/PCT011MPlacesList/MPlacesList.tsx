@@ -27,97 +27,93 @@ export const PCT011MPlacesList = createContext({} as MPlacesListValInterface);
 export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode }) => {
 	const placeCollectionRef = collection(db, MPlace.modelName);
 	const [placesList, setPlacesList] = useState<MPlacesListInterface[]>([]);
-	const [isFirstLoading, setIsFirstLoading] = useState<boolean>(true);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [address, setAddress] = useState<MPlacesListAddressInterface>({});
 	const [lastVisible, setLastVisible] = useState<DocumentSnapshot | null>(null);
-	const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+	// const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
-	const createBasicQueryConstraint = (): QueryConstraint[] => {
-		const qc: QueryConstraint[] = [];
-		qc.push(where(MPlace.Cols.country, '==', address.country));
+	const basicQueryConstraints = useMemo(
+		() => {
+			const qc: QueryConstraint[] = [];
 
-		if (address.administrativeAreaLevel1 !== '') {
-			qc.push(where(MPlace.Cols.administrativeAreaLevel1, '==', address.administrativeAreaLevel1));
-		}
+			// TODO: https://github.com/Ayato-kosaka/spelieve/issues/281 初期language 検討 
+			qc.push(where(MPlace.Cols.language, '==', 'ja'));
 
-		if (address.administrativeAreaLevel2 !== '') {
-			qc.push(where(MPlace.Cols.administrativeAreaLevel2, '==', address.administrativeAreaLevel2));
-		}
+			qc.push(where(MPlace.Cols.country, '==', address.country));
 
-		if (address.locality !== '') {
-			qc.push(where(MPlace.Cols.locality, '==', address.locality));
-		}
+			if (address.administrativeAreaLevel1 !== '') {
+				qc.push(where(MPlace.Cols.administrativeAreaLevel1, '==', address.administrativeAreaLevel1));
+			}
 
-		qc.push(orderBy(MPlace.Cols.rating, 'desc'));
-		qc.push(limit(10)); // TODO: https://github.com/Ayato-kosaka/spelieve/issues/310 表示枚数定数切り出し
-		return qc;
-	};
+			if (address.administrativeAreaLevel2 !== '') {
+				qc.push(where(MPlace.Cols.administrativeAreaLevel2, '==', address.administrativeAreaLevel2));
+			}
+
+			if (address.locality !== '') {
+				qc.push(where(MPlace.Cols.locality, '==', address.locality));
+			}
+
+			qc.push(orderBy(MPlace.Cols.rating, 'desc'));
+			qc.push(limit(10)); // TODO: https://github.com/Ayato-kosaka/spelieve/issues/310 表示枚数定数切り出し
+			return qc;
+		},
+		[address]
+	);
 
 	const fetchSetPlaces = async (q: Query<MPlacesListInterface>, currentPlacesList: MPlacesListInterface[]) => {
 		await getDocs(q)
 			.then((querySnapshot) => {
 				setPlacesList([...currentPlacesList, ...querySnapshot.docs.map((doc) => doc.data())]);
 				setLastVisible(querySnapshot.docs[querySnapshot.docs.length - 1]);
+				setIsLoading(false);
 			})
 			.catch((e) => {
 				console.log(e); // eslint-disable-line no-console
 			});
 	};
 
-	const toQuery = (qc: QueryConstraint[]): Query<MPlacesListInterface> =>
-		query(placeCollectionRef, ...qc).withConverter(
-			FirestoreConverter<MPlace, MPlacesListInterface>(
-				MPlace,
-				(data) => data,
-				(data) => data,
-			),
-		);
+	const toQuery = useCallback(
+		(qc: QueryConstraint[]): Query<MPlacesListInterface> => {
+			return query(placeCollectionRef, ...qc).withConverter(
+				FirestoreConverter<MPlace, MPlacesListInterface>(
+					MPlace,
+					(data) => data,
+					(data) => data,
+				),
+			);
+		},
+		[placeCollectionRef]
+	);
 
 	const retrieveMore = useCallback(
 		() => {
-			setIsRefreshing(true);
-			const qc: QueryConstraint[] = createBasicQueryConstraint();
-			qc.push(startAfter(lastVisible));
-			const q: Query<MPlacesListInterface> = toQuery(qc);
-			const fetchAdditionalPlaces = async () => {
-				try {
-					await fetchSetPlaces(q, placesList);
-				} catch (e) {
-					console.log(e); // eslint-disable-line no-console
-				}
-				setIsRefreshing(false);
-			};
+			setIsLoading(true);
+			const queryConstraints: QueryConstraint[] = [...basicQueryConstraints, startAfter(lastVisible)];
+			const q: Query<MPlacesListInterface> = toQuery(queryConstraints);
 			// eslint-disable-next-line @typescript-eslint/no-floating-promises
-			fetchAdditionalPlaces();
+		fetchSetPlaces(q, placesList);
 		},
-		[]
+		[basicQueryConstraints, lastVisible, placesList, toQuery]
 	);
 
 	useEffect(() => {
 		if (!address.country) {
 			return;
 		}
-		setIsFirstLoading(true);
-		const qc: QueryConstraint[] = createBasicQueryConstraint();
-		const q: Query<MPlacesListInterface> = toQuery(qc);
-
-		const fetchFirstPlaces = async () => {
-			await fetchSetPlaces(q, []);
-			setIsFirstLoading(false);
-		};
+		setIsLoading(true);
+		const q: Query<MPlacesListInterface> = toQuery(basicQueryConstraints);
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		fetchFirstPlaces();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [address]);
+		fetchSetPlaces(q, []);
+	}, [address, basicQueryConstraints, toQuery]);
 
 	const value: MPlacesListValInterface = useMemo(
 		() => ({
 			placesList,
 			setAddress,
 			retrieveMore,
-			isFirstLoading,
 		}),
-		[placesList, setAddress, retrieveMore, isFirstLoading,]
+		[placesList, setAddress, retrieveMore]
 	);
 	return <PCT011MPlacesList.Provider value={value}>{children}</PCT011MPlacesList.Provider>;
 };
+
