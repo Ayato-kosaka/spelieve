@@ -30,7 +30,7 @@ export function IPA002ItineraryCoverController({
 
 	const updateItinerary = (): void => {
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		setDoc<ItineraryOneInterface>(itineraryDocSnap!.ref, { ...pageItinerary! });
+		setDoc<ItineraryOneInterface>(itineraryDocSnap!.ref, { ...pageItinerary!, updatedAt: new Date() });
 	};
 
 	const handleOnChange =
@@ -42,7 +42,7 @@ export function IPA002ItineraryCoverController({
 	const deleteTag = (index: number): void => {
 		const newTags: string[] = pageItinerary!.tags.splice(index, 1);
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		setDoc<ItineraryOneInterface>(itineraryDocSnap!.ref, { ...pageItinerary!, tags: newTags });
+		setDoc<ItineraryOneInterface>(itineraryDocSnap!.ref, { ...pageItinerary!, tags: newTags, updatedAt: new Date() });
 	};
 
 	const shouldNavigate: boolean = !itineraryID || (!!itineraryDocSnap && !itineraryDocSnap.exists());

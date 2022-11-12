@@ -50,7 +50,7 @@ export function ICT021PlanGroupsListProvider({ children }: { children: ReactNode
 								addDoc<PlansMapInterface>(plansCRef, { ...Plans.fromJSON({}) }).then((planDocRef) => {
 									data.plans.push(planDocRef.id);
 									// eslint-disable-next-line @typescript-eslint/no-floating-promises
-									setDoc(queryDocumentSnapshot.ref, { ...data });
+									setDoc(queryDocumentSnapshot.ref, { ...data, updatedAt: new Date() });
 								});
 							}
 						});

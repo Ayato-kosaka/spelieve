@@ -35,13 +35,13 @@ export function IMC03103PlanGroupsEdit({
 		});
 		const data = { ...planGroups };
 		data.plans.splice(index - 1, 0, planDocRef.id);
-		await setDoc(planGroupsDoc.ref, { ...data });
+		await setDoc(planGroupsDoc.ref, { ...data, updatedAt: new Date() });
 	};
 
 	const deletePlan = async (index: number) => {
 		const data = { ...planGroups };
 		const planId = data.plans.splice(index, 1);
-		await setDoc(planGroupsDoc.ref, { ...data });
+		await setDoc(planGroupsDoc.ref, { ...data, updatedAt: new Date() });
 		await deleteDoc(doc(plansCRef!, planId[0]));
 	};
 
@@ -58,6 +58,7 @@ export function IMC03103PlanGroupsEdit({
 					setDoc(planGroupsDoc.ref, {
 						...planGroups,
 						representativeStartDateTime: new Date((parseInt(nativeEvent.text, 10) || 0) - 32400000),
+						updatedAt: new Date()
 					});
 				}}
 			/>
@@ -74,7 +75,7 @@ export function IMC03103PlanGroupsEdit({
 				})();
 				return (
 					<View key={planID}>
-						<IMC03101PlanEdit planID={planID} beforeAfterRepresentativeType={beforeAfterRepresentativeType} />
+						<IMC03101PlanEdit planID={planID} beforeAfterRepresentativeType={beforeAfterRepresentativeType} planGroupsDoc={planGroupsDoc} />
 						<IMC03102TrafficMovementEdit planID={planID} />
 						<Button
 							title={i18n.t('予定を追加')}
