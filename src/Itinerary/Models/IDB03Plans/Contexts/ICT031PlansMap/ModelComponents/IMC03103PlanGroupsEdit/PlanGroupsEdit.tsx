@@ -1,6 +1,7 @@
-import { addDoc, QueryDocumentSnapshot, setDoc } from 'firebase/firestore';
+import { addDoc, deleteDoc, doc, QueryDocumentSnapshot, setDoc } from 'firebase/firestore';
 import { useContext, useEffect } from 'react';
-import { Button, View } from 'react-native';
+import { Button, TextInputChangeEventData, View } from 'react-native';
+import { Text, TextInput } from 'react-native-paper';
 
 import { PlanGroupsListInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT021';
 import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
@@ -10,6 +11,7 @@ import { ICT031PlansMap } from '../../PlansMap';
 import i18n from '@/Common/Hooks/i18n-js';
 import { IMC03101PlanEdit } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03101PlanEdit';
 import { IMC03102TrafficMovementEdit } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03102TrafficMovementEdit';
+import { PlansMapInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT031';
 
 export function IMC03103PlanGroupsEdit({
 	planGroupsDoc,
@@ -17,6 +19,7 @@ export function IMC03103PlanGroupsEdit({
 	planGroupsDoc: QueryDocumentSnapshot<PlanGroupsListInterface>;
 }) {
 	const { plansCRef } = useContext(ICT031PlansMap);
+	const planGroups = planGroupsDoc.data();
 
 	useEffect(() => {}, []);
 
@@ -31,14 +34,33 @@ export function IMC03103PlanGroupsEdit({
 			createdAt: new Date(),
 			updatedAt: new Date(),
 		});
-		const data = { ...planGroupsDoc.data() };
+		const data = { ...planGroups };
 		data.plans.splice(index - 1, 0, planDocRef.id);
 		await setDoc(planGroupsDoc.ref, { ...data });
 	};
 
+    const deletePlan = async (index: number) => {
+		const data = { ...planGroups };
+		const planId = data.plans.splice(index, 1);
+		await setDoc(planGroupsDoc.ref, { ...data });
+        await deleteDoc(doc(plansCRef!, planId[0]));
+    }
+
 	return (
-		<View key={planGroupsDoc.id} style={{ width: '100%' }}>
-			{planGroupsDoc.data().plans.map((planID, index) => (
+		<View style={{ width: '100%' }}>
+			<Text>representativePlanID = {planGroups.representativePlanID}</Text>
+
+			<TextInput
+				label={i18n.t('representativeStartDateTime')}
+				value={(planGroups.representativeStartDateTime.getTime() + 32400000).toString()}
+				onChange={({ nativeEvent }: { nativeEvent: TextInputChangeEventData }) => {
+					setDoc(planGroupsDoc.ref, {
+						...planGroups,
+						representativeStartDateTime: new Date((parseInt(nativeEvent.text, 10) || 0) - 32400000),
+					});
+				}}
+			/>
+			{planGroups.plans.map((planID, index) => (
 				<View key={planID}>
 					<IMC03101PlanEdit planID={planID} />
 					<IMC03102TrafficMovementEdit planID={planID} />
@@ -47,6 +69,13 @@ export function IMC03103PlanGroupsEdit({
 						onPress={() => {
 							// eslint-disable-next-line @typescript-eslint/no-floating-promises
 							addPlan(index);
+						}}
+					/>
+					<Button
+						title={i18n.t('予定を削除')}
+						onPress={() => {
+							// eslint-disable-next-line @typescript-eslint/no-floating-promises
+							deletePlan(index);
 						}}
 					/>
 				</View>

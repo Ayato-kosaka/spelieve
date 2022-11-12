@@ -37,6 +37,7 @@ export function IMC03101PlanEdit({ planID }: { planID: string }) {
 
 	const [isMounted, setIsMounted] = useState<boolean>(false);
 
+	// placeEndTime を設定する
 	useEffect(() => {
 		if (isMounted) {
 			console.log('加算をする', plan.placeStartTime, plan.placeSpan);

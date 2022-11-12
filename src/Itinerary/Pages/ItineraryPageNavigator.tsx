@@ -5,9 +5,9 @@ import { ItineraryCoverPropsInterface, ItineraryTopTabNavigatorPropsInterface } 
 import { ICT011ItineraryOneProvider } from '../Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
 import { ICT021PlanGroupsListProvider } from '../Models/IDB02PlanGroups/Contexts/ICT021PlanGroupsList';
 import { ICT031PlansMapProvider } from '../Models/IDB03Plans/Contexts/ICT031PlansMap';
+import { TopTabNavigator, TopTabParamList } from '../Navigator/INV002ItineraryTopTabNavigator';
 
 import { IPA002ItineraryCover } from './IPA002ItineraryCover';
-import { TopTabNavigator, TopTabParamList } from '../Navigator/INV002ItineraryTopTabNavigator';
 
 import i18n from '@/Common/Hooks/i18n-js';
 

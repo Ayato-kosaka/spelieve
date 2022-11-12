@@ -57,7 +57,7 @@ export function IPA001ItineraryEdit({
 	return (
 		<ScrollView>
 			{planGroupsQSnap?.docs.map((planGroupsDoc) => (
-				<IMC03103PlanGroupsEdit planGroupsDoc={planGroupsDoc} />
+				<IMC03103PlanGroupsEdit key={planGroupsDoc.id} planGroupsDoc={planGroupsDoc} />
 			))}
 		</ScrollView>
 	);
