@@ -32,9 +32,9 @@ export const PPA001Places = ({ navigation, route }: NativeStackScreenProps<Botto
 
 	useEffect(() => {
 		if (placesList.length === 0) {
-			setIsLoading(true)
+			setIsLoading(true);
 		}
-	}, [placesList])
+	}, [placesList]);
 
 	if (isLoading) {
 		return <ActivityIndicator animating />;
