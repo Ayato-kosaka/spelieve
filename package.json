@@ -13,6 +13,7 @@
     "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\" && eslint \"{src,apps,libs,test}/**/*.{js,jsx,ts,tsx}\" --max-warnings=0"
   },
   "dependencies": {
+    "@react-native-community/slider": "^4.3.2",
     "@react-navigation/material-bottom-tabs": "^6.2.4",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.1",
@@ -29,7 +30,7 @@
     "react-native-screens": "~3.18.0",
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "0.18.10",
-    "spelieve-common": "^1.1.40"
+    "spelieve-common": "^1.1.49"
   },
   "devDependencies": {
     "@babel/core": "7.20.2",
