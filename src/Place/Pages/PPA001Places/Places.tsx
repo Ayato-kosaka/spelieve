@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ActivityIndicator } from 'react-native-paper';
 
 import { PPA001PlacesController } from './PlacesController';
@@ -12,24 +12,31 @@ import { PMC01102PlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MP
 
 export const PPA001Places = ({ navigation, route }: NativeStackScreenProps<BottomTabParamList, 'PPA001Places'>) => {
 	const { onAutoCompleteClicked, onPlaceSelected } = PPA001PlacesController();
-	const { setAddress, isFirstLoading } = useContext(PCT011MPlacesList);
+	const { placesList, setAddress } = useContext(PCT011MPlacesList);
 	const { country, administrativeAreaLevel1, administrativeAreaLevel2, locality } = route.params;
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	useEffect(() => {
-		if (country === '') {
+		if (country) {
+			setAddress({ country, administrativeAreaLevel1, administrativeAreaLevel2, locality });
+		} else {
 			// TODO: https://github.com/Ayato-kosaka/spelieve/issues/305 現在地からGepoint取得
-			setAddress({
+			navigation.setParams({
 				country: '日本',
 				administrativeAreaLevel1: '神奈川県',
 				administrativeAreaLevel2: '',
 				locality: '横浜市',
 			});
-		} else {
-			setAddress({ country, administrativeAreaLevel1, administrativeAreaLevel2, locality });
 		}
 	}, [country, administrativeAreaLevel1, administrativeAreaLevel2, locality]);
 
-	if (isFirstLoading) {
+	useEffect(() => {
+		if (placesList.length === 0) {
+			setIsLoading(true)
+		}
+	}, [placesList])
+
+	if (isLoading) {
 		return <ActivityIndicator animating />;
 	}
 	return (
