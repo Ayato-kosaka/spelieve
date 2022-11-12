@@ -10,6 +10,7 @@ import { ICT031PlansMap } from '../..';
 
 import i18n from '@/Common/Hooks/i18n-js';
 
+// TODO: DateUtils に移行する
 export const add = (base: Date, addition: Date, types: ('Month' | 'Date' | 'Hours' | 'Minutes' | 'Seconds')[]) => {
 	const ret = new Date(base.getTime());
 	if (types.includes('Month')) {
@@ -30,17 +31,23 @@ export const add = (base: Date, addition: Date, types: ('Month' | 'Date' | 'Hour
 	return ret;
 };
 
-export function IMC03101PlanEdit({ planID }: { planID: string }) {
+export function IMC03101PlanEdit({
+	planID,
+	beforeAfterRepresentativeType,
+}: {
+	planID: string;
+	beforeAfterRepresentativeType: 'before' | 'representative' | 'after';
+}) {
 	const useICT031PlansMap = useContext(ICT031PlansMap);
 	const planDocSnap = useICT031PlansMap.plansDocSnapMap[planID];
 	const plan = planDocSnap.data();
 
 	const [isMounted, setIsMounted] = useState<boolean>(false);
 
-	// placeEndTime を設定する
+	// representative, before の placeEndTime を設定する
 	useEffect(() => {
-		if (isMounted) {
-			console.log('加算をする', plan.placeStartTime, plan.placeSpan);
+		if (isMounted && ['representative', 'before'].includes(beforeAfterRepresentativeType)) {
+			console.log('debug', 'epresentative, before の placeEndTime を設定する');
 			// eslint-disable-next-line @typescript-eslint/no-floating-promises
 			setDoc(planDocSnap.ref, {
 				...plan,
@@ -48,7 +55,7 @@ export function IMC03101PlanEdit({ planID }: { planID: string }) {
 			});
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [plan.placeSpan.getTime()]);
+	}, [plan.placeSpan.getTime(), beforeAfterRepresentativeType]);
 
 	useEffect(() => {
 		setIsMounted(true);

@@ -1,5 +1,5 @@
 import { onSnapshot, DocumentSnapshot, collection, doc } from 'firebase/firestore';
-import { useState, createContext, useEffect, ReactNode } from 'react';
+import { useState, createContext, useEffect, ReactNode, useMemo } from 'react';
 
 import { ItineraryOneInterface, ItineraryOneValInterface } from 'spelieve-common/lib/Interfaces/Itinerary';
 import { Itineraries } from 'spelieve-common/lib/Models/Itinerary/IDB01/Itineraries';
@@ -34,10 +34,12 @@ export function ICT011ItineraryOneProvider({ children }: { children: ReactNode }
 		return undefined;
 	}, [itineraryID]);
 
-	/* eslint react/jsx-no-constructed-context-values: 0 */
-	const value: ItineraryOneValInterface = {
-		itineraryDocSnap,
-		setItineraryID,
-	};
+	const value: ItineraryOneValInterface = useMemo(
+		() => ({
+			itineraryDocSnap,
+			setItineraryID,
+		}),
+		[itineraryDocSnap, setItineraryID],
+	);
 	return <ICT011ItineraryOne.Provider value={value}>{children}</ICT011ItineraryOne.Provider>;
 }

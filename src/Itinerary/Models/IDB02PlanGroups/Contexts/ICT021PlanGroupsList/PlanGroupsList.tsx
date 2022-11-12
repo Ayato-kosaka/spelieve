@@ -40,15 +40,16 @@ export function ICT021PlanGroupsListProvider({ children }: { children: ReactNode
 				query(planGroupsCRef, orderBy(PlanGroups.Cols.representativeStartDateTime)),
 				(querySnap) => {
 					if (querySnap.empty) {
-						/* eslint @typescript-eslint/no-floating-promises: 0 */
+						// eslint-disable-next-line @typescript-eslint/no-floating-promises
 						addDoc(planGroupsCRef, { ...PlanGroups.fromJSON({}) });
 					} else {
 						querySnap.docs.forEach((queryDocumentSnapshot) => {
 							const data: PlanGroupsListInterface = queryDocumentSnapshot.data();
 							if (!data.plans.length) {
+								// eslint-disable-next-line @typescript-eslint/no-floating-promises
 								addDoc<PlansMapInterface>(plansCRef, { ...Plans.fromJSON({}) }).then((planDocRef) => {
 									data.plans.push(planDocRef.id);
-									/* eslint @typescript-eslint/no-floating-promises: 0 */
+									// eslint-disable-next-line @typescript-eslint/no-floating-promises
 									setDoc(queryDocumentSnapshot.ref, { ...data });
 								});
 							}
@@ -62,10 +63,12 @@ export function ICT021PlanGroupsListProvider({ children }: { children: ReactNode
 		return () => undefined;
 	}, [planGroupsCRef, plansCRef]);
 
-	/* eslint react/jsx-no-constructed-context-values: 0 */
-	const value: PlanGroupsListValInterface = {
-		planGroupsQSnap,
-		planGroupsCRef,
-	};
+	const value: PlanGroupsListValInterface = useMemo(
+		() => ({
+			planGroupsQSnap,
+			planGroupsCRef,
+		}),
+		[planGroupsQSnap, planGroupsCRef],
+	);
 	return <ICT021PlanGroupsList.Provider value={value}>{children}</ICT021PlanGroupsList.Provider>;
 }

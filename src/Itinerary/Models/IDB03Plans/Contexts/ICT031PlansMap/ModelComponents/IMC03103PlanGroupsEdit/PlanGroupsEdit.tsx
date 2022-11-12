@@ -11,7 +11,6 @@ import { ICT031PlansMap } from '../../PlansMap';
 import i18n from '@/Common/Hooks/i18n-js';
 import { IMC03101PlanEdit } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03101PlanEdit';
 import { IMC03102TrafficMovementEdit } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03102TrafficMovementEdit';
-import { PlansMapInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT031';
 
 export function IMC03103PlanGroupsEdit({
 	planGroupsDoc,
@@ -39,12 +38,14 @@ export function IMC03103PlanGroupsEdit({
 		await setDoc(planGroupsDoc.ref, { ...data });
 	};
 
-    const deletePlan = async (index: number) => {
+	const deletePlan = async (index: number) => {
 		const data = { ...planGroups };
 		const planId = data.plans.splice(index, 1);
 		await setDoc(planGroupsDoc.ref, { ...data });
-        await deleteDoc(doc(plansCRef!, planId[0]));
-    }
+		await deleteDoc(doc(plansCRef!, planId[0]));
+	};
+
+	let representativeFounded = false;
 
 	return (
 		<View style={{ width: '100%' }}>
@@ -60,26 +61,38 @@ export function IMC03103PlanGroupsEdit({
 					});
 				}}
 			/>
-			{planGroups.plans.map((planID, index) => (
-				<View key={planID}>
-					<IMC03101PlanEdit planID={planID} />
-					<IMC03102TrafficMovementEdit planID={planID} />
-					<Button
-						title={i18n.t('予定を追加')}
-						onPress={() => {
-							// eslint-disable-next-line @typescript-eslint/no-floating-promises
-							addPlan(index);
-						}}
-					/>
-					<Button
-						title={i18n.t('予定を削除')}
-						onPress={() => {
-							// eslint-disable-next-line @typescript-eslint/no-floating-promises
-							deletePlan(index);
-						}}
-					/>
-				</View>
-			))}
+			{planGroups.plans.map((planID, index) => {
+				const beforeAfterRepresentativeType = (() => {
+					if (representativeFounded) {
+						return 'after';
+					}
+					if (planID === planGroups.representativePlanID) {
+						representativeFounded = true;
+						return 'representative';
+					}
+					return 'before';
+				})();
+				return (
+					<View key={planID}>
+						<IMC03101PlanEdit planID={planID} beforeAfterRepresentativeType={beforeAfterRepresentativeType} />
+						<IMC03102TrafficMovementEdit planID={planID} />
+						<Button
+							title={i18n.t('予定を追加')}
+							onPress={() => {
+								// eslint-disable-next-line @typescript-eslint/no-floating-promises
+								addPlan(index);
+							}}
+						/>
+						<Button
+							title={i18n.t('予定を削除')}
+							onPress={() => {
+								// eslint-disable-next-line @typescript-eslint/no-floating-promises
+								deletePlan(index);
+							}}
+						/>
+					</View>
+				);
+			})}
 		</View>
 	);
 }

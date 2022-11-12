@@ -53,12 +53,14 @@ export function ICT031PlansMapProvider({ children }: { children: ReactNode }) {
 		return () => undefined;
 	}, [plansCRef]);
 
-	/* eslint react/jsx-no-constructed-context-values: 0 */
-	const value: PlansMapValInterface = {
-		plansDocSnapMap,
-		plansCRef,
-		isPlansLoading,
-	};
+	const value: PlansMapValInterface = useMemo(
+		() => ({
+			plansDocSnapMap,
+			plansCRef,
+			isPlansLoading,
+		}),
+		[plansDocSnapMap, plansCRef, isPlansLoading],
+	);
 
 	return <ICT031PlansMap.Provider value={value}>{children}</ICT031PlansMap.Provider>;
 }
