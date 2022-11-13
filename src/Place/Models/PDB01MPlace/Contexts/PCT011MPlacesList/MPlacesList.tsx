@@ -25,7 +25,7 @@ import db from '@/Place/Endpoint/firestore';
 export const PCT011MPlacesList = createContext({} as MPlacesListValInterface);
 
 export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode }) => {
-	const placeCollectionRef = collection(db, MPlace.modelName);
+	const placeCollectionRef = useMemo(() => collection(db, MPlace.modelName), [db]);
 	const [placesList, setPlacesList] = useState<MPlacesListInterface[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [address, setAddress] = useState<MPlacesListAddressInterface>({});
@@ -70,7 +70,8 @@ export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode })
 	};
 
 	const toQuery = useCallback(
-		(qc: QueryConstraint[]): Query<MPlacesListInterface> => query(placeCollectionRef, ...qc).withConverter(
+		(qc: QueryConstraint[]): Query<MPlacesListInterface> =>
+			query(placeCollectionRef, ...qc).withConverter(
 				FirestoreConverter<MPlace, MPlacesListInterface>(
 					MPlace,
 					(data) => data,
@@ -96,7 +97,7 @@ export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode })
 		const q: Query<MPlacesListInterface> = toQuery(basicQueryConstraints);
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		fetchSetPlaces(q, []);
-	}, [address, basicQueryConstraints, toQuery]);
+	}, [address.country, basicQueryConstraints, toQuery]);
 
 	const value: MPlacesListValInterface = useMemo(
 		() => ({

@@ -14,18 +14,21 @@ export const PPA001Places = ({ navigation, route }: NativeStackScreenProps<Botto
 	const { onAutoCompleteClicked, onPlaceSelected } = PPA001PlacesController();
 	const { placesList, setAddress } = useContext(PCT011MPlacesList);
 	const { country, administrativeAreaLevel1, administrativeAreaLevel2, locality } = route.params;
-	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	useEffect(() => {
 		if (country) {
 			setAddress({ country, administrativeAreaLevel1, administrativeAreaLevel2, locality });
 		} else {
 			// TODO: https://github.com/Ayato-kosaka/spelieve/issues/305 現在地からGepoint取得
-			navigation.setParams({
-				country: '日本',
-				administrativeAreaLevel1: '神奈川県',
-				administrativeAreaLevel2: '',
-				locality: '横浜市',
+			navigation.navigate('Place', {
+				screen: 'PPA001Places',
+				params: {
+					country: '日本',
+					administrativeAreaLevel1: '神奈川県',
+					administrativeAreaLevel2: '',
+					locality: '横浜市',
+				},
 			});
 		}
 	}, [country, administrativeAreaLevel1, administrativeAreaLevel2, locality]);
@@ -33,6 +36,8 @@ export const PPA001Places = ({ navigation, route }: NativeStackScreenProps<Botto
 	useEffect(() => {
 		if (placesList.length === 0) {
 			setIsLoading(true);
+		} else {
+			setIsLoading(false);
 		}
 	}, [placesList]);
 
