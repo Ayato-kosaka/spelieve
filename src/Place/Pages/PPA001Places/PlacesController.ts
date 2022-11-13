@@ -1,18 +1,54 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { GooglePlaceData, GooglePlaceDetail, AddressComponent } from 'react-native-google-places-autocomplete';
 
-import { MPlacesListAddressInterface, PlacesControllerInterface } from 'spelieve-common/lib/Interfaces';
+import {
+	MPlacesListAddressInterface,
+	PlacesControllerInterface,
+	PlacesPropsInterface,
+} from 'spelieve-common/lib/Interfaces';
 
 import { BottomTabParamList } from '@/App';
 import i18n from '@/Common/Hooks/i18n-js';
 import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001GooglePlaceAPI';
 import { PCT011MPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
 
-export const PPA001PlacesController = (): PlacesControllerInterface => {
-	const { setAddress } = useContext(PCT011MPlacesList);
+export const PPA001PlacesController = ({
+	country,
+	administrativeAreaLevel1,
+	administrativeAreaLevel2,
+	locality,
+}: PlacesPropsInterface): PlacesControllerInterface => {
+	const { placesList, setAddress } = useContext(PCT011MPlacesList);
 	const navigation = useNavigation<NativeStackNavigationProp<BottomTabParamList>>();
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+
+	useEffect(() => {
+		if (placesList.length === 0) {
+			setIsLoading(true);
+		} else {
+			setIsLoading(false);
+		}
+	}, [placesList]);
+
+	useEffect(() => {
+		if (country) {
+			setAddress({ country, administrativeAreaLevel1, administrativeAreaLevel2, locality })
+		} else {
+			// TODO: https://github.com/Ayato-kosaka/spelieve/issues/305 現在地からGepoint取得
+			navigation.navigate('Place', {
+				screen: 'PPA001Places',
+				params: {
+					country: '日本',
+					administrativeAreaLevel1: '神奈川県',
+					administrativeAreaLevel2: '',
+					locality: '横浜市',
+				}
+			})
+		}
+	}, [country, administrativeAreaLevel1, administrativeAreaLevel2, locality]);
+
 
 	const onPlaceSelected = (place_id: string) => {
 		navigation.navigate('Place', {
@@ -50,5 +86,5 @@ export const PPA001PlacesController = (): PlacesControllerInterface => {
 		}
 	};
 
-	return { onAutoCompleteClicked, onPlaceSelected };
+	return { onAutoCompleteClicked, onPlaceSelected, isLoading };
 };

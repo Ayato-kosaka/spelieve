@@ -25,12 +25,11 @@ import db from '@/Place/Endpoint/firestore';
 export const PCT011MPlacesList = createContext({} as MPlacesListValInterface);
 
 export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode }) => {
-	const placeCollectionRef = collection(db, MPlace.modelName);
+	const placeCollectionRef = useMemo(() => collection(db, MPlace.modelName), []);
 	const [placesList, setPlacesList] = useState<MPlacesListInterface[]>([]);
-	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [address, setAddress] = useState<MPlacesListAddressInterface>({});
 	const [lastVisible, setLastVisible] = useState<DocumentSnapshot | null>(null);
-	// const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
 	const basicQueryConstraints = useMemo(() => {
 		const qc: QueryConstraint[] = [];
@@ -70,7 +69,8 @@ export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode })
 	};
 
 	const toQuery = useCallback(
-		(qc: QueryConstraint[]): Query<MPlacesListInterface> => query(placeCollectionRef, ...qc).withConverter(
+		(qc: QueryConstraint[]): Query<MPlacesListInterface> =>
+			query(placeCollectionRef, ...qc).withConverter(
 				FirestoreConverter<MPlace, MPlacesListInterface>(
 					MPlace,
 					(data) => data,
