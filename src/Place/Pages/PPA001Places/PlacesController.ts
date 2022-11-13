@@ -47,7 +47,7 @@ export const PPA001PlacesController = ({
 				},
 			});
 		}
-	}, [country, administrativeAreaLevel1, administrativeAreaLevel2, locality]);
+	}, [country, administrativeAreaLevel1, administrativeAreaLevel2, locality, navigation, setAddress]);
 
 	const onPlaceSelected = (place_id: string) => {
 		navigation.navigate('Place', {
