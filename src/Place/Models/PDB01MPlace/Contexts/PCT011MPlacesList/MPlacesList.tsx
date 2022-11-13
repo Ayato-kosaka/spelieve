@@ -97,7 +97,7 @@ export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode })
 		const q: Query<MPlacesListInterface> = toQuery(basicQueryConstraints);
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		fetchSetPlaces(q, []);
-	}, [address.country, basicQueryConstraints, toQuery]);
+	}, [address, basicQueryConstraints, toQuery]);
 
 	const value: MPlacesListValInterface = useMemo(
 		() => ({
