@@ -34,7 +34,7 @@ export const PPA001PlacesController = ({
 
 	useEffect(() => {
 		if (country) {
-			setAddress({ country, administrativeAreaLevel1, administrativeAreaLevel2, locality })
+			setAddress({ country, administrativeAreaLevel1, administrativeAreaLevel2, locality });
 		} else {
 			// TODO: https://github.com/Ayato-kosaka/spelieve/issues/305 現在地からGepoint取得
 			navigation.navigate('Place', {
@@ -44,11 +44,10 @@ export const PPA001PlacesController = ({
 					administrativeAreaLevel1: '神奈川県',
 					administrativeAreaLevel2: '',
 					locality: '横浜市',
-				}
-			})
+				},
+			});
 		}
 	}, [country, administrativeAreaLevel1, administrativeAreaLevel2, locality]);
-
 
 	const onPlaceSelected = (place_id: string) => {
 		navigation.navigate('Place', {
