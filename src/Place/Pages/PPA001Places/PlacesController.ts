@@ -23,14 +23,15 @@ export const PPA001PlacesController = ({
 	const { placesList, setAddress } = useContext(PCT011MPlacesList);
 	const navigation = useNavigation<NativeStackNavigationProp<BottomTabParamList>>();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const PCT011MPlacesListVal = useContext(PCT011MPlacesList);
 
 	useEffect(() => {
-		if (placesList.length === 0) {
+		if (placesList.length === 0 && PCT011MPlacesListVal.isLoading) {
 			setIsLoading(true);
 		} else {
 			setIsLoading(false);
 		}
-	}, [placesList]);
+	}, [placesList, PCT011MPlacesListVal.isLoading]);
 
 	useEffect(() => {
 		if (country) {
