@@ -82,11 +82,11 @@ export function IMC03103PlanGroupsEdit({
 				const dependentPlanID = (() => {
 					if (beforeAfterRepresentativeType === 'before') {
 						return planGroups.plans[index + 1];
-					} if (beforeAfterRepresentativeType === 'after') {
+					}
+					if (beforeAfterRepresentativeType === 'after') {
 						return planGroups.plans[index - 1];
-					} 
-						return planID;
-					
+					}
+					return planID;
 				})();
 				return (
 					<View key={planID}>

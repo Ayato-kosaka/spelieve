@@ -51,11 +51,6 @@ export function IMC03101PlanEdit({
 	useEffect(() => {
 		if (isPlanGroupMounted && beforeAfterRepresentativeType === 'after') {
 			console.log('debug', planID, 'after の placeStartTime を設定する');
-			// BUG: 新規予定追加でsetDocが実行されない
-			// console.log(`planID=${planID}, dependentPlanID=${dependentPlanID}, setDoc=`, {
-			// 	...plan,
-			// 	placeStartTime: plansDocSnapMap[dependentPlanID].data().transportationArrivalTime || plansDocSnapMap[dependentPlanID].data().placeEndTime,
-			// })
 			// eslint-disable-next-line @typescript-eslint/no-floating-promises
 			setDoc(
 				planDocSnap.ref,
@@ -70,6 +65,7 @@ export function IMC03101PlanEdit({
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		plansDocSnapMap[dependentPlanID].data().transportationArrivalTime?.getTime() ||
 			plansDocSnapMap[dependentPlanID].data().placeEndTime.getTime(),
 	]);
