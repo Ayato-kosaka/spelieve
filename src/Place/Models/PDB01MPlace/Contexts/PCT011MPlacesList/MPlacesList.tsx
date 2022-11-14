@@ -21,6 +21,8 @@ import { MPlace } from 'spelieve-common/lib/Models/Place/PDB01/MPlace';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
 import db from '@/Place/Endpoint/firestore';
+import i18n from '@/Common/Hooks/i18n-js';
+import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001GooglePlaceAPI';
 
 export const PCT011MPlacesList = createContext({} as MPlacesListValInterface);
 
@@ -34,8 +36,7 @@ export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode })
 	const basicQueryConstraints = useMemo(() => {
 		const qc: QueryConstraint[] = [];
 
-		// TODO: https://github.com/Ayato-kosaka/spelieve/issues/281 初期language 検討
-		qc.push(where(MPlace.Cols.language, '==', 'ja'));
+		qc.push(where(MPlace.Cols.language, '==', GooglePlaceLanguageTagFromIETFLanguageTag[i18n.locale]));
 
 		qc.push(where(MPlace.Cols.country, '==', address.country));
 

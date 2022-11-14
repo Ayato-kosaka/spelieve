@@ -4,6 +4,7 @@ import { SearchPlacePropsInterface } from 'spelieve-common/lib/Interfaces';
 
 import i18n from '@/Common/Hooks/i18n-js';
 import { ENV } from '@/ENV';
+import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001GooglePlaceAPI';
 
 export const PCO001SearchPlace = ({ onAutoCompleteClicked, hideCities }: SearchPlacePropsInterface) => (
 	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/309 Web用プロキシサーバ立てる
@@ -13,7 +14,7 @@ export const PCO001SearchPlace = ({ onAutoCompleteClicked, hideCities }: SearchP
 		query={{
 			key: ENV.GCP_API_KEY,
 			type: hideCities ? 'establishment' : ['(cities)', 'establishment'],
-			language: 'ja', // TODO: https://github.com/Ayato-kosaka/spelieve/issues/281 端末言語情報グローバルに持つ
+			language: GooglePlaceLanguageTagFromIETFLanguageTag[i18n.locale],
 		}}
 		requestUrl={{
 			useOnPlatform: 'web',
