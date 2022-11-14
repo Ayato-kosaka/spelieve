@@ -104,6 +104,7 @@ export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode })
 			placesList,
 			setAddress,
 			retrieveMore,
+			isLoading,
 		}),
 		[placesList, setAddress, retrieveMore],
 	);
