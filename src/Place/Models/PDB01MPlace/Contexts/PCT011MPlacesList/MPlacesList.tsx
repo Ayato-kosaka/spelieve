@@ -40,15 +40,15 @@ export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode })
 
 		qc.push(where(MPlace.Cols.country, '==', address.country));
 
-		if (address.administrativeAreaLevel1 !== '') {
+		if (address.administrativeAreaLevel1) {
 			qc.push(where(MPlace.Cols.administrativeAreaLevel1, '==', address.administrativeAreaLevel1));
 		}
 
-		if (address.administrativeAreaLevel2 !== '') {
+		if (address.administrativeAreaLevel2) {
 			qc.push(where(MPlace.Cols.administrativeAreaLevel2, '==', address.administrativeAreaLevel2));
 		}
 
-		if (address.locality !== '') {
+		if (address.locality) {
 			qc.push(where(MPlace.Cols.locality, '==', address.locality));
 		}
 
