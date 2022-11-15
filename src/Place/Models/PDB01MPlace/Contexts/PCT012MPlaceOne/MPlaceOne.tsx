@@ -1,10 +1,9 @@
 import { collection, query, where, getDocs } from 'firebase/firestore';
-import { useState, createContext, useEffect, useMemo } from 'react';
+import { useState, createContext, useEffect, useMemo, ReactNode } from 'react';
 
 import { HowManyDaysToLimitPlaceUpserts } from 'spelieve-common/lib/Consts/Place';
 import {
 	MPlaceOneInterface,
-	MPlaceOneProviderPropsInterface,
 	MPlaceOneValInterface,
 	UpsertPlaceDataBodyInterface,
 } from 'spelieve-common/lib/Interfaces/Place';
@@ -20,7 +19,7 @@ export const PCT012MPlaceOne = createContext({} as MPlaceOneValInterface);
 
 export const PCT012MPlaceOneProvider = ({
 	children,
-}: MPlaceOneProviderPropsInterface) => {
+}: { children: ReactNode }) => {
 	const [place, setPlace] = useState<MPlaceOneInterface | null>(null);
 	const [place_id, setPlaceId] = useState<string | undefined>();
 	const collectionRef = useMemo(() => collection(db, MPlace.modelName), []);

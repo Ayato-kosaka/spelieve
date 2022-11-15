@@ -6,6 +6,7 @@ import { styles } from './GoogleMapPlaceOneStyle';
 import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/MPlaceOne';
 
 export const PMC01201GoogleMapPlaceOne = () => {
+	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/274 マップ範囲調整
 	const { place } = useContext(PCT012MPlaceOne);
 
 	const coordinate = { latitude: place.geometry.latitude, longitude: place.geometry.longitude };

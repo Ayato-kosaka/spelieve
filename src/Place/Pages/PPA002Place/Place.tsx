@@ -42,7 +42,6 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 		<ScrollView>
 			<View style={styles.container}>
 				<View>
-					<Text>PPA002画面</Text>
 					<PMC01201GoogleMapPlaceOne />
 					<PMC01203PlaceImage />
 					<Text style={styles.infoText}>{place.name}</Text>
