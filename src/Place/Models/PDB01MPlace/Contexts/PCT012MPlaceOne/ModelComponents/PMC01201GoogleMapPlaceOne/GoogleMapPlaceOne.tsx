@@ -1,8 +1,9 @@
 import { useContext } from 'react';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
-import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/MPlaceOne';
 import { styles } from './GoogleMapPlaceOneStyle';
+
+import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/MPlaceOne';
 
 export const PMC01201GoogleMapPlaceOne = () => {
 	const { place } = useContext(PCT012MPlaceOne);
