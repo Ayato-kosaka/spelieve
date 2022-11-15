@@ -13,4 +13,5 @@ export interface LangIf {
 	'Thursday': string;
 	'Friday': string;
 	'Saturday': string;
+	'No Tel Information': string
 }

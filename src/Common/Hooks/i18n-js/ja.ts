@@ -14,5 +14,6 @@ const ja: LangIf = {
 	'Thursday': '木曜日',
 	'Friday': '金曜日',
 	'Saturday': '土曜日',
+	'No Tel Information': '電話番号の情報はありません'
 };
 export default ja;

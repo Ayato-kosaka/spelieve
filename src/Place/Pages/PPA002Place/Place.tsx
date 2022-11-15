@@ -16,6 +16,7 @@ import BookIcon from 'react-native-vector-icons/Entypo';
 import FetherIcon from 'react-native-vector-icons/Feather'
 import WebIcon from 'react-native-vector-icons/Foundation'
 import TimeIcon from 'react-native-vector-icons/Ionicons'
+import { Rating } from 'react-native-ratings';
 
 export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<BottomTabParamList, 'PPA002Place'>) => {
 	const { place, setPlaceId } = useContext(PCT012MPlaceOne);
@@ -80,7 +81,7 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 						</Text>
 					</WebIcon>
 					<FetherIcon name='phone-call' size={20}>
-						<Text style={styles.infoText}>{place.formatted_phone_number}</Text>
+						<Text style={styles.infoText}>{place.formatted_phone_number ? place.formatted_phone_number : i18n.t('No Tel Information')}</Text>
 					</FetherIcon>
 					<View>
 						<TimeIcon name='time-outline' size={20}>
@@ -91,6 +92,12 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 				</View>
 				<View>
 					<Text style={styles.infoText}>{i18n.t('Customer Reviews')}</Text>
+					<Rating 
+						type='star'
+						readonly={true}
+						jumpValue={0.1}
+						startingValue={place.rating}
+					/>
 				</View>
 				<FlatList
 					data={place.photoUrls}
