@@ -55,7 +55,8 @@ export const PPA002PlaceController = ({ place_id, language }: PlacePropsInterfac
 		});
 	};
 
+	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/320　画像押したらモーダルで開くようにする
 	const onImageClicked = () => {};
 
-	return { onCreateItineraryClicked, displayOpeningHours };
+	return { onCreateItineraryClicked, displayOpeningHours, onImageClicked };
 };
