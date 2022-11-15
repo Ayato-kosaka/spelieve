@@ -108,5 +108,7 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 				</View>
 			</ScrollView>
 		);
+	} else {
+		return <></>
 	}
 };
