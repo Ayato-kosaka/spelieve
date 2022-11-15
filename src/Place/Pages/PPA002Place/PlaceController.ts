@@ -15,7 +15,7 @@ export const PPA002PlaceController = ({ place_id, language }: PlacePropsInterfac
 
 	const onCreateItineraryClicked = (placeName: string) => {
 		navigation.navigate('Place', {
-			screen: 'IPA001ItineraryEdit',
+			// screen: 'IPA001ItineraryEdit',
 			params: { place_id, placeName },
 		});
 	};
@@ -44,18 +44,18 @@ export const PPA002PlaceController = ({ place_id, language }: PlacePropsInterfac
 			// 1300->13:00
 			const hours = time.slice(0, 2);
 			const minutes = time.slice(2, 4);
-			return `${hours  }:${  minutes}`;
+			return `${hours}:${minutes}`;
 		};
 		return openingHours.map((openingHour) => {
-			const {open} = openingHour;
-			const {close} = openingHour;
+			const { open } = openingHour;
+			const { close } = openingHour;
 			const day = days[open.day];
-			const time = `${changeTimeView(open.time)  }~${  changeTimeView(close.time)}`;
+			const time = `${changeTimeView(open.time)}~${changeTimeView(close.time)}`;
 			return [i18n.t(day), time];
 		});
 	};
 
-	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/320　画像押したらモーダルで開くようにする
+	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/320 画像押したらモーダルで開くようにする
 	const onImageClicked = () => {};
 
 	return { onCreateItineraryClicked, displayOpeningHours, onImageClicked };

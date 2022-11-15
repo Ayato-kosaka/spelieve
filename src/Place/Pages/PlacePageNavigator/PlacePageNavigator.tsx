@@ -17,7 +17,7 @@ export type PlaceStackParamList = {
 const Stack = createNativeStackNavigator<PlaceStackParamList>();
 
 export const PlacePageNavigator = ({ navigation }: NativeStackScreenProps<BottomTabParamList, 'Place'>) => (
-	<PCT012MPlaceOneProvider parentDocRef={undefined} initialPlaceId="" language="ja">
+	<PCT012MPlaceOneProvider>
 		<PCT011MPlacesListProvider>
 			<Stack.Navigator initialRouteName="PPA001Places">
 				<Stack.Screen name="PPA001Places" component={PPA001Places} initialParams={{}} />

@@ -17,8 +17,6 @@ import { PMC01201GoogleMapPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/P
 import { PMC01203PlaceImage } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/ModelComponents/PMC01203PlaceImage/PlaceImage';
 import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/MPlaceOne';
 
-
-
 export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<BottomTabParamList, 'PPA002Place'>) => {
 	const { place, setPlaceId } = useContext(PCT012MPlaceOne);
 	const { place_id, language } = route.params;
@@ -50,7 +48,7 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 						<Text style={styles.infoText}>{place.formatted_address}</Text>
 					</FetherIcon>
 					<WebIcon name="web" size={20}>
-						<Text style={styles.urlLink} onPress={() => Linking.openURL(`${place.website}`)}>
+						<Text style={styles.urlLink} onPress={async () => Linking.openURL(`${place.website}`)}>
 							{place.website ? place.website : i18n.t('No Web Infomation')}
 						</Text>
 					</WebIcon>
@@ -81,7 +79,7 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 						) : (
 							<Text style={styles.infoText}>{openingInfo}</Text>
 						)}
-						<Text style={styles.urlLink} onPress={() => Linking.openURL(`${place.mapUrl}`)}>
+						<Text style={styles.urlLink} onPress={async () => Linking.openURL(`${place.mapUrl}`)}>
 							{i18n.t('show more')}
 						</Text>
 					</View>
@@ -89,7 +87,7 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 				<View>
 					<Text style={styles.infoText}>{i18n.t('Customer Reviews')}</Text>
 					<Rating type="star" readonly jumpValue={0.1} startingValue={place.rating} />
-					<Text style={styles.urlLink} onPress={() => Linking.openURL(`${place.mapUrl}`)}>
+					<Text style={styles.urlLink} onPress={async () => Linking.openURL(`${place.mapUrl}`)}>
 						{i18n.t('show more')}
 					</Text>
 				</View>
