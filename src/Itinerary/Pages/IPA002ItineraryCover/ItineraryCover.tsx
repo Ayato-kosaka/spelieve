@@ -7,10 +7,10 @@ import { IPA002ItineraryCoverController } from './ItineraryCoverController';
 import { BottomTabParamList } from '@/App';
 import i18n from '@/Common/Hooks/i18n-js';
 
-export function IPA002ItineraryCover({
+export const IPA002ItineraryCover = ({
 	route,
 	navigation,
-}: NativeStackScreenProps<BottomTabParamList, 'IPA002ItineraryCover'>) {
+}: NativeStackScreenProps<BottomTabParamList, 'IPA002ItineraryCover'>) => {
 	const { itineraryID } = route.params;
 	const { pageItinerary, updateItinerary, handleOnChange, deleteTag, shouldNavigate, isLoading } =
 		IPA002ItineraryCoverController({ itineraryID });
@@ -78,4 +78,4 @@ export function IPA002ItineraryCover({
 			/>
 		</ScrollView>
 	);
-}
+};

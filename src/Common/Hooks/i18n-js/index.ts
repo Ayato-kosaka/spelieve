@@ -20,7 +20,7 @@ i18n.enableFallback = true;
 i18n.missingBehavior = 'guess';
 
 // 端末の言語設定をi18nに設定
-i18n.locale = Localization.locale.slice(0,2);
+i18n.locale = Localization.locale.slice(0, 2);
 
 export default i18n;
 export const i18nLang = Lang;

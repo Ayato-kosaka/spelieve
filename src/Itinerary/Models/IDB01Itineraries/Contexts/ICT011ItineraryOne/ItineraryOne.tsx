@@ -9,7 +9,7 @@ import db from '@/Itinerary/Endpoint/firestore';
 
 export const ICT011ItineraryOne = createContext({} as ItineraryOneValInterface);
 
-export function ICT011ItineraryOneProvider({ children }: { children: ReactNode }) {
+export const ICT011ItineraryOneProvider = ({ children }: { children: ReactNode }) => {
 	const [itineraryID, setItineraryID] = useState<string | undefined>(undefined);
 	const [itineraryDocSnap, setItineraryDocSnap] = useState<DocumentSnapshot<ItineraryOneInterface> | undefined>(
 		undefined,
@@ -40,4 +40,4 @@ export function ICT011ItineraryOneProvider({ children }: { children: ReactNode }
 		setItineraryID,
 	};
 	return <ICT011ItineraryOne.Provider value={value}>{children}</ICT011ItineraryOne.Provider>;
-}
+};
