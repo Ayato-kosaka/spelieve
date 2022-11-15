@@ -88,27 +88,32 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 							<Text style={styles.infoText}>{i18n.t('Opening Hours')}</Text>
 						</TimeIcon>
 						{outputOpeningHour(place.openingHours)}
+						<Text style={styles.urlLink} onPress={() => Linking.openURL(`${place.mapUrl}`)}>{i18n.t('show more')}</Text>
 					</View>
 				</View>
 				<View>
 					<Text style={styles.infoText}>{i18n.t('Customer Reviews')}</Text>
-					<Rating 
+					<Rating
 						type='star'
 						readonly={true}
 						jumpValue={0.1}
 						startingValue={place.rating}
 					/>
+					<Text style={styles.urlLink} onPress={() => Linking.openURL(`${place.mapUrl}`)}>{i18n.t('show more')}</Text>
 				</View>
-				<FlatList
-					data={place.photoUrls}
-					renderItem={(itemData) => (
-						<View>
-							<Image source={{ uri: itemData.item }} style={styles.image} />
-						</View>
-					)}
-					numColumns={3}
-				// keyExtractor={(place) => place.place_id}
-				/>
+				<View>
+					<FlatList
+						data={place.photoUrls}
+						renderItem={(itemData) => (
+							<View>
+								<Image source={{ uri: itemData.item }} style={styles.image} />
+							</View>
+						)}
+						numColumns={3}
+					// keyExtractor={(place) => place.place_id}
+					/>
+					<Text style={styles.urlLink} onPress={() => Linking.openURL(`${place.mapUrl}`)}>{i18n.t('show more')}</Text>
+				</View>
 			</View>
 		</ScrollView>
 	);

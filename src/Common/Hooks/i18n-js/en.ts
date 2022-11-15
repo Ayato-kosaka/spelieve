@@ -14,6 +14,7 @@ const en: LangIf = {
 	'Thursday': 'Thursday',
 	'Friday': 'Friday',
 	'Saturday': 'Saturday',
-	'No Tel Information': 'No Tel Information'
+	'No Tel Information': 'No Tel Information',
+	'show more': 'show more',
 };
 export default en;
