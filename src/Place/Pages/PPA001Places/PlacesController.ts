@@ -82,7 +82,10 @@ export const PPA001PlacesController = ({
 				addressPart.types.includes('administrative_area_level_2'),
 			)?.long_name;
 			searchedAddress.locality = addressParts.find((addressPart) => addressPart.types.includes('locality'))?.long_name;
-			setAddress(searchedAddress);
+			navigation.navigate('Place', {
+				screen: 'PPA001Places',
+				params: searchedAddress,
+			});
 		}
 	};
 
