@@ -30,9 +30,9 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/321 存在しないplace_idはずっとローディング
 	if (isLoading) {
 		return <ActivityIndicator animating />;
-	} else if (!isLoading && !place) {
-		return <Text>{i18n.t('Place Not Found')}</Text>
-	} else if (!isLoading && place) {
+	} if (!isLoading && !place) {
+		return <Text>{i18n.t('Place Not Found')}</Text>;
+	} if (!isLoading && place) {
 		openingInfo = displayOpeningHours(place.openingHours);
 
 		return (

@@ -58,7 +58,7 @@ export const PCT012MPlaceOneProvider = ({ children }: { children: ReactNode }) =
 			setPlace(querySnap.docs[0].data());
 			setIsLoading(false);
 		};
-		
+
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		fetchData();
 	}, [collectionRef, place_id, language]);
@@ -67,7 +67,7 @@ export const PCT012MPlaceOneProvider = ({ children }: { children: ReactNode }) =
 	const value: MPlaceOneValInterface = {
 		place,
 		setPlaceId,
-		isLoading
+		isLoading,
 	};
 	return <PCT012MPlaceOne.Provider value={value}>{children}</PCT012MPlaceOne.Provider>;
 };
