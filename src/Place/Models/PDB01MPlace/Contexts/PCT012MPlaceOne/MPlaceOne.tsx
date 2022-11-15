@@ -13,27 +13,21 @@ import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter
 
 import db from '@/Place/Endpoint/firestore';
 import { PlaceHttpPost } from '@/Place/Endpoint/PlaceHttpPost';
+import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001GooglePlaceAPI';
+import i18n from '@/Common/Hooks/i18n-js';
 
 export const PCT012MPlaceOne = createContext({} as MPlaceOneValInterface);
 
 export const PCT012MPlaceOneProvider = ({
-	parentDocRef,
-	initialPlaceId,
-	language,
 	children,
 }: MPlaceOneProviderPropsInterface) => {
 	const [place, setPlace] = useState<MPlaceOneInterface | null>(null);
-	const [place_id, setPlaceId] = useState<string>(initialPlaceId);
-
-	const collectionRef = useMemo(() => {
-		if (parentDocRef) {
-			return collection(parentDocRef, MPlace.modelName);
-		}
-		return collection(db, MPlace.modelName);
-	}, [parentDocRef]);
+	const [place_id, setPlaceId] = useState<string | undefined>();
+	const collectionRef = useMemo(() => collection(db, MPlace.modelName), []);
+	const language = useMemo(() => GooglePlaceLanguageTagFromIETFLanguageTag[i18n.locale], []);
 
 	useEffect(() => {
-		if (place_id === '' || language === '') {
+		if (!place_id || !language) {
 			return;
 		}
 		const fetchData = async () => {
