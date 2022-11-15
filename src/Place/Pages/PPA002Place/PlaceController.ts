@@ -27,7 +27,7 @@ export const PPA002PlaceController = ({ place_id, language }: PlacePropsInterfac
 			return i18n.t('No Opening Hours Infomation');
 		}
 
-		if (openingHours.length == 1 && !openingHours[0].close) {
+		if (openingHours.length === 1 && !openingHours[0].close) {
 			return i18n.t('Open 24hours');
 		}
 
