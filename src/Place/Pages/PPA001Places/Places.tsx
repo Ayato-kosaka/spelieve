@@ -12,7 +12,6 @@ import { PMC01102PlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MP
 
 export const PPA001Places = ({ navigation, route }: NativeStackScreenProps<BottomTabParamList, 'PPA001Places'>) => {
 	const { onAutoCompleteClicked, onPlaceSelected, isLoading } = PPA001PlacesController(route.params);
-	const { placesList, setAddress } = useContext(PCT011MPlacesList);
 
 	if (isLoading) {
 		return <ActivityIndicator animating />;

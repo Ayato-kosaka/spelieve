@@ -35,7 +35,7 @@ export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode })
 
 	const basicQueryConstraints = useMemo(() => {
 		const qc: QueryConstraint[] = [];
-
+		
 		qc.push(where(MPlace.Cols.language, '==', GooglePlaceLanguageTagFromIETFLanguageTag[i18n.locale]));
 
 		qc.push(where(MPlace.Cols.country, '==', address.country));
