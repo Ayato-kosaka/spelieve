@@ -14,14 +14,13 @@ export const PMC01201GoogleMapPlaceOne = () => {
 			lat: place.geometry.latitude,
 			lng: place.geometry.longitude,
 		};
-	
+
 		const coordinate = { lat: place.geometry.latitude, lng: place.geometry.longitude };
 		return (
 			<GoogleMap mapContainerStyle={styles.containerStyle} center={center} zoom={10}>
 				<MarkerWeb position={coordinate} title={place.name} key={place.place_id} />;
 			</GoogleMap>
 		);
-	} else {
-		return <></>
 	}
+	return <></>;
 };

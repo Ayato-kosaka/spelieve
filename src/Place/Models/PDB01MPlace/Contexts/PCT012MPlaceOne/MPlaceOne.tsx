@@ -19,13 +19,13 @@ export const PCT012MPlaceOne = createContext({} as MPlaceOneValInterface);
 
 export const PCT012MPlaceOneProvider = ({ children }: { children: ReactNode }) => {
 	const [place, setPlace] = useState<MPlaceOneInterface | undefined>();
-	const [place_id, setPlaceId] = useState<string | undefined>();
+	const [placeID, setPlaceID] = useState<string | undefined>();
 	const collectionRef = useMemo(() => collection(db, MPlace.modelName), []);
 	const language = useMemo(() => GooglePlaceLanguageTagFromIETFLanguageTag[i18n.locale], []);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	useEffect(() => {
-		if (!place_id || !language) {
+		if (!placeID || !language) {
 			return;
 		}
 		setIsLoading(true);
@@ -33,7 +33,7 @@ export const PCT012MPlaceOneProvider = ({ children }: { children: ReactNode }) =
 		const fetchData = async () => {
 			const q = query(
 				collectionRef,
-				where(MPlace.Cols.place_id, '==', place_id),
+				where(MPlace.Cols.place_id, '==', placeID),
 				where(MPlace.Cols.language, '==', language),
 			).withConverter(
 				FirestoreConverter<MPlace, MPlaceOneInterface>(
@@ -48,7 +48,7 @@ export const PCT012MPlaceOneProvider = ({ children }: { children: ReactNode }) =
 				new Date().getDate() - querySnap.docs[0].data().updatedAt.getDate() > HowManyDaysToLimitPlaceUpserts
 			) {
 				try {
-					await PlaceHttpPost<UpsertPlaceDataBodyInterface, never>('PBL002', { place_id, language });
+					await PlaceHttpPost<UpsertPlaceDataBodyInterface, never>('PBL002', { place_id: placeID, language });
 				} catch (error) {
 					setPlace(undefined);
 					return;
@@ -61,12 +61,12 @@ export const PCT012MPlaceOneProvider = ({ children }: { children: ReactNode }) =
 
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		fetchData();
-	}, [collectionRef, place_id, language]);
+	}, [collectionRef, placeID, language]);
 
 	// eslint-disable-next-line react/jsx-no-constructed-context-values
 	const value: MPlaceOneValInterface = {
 		place,
-		setPlaceId,
+		setPlaceID,
 		isLoading,
 	};
 	return <PCT012MPlaceOne.Provider value={value}>{children}</PCT012MPlaceOne.Provider>;

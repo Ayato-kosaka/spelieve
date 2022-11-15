@@ -18,21 +18,23 @@ import { PMC01203PlaceImage } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MP
 import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/MPlaceOne';
 
 export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<BottomTabParamList, 'PPA002Place'>) => {
-	const { place, setPlaceId, isLoading } = useContext(PCT012MPlaceOne);
+	const { place, setPlaceID, isLoading } = useContext(PCT012MPlaceOne);
 	const { place_id, language } = route.params;
 	const { onCreateItineraryClicked, displayOpeningHours } = PPA002PlaceController(route.params);
 	let openingInfo;
 
 	useEffect(() => {
-		setPlaceId(place_id);
-	}, [place_id]);
+		setPlaceID(place_id);
+	}, [place_id, setPlaceID]);
 
 	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/321 存在しないplace_idはずっとローディング
 	if (isLoading) {
 		return <ActivityIndicator animating />;
-	} if (!isLoading && !place) {
+	}
+	if (!isLoading && !place) {
 		return <Text>{i18n.t('Place Not Found')}</Text>;
-	} if (!isLoading && place) {
+	}
+	if (!isLoading && place) {
 		openingInfo = displayOpeningHours(place.openingHours);
 
 		return (
@@ -47,7 +49,12 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 							<Text style={styles.infoText}>{place.formatted_address}</Text>
 						</FetherIcon>
 						<WebIcon name="web" size={20}>
-							<Text style={styles.urlLink} onPress={async () => Linking.openURL(`${place.website}`)}>
+							<Text
+								style={styles.urlLink}
+								onPress={() => {
+									// eslint-disable-next-line
+									Linking.openURL(`${place.website || ''}`);
+								}}>
 								{place.website ? place.website : i18n.t('No Web Infomation')}
 							</Text>
 						</WebIcon>
@@ -78,7 +85,12 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 							) : (
 								<Text style={styles.infoText}>{openingInfo}</Text>
 							)}
-							<Text style={styles.urlLink} onPress={async () => Linking.openURL(`${place.mapUrl}`)}>
+							<Text
+								style={styles.urlLink}
+								onPress={() => {
+									// eslint-disable-next-line
+									Linking.openURL(`${place.mapUrl}`);
+								}}>
 								{i18n.t('show more')}
 							</Text>
 						</View>
@@ -86,9 +98,13 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 					<View>
 						<Text style={styles.infoText}>{i18n.t('Customer Reviews')}</Text>
 						<Rating type="star" readonly jumpValue={0.1} startingValue={place.rating} />
-						<Text style={styles.urlLink} onPress={async () => Linking.openURL(`${place.mapUrl}`)}>
-							{i18n.t('show more')}
-						</Text>
+						<Text
+							style={styles.urlLink}
+							onPress={() => {
+								// eslint-disable-next-line
+								Linking.openURL(`${place.mapUrl}`);
+							}}
+						/>
 					</View>
 					<View>
 						<FlatList
@@ -101,14 +117,17 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 							numColumns={3}
 							// keyExtractor={(place) => place.place_id}
 						/>
-						<Text style={styles.urlLink} onPress={() => Linking.openURL(`${place.mapUrl}`)}>
-							{i18n.t('show more')}
-						</Text>
+						<Text
+							style={styles.urlLink}
+							onPress={() => {
+								// eslint-disable-next-line
+								Linking.openURL(`${place.mapUrl}`);
+							}}
+						/>
 					</View>
 				</View>
 			</ScrollView>
 		);
-	} else {
-		return <></>
 	}
+	return <></>;
 };

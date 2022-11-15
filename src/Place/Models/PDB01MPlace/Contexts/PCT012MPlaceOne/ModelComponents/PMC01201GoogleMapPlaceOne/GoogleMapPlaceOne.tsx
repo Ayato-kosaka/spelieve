@@ -24,7 +24,6 @@ export const PMC01201GoogleMapPlaceOne = () => {
 				<Marker coordinate={coordinate} title={place.name} key={place.place_id} />
 			</MapView>
 		);
-	} else {
-		return <></>
 	}
+	return <></>;
 };
