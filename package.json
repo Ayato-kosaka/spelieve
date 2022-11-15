@@ -34,7 +34,7 @@
     "react-native-screens": "~3.18.0",
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "0.18.10",
-    "spelieve-common": "^1.1.64"
+    "spelieve-common": "^1.1.66"
   },
   "devDependencies": {
     "@babel/core": "7.19.6",
