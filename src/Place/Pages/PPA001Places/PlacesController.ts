@@ -52,7 +52,7 @@ export const PPA001PlacesController = ({
 
 	const onPlaceSelected = (place_id: string) => {
 		navigation.navigate('Place', {
-			// screen: 'PPA002',
+			screen: 'PPA002Place',
 			params: {
 				place_id,
 				language: GooglePlaceLanguageTagFromIETFLanguageTag[i18n.locale],
