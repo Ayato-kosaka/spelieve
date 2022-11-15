@@ -18,15 +18,18 @@ import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001G
 export const PCT012MPlaceOne = createContext({} as MPlaceOneValInterface);
 
 export const PCT012MPlaceOneProvider = ({ children }: { children: ReactNode }) => {
-	const [place, setPlace] = useState<MPlaceOneInterface | null>(null);
+	const [place, setPlace] = useState<MPlaceOneInterface | undefined>();
 	const [place_id, setPlaceId] = useState<string | undefined>();
 	const collectionRef = useMemo(() => collection(db, MPlace.modelName), []);
 	const language = useMemo(() => GooglePlaceLanguageTagFromIETFLanguageTag[i18n.locale], []);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	useEffect(() => {
 		if (!place_id || !language) {
 			return;
 		}
+		setIsLoading(true);
+
 		const fetchData = async () => {
 			const q = query(
 				collectionRef,
@@ -44,11 +47,18 @@ export const PCT012MPlaceOneProvider = ({ children }: { children: ReactNode }) =
 				querySnap.empty ||
 				new Date().getDate() - querySnap.docs[0].data().updatedAt.getDate() > HowManyDaysToLimitPlaceUpserts
 			) {
-				await PlaceHttpPost<UpsertPlaceDataBodyInterface, never>('PBL002', { place_id, language });
+				try {
+					await PlaceHttpPost<UpsertPlaceDataBodyInterface, never>('PBL002', { place_id, language });
+				} catch (error) {
+					setPlace(undefined);
+					return;
+				}
 				querySnap = await getDocs(q);
 			}
 			setPlace(querySnap.docs[0].data());
+			setIsLoading(false);
 		};
+		
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		fetchData();
 	}, [collectionRef, place_id, language]);
@@ -57,6 +67,7 @@ export const PCT012MPlaceOneProvider = ({ children }: { children: ReactNode }) =
 	const value: MPlaceOneValInterface = {
 		place,
 		setPlaceId,
+		isLoading
 	};
 	return <PCT012MPlaceOne.Provider value={value}>{children}</PCT012MPlaceOne.Provider>;
 };
