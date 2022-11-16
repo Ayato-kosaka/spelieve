@@ -11,26 +11,6 @@ import { ICT031PlansMap } from '../..';
 
 import i18n from '@/Common/Hooks/i18n-js';
 
-const subtraction = (base: Date, subtraction: Date, types: ('Month' | 'Date' | 'Hours' | 'Minutes' | 'Seconds')[]) => {
-	const ret = new Date(base.getTime());
-	if (types.includes('Month')) {
-		ret.setMonth(base.getMonth() - subtraction.getMonth());
-	}
-	if (types.includes('Date')) {
-		ret.setDate(base.getDate() - subtraction.getDate());
-	}
-	if (types.includes('Hours')) {
-		ret.setHours(base.getHours() - subtraction.getHours());
-	}
-	if (types.includes('Minutes')) {
-		ret.setMinutes(base.getMinutes() - subtraction.getMinutes());
-	}
-	if (types.includes('Seconds')) {
-		ret.setSeconds(base.getSeconds() - subtraction.getSeconds());
-	}
-	return ret;
-};
-
 export function IMC03101PlanEdit({
 	planID,
 	beforeAfterRepresentativeType,
@@ -45,10 +25,9 @@ export function IMC03101PlanEdit({
 	planGroupsDoc: QueryDocumentSnapshot<PlanGroupsListInterface>;
 	isPlanGroupMounted: boolean;
 }) {
-	const { plansCRef, plansDocSnapMap } = useContext(ICT031PlansMap);
+	const { plansDocSnapMap } = useContext(ICT031PlansMap);
 	const planDocSnap = plansDocSnapMap[planID];
 	const plan = planDocSnap.data();
-
 
 	// before の placeStartTime を設定する
 	useEffect(() => {
@@ -58,7 +37,7 @@ export function IMC03101PlanEdit({
 			setDoc(
 				planDocSnap.ref,
 				{
-					placeStartTime: subtraction(plan.placeEndTime, plan.placeSpan, ['Hours', 'Minutes']),
+					placeStartTime: DateUtils.subtraction(plan.placeEndTime, plan.placeSpan, ['Hours', 'Minutes']),
 				},
 				{ merge: true },
 			);
@@ -103,7 +82,7 @@ export function IMC03101PlanEdit({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		plansDocSnapMap[dependentPlanID].data().transportationArrivalTime?.getTime() ||
 			plansDocSnapMap[dependentPlanID].data().placeEndTime.getTime(),
-			beforeAfterRepresentativeType
+		beforeAfterRepresentativeType,
 	]);
 
 	// before の placeEndTime を設定する
@@ -114,9 +93,7 @@ export function IMC03101PlanEdit({
 			setDoc(
 				planDocSnap.ref,
 				{
-					placeEndTime:
-						plan.transportationDepartureTime ||
-						plansDocSnapMap[dependentPlanID].data().placeStartTime,
+					placeEndTime: plan.transportationDepartureTime || plansDocSnapMap[dependentPlanID].data().placeStartTime,
 				},
 				{ merge: true },
 			);
@@ -125,9 +102,9 @@ export function IMC03101PlanEdit({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-						plansDocSnapMap[planID].data().transportationDepartureTime?.getTime() ||
-						plansDocSnapMap[dependentPlanID].data().placeStartTime.getTime(),
-						beforeAfterRepresentativeType
+		plansDocSnapMap[planID].data().transportationDepartureTime?.getTime() ||
+			plansDocSnapMap[dependentPlanID].data().placeStartTime.getTime(),
+		beforeAfterRepresentativeType,
 	]);
 
 	// representative, after の placeEndTime を設定する
@@ -138,7 +115,7 @@ export function IMC03101PlanEdit({
 			setDoc(
 				planDocSnap.ref,
 				{
-					placeEndTime: DateUtils.add(plan.placeStartTime, plan.placeSpan, ['Hours', 'Minutes']),
+					placeEndTime: DateUtils.addition(plan.placeStartTime, plan.placeSpan, ['Hours', 'Minutes']),
 				},
 				{ merge: true },
 			);

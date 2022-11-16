@@ -1,10 +1,9 @@
-import { addDoc, deleteDoc, doc, QueryDocumentSnapshot, setDoc } from 'firebase/firestore';
+import { QueryDocumentSnapshot, setDoc } from 'firebase/firestore';
 import { useContext, useEffect, useState } from 'react';
-import { Button, TextInputChangeEventData, View } from 'react-native';
+import { TextInputChangeEventData, View } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
 
 import { PlanGroupsListInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT021';
-import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 
 import { ICT031PlansMap } from '../../PlansMap';
 
@@ -27,29 +26,6 @@ export function IMC03103PlanGroupsEdit({
 	}, []);
 
 	useEffect(() => {}, []);
-
-	const addPlan = async (index: number) => {
-		const planDocRef = await addDoc(plansCRef!, {
-			title: '',
-			placeSpan: DateUtils.initialDate(),
-			placeStartTime: DateUtils.initialDate(),
-			placeEndTime: DateUtils.initialDate(),
-			tags: [],
-			transportationSpan: DateUtils.initialDate(),
-			createdAt: new Date(),
-			updatedAt: new Date(),
-		});
-		const data = { ...planGroups };
-		data.plans.splice(index + 1, 0, planDocRef.id);
-		await setDoc(planGroupsDoc.ref, { ...data, updatedAt: new Date() });
-	};
-
-	const deletePlan = async (index: number) => {
-		const data = { ...planGroups };
-		const planId = data.plans.splice(index, 1);
-		await setDoc(planGroupsDoc.ref, { ...data, updatedAt: new Date() });
-		await deleteDoc(doc(plansCRef!, planId[0]));
-	};
 
 	let representativeFounded = false;
 
@@ -97,20 +73,10 @@ export function IMC03103PlanGroupsEdit({
 							planGroupsDoc={planGroupsDoc}
 							isPlanGroupMounted={isMounted}
 						/>
-						<IMC03102TrafficMovementEdit planID={planID} />
-						<Button
-							title={i18n.t('予定を追加')}
-							onPress={() => {
-								// eslint-disable-next-line @typescript-eslint/no-floating-promises
-								addPlan(index);
-							}}
-						/>
-						<Button
-							title={i18n.t('予定を削除')}
-							onPress={() => {
-								// eslint-disable-next-line @typescript-eslint/no-floating-promises
-								deletePlan(index);
-							}}
+						<IMC03102TrafficMovementEdit
+							planID={planID}
+							planGroupsDoc={planGroupsDoc}
+							nextPlanID={planGroups.plans[index + 1]}
 						/>
 					</View>
 				);
