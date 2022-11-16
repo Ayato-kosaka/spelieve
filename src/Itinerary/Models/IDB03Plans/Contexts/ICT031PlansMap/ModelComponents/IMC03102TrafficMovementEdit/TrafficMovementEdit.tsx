@@ -32,17 +32,18 @@ export function IMC03102TrafficMovementEdit({
 	const googleMapsClient = new Client({});
 
 	// TODO: common hooks に外出しする
-	const calculateDirection = () => {
-		googleMapsClient.directions({
+	const calculateDirection = useCallback(async () => {
+		const directionResponse = await googleMapsClient.directions({
 			params: {
 				origin: `place_id:${plan.place_id}`,
 				destination: `place_id:${nextPlanID}`,
-				mode: 'driving',
+				mode: TravelMode.driving,
 				departure_time: 'now',
 				key: ENV.GCP_API_KEY,
 			},
 		});
-	};
+		console.log(directionResponse.data)
+	}, []);
 
 	const addPlan = useCallback(async () => {
 		const planDocRef = await addDoc(plansCRef!, {
@@ -79,6 +80,13 @@ export function IMC03102TrafficMovementEdit({
 					<Text>{plan.transportationArrivalTime ? DateUtils.formatToHHMM(plan.transportationArrivalTime) : ''}</Text>
 				</View>
 			)}
+			<Button
+				title={i18n.t('calculateDirection')}
+				onPress={() => {
+					// eslint-disable-next-line @typescript-eslint/no-floating-promises
+					calculateDirection();
+				}}
+			/>
 			<Button
 				title={i18n.t('予定を追加')}
 				onPress={() => {
