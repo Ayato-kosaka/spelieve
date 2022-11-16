@@ -1,4 +1,3 @@
-import { Client, TravelMode } from '@googlemaps/google-maps-services-js';
 import { addDoc, deleteDoc, doc, QueryDocumentSnapshot, setDoc } from 'firebase/firestore';
 import { useCallback, useContext, useMemo } from 'react';
 import { Button, View } from 'react-native';
@@ -12,7 +11,6 @@ import { ICT031PlansMap } from '../..';
 
 import i18n from '@/Common/Hooks/i18n-js';
 import { ENV } from '@/ENV';
-import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/MPlaceOne';
 
 export const IMC03102TrafficMovementEdit = ({
 	planID,
@@ -25,24 +23,18 @@ export const IMC03102TrafficMovementEdit = ({
 }) => {
 	const { plansCRef, plansDocSnapMap } = useContext(ICT031PlansMap);
 	const plan = plansDocSnapMap[planID].data();
-	const { place } = useContext(PCT012MPlaceOne);
 	const planGroups = useMemo(() => planGroupsDoc.data(), [planGroupsDoc]);
 	const plansIndex = useMemo(() => planGroups.plans.indexOf(planID), [planGroups]);
 
-	const googleMapsClient = new Client({});
-
 	// TODO: common hooks に外出しする
 	const calculateDirection = useCallback(async () => {
-		const directionResponse = await googleMapsClient.directions({
-			params: {
-				origin: `place_id:${plan.place_id}`,
-				destination: `place_id:${nextPlanID}`,
-				mode: TravelMode.driving,
-				departure_time: 'now',
-				key: ENV.GCP_API_KEY,
-			},
-		});
-		console.log(directionResponse.data);
+		const distanceMatrixservice = new google.maps.DistanceMatrixService();
+		const distanceMatrixResponse = await distanceMatrixservice.getDistanceMatrix({
+			origins: [{placeId: plan.place_id}],
+			destinations: [{placeId: plansDocSnapMap[nextPlanID].data().place_id}], 
+			travelMode: google.maps.TravelMode.DRIVING,
+		})
+		console.log(distanceMatrixResponse)
 	}, []);
 
 	const addPlan = useCallback(async () => {
