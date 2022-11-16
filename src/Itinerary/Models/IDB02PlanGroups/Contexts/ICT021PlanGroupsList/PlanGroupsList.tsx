@@ -15,7 +15,7 @@ import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031Pla
 
 export const ICT021PlanGroupsList = createContext({} as PlanGroupsListValInterface);
 
-export function ICT021PlanGroupsListProvider({ children }: { children: ReactNode }) {
+export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode }) => {
 	const [planGroupsQSnap, setPlanGroupsQSnap] = useState<QuerySnapshot<PlanGroupsListInterface> | undefined>(undefined);
 
 	const { itineraryDocSnap } = useContext(ICT011ItineraryOne);
@@ -68,4 +68,4 @@ export function ICT021PlanGroupsListProvider({ children }: { children: ReactNode
 		planGroupsCRef,
 	};
 	return <ICT021PlanGroupsList.Provider value={value}>{children}</ICT021PlanGroupsList.Provider>;
-}
+};

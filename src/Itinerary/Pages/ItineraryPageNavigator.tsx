@@ -17,21 +17,19 @@ export type ItineraryStackParamList = {
 
 const Stack = createNativeStackNavigator<ItineraryStackParamList>();
 
-export function ItineraryPageNavigator() {
-	return (
-		<ICT011ItineraryOneProvider>
-			<ICT031PlansMapProvider>
-				<ICT021PlanGroupsListProvider>
-					<Stack.Navigator initialRouteName="IPA002ItineraryCover">
-						<Stack.Screen
-							name="IPA002ItineraryCover"
-							component={IPA002ItineraryCover}
-							initialParams={{}}
-							options={{ title: i18n.t('しおり設定') }}
-						/>
-					</Stack.Navigator>
-				</ICT021PlanGroupsListProvider>
-			</ICT031PlansMapProvider>
-		</ICT011ItineraryOneProvider>
-	);
-}
+export const ItineraryPageNavigator = () => (
+	<ICT011ItineraryOneProvider>
+		<ICT031PlansMapProvider>
+			<ICT021PlanGroupsListProvider>
+				<Stack.Navigator initialRouteName="IPA002ItineraryCover">
+					<Stack.Screen
+						name="IPA002ItineraryCover"
+						component={IPA002ItineraryCover}
+						initialParams={{}}
+						options={{ title: i18n.t('しおり設定') }}
+					/>
+				</Stack.Navigator>
+			</ICT021PlanGroupsListProvider>
+		</ICT031PlansMapProvider>
+	</ICT011ItineraryOneProvider>
+);

@@ -1,6 +1,6 @@
 import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import { PlacesPropsInterface, PlacePropsInterface } from 'spelieve-common/lib/Interfaces';
+import { PlacePropsInterface, PlacesPropsInterface } from 'spelieve-common/lib/Interfaces';
 
 import { PCT012MPlaceOneProvider } from '../../Models/PDB01MPlace/Contexts/PCT012MPlaceOne/MPlaceOne';
 import { PPA001Places } from '../PPA001Places';
@@ -10,8 +10,8 @@ import { BottomTabParamList } from '@/App';
 import { PCT011MPlacesListProvider } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
 
 export type PlaceStackParamList = {
-	PPA001Places: PlacesPropsInterface; // 本来は PagePropsInterface を設定する
-	PPA002Place: PlacePropsInterface; // 本来は PagePropsInterface を設定する
+	PPA001Places: PlacesPropsInterface;
+	PPA002Place: PlacePropsInterface;
 };
 
 const Stack = createNativeStackNavigator<PlaceStackParamList>();
