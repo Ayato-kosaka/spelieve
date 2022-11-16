@@ -42,4 +42,4 @@ export const ICT011ItineraryOneProvider = ({ children }: { children: ReactNode }
 		[itineraryDocSnap, setItineraryID],
 	);
 	return <ICT011ItineraryOne.Provider value={value}>{children}</ICT011ItineraryOne.Provider>;
-}
+};

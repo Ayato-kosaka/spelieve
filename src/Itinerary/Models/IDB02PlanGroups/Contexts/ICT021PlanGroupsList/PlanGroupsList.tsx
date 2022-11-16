@@ -71,4 +71,4 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 		[planGroupsQSnap, planGroupsCRef],
 	);
 	return <ICT021PlanGroupsList.Provider value={value}>{children}</ICT021PlanGroupsList.Provider>;
-}
+};

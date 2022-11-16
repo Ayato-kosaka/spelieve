@@ -63,4 +63,4 @@ export const ICT031PlansMapProvider = ({ children }: { children: ReactNode }) =>
 	);
 
 	return <ICT031PlansMap.Provider value={value}>{children}</ICT031PlansMap.Provider>;
-}
+};
