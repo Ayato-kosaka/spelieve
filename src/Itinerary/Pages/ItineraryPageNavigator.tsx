@@ -18,8 +18,7 @@ export type ItineraryStackParamList = {
 
 const Stack = createNativeStackNavigator<ItineraryStackParamList>();
 
-export function ItineraryPageNavigator() {
-	return (
+export const ItineraryPageNavigator = () => (
 		<ICT011ItineraryOneProvider>
 			<ICT031PlansMapProvider>
 				<ICT021PlanGroupsListProvider>
@@ -41,5 +40,4 @@ export function ItineraryPageNavigator() {
 				</ICT021PlanGroupsListProvider>
 			</ICT031PlansMapProvider>
 		</ICT011ItineraryOneProvider>
-	);
-}
+	)

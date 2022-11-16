@@ -12,11 +12,9 @@ export type PlaceStackParamList = {
 
 const Stack = createNativeStackNavigator<PlaceStackParamList>();
 
-export function PlacePageNavigator({ navigation }: NativeStackScreenProps<BottomTabParamList, 'Place'>) {
-	return (
+export const PlacePageNavigator = ({ navigation }: NativeStackScreenProps<BottomTabParamList, 'Place'>) => (
 		<Stack.Navigator>
 			<Stack.Screen name="DummyPage" component={PPA000DummyPage} />
 			<Stack.Screen name="DummyPage2" component={PPA000DummyPage2} />
 		</Stack.Navigator>
-	);
-}
+	)

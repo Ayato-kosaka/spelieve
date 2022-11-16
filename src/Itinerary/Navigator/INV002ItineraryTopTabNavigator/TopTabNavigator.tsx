@@ -21,7 +21,7 @@ export type TopTabParamList = {
 
 const Tab = createMaterialTopTabNavigator<TopTabParamList>();
 
-export function TopTabNavigator({ route, navigation }: NativeStackScreenProps<BottomTabParamList, 'TopTabNavigator'>) {
+export const TopTabNavigator = ({ route, navigation }: NativeStackScreenProps<BottomTabParamList, 'TopTabNavigator'>) => {
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	const { isPreview, place_id, placeName } = route.params;
 

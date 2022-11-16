@@ -4,8 +4,7 @@ import { Title } from 'react-native-paper';
 
 import { BottomTabParamList } from '@/App';
 
-export function PPA000DummyPage({ navigation }: NativeStackScreenProps<BottomTabParamList>) {
-	return (
+export const PPA000DummyPage = ({ navigation }: NativeStackScreenProps<BottomTabParamList>) => (
 		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 			<Title>Dummy Place Page</Title>
 			<Button
@@ -18,5 +17,4 @@ export function PPA000DummyPage({ navigation }: NativeStackScreenProps<BottomTab
 				}
 			/>
 		</View>
-	);
-}
+	)

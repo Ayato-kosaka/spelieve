@@ -12,10 +12,10 @@ import { ICT021PlanGroupsList } from '@/Itinerary/Models/IDB02PlanGroups/Context
 import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap';
 import { IMC03103PlanGroupsEdit } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03103PlanGroupEdit';
 
-export function IPA001ItineraryEdit({
+export const IPA001ItineraryEdit = ({
 	route,
 	navigation,
-}: NativeStackScreenProps<BottomTabParamList, 'IPA001ItineraryEdit'>) {
+}: NativeStackScreenProps<BottomTabParamList, 'IPA001ItineraryEdit'>) => {
 	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
 	const { isPlansLoading, plansDocSnapMap } = useContext(ICT031PlansMap);
 	const { planGroupsQSnap, planGroupsCRef } = useContext(ICT021PlanGroupsList);

@@ -11,11 +11,11 @@ import i18n from '@/Common/Hooks/i18n-js';
 import { IMC03101PlanEdit } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03101PlanEdit';
 import { IMC03102TrafficMovementEdit } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03102TrafficMovementEdit';
 
-export function IMC03103PlanGroupsEdit({
+export const IMC03103PlanGroupsEdit = ({
 	planGroupsDoc,
 }: {
 	planGroupsDoc: QueryDocumentSnapshot<PlanGroupsListInterface>;
-}) {
+}) => {
 	const { plansCRef } = useContext(ICT031PlansMap);
 	const planGroups = planGroupsDoc.data();
 

@@ -11,7 +11,7 @@ import { ICT031PlansMap } from '../..';
 
 import i18n from '@/Common/Hooks/i18n-js';
 
-export function IMC03101PlanEdit({
+export const IMC03101PlanEdit = ({
 	planID,
 	beforeAfterRepresentativeType,
 	dependentPlanID,
@@ -24,7 +24,7 @@ export function IMC03101PlanEdit({
 	dependentPlanID: string;
 	planGroupsDoc: QueryDocumentSnapshot<PlanGroupsListInterface>;
 	isPlanGroupMounted: boolean;
-}) {
+}) => {
 	const { plansDocSnapMap } = useContext(ICT031PlansMap);
 	const planDocSnap = plansDocSnapMap[planID];
 	const plan = planDocSnap.data();

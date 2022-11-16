@@ -9,7 +9,7 @@ import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts
 
 export const ICT031PlansMap = createContext({} as PlansMapValInterface);
 
-export function ICT031PlansMapProvider({ children }: { children: ReactNode }) {
+export const ICT031PlansMapProvider = ({ children }: { children: ReactNode }) => {
 	const [plansDocSnapMap, setDocumentSnapshots] = useState<PlansMapValInterface['plansDocSnapMap']>({});
 	const [isPlansLoading, setIsPlansLoading] = useState<boolean>(true);
 

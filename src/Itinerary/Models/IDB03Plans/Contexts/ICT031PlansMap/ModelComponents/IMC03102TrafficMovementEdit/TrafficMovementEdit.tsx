@@ -14,7 +14,7 @@ import i18n from '@/Common/Hooks/i18n-js';
 import { ENV } from '@/ENV';
 import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/MPlaceOne';
 
-export function IMC03102TrafficMovementEdit({
+export const IMC03102TrafficMovementEdit = ({
 	planID,
 	nextPlanID,
 	planGroupsDoc,
@@ -22,7 +22,7 @@ export function IMC03102TrafficMovementEdit({
 	planID: string;
 	planGroupsDoc: QueryDocumentSnapshot<PlanGroupsListInterface>;
 	nextPlanID: string;
-}) {
+}) => {
 	const { plansCRef, plansDocSnapMap } = useContext(ICT031PlansMap);
 	const plan = plansDocSnapMap[planID].data();
 	const { place } = useContext(PCT012MPlaceOne);
@@ -42,7 +42,7 @@ export function IMC03102TrafficMovementEdit({
 				key: ENV.GCP_API_KEY,
 			},
 		});
-		console.log(directionResponse.data)
+		console.log(directionResponse.data);
 	}, []);
 
 	const addPlan = useCallback(async () => {
