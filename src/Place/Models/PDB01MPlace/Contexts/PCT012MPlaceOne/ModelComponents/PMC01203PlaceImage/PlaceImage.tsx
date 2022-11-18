@@ -8,8 +8,8 @@ import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlac
 export const PMC01203PlaceImage = () => {
 	const { place } = useContext(PCT012MPlaceOne);
 
-	if (place) {
-		return <Image source={{ uri: place.imageUrl }} style={styles.image} />;
+	if (!place) {
+		return <></>;
 	}
-	return <></>;
+	return <Image source={{ uri: place.imageUrl }} style={styles.image} />;
 };

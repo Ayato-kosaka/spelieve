@@ -5,6 +5,7 @@ import { HowManyDaysToLimitPlaceUpserts } from 'spelieve-common/lib/Consts/Place
 import {
 	MPlaceOneInterface,
 	MPlaceOneValInterface,
+	MPlaceOpeningHoursInterface,
 	UpsertPlaceDataBodyInterface,
 } from 'spelieve-common/lib/Interfaces/Place';
 import { MPlace } from 'spelieve-common/lib/Models/Place/PDB01/MPlace';
@@ -38,7 +39,46 @@ export const PCT012MPlaceOneProvider = ({ children }: { children: ReactNode }) =
 			).withConverter(
 				FirestoreConverter<MPlace, MPlaceOneInterface>(
 					MPlace,
-					(data) => data,
+					(data) => {
+						const displayOpeningHours = (
+							openingHours: MPlaceOpeningHoursInterface[] | undefined,
+						): string | Array<[string, string]> => {
+							if (!openingHours) {
+								return i18n.t('No Opening Hours Infomation');
+							}
+
+							if (openingHours.length === 1 && !openingHours[0].close) {
+								return i18n.t('Open 24hours');
+							}
+
+							const days: { [key: number]: string } = {
+								0: 'Sunday',
+								1: 'Monday',
+								2: 'Tuesday',
+								3: 'Wednesday',
+								4: 'Thursday',
+								5: 'Friday',
+								6: 'Saturday',
+							};
+							const changeTimeView = (time: string): string => {
+								// 1300->13:00
+								const hours = time.slice(0, 2);
+								const minutes = time.slice(2, 4);
+								return `${hours}:${minutes}`;
+							};
+							return openingHours.map((openingHour) => {
+								const { open } = openingHour;
+								const { close } = openingHour;
+								const day = days[open.day];
+								const time = `${changeTimeView(open.time)}~${changeTimeView(close.time)}`;
+								return [i18n.t(day), time];
+							});
+						};
+						return {
+							...data,
+							openingHours: displayOpeningHours(data.openingHours),
+						};
+					},
 					(data) => data,
 				),
 			);
@@ -47,10 +87,13 @@ export const PCT012MPlaceOneProvider = ({ children }: { children: ReactNode }) =
 				querySnap.empty ||
 				new Date().getDate() - querySnap.docs[0].data().updatedAt.getDate() > HowManyDaysToLimitPlaceUpserts
 			) {
-				try {
-					await PlaceHttpPost<UpsertPlaceDataBodyInterface, never>('PBL002', { place_id: placeID, language });
-				} catch (error) {
-					setPlace(undefined);
+				await PlaceHttpPost<UpsertPlaceDataBodyInterface, undefined>('PBL002', { place_id: placeID, language }).catch(
+					() => {
+						setPlace(undefined);
+						setIsLoading(false);
+					},
+				);
+				if (!isLoading) {
 					return;
 				}
 				querySnap = await getDocs(q);

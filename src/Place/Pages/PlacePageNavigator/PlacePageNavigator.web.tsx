@@ -1,6 +1,7 @@
 import { LoadScript } from '@react-google-maps/api';
 import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack';
 
+import { PlacePropsInterface, PlacesPropsInterface } from 'spelieve-common/lib/Interfaces';
 
 import { PCT012MPlaceOneProvider } from '../../Models/PDB01MPlace/Contexts/PCT012MPlaceOne/MPlaceOne';
 import { PPA001Places } from '../PPA001Places';
@@ -11,7 +12,6 @@ import { PlaceStackParamList } from './PlacePageNavigator';
 import { BottomTabParamList } from '@/App';
 import { ENV } from '@/ENV';
 import { PCT011MPlacesListProvider } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
-import { PlacePropsInterface, PlacesPropsInterface } from 'spelieve-common/lib/Interfaces';
 
 export type PlaceStackParamList = {
 	PPA001Places: PlacesPropsInterface; // 本来は PagePropsInterface を設定する
