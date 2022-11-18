@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Image } from 'react-native';
+import { Image, View } from 'react-native';
 
 import { styles } from './PlaceImageStyle';
 
@@ -9,7 +9,7 @@ export const PMC01203PlaceImage = () => {
 	const { place } = useContext(PCT012MPlaceOne);
 
 	if (!place) {
-		return <></>;
+		return <View />;
 	}
 	return <Image source={{ uri: place.imageUrl }} style={styles.image} />;
 };

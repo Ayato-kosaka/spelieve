@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { View } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import { styles } from './GoogleMapPlaceOneStyle';
@@ -10,7 +11,7 @@ export const PMC01201GoogleMapPlaceOne = () => {
 	const { place } = useContext(PCT012MPlaceOne);
 
 	if (!place) {
-		return <></>;
+		return <View />;
 	}
 
 	const coordinate = { latitude: place.geometry.latitude, longitude: place.geometry.longitude };

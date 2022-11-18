@@ -7,8 +7,6 @@ import { PCT012MPlaceOneProvider } from '../../Models/PDB01MPlace/Contexts/PCT01
 import { PPA001Places } from '../PPA001Places';
 import { PPA002Place } from '../PPA002Place/Place';
 
-import { PlaceStackParamList } from './PlacePageNavigator';
-
 import { BottomTabParamList } from '@/App';
 import { ENV } from '@/ENV';
 import { PCT011MPlacesListProvider } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';

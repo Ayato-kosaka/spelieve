@@ -1,5 +1,6 @@
 import { GoogleMap, Marker as MarkerWeb } from '@react-google-maps/api';
 import { useContext } from 'react';
+import { View } from 'react-native';
 
 import { styles } from './GoogleMapPlaceOneStyle.web';
 
@@ -10,7 +11,7 @@ export const PMC01201GoogleMapPlaceOne = () => {
 	const { place } = useContext(PCT012MPlaceOne);
 
 	if (!place) {
-		return <></>;
+		return <View />;
 	}
 	const center = {
 		lat: place.geometry.latitude,
