@@ -1,14 +1,14 @@
 import { setDoc } from 'firebase/firestore';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
-import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap';
-
 import 'react-spring-bottom-sheet/dist/style.css';
 import { PlansMapInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT031';
 import {
 	EditDirectionsModeControllerInterface,
 	EditDirectionsModePropsInterface,
 } from 'spelieve-common/lib/Interfaces/Itinerary/IMC03104';
+
+import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap';
 
 export const IMC03104EditDirectionsModeController = ({
 	planID,
@@ -34,7 +34,7 @@ export const IMC03104EditDirectionsModeController = ({
 	}, [plan]);
 
 	const onClose = useCallback(() => {
-		// @typescript-eslint/no-floating-promises
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		setDoc(planDocSnap.ref, { ...directionsMode }, { merge: true });
 	}, [directionsMode, planDocSnap.ref]);
 

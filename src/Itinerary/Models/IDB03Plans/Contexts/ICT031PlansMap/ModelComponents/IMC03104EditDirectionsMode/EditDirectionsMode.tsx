@@ -4,15 +4,14 @@ import { Divider, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 
+import { EditDirectionsModePropsInterface } from 'spelieve-common/lib/Interfaces/Itinerary/IMC03104';
+
 import { IMC03104EditDirectionsModeController } from './EditDirectionsModeController';
 
 import i18n from '@/Common/Hooks/i18n-js';
 import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap';
 
-
-
 import 'react-spring-bottom-sheet/dist/style.css';
-import { EditDirectionsModePropsInterface } from 'spelieve-common/lib/Interfaces';
 
 export const IMC03104EditDirectionsMode = ({
 	planID,

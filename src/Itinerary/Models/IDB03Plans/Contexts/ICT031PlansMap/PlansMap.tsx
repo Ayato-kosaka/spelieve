@@ -104,7 +104,7 @@ export const ICT031PlansMapProvider = ({ children }: { children: ReactNode }) =>
 			);
 		}
 		return undefined;
-	}, [itineraryDocSnap, transitModeConverter]);
+	}, [itineraryDocSnap, transitModeConverter, travelModeConverter]);
 
 	useEffect(() => {
 		if (plansCRef) {
@@ -140,7 +140,7 @@ export const ICT031PlansMapProvider = ({ children }: { children: ReactNode }) =>
 			travelModeConverter,
 			transitModeConverter,
 		}),
-		[plansDocSnapMap, plansCRef, isPlansLoading, transitModeConverter],
+		[plansDocSnapMap, plansCRef, isPlansLoading, transitModeConverter, travelModeConverter],
 	);
 
 	return <ICT031PlansMap.Provider value={value}>{children}</ICT031PlansMap.Provider>;
