@@ -4,7 +4,6 @@ import { useState, createContext, useEffect, useContext, useMemo, ReactNode } fr
 import {
 	PlanGroupsListInterface,
 	PlanGroupsListValInterface,
-	PlansMapInterface,
 } from 'spelieve-common/lib/Interfaces/Itinerary';
 import { PlanGroups } from 'spelieve-common/lib/Models/Itinerary/IDB02/PlanGroups';
 import { Plans } from 'spelieve-common/lib/Models/Itinerary/IDB03/Plans';
@@ -47,7 +46,7 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 							const data: PlanGroupsListInterface = queryDocumentSnapshot.data();
 							if (!data.plans.length) {
 								// eslint-disable-next-line @typescript-eslint/no-floating-promises
-								addDoc<PlansMapInterface>(plansCRef, { ...Plans.fromJSON({}) }).then((planDocRef) => {
+								addDoc<Plans>(plansCRef, { ...Plans.fromJSON({}) }).then((planDocRef) => {
 									data.plans.push(planDocRef.id);
 									// eslint-disable-next-line @typescript-eslint/no-floating-promises
 									setDoc(queryDocumentSnapshot.ref, { ...data, updatedAt: new Date() });
