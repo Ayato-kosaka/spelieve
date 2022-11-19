@@ -1,1 +1,1 @@
-export const IPA004ItineraryPreview = () => <>IPA004ItineraryPreview</>
+export const IPA004ItineraryPreview = () => <>IPA004ItineraryPreview</>;

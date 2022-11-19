@@ -1,7 +1,6 @@
 import { LoadScript } from '@react-google-maps/api';
 import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack';
 
-
 // import { PCT012MPlaceOneProvider } from '../../Models/PDB01MPlace/Contexts/PCT012MPlaceOne/MPlaceOne';
 import { PPA001Places } from '../PPA001Places';
 // import { PPA002Place } from '../PPA002Place/Place';

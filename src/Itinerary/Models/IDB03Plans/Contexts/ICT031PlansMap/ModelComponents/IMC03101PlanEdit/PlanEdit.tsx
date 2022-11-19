@@ -156,4 +156,4 @@ export const IMC03101PlanEdit = ({
 			<FlatList data={plan.tags} renderItem={(renderItemInfo) => <Chip>{renderItemInfo.item}</Chip>} />
 		</View>
 	);
-}
+};
