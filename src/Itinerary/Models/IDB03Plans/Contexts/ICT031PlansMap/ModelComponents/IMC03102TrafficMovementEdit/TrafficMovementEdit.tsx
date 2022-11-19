@@ -1,6 +1,6 @@
 import { addDoc, deleteDoc, doc, QueryDocumentSnapshot, setDoc } from 'firebase/firestore';
-import { useCallback, useContext, useMemo } from 'react';
-import { Button, View } from 'react-native';
+import { useCallback, useContext, useMemo, useState } from 'react';
+import { Button, Modal, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -12,6 +12,7 @@ import { ICT031PlansMap } from '../..';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ENV } from '@/ENV';
 
+
 export const IMC03102TrafficMovementEdit = ({
 	planID,
 	nextPlanID,
@@ -21,23 +22,28 @@ export const IMC03102TrafficMovementEdit = ({
 	planGroupsDoc: QueryDocumentSnapshot<PlanGroupsListInterface>;
 	nextPlanID: string;
 }) => {
+	const [bottomSheetVisible, setBottomSheetVisible] = useState<boolean>(false);
+
 	const { plansCRef, plansDocSnapMap } = useContext(ICT031PlansMap);
 	const plan = plansDocSnapMap[planID].data();
 	const planGroups = useMemo(() => planGroupsDoc.data(), [planGroupsDoc]);
 	const plansIndex = useMemo(() => planGroups.plans.indexOf(planID), [planGroups]);
 
-	// TODO: common hooks に外出しする
 	const calculateDirection = useCallback(async () => {
-		const distanceMatrixservice = new google.maps.DistanceMatrixService();
-		const distanceMatrixResponse = await distanceMatrixservice.getDistanceMatrix({
-			origins: [{placeId: plan.place_id}],
-			destinations: [{placeId: plansDocSnapMap[nextPlanID].data().place_id}], 
-			travelMode: google.maps.TravelMode.DRIVING,
+		const directionsService = new google.maps.DirectionsService();
+		const directionsRouteResponse = await directionsService.route({
+			origin: {placeId: 'ChIJ01v4evpZGGARl4P3h_7FCV0'},
+			destination: {placeId: 'ChIJszdHEQN9GGARJS23SnAdR0E'},
+			travelMode: google.maps.TravelMode.TWO_WHEELER
+			// transitOptions: {
+			// 	modes: [google.maps.TransitMode.TRAIN]
+			// }
 		})
-		console.log(distanceMatrixResponse)
+		console.log(directionsRouteResponse)
 	}, []);
 
 	const addPlan = useCallback(async () => {
+		// TODO: 設定値は要検討
 		const planDocRef = await addDoc(plansCRef!, {
 			title: '',
 			placeSpan: DateUtils.initialDate(),
@@ -93,6 +99,18 @@ export const IMC03102TrafficMovementEdit = ({
 					deletePlan();
 				}}
 			/>
+			<Button title='show modal' onPress={()=>{setBottomSheetVisible(true)}} />
+			{/* <Modal
+			  animationType="slide"
+			  transparent={true}
+			  statusBarTranslucent={true}
+			  visible={bottomSheetVisible}
+			  onRequestClose={() => {
+				setBottomSheetVisible(false);
+			  }}
+			>
+
+			</Modal> */}
 		</View>
 	);
 }

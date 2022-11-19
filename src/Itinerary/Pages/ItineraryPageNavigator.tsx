@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { LoadScript } from '@react-google-maps/api';
 
 import { ItineraryCoverPropsInterface, ItineraryTopTabNavigatorPropsInterface } from 'spelieve-common/lib/Interfaces';
 
@@ -10,6 +11,7 @@ import { TopTabNavigator, TopTabParamList } from '../Navigator/INV002ItineraryTo
 import { IPA002ItineraryCover } from './IPA002ItineraryCover';
 
 import i18n from '@/Common/Hooks/i18n-js';
+import { ENV } from '@/ENV';
 
 export type ItineraryStackParamList = {
 	IPA002ItineraryCover: ItineraryCoverPropsInterface;
@@ -22,6 +24,7 @@ export const ItineraryPageNavigator = () => (
 		<ICT011ItineraryOneProvider>
 			<ICT031PlansMapProvider>
 				<ICT021PlanGroupsListProvider>
+		<LoadScript googleMapsApiKey={ENV.GCP_API_KEY}>
 					{/* TODO: PCT012MPlaceOneProvider を設定する */}
 					<Stack.Navigator initialRouteName="TopTabNavigator">
 						<Stack.Screen
@@ -37,6 +40,7 @@ export const ItineraryPageNavigator = () => (
 							options={{ title: i18n.t('しおり設定') }}
 						/>
 					</Stack.Navigator>
+					</LoadScript>
 				</ICT021PlanGroupsListProvider>
 			</ICT031PlansMapProvider>
 		</ICT011ItineraryOneProvider>
