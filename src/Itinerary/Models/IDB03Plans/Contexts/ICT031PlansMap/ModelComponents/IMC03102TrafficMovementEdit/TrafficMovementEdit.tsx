@@ -1,9 +1,8 @@
 import { addDoc, deleteDoc, doc, QueryDocumentSnapshot, setDoc } from 'firebase/firestore';
 import { useCallback, useContext, useMemo, useState } from 'react';
-import { Button, FlatList, Pressable, View } from 'react-native';
-import { Divider, Text } from 'react-native-paper';
+import { Button, Pressable, View } from 'react-native';
+import { Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { BottomSheet } from 'react-spring-bottom-sheet';
 
 import { PlanGroupsListInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT021';
 import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
@@ -11,6 +10,7 @@ import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 import { ICT031PlansMap } from '../..';
 
 import i18n from '@/Common/Hooks/i18n-js';
+import { IMC03104EditDirectionsMode } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03104EditDirectionsMode';
 import 'react-spring-bottom-sheet/dist/style.css';
 import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001GooglePlaceAPI';
 
@@ -26,8 +26,8 @@ export const IMC03102TrafficMovementEdit = ({
 	const [bottomSheetVisible, setBottomSheetVisible] = useState<boolean>(false);
 
 	const { plansCRef, plansDocSnapMap, travelModeConverter, transitModeConverter } = useContext(ICT031PlansMap);
-	const planDocSnap = plansDocSnapMap[planID];
-	const plan = planDocSnap.data();
+	const planDocSnap = useMemo(() => plansDocSnapMap[planID], [planID, plansDocSnapMap]);
+	const plan = useMemo(() => planDocSnap.data(), [planDocSnap]);
 	const planGroups = useMemo(() => planGroupsDoc.data(), [planGroupsDoc]);
 	const plansIndex = useMemo(() => planGroups.plans.indexOf(planID), [planGroups, planID]);
 
@@ -147,123 +147,11 @@ export const IMC03102TrafficMovementEdit = ({
 					deletePlan();
 				}}
 			/>
-			{/* TO @Takapy: BottomSheetのコンポーネントがiOSで使えるか確認してほしい！ */}
-			<BottomSheet
-				open={bottomSheetVisible}
-				onDismiss={() => {
-					setBottomSheetVisible(false);
-				}}
-				snapPoints={({ minHeight }) => minHeight}>
-				<FlatList
-					data={[
-						google.maps.TravelMode.WALKING,
-						google.maps.TravelMode.BICYCLING,
-						google.maps.TravelMode.DRIVING,
-						google.maps.TravelMode.TRANSIT,
-					]}
-					horizontal
-					renderItem={(renderItemInfo) => (
-						<Pressable
-							onPress={() => {
-								setDoc(planDocSnap.ref, { transportationMode: renderItemInfo.item }, { merge: true });
-								setBottomSheetVisible(false);
-							}}
-							style={{
-								flexDirection: 'column',
-								alignItems: 'center',
-								backgroundColor: renderItemInfo.item === plan.transportationMode ? 'red' : 'white',
-							}}>
-							<MaterialCommunityIcons name={travelModeConverter[renderItemInfo.item].iconName} />
-							<Text>{travelModeConverter[renderItemInfo.item].title}</Text>
-						</Pressable>
-					)}
-					contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-around' }}
-				/>
-				<Divider />
-				{plan.transportationMode === google.maps.TravelMode.TRANSIT && (
-					<>
-						<FlatList
-							data={[
-								google.maps.TransitMode.BUS,
-								google.maps.TransitMode.RAIL,
-								google.maps.TransitMode.SUBWAY,
-								google.maps.TransitMode.TRAIN,
-								google.maps.TransitMode.TRAM,
-							]}
-							horizontal
-							renderItem={(renderItemInfo) => (
-								<Pressable
-									onPress={() => {
-										const transitModes = [...plan.transitModes];
-										if (transitModes.includes(renderItemInfo.item)) {
-											transitModes.splice(transitModes.indexOf(renderItemInfo.item), 1);
-										} else {
-											transitModes.push(renderItemInfo.item);
-										}
-										setDoc(planDocSnap.ref, { transitModes }, { merge: true });
-									}}
-									style={{
-										flexDirection: 'column',
-										alignItems: 'center',
-										backgroundColor: plan.transitModes.includes(renderItemInfo.item) ? 'red' : 'white',
-									}}>
-									<MaterialCommunityIcons name={transitModeConverter[renderItemInfo.item].iconName} />
-									<Text>{transitModeConverter[renderItemInfo.item].title}</Text>
-								</Pressable>
-							)}
-							contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-around' }}
-						/>
-						<Divider />
-						<Pressable
-							style={{ flexDirection: 'row', alignItems: 'center' }}
-							onPress={() =>
-								setDoc(
-									planDocSnap.ref,
-									{ transitRoutePreference: google.maps.TransitRoutePreference.FEWER_TRANSFERS },
-									{ merge: true },
-								)
-							}>
-							<Text>{i18n.t('乗り換えが少ないルート')}</Text>
-							<MaterialCommunityIcons
-								name={plan.transitRoutePreference === google.maps.TransitRoutePreference.FEWER_TRANSFERS ? 'check' : ''}
-							/>
-						</Pressable>
-						<Pressable
-							style={{ flexDirection: 'row', alignItems: 'center' }}
-							onPress={() =>
-								setDoc(
-									planDocSnap.ref,
-									{ transitRoutePreference: google.maps.TransitRoutePreference.LESS_WALKING },
-									{ merge: true },
-								)
-							}>
-							<Text>{i18n.t('歩きが少ないルート')}</Text>
-							<MaterialCommunityIcons
-								name={plan.transitRoutePreference === google.maps.TransitRoutePreference.LESS_WALKING ? 'check' : ''}
-							/>
-						</Pressable>
-						<Divider />
-					</>
-				)}
-				<Pressable style={{ flexDirection: 'row', alignItems: 'center' }}>
-					<Text>{i18n.t('Avoid highways')}</Text>
-					<MaterialCommunityIcons name="" />
-				</Pressable>
-				<Pressable style={{ flexDirection: 'row', alignItems: 'center' }}>
-					<Text>{i18n.t('Avoid tolls')}</Text>
-					<MaterialCommunityIcons name="check" />
-				</Pressable>
-				<Pressable style={{ flexDirection: 'row', alignItems: 'center' }}>
-					<Text>{i18n.t('Avoid ferries')}</Text>
-					<MaterialCommunityIcons name="check" />
-				</Pressable>
-				<Button
-					title={i18n.t('決定')}
-					onPress={() => {
-						setBottomSheetVisible(false);
-					}}
-				/>
-			</BottomSheet>
+			<IMC03104EditDirectionsMode
+				planID={planID}
+				bottomSheetVisible={bottomSheetVisible}
+				setBottomSheetVisible={setBottomSheetVisible}
+			/>
 		</View>
 	);
 };
