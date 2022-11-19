@@ -11,7 +11,6 @@ import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 import { ICT031PlansMap } from '../..';
 
 import i18n from '@/Common/Hooks/i18n-js';
-
 import 'react-spring-bottom-sheet/dist/style.css';
 import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001GooglePlaceAPI';
 
@@ -30,7 +29,7 @@ export const IMC03102TrafficMovementEdit = ({
 	const planDocSnap = plansDocSnapMap[planID];
 	const plan = planDocSnap.data();
 	const planGroups = useMemo(() => planGroupsDoc.data(), [planGroupsDoc]);
-	const plansIndex = useMemo(() => planGroups.plans.indexOf(planID), [planGroups]);
+	const plansIndex = useMemo(() => planGroups.plans.indexOf(planID), [planGroups, planID]);
 
 	const calculateDirection = useCallback(async () => {
 		if (!plan.transportationMode) {
@@ -62,7 +61,16 @@ export const IMC03102TrafficMovementEdit = ({
 			waypoints: undefined,
 		});
 		console.log(directionsRouteResponse);
-	}, []);
+	}, [
+		plan.avoidFerries,
+		plan.avoidHighways,
+		plan.avoidTolls,
+		plan.transitModes,
+		plan.transitRoutePreference,
+		plan.transportationArrivalTime,
+		plan.transportationDepartureTime,
+		plan.transportationMode,
+	]);
 
 	const addPlan = useCallback(async () => {
 		// TODO: 設定値は要検討
@@ -90,14 +98,14 @@ export const IMC03102TrafficMovementEdit = ({
 		const newPlans = { ...planGroups.plans };
 		newPlans.splice(plansIndex + 1, 0, planDocRef.id);
 		await setDoc(planGroupsDoc.ref, { plans: newPlans }, { merge: true });
-	}, [plansCRef, planGroups, planID, plansIndex]);
+	}, [plansCRef, planGroups, plansIndex, plan.placeEndTime, plan.transportationArrivalTime, planGroupsDoc.ref]);
 
 	const deletePlan = useCallback(async () => {
 		const newPlans = { ...planGroups.plans };
 		newPlans.splice(plansIndex, 1);
 		await setDoc(planGroupsDoc.ref, { plans: newPlans }, { merge: true });
 		await deleteDoc(doc(plansCRef!, planID));
-	}, [plansCRef, planGroups, planID, plansIndex]);
+	}, [plansCRef, planGroups, planID, plansIndex, planGroupsDoc.ref]);
 
 	return (
 		<View style={{ borderWidth: 1 }}>

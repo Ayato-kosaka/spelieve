@@ -85,26 +85,26 @@ export const ICT031PlansMapProvider = ({ children }: { children: ReactNode }) =>
 				FirestoreConverter<Plans, PlansMapInterface>(
 					Plans,
 					(data) => ({
-							...data,
-							transportationMode: (Object.keys(travelModeConverter) as google.maps.TravelMode[]).find(
-								(travelMode) => travelMode === data.transportationMode,
-							),
-							transitModes: data.transitModes
-								.map((e) => (Object.keys(transitModeConverter) as google.maps.TransitMode[]).find((item) => e === item))
-								.filter((item): item is google.maps.TransitMode => item !== undefined),
-							transitRoutePreference:
-								[
-									google.maps.TransitRoutePreference.FEWER_TRANSFERS,
-									google.maps.TransitRoutePreference.LESS_WALKING,
-								].find((transitRoutePreference) => transitRoutePreference === data.transitRoutePreference) ||
+						...data,
+						transportationMode: (Object.keys(travelModeConverter) as google.maps.TravelMode[]).find(
+							(travelMode) => travelMode === data.transportationMode,
+						),
+						transitModes: data.transitModes
+							.map((e) => (Object.keys(transitModeConverter) as google.maps.TransitMode[]).find((item) => e === item))
+							.filter((item): item is google.maps.TransitMode => item !== undefined),
+						transitRoutePreference:
+							[
 								google.maps.TransitRoutePreference.FEWER_TRANSFERS,
-						}),
+								google.maps.TransitRoutePreference.LESS_WALKING,
+							].find((transitRoutePreference) => transitRoutePreference === data.transitRoutePreference) ||
+							google.maps.TransitRoutePreference.FEWER_TRANSFERS,
+					}),
 					(data) => data,
 				),
 			);
 		}
 		return undefined;
-	}, [itineraryDocSnap]);
+	}, [itineraryDocSnap, transitModeConverter]);
 
 	useEffect(() => {
 		if (plansCRef) {
@@ -140,7 +140,7 @@ export const ICT031PlansMapProvider = ({ children }: { children: ReactNode }) =>
 			travelModeConverter,
 			transitModeConverter,
 		}),
-		[plansDocSnapMap, plansCRef, isPlansLoading],
+		[plansDocSnapMap, plansCRef, isPlansLoading, transitModeConverter],
 	);
 
 	return <ICT031PlansMap.Provider value={value}>{children}</ICT031PlansMap.Provider>;
