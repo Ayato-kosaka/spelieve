@@ -1,5 +1,5 @@
 import { addDoc, deleteDoc, doc, QueryDocumentSnapshot, setDoc } from 'firebase/firestore';
-import { useCallback, useContext, useMemo, useState } from 'react';
+import { useCallback, useContext, useMemo, useState, useEffect } from 'react';
 import { Button, Pressable, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -91,11 +91,11 @@ export const IMC03102TrafficMovementEdit = ({
 					waypoints: undefined,
 				},
 				(result, status) => {
-					console.log(result);
+					Logger('IMC03102TrafficMovementEdit', 'directionsService.route.result', result);
 					if (status === google.maps.DirectionsStatus.OK) {
 						/** **********************************************************************************************
 						 * DRIVING, WALKING, BICYCLING の場合 transportationSpan をレスポンスから設定する
-						 * before の場合 transportationArrivalTime　に次の予定の placeStartTime を設定し、
+						 * before の場合 transportationArrivalTime に次の予定の placeStartTime を設定し、
 						 * *	transportationDepartureTime を transportationArrivalTime - transportationSpan で計算する
 						 * after の場合 transportationDepartureTime に自分の予定の placeEndTime を設定し、
 						 * *	transportationArrivalTime を transportationDepartureTime + transportationSpan で計算する
@@ -167,6 +167,14 @@ export const IMC03102TrafficMovementEdit = ({
 		planDocSnap,
 	]);
 
+	useEffect(() => {
+		if (plan.transportationMode) {
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			calculateDirection();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [plan.transportationMode]);
+
 	const addPlan = useCallback(async () => {
 		const planDocRef = await addDoc(plansCRef!, {
 			title: '',
@@ -215,8 +223,10 @@ export const IMC03102TrafficMovementEdit = ({
 						onPress={() => {
 							setBottomSheetVisible(true);
 						}}>
-						{plan.transportationMode && (
+						{plan.transportationMode ? (
 							<MaterialCommunityIcons name={travelModeConverter[plan.transportationMode].iconName} />
+						) : (
+							<MaterialCommunityIcons name="checkbox-blank-circle" />
 						)}
 					</Pressable>
 					<Text>
