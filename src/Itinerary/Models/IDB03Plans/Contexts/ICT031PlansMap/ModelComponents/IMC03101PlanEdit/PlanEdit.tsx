@@ -43,7 +43,7 @@ export const IMC03101PlanEdit = ({
 			setDoc(
 				planDocSnap.ref,
 				{
-					placeStartTime: DateUtils.subtraction(plan.placeEndTime, plan.placeSpan, ['Hours', 'Minutes']),
+					placeStartTime: DateUtils.subtraction(plan.placeEndTime, plan.placeSpan, ['Hours', 'Minutes', 'Seconds']),
 				},
 				{ merge: true },
 			);
@@ -137,7 +137,7 @@ export const IMC03101PlanEdit = ({
 			setDoc(
 				planDocSnap.ref,
 				{
-					placeEndTime: DateUtils.addition(plan.placeStartTime, plan.placeSpan, ['Hours', 'Minutes']),
+					placeEndTime: DateUtils.addition(plan.placeStartTime, plan.placeSpan, ['Hours', 'Minutes', 'Seconds']),
 				},
 				{ merge: true },
 			);

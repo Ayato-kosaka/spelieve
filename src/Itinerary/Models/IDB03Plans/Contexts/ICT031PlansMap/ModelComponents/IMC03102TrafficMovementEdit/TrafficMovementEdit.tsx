@@ -4,6 +4,7 @@ import { Button, Pressable, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import { PlansMapInterface } from 'spelieve-common/lib/Interfaces';
 import { PlanGroupsListInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT021';
 import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 
@@ -18,12 +19,14 @@ import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001G
 export const IMC03102TrafficMovementEdit = ({
 	planID,
 	beforeAfterRepresentativeType,
-	nextPlanID,
 	planGroupsDoc,
+	dependentPlanID,
+	nextPlanID,
 }: {
 	planID: string;
 	beforeAfterRepresentativeType: 'before' | 'representative' | 'after';
 	planGroupsDoc: QueryDocumentSnapshot<PlanGroupsListInterface>;
+	dependentPlanID: string;
 	nextPlanID: string | undefined;
 }) => {
 	const [bottomSheetVisible, setBottomSheetVisible] = useState<boolean>(false);
@@ -33,11 +36,11 @@ export const IMC03102TrafficMovementEdit = ({
 	const plan = useMemo(() => planDocSnap.data(), [planDocSnap]);
 	const planGroups = useMemo(() => planGroupsDoc.data(), [planGroupsDoc]);
 	const plansIndex = useMemo(() => planGroups.plans.indexOf(planID), [planGroups, planID]);
+	const dependentPlan = useMemo(() => plansDocSnapMap[dependentPlanID].data(), [dependentPlanID, plansDocSnapMap]);
 
 	const transitOptions = useMemo(() => {
 		if (plan.transportationMode === google.maps.TravelMode.TRANSIT) {
-			const arrivalTime =
-				beforeAfterRepresentativeType === 'before' ? plansDocSnapMap[nextPlanID!].data().placeStartTime : undefined;
+			const arrivalTime = beforeAfterRepresentativeType === 'before' ? dependentPlan.placeStartTime : undefined;
 			const departureTime = ['representative', 'after'].includes(beforeAfterRepresentativeType)
 				? plan.placeEndTime
 				: undefined;
@@ -52,13 +55,15 @@ export const IMC03102TrafficMovementEdit = ({
 	}, [
 		plan.transportationMode,
 		beforeAfterRepresentativeType,
-		plansDocSnapMap,
-		nextPlanID,
+		dependentPlan,
 		plan.placeEndTime,
 		plan.transitModes,
 		plan.transitRoutePreference,
 	]);
 
+	/** **********************************************************************************************
+	 * Google Map Directions を用いて予定間の所要時間を計算する
+	 *********************************************************************************************** */
 	const calculateDirection = useCallback(async () => {
 		if (!plan.transportationMode || !nextPlanID) {
 			return;
@@ -86,17 +91,59 @@ export const IMC03102TrafficMovementEdit = ({
 					waypoints: undefined,
 				},
 				(result, status) => {
-					console.log(result)
-					if(status === google.maps.DirectionsStatus.OK){
-						// Driving の場合は、span.setSecont(routes[0].legs[0].duration.value)
-						// Walking も同じ
-						// bicycling も同じ
-					} else if (status === google.maps.DirectionsStatus.ZERO_RESULTS){
+					console.log(result);
+					if (status === google.maps.DirectionsStatus.OK) {
+						/** **********************************************************************************************
+						 * DRIVING, WALKING, BICYCLING の場合 transportationSpan をレスポンスから設定する
+						 * before の場合 transportationArrivalTime　に次の予定の placeStartTime を設定し、
+						 * *	transportationDepartureTime を transportationArrivalTime - transportationSpan で計算する
+						 * after の場合 transportationDepartureTime に自分の予定の placeEndTime を設定し、
+						 * *	transportationArrivalTime を transportationDepartureTime + transportationSpan で計算する
+						 *********************************************************************************************** */
+						if (
+							plan.transportationMode &&
+							[
+								google.maps.TravelMode.DRIVING,
+								google.maps.TravelMode.WALKING,
+								google.maps.TravelMode.BICYCLING,
+							].includes(plan.transportationMode)
+						) {
+							const transportationSpan: PlansMapInterface['transportationSpan'] = plan.placeSpan;
+							transportationSpan.setDate(1);
+							transportationSpan.setHours(0);
+							transportationSpan.setMinutes(0);
+							transportationSpan.setSeconds(result?.routes[0].legs[0].duration?.value || 0);
+							const val: Pick<PlansMapInterface, 'transportationDepartureTime' | 'transportationArrivalTime'> = (() => {
+								if (beforeAfterRepresentativeType === 'before') {
+									return {
+										transportationArrivalTime: dependentPlan.placeStartTime,
+										transportationDepartureTime: DateUtils.subtraction(
+											dependentPlan.placeStartTime,
+											transportationSpan,
+											['Hours', 'Minutes', 'Seconds'],
+										),
+									};
+								}
+								return {
+									transportationDepartureTime: plan.placeEndTime,
+									transportationArrivalTime: DateUtils.addition(plan.placeEndTime, transportationSpan, [
+										'Hours',
+										'Minutes',
+										'Seconds',
+									]),
+								};
+							})();
+							// eslint-disable-next-line @typescript-eslint/no-floating-promises
+							setDoc(planDocSnap.ref, { ...val, transportationSpan }, { merge: true });
+						}
+						// TODO: https://github.com/Ayato-kosaka/spelieve/issues/337 Transit での Directions が必ず "ZERO_RESULTS" を返す
+					} else if (status === google.maps.DirectionsStatus.ZERO_RESULTS) {
+						/* ZERO_RESULTS の場合は、交通機関の特定に失敗しているため、TravelMode を undefined に変更する */
 						// eslint-disable-next-line @typescript-eslint/no-floating-promises
 						setDoc(
 							planDocSnap.ref,
 							{
-								transportationMode: google.maps.TravelMode.DRIVING,
+								transportationMode: undefined,
 							},
 							{ merge: true },
 						);
@@ -114,6 +161,10 @@ export const IMC03102TrafficMovementEdit = ({
 		transitOptions,
 		plan.transportationMode,
 		plan.placeEndTime,
+		dependentPlan,
+		beforeAfterRepresentativeType,
+		plan.placeSpan,
+		planDocSnap,
 	]);
 
 	const addPlan = useCallback(async () => {
