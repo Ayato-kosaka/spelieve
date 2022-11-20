@@ -85,6 +85,7 @@ export const IMC03103PlanGroupsEdit = ({
 							dependentPlanID={dependentPlanID}
 							planGroupsDoc={planGroupsDoc}
 							nextPlanID={planGroups.plans[index + 1]}
+							isPlanGroupMounted={isMounted}
 						/>
 					</View>
 				);

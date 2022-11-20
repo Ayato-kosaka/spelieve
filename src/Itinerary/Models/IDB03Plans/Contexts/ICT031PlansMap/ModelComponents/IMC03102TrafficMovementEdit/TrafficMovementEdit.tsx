@@ -21,12 +21,14 @@ export const IMC03102TrafficMovementEdit = ({
 	beforeAfterRepresentativeType,
 	planGroupsDoc,
 	dependentPlanID,
+	isPlanGroupMounted,
 	nextPlanID,
 }: {
 	planID: string;
 	beforeAfterRepresentativeType: 'before' | 'representative' | 'after';
 	planGroupsDoc: QueryDocumentSnapshot<PlanGroupsListInterface>;
 	dependentPlanID: string;
+	isPlanGroupMounted: boolean;
 	nextPlanID: string | undefined;
 }) => {
 	const [bottomSheetVisible, setBottomSheetVisible] = useState<boolean>(false);
@@ -37,6 +39,10 @@ export const IMC03102TrafficMovementEdit = ({
 	const planGroups = useMemo(() => planGroupsDoc.data(), [planGroupsDoc]);
 	const plansIndex = useMemo(() => planGroups.plans.indexOf(planID), [planGroups, planID]);
 	const dependentPlan = useMemo(() => plansDocSnapMap[dependentPlanID].data(), [dependentPlanID, plansDocSnapMap]);
+	const nextPlan = useMemo(
+		() => (nextPlanID ? plansDocSnapMap[nextPlanID].data() : undefined),
+		[nextPlanID, plansDocSnapMap],
+	);
 
 	const transitOptions = useMemo(() => {
 		if (plan.transportationMode === google.maps.TravelMode.TRANSIT) {
@@ -62,18 +68,18 @@ export const IMC03102TrafficMovementEdit = ({
 	]);
 
 	/** **********************************************************************************************
-	 * Google Map Directions を用いて予定間の所要時間を計算する
+	 * Google Map Directions を用いて予定間の移動時間を計算する
 	 *********************************************************************************************** */
 	const calculateDirection = useCallback(async () => {
-		if (!plan.transportationMode || !nextPlanID) {
+		if (!plan.transportationMode || !nextPlan || !plan.place_id || !nextPlan.place_id) {
 			return;
 		}
 		const directionsService = new google.maps.DirectionsService();
 		await directionsService
 			.route(
 				{
-					destination: { placeId: 'ChIJw0x8Kpn5GGARJ4wvEUd0Dj4' }, // TODO 要修正
-					origin: { placeId: 'ChIJszdHEQN9GGARy9MJ1TY22eQ' }, // TODO 要修正
+					origin: { placeId: plan.place_id },
+					destination: { placeId: nextPlan.place_id }, // TODO 要修正
 					travelMode: plan.transportationMode,
 					avoidFerries: plan.avoidFerries,
 					avoidHighways: plan.avoidHighways,
@@ -91,7 +97,7 @@ export const IMC03102TrafficMovementEdit = ({
 					waypoints: undefined,
 				},
 				(result, status) => {
-					Logger('IMC03102TrafficMovementEdit', 'directionsService.route.result', result);
+					Logger('IMC03102TrafficMovementEdit', 'directionsService.route.result', planID);
 					if (status === google.maps.DirectionsStatus.OK) {
 						/** **********************************************************************************************
 						 * DRIVING, WALKING, BICYCLING の場合 transportationSpan をレスポンスから設定する
@@ -154,7 +160,9 @@ export const IMC03102TrafficMovementEdit = ({
 				Logger('IMC03102TrafficMovementEdit', 'directionsService.route.catch', e);
 			});
 	}, [
-		nextPlanID,
+		plan.place_id,
+		planID,
+		nextPlan,
 		plan.avoidFerries,
 		plan.avoidHighways,
 		plan.avoidTolls,
@@ -167,13 +175,51 @@ export const IMC03102TrafficMovementEdit = ({
 		planDocSnap,
 	]);
 
+	const cleatTransportationTime = useCallback(() => {
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
+		setDoc(planDocSnap.ref, {
+			...plan,
+			transportationSpan: DateUtils.initialDate(),
+			transportationArrivalTime: undefined,
+			transportationDepartureTime: undefined,
+		});
+	}, [plan, planDocSnap.ref]);
+
+	// transportationMode を監視し、予定間の移動時間を再計算する
+	// transportationMode が undefined であれば、予定間の移動時間を初期化する
 	useEffect(() => {
-		if (plan.transportationMode) {
+		if (isPlanGroupMounted && plan.transportationMode) {
 			// eslint-disable-next-line @typescript-eslint/no-floating-promises
 			calculateDirection();
+		} else if (isPlanGroupMounted && !plan.transportationMode) {
+			cleatTransportationTime();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [plan.transportationMode]);
+
+	// 自分の予定の place_id を監視し、予定間の移動時間を再計算する
+	// place_id が undefined であれば、予定間の移動時間を初期化する
+	useEffect(() => {
+		if (isPlanGroupMounted && plan.place_id) {
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			calculateDirection();
+		} else if (isPlanGroupMounted && !plan.place_id) {
+			cleatTransportationTime();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [plan.place_id]);
+
+	// 次の予定の place_id を監視し、予定間の移動時間を再計算する
+	// 次の予定の place_id が undefined であれば、予定間の移動時間を初期化する
+	useEffect(() => {
+		if (isPlanGroupMounted && nextPlan?.place_id) {
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			calculateDirection();
+		} else if (isPlanGroupMounted && !nextPlan?.place_id) {
+			cleatTransportationTime();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [nextPlan?.place_id]);
 
 	const addPlan = useCallback(async () => {
 		const planDocRef = await addDoc(plansCRef!, {
@@ -217,7 +263,7 @@ export const IMC03102TrafficMovementEdit = ({
 
 	return (
 		<View style={{ borderWidth: 1 }}>
-			{nextPlanID && (
+			{plan.place_id && nextPlan?.place_id && (
 				<View>
 					<Pressable
 						onPress={() => {
