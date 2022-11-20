@@ -131,7 +131,6 @@ export const ICT031PlansMapProvider = ({ children }: { children: ReactNode }) =>
 		return () => undefined;
 	}, [plansCRef]);
 
-	// TODO: PG_DATA に追加する
 	const value: PlansMapValInterface = useMemo(
 		() => ({
 			plansDocSnapMap,
