@@ -22,7 +22,8 @@ export const IPA001ItineraryEdit = ({
 
 	// TOD: あとで消す ?itineraryID=uMFhF6OQph2UUuKEsKNa
 
-	const { itineraryID } = route.params;
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	const { itineraryID, place_id, placeName } = route.params;
 
 	useEffect(() => {
 		if (itineraryID) {
@@ -43,7 +44,7 @@ export const IPA001ItineraryEdit = ({
 			});
 			setItineraryID(itineray.id);
 		}
-	}, [itineraryDocSnap]);
+	}, [itineraryDocSnap, setItineraryID]);
 
 	if (!itineraryDocSnap || isPlansLoading || !planGroupsQSnap) {
 		return <ActivityIndicator animating />;

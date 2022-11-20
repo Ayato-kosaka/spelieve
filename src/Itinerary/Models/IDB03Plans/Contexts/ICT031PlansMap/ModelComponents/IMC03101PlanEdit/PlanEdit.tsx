@@ -36,6 +36,7 @@ export const IMC03101PlanEdit = ({
 	return (
 		<View style={{ borderWidth: 1 }}>
 			<MaterialCommunityIcons name="map-marker" />
+			{/* TODO: あとで消す */}
 			<Text>
 				props=
 				{JSON.stringify(

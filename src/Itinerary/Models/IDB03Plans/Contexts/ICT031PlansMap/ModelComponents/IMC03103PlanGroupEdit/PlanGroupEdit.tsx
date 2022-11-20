@@ -40,6 +40,7 @@ export const IMC03103PlanGroupsEdit = ({
 					value={planGroups.representativeStartDateTime}
 					onChange={(event, date) => {
 						if (event.type === 'set') {
+							// eslint-disable-next-line @typescript-eslint/no-floating-promises
 							setDoc(planGroupsDoc.ref, {
 								...planGroups,
 								representativeStartDateTime: date!,
