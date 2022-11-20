@@ -45,7 +45,11 @@ export const IMC03104EditDirectionsMode = ({
 				renderItem={(renderItemInfo) => (
 					<Pressable
 						onPress={() => {
-							setDirectionsMode({ ...directionsMode, transportationMode: renderItemInfo.item });
+							setDirectionsMode({
+								...directionsMode,
+								transportationMode:
+									directionsMode.transportationMode === renderItemInfo.item ? undefined : renderItemInfo.item,
+							});
 						}}
 						style={{
 							flexDirection: 'column',

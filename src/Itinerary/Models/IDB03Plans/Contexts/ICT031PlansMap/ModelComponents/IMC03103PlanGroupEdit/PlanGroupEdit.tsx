@@ -82,6 +82,7 @@ export const IMC03103PlanGroupsEdit = ({
 						<IMC03102TrafficMovementEdit
 							planID={planID}
 							beforeAfterRepresentativeType={beforeAfterRepresentativeType}
+							dependentPlanID={dependentPlanID}
 							planGroupsDoc={planGroupsDoc}
 							nextPlanID={planGroups.plans[index + 1]}
 						/>
