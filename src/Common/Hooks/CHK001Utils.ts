@@ -6,13 +6,13 @@
 // CHK001Utils.initialDate()
 // *****************************************************************************
 
-// Date
-export const initialDate = (): Date => new Date(1970, 0, 1, 0, 0, 0);
-export const milliSecondsADay: number = 24 * 60 * 60 * 1000;
-export const formatDateToTime = (date: Date, hourUnit = ':', minUnit = '') => {
-	const [hour, min] = [date.getHours(), date.getMinutes()].map((x) => String(x).padStart(!minUnit ? 2 : 1, '0'));
-	if (date.getHours() === 0 && minUnit !== '') {
-		return min + minUnit;
+/** **********************************************************************************************
+ * console log を表示する
+ * ※ ESLintで検出されなくなるので不必要に使わない
+ *********************************************************************************************** */
+export const Logger = (funcNm: string, variantNm: string, value: any) => {
+	if (process.env.NODE_ENV !== 'production') {
+		// eslint-disable-next-line no-console
+		console.log('debug', funcNm, variantNm, JSON.stringify(value, null, '\t'));
 	}
-	return hour + hourUnit + (parseInt(min, 10) !== 0 || !minUnit ? min : '');
 };
