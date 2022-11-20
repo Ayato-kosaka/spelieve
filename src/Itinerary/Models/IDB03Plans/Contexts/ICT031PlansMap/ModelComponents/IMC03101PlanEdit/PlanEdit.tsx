@@ -1,6 +1,6 @@
 import { setDoc } from 'firebase/firestore';
 import React, { useContext, useMemo } from 'react';
-import { Button, FlatList, View } from 'react-native';
+import { Button, FlatList, Pressable, View } from 'react-native';
 import { Chip, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -25,7 +25,7 @@ export const IMC03101PlanEdit = ({
 	const planDocSnap = useMemo(() => plansDocSnapMap[planID], [planID, plansDocSnapMap]);
 	const plan = useMemo(() => planDocSnap.data(), [planDocSnap]);
 
-	const { deletePlan } = IMC03101PlanEditController({
+	const { deletePlan, onPlanPress } = IMC03101PlanEditController({
 		planID,
 		beforeAfterRepresentativeType,
 		dependentPlanID,
@@ -34,7 +34,7 @@ export const IMC03101PlanEdit = ({
 	});
 
 	return (
-		<View style={{ borderWidth: 1 }}>
+		<Pressable style={{ borderWidth: 1 }} onPress={onPlanPress}>
 			<MaterialCommunityIcons name="map-marker" />
 			{/* TODO: あとで消す */}
 			<Text>
@@ -79,6 +79,6 @@ export const IMC03101PlanEdit = ({
 					deletePlan();
 				}}
 			/>
-		</View>
+		</Pressable>
 	);
 };

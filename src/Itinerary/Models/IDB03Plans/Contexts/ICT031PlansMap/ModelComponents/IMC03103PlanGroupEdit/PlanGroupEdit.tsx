@@ -25,8 +25,6 @@ export const IMC03103PlanGroupsEdit = ({
 		setIsMounted(true);
 	}, []);
 
-	useEffect(() => {}, []);
-
 	let representativeFounded = false;
 
 	return (

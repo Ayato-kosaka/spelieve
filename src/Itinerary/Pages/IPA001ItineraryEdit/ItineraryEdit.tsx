@@ -25,6 +25,8 @@ export const IPA001ItineraryEdit = ({
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	const { itineraryID, place_id, placeName } = route.params;
 
+	// TODO: Conroller に移動する
+
 	useEffect(() => {
 		if (itineraryID) {
 			setItineraryID(itineraryID);

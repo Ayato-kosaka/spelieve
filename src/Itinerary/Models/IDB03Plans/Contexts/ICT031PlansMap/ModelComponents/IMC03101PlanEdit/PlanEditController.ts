@@ -1,3 +1,5 @@
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { setDoc, doc, deleteDoc } from 'firebase/firestore';
 import { useCallback, useContext, useEffect, useMemo } from 'react';
 
@@ -6,7 +8,9 @@ import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 
 import { ICT031PlansMap } from '../..';
 
+import { BottomTabParamList } from '@/App';
 import * as CHK001Utils from '@/Common/Hooks/CHK001Utils';
+import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
 
 export const IMC03101PlanEditController = ({
 	planID,
@@ -139,5 +143,18 @@ export const IMC03101PlanEditController = ({
 		await deleteDoc(doc(plansCRef!, planID));
 	}, [plansCRef, planGroups, planID, plansIndex, planGroupsDoc.ref]);
 
-	return { deletePlan };
+	const navigation = useNavigation<NativeStackNavigationProp<BottomTabParamList>>();
+	const { itineraryDocSnap } = useContext(ICT011ItineraryOne);
+
+	const onPlanPress = useCallback(() => {
+		navigation.navigate('Itinerary', {
+			screen: 'IPA003EditPlan',
+			params: {
+				itineraryID: itineraryDocSnap?.id,
+				planID: planDocSnap.id,
+			},
+		});
+	}, [navigation, itineraryDocSnap?.id, planDocSnap.id]);
+
+	return { deletePlan, onPlanPress };
 };
