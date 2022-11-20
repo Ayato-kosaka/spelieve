@@ -56,5 +56,6 @@ export function IPA002ItineraryCoverController({
 		deleteTag,
 		shouldNavigate,
 		isLoading,
+		setPageItinerary,
 	};
 }
