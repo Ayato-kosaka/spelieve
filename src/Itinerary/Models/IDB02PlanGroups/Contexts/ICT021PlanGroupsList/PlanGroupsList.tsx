@@ -4,6 +4,7 @@ import { useState, createContext, useEffect, useContext, useMemo, ReactNode } fr
 import { PlanGroupsListInterface, PlanGroupsListValInterface } from 'spelieve-common/lib/Interfaces/Itinerary';
 import { PlanGroups } from 'spelieve-common/lib/Models/Itinerary/IDB02/PlanGroups';
 import { Plans } from 'spelieve-common/lib/Models/Itinerary/IDB03/Plans';
+import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
 import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
@@ -43,7 +44,27 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 							const data: PlanGroupsListInterface = queryDocumentSnapshot.data();
 							if (!data.plans.length) {
 								// eslint-disable-next-line @typescript-eslint/no-floating-promises
-								addDoc<Plans>(plansCRef, { ...Plans.fromJSON({}) }).then((planDocRef) => {
+								addDoc<Plans>(plansCRef, {
+									title: '',
+									placeSpan: DateUtils.initialDate(),
+									placeStartTime: new Date(),
+									placeEndTime: new Date(),
+									tags: [],
+									transportationSpan: DateUtils.initialDate(),
+									avoidFerries: false,
+									avoidHighways: false,
+									avoidTolls: false,
+									transitModes: [
+										google.maps.TransitMode.BUS,
+										google.maps.TransitMode.RAIL,
+										google.maps.TransitMode.SUBWAY,
+										google.maps.TransitMode.TRAIN,
+										google.maps.TransitMode.TRAM,
+									],
+									transitRoutePreference: google.maps.TransitRoutePreference.FEWER_TRANSFERS,
+									createdAt: new Date(),
+									updatedAt: new Date(),
+								}).then((planDocRef) => {
 									data.plans.push(planDocRef.id);
 									// eslint-disable-next-line @typescript-eslint/no-floating-promises
 									setDoc(queryDocumentSnapshot.ref, { ...data, updatedAt: new Date() });

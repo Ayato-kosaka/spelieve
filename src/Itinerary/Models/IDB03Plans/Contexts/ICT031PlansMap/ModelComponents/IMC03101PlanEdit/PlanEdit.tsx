@@ -101,8 +101,8 @@ export const IMC03101PlanEdit = ({
 
 	/** **********************************************************************************************
 	 * before の PlaceEndTime を設定する
-	 * 次の予定の TransportationDepartureTime, PlaceStartTime を監視し、
-	 * PlaceEndTime = next.TransportationDepartureTime || next.PlaceStartTime を設定する
+	 * 自分の予定の TransportationDepartureTime, 次の予定の PlaceStartTime を監視し、
+	 * PlaceEndTime = current.TransportationDepartureTime || next.PlaceStartTime を設定する
 	 *********************************************************************************************** */
 	useEffect(() => {
 		if (isPlanGroupMounted && beforeAfterRepresentativeType === 'before') {

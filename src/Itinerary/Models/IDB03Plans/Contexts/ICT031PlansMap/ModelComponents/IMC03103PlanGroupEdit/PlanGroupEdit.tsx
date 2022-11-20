@@ -1,16 +1,15 @@
 import { QueryDocumentSnapshot, setDoc } from 'firebase/firestore';
 import { useContext, useEffect, useState } from 'react';
-import { TextInputChangeEventData, View } from 'react-native';
-import { Text, TextInput } from 'react-native-paper';
+import { View } from 'react-native';
+import { Text } from 'react-native-paper';
 
 import { PlanGroupsListInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT021';
 
 import { ICT031PlansMap } from '../../PlansMap';
 
-import i18n from '@/Common/Hooks/i18n-js';
+import { CCO003DateTimePicker } from '@/Common/Components/CCO003DateTimePicker';
 import { IMC03101PlanEdit } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03101PlanEdit';
 import { IMC03102TrafficMovementEdit } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03102TrafficMovementEdit';
-import { CCO003DateTimePicker } from '@/Common/Components/CCO003DateTimePicker';
 
 export const IMC03103PlanGroupsEdit = ({
 	planGroupsDoc,
@@ -82,6 +81,7 @@ export const IMC03103PlanGroupsEdit = ({
 						/>
 						<IMC03102TrafficMovementEdit
 							planID={planID}
+							beforeAfterRepresentativeType={beforeAfterRepresentativeType}
 							planGroupsDoc={planGroupsDoc}
 							nextPlanID={planGroups.plans[index + 1]}
 						/>

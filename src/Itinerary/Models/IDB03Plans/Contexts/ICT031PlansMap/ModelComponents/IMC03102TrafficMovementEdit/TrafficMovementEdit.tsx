@@ -9,6 +9,7 @@ import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 
 import { ICT031PlansMap } from '../..';
 
+import { Logger } from '@/Common/Hooks/CHK001Utils';
 import i18n from '@/Common/Hooks/i18n-js';
 import { IMC03104EditDirectionsMode } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03104EditDirectionsMode';
 import 'react-spring-bottom-sheet/dist/style.css';
@@ -16,12 +17,14 @@ import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001G
 
 export const IMC03102TrafficMovementEdit = ({
 	planID,
+	beforeAfterRepresentativeType,
 	nextPlanID,
 	planGroupsDoc,
 }: {
 	planID: string;
+	beforeAfterRepresentativeType: 'before' | 'representative' | 'after';
 	planGroupsDoc: QueryDocumentSnapshot<PlanGroupsListInterface>;
-	nextPlanID: string;
+	nextPlanID: string | undefined;
 }) => {
 	const [bottomSheetVisible, setBottomSheetVisible] = useState<boolean>(false);
 
@@ -31,77 +34,123 @@ export const IMC03102TrafficMovementEdit = ({
 	const planGroups = useMemo(() => planGroupsDoc.data(), [planGroupsDoc]);
 	const plansIndex = useMemo(() => planGroups.plans.indexOf(planID), [planGroups, planID]);
 
+	const transitOptions = useMemo(() => {
+		if (plan.transportationMode === google.maps.TravelMode.TRANSIT) {
+			const arrivalTime =
+				beforeAfterRepresentativeType === 'before' ? plansDocSnapMap[nextPlanID!].data().placeStartTime : undefined;
+			const departureTime = ['representative', 'after'].includes(beforeAfterRepresentativeType)
+				? plan.placeEndTime
+				: undefined;
+			return {
+				arrivalTime,
+				departureTime,
+				modes: plan.transitModes,
+				routingPreference: plan.transitRoutePreference,
+			};
+		}
+		return undefined;
+	}, [
+		plan.transportationMode,
+		beforeAfterRepresentativeType,
+		plansDocSnapMap,
+		nextPlanID,
+		plan.placeEndTime,
+		plan.transitModes,
+		plan.transitRoutePreference,
+	]);
+
 	const calculateDirection = useCallback(async () => {
-		if (!plan.transportationMode) {
+		if (!plan.transportationMode || !nextPlanID) {
 			return;
 		}
 		const directionsService = new google.maps.DirectionsService();
-		const directionsRouteResponse = await directionsService.route({
-			destination: { placeId: 'ChIJszdHEQN9GGARJS23SnAdR0E' }, // TODO 要修正
-			origin: { placeId: 'ChIJ01v4evpZGGARl4P3h_7FCV0' }, // TODO 要修正
-			travelMode: plan.transportationMode,
+		await directionsService
+			.route(
+				{
+					destination: { placeId: 'ChIJw0x8Kpn5GGARJ4wvEUd0Dj4' }, // TODO 要修正
+					origin: { placeId: 'ChIJszdHEQN9GGARy9MJ1TY22eQ' }, // TODO 要修正
+					travelMode: plan.transportationMode,
+					avoidFerries: plan.avoidFerries,
+					avoidHighways: plan.avoidHighways,
+					avoidTolls: plan.avoidTolls,
+					drivingOptions: {
+						departureTime: plan.placeEndTime > new Date() ? plan.placeEndTime : new Date(),
+						trafficModel: google.maps.TrafficModel.BEST_GUESS,
+					},
+					language: GooglePlaceLanguageTagFromIETFLanguageTag[i18n.locale],
+					optimizeWaypoints: false,
+					provideRouteAlternatives: false,
+					region: undefined,
+					transitOptions,
+					unitSystem: undefined,
+					waypoints: undefined,
+				},
+				(result, status) => {
+					console.log(result)
+					if(status === google.maps.DirectionsStatus.OK){
+						// Driving の場合は、span.setSecont(routes[0].legs[0].duration.value)
+						// Walking も同じ
+						// bicycling も同じ
+					} else if (status === google.maps.DirectionsStatus.ZERO_RESULTS){
+						// eslint-disable-next-line @typescript-eslint/no-floating-promises
+						setDoc(
+							planDocSnap.ref,
+							{
+								transportationMode: google.maps.TravelMode.DRIVING,
+							},
+							{ merge: true },
+						);
+					}
+				},
+			)
+			.catch((e) => {
+				Logger('IMC03102TrafficMovementEdit', 'directionsService.route.catch', e);
+			});
+	}, [
+		nextPlanID,
+		plan.avoidFerries,
+		plan.avoidHighways,
+		plan.avoidTolls,
+		transitOptions,
+		plan.transportationMode,
+		plan.placeEndTime,
+	]);
+
+	const addPlan = useCallback(async () => {
+		const planDocRef = await addDoc(plansCRef!, {
+			title: '',
+			placeSpan: DateUtils.initialDate(),
+			placeStartTime: plan.transportationArrivalTime || plan.placeEndTime,
+			placeEndTime: plan.transportationArrivalTime || plan.placeEndTime,
+			tags: [],
+			transportationSpan: DateUtils.initialDate(),
 			avoidFerries: plan.avoidFerries,
 			avoidHighways: plan.avoidHighways,
 			avoidTolls: plan.avoidTolls,
-			drivingOptions: {
-				departureTime: plan.transportationDepartureTime!, // TODO 要修正
-				trafficModel: google.maps.TrafficModel.BEST_GUESS,
-			},
-			language: GooglePlaceLanguageTagFromIETFLanguageTag[i18n.locale],
-			optimizeWaypoints: false,
-			provideRouteAlternatives: false,
-			region: undefined,
-			transitOptions: {
-				arrivalTime: plan.transportationArrivalTime, // TODO 要修正
-				departureTime: plan.transportationDepartureTime, // TODO 要修正
-				modes: plan.transitModes,
-				routingPreference: plan.transitRoutePreference,
-			},
-			unitSystem: undefined,
-			waypoints: undefined,
+			transitModes: plan.transitModes,
+			transitRoutePreference: plan.transitRoutePreference,
+			createdAt: new Date(),
+			updatedAt: new Date(),
 		});
-		console.log(directionsRouteResponse);
+		const newPlans = [...planGroups.plans];
+		newPlans.splice(plansIndex + 1, 0, planDocRef.id);
+		await setDoc(planGroupsDoc.ref, { plans: newPlans }, { merge: true });
 	}, [
+		plansCRef,
+		planGroups,
+		plansIndex,
+		plan.placeEndTime,
+		plan.transportationArrivalTime,
 		plan.avoidFerries,
 		plan.avoidHighways,
 		plan.avoidTolls,
 		plan.transitModes,
 		plan.transitRoutePreference,
-		plan.transportationArrivalTime,
-		plan.transportationDepartureTime,
-		plan.transportationMode,
+		planGroupsDoc.ref,
 	]);
 
-	const addPlan = useCallback(async () => {
-		// TODO: 設定値は要検討
-		const planDocRef = await addDoc(plansCRef!, {
-			title: '',
-			placeSpan: DateUtils.initialDate(),
-			placeStartTime: plan.transportationArrivalTime || plan.placeEndTime,
-			placeEndTime: DateUtils.initialDate(),
-			tags: [],
-			transportationSpan: DateUtils.initialDate(),
-			avoidFerries: false,
-			avoidHighways: false,
-			avoidTolls: false,
-			transitModes: [
-				google.maps.TransitMode.BUS,
-				google.maps.TransitMode.RAIL,
-				google.maps.TransitMode.SUBWAY,
-				google.maps.TransitMode.TRAIN,
-				google.maps.TransitMode.TRAM,
-			],
-			transitRoutePreference: google.maps.TransitRoutePreference.FEWER_TRANSFERS,
-			createdAt: new Date(),
-			updatedAt: new Date(),
-		});
-		const newPlans = { ...planGroups.plans };
-		newPlans.splice(plansIndex + 1, 0, planDocRef.id);
-		await setDoc(planGroupsDoc.ref, { plans: newPlans }, { merge: true });
-	}, [plansCRef, planGroups, plansIndex, plan.placeEndTime, plan.transportationArrivalTime, planGroupsDoc.ref]);
-
 	const deletePlan = useCallback(async () => {
-		const newPlans = { ...planGroups.plans };
+		const newPlans = [...planGroups.plans];
 		newPlans.splice(plansIndex, 1);
 		await setDoc(planGroupsDoc.ref, { plans: newPlans }, { merge: true });
 		await deleteDoc(doc(plansCRef!, planID));
