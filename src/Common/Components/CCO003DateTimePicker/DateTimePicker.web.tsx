@@ -17,6 +17,27 @@ export const CCO003DateTimePicker = ({ ...props }: IOSNativeProps & AndroidNativ
 	};
 
 	const showTimeSelect = useMemo(() => props.mode === 'time', [props.mode]);
+	
+	const showTimeSelectOnly = useMemo(() => showTimeSelect, [showTimeSelect]);
 
-	return <DatePicker selected={props.value} onChange={onChange} showTimeSelect={showTimeSelect} />;
+	const timeIntervals = useMemo(() => props.minuteInterval, [props.minuteInterval]);
+
+	const dateFormat = useMemo(() => {
+		if(props.mode === 'time') {
+			return "hh:mm aa"
+		} else {
+			return "MMMM d, yyyy h:mm aa"
+		}
+	}, [props.minuteInterval]);
+
+	return (
+		<DatePicker
+			selected={props.value}
+			onChange={onChange}
+			showTimeSelect={showTimeSelect}
+			showTimeSelectOnly={showTimeSelectOnly}
+			timeIntervals={timeIntervals}
+			dateFormat={dateFormat}
+		/>
+	);
 };

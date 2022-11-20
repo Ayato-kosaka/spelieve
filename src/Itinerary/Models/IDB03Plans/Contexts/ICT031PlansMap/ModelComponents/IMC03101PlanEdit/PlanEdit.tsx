@@ -1,7 +1,7 @@
 import { QueryDocumentSnapshot, setDoc } from 'firebase/firestore';
 import React, { useContext, useEffect } from 'react';
-import { FlatList, TextInputChangeEventData, View } from 'react-native';
-import { Chip, Text, TextInput } from 'react-native-paper';
+import { FlatList, View } from 'react-native';
+import { Chip, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { PlanGroupsListInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT021';
@@ -9,6 +9,7 @@ import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 
 import { ICT031PlansMap } from '../..';
 
+import { CCO003DateTimePicker } from '@/Common/Components/CCO003DateTimePicker';
 import * as CHK001Utils from '@/Common/Hooks/CHK001Utils';
 import i18n from '@/Common/Hooks/i18n-js';
 
@@ -164,16 +165,22 @@ export const IMC03101PlanEdit = ({
 			</Text>
 
 			{/* TODO: あとで消す */}
-			<TextInput
-				label={i18n.t('placeSpan')}
-				value={(plan.placeSpan.getTime() + 32400000).toString()}
-				onChange={({ nativeEvent }: { nativeEvent: TextInputChangeEventData }) => {
-					setDoc(planDocSnap.ref, {
-						...plan,
-						placeSpan: new Date((parseInt(nativeEvent.text, 10) || 0) - 32400000),
-					});
-				}}
-			/>
+			{/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/336　span 用コンポーネントを作成する */}
+			<View>
+				<Text>{i18n.t('placeSpan')}</Text>
+				<CCO003DateTimePicker
+					value={plan.placeSpan}
+					onChange={(event, date) => {
+						if (event.type === 'set') {
+							setDoc(planDocSnap.ref, {
+								...plan,
+								placeSpan: date!,
+							});
+						}
+					}}
+					mode="time"
+				/>
+			</View>
 			<FlatList data={plan.tags} renderItem={(renderItemInfo) => <Chip>{renderItemInfo.item}</Chip>} />
 		</View>
 	);
