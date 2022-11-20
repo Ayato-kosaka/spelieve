@@ -10,6 +10,7 @@ import { ICT031PlansMap } from '../../PlansMap';
 import i18n from '@/Common/Hooks/i18n-js';
 import { IMC03101PlanEdit } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03101PlanEdit';
 import { IMC03102TrafficMovementEdit } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03102TrafficMovementEdit';
+import { CCO003DateTimePicker } from '@/Common/Components/CCO003DateTimePicker';
 
 export const IMC03103PlanGroupsEdit = ({
 	planGroupsDoc,
@@ -33,17 +34,23 @@ export const IMC03103PlanGroupsEdit = ({
 		<View style={{ width: '100%' }}>
 			<Text>representativePlanID = {planGroups.representativePlanID}</Text>
 
-			<TextInput
-				label={i18n.t('representativeStartDateTime')}
-				value={(planGroups.representativeStartDateTime.getTime() + 32400000).toString()}
-				onChange={({ nativeEvent }: { nativeEvent: TextInputChangeEventData }) => {
-					setDoc(planGroupsDoc.ref, {
-						...planGroups,
-						representativeStartDateTime: new Date((parseInt(nativeEvent.text, 10) || 0) - 32400000),
-						updatedAt: new Date(),
-					});
-				}}
-			/>
+			{/* TODO: あとで消す */}
+			<View>
+				<Text>representativeStartDateTime</Text>
+				<CCO003DateTimePicker
+					value={planGroups.representativeStartDateTime}
+					onChange={(event, date) => {
+						if (event.type === 'set') {
+							setDoc(planGroupsDoc.ref, {
+								...planGroups,
+								representativeStartDateTime: date!,
+								updatedAt: new Date(),
+							});
+						}
+					}}
+					mode="time"
+				/>
+			</View>
 			{planGroups.plans.map((planID, index) => {
 				const beforeAfterRepresentativeType = (() => {
 					if (representativeFounded) {
