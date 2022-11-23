@@ -18,14 +18,10 @@ import { PMC01203PlaceImage } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MP
 import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/MPlaceOne';
 
 export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<BottomTabParamList, 'PPA002Place'>) => {
-	const { place, setPlaceID, isLoading } = useContext(PCT012MPlaceOne);
+	const { place, isLoading } = useContext(PCT012MPlaceOne);
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	const { place_id } = route.params;
 	const { onCreateItineraryClicked } = PPA002PlaceController(route.params);
-
-	useEffect(() => {
-		setPlaceID(place_id);
-	}, [place_id, setPlaceID]);
 
 	if (isLoading) {
 		return <ActivityIndicator animating />;
