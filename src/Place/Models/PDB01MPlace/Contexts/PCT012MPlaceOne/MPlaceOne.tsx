@@ -88,16 +88,16 @@ export const PCT012MPlaceOneProvider = ({ children }: { children: ReactNode }) =
 				querySnap.empty ||
 				new Date().getDate() - querySnap.docs[0].data().updatedAt.getDate() > HowManyDaysToLimitPlaceUpserts
 			) {
-				await PlaceHttpPost<UpsertPlaceDataBodyInterface, undefined>('PBL002', { place_id: placeID, language }).catch(
+				await PlaceHttpPost<UpsertPlaceDataBodyInterface, undefined>('PBL002', { place_id: placeID, language }).then(
+					async () => {
+						querySnap = await getDocs(q);
+					},
+				).catch(
 					() => {
 						setPlaceID(undefined);
 						setIsLoading(false);
 					},
 				);
-				if (!isLoading) {
-					return;
-				}
-				querySnap = await getDocs(q);
 			}
 			setPlace(querySnap.docs[0].data());
 			setIsLoading(false);
