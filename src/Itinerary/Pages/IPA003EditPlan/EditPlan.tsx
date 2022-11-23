@@ -25,6 +25,8 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 	const planDocSnap = useMemo(() => (planID ? plansDocSnapMap[planID] : undefined), [planID, plansDocSnapMap]);
 	const plan = useMemo(() => (planDocSnap ? planDocSnap.data() : undefined), [planDocSnap]);
 
+	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/342 IPA003PlanEdit コンソールエラー解消
+
 	// TODO: Conroller に移動する
 
 	const [pagePlan, setPagePlan] = useState<PlansMapInterface | undefined>(undefined);
@@ -82,8 +84,6 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 		navigate();
 		return <ActivityIndicator animating />;
 	}
-
-	// TODO: Console エラーが出ている
 
 	return (
 		<View>

@@ -19,6 +19,8 @@ export const IMC03103PlanGroupsEdit = ({
 	const { plansCRef } = useContext(ICT031PlansMap);
 	const planGroups = planGroupsDoc.data();
 
+	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/343 itinerary Plan のドラッグアンドドロップ
+
 	const [isMounted, setIsMounted] = useState<boolean>(false);
 
 	useEffect(() => {
