@@ -83,14 +83,6 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 						) : (
 							<Text style={styles.infoText}>{place.openingHours}</Text>
 						)}
-						<Text
-							style={styles.urlLink}
-							onPress={() => {
-								// eslint-disable-next-line
-								Linking.openURL(`${place.mapUrl}`);
-							}}>
-							{i18n.t('show more')}
-						</Text>
 					</View>
 				</View>
 				<View>
@@ -102,7 +94,9 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 							// eslint-disable-next-line
 							Linking.openURL(`${place.mapUrl}`);
 						}}
-					/>
+					>
+						{i18n.t('show more info at Google Map')}
+					</Text>
 				</View>
 				<View>
 					<FlatList
@@ -121,7 +115,9 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 							// eslint-disable-next-line
 							Linking.openURL(`${place.mapUrl}`);
 						}}
-					/>
+					>
+						{i18n.t('show more')}
+					</Text>
 				</View>
 			</View>
 		</ScrollView>
