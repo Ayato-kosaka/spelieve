@@ -38,11 +38,19 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 				(querySnap) => {
 					if (querySnap.empty) {
 						// eslint-disable-next-line @typescript-eslint/no-floating-promises
-						addDoc(planGroupsCRef, { ...PlanGroups.fromJSON({}) });
+						addDoc(planGroupsCRef, {
+							plans: [],
+							representativePlanID: '',
+							dayNumber: 0,
+							time: DateUtils.initialDate(),
+							representativeStartDateTime: DateUtils.initialDate(),
+							createdAt: new Date(),
+							updatedAt: new Date(),
+						});
 					} else {
 						querySnap.docs.forEach((queryDocumentSnapshot) => {
-							const data: PlanGroupsListInterface = queryDocumentSnapshot.data();
-							if (!data.plans.length) {
+							const plans = [...queryDocumentSnapshot.data().plans];
+							if (plans.length === 0) {
 								// eslint-disable-next-line @typescript-eslint/no-floating-promises
 								addDoc<Plans>(plansCRef, {
 									title: '',
@@ -65,9 +73,13 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 									createdAt: new Date(),
 									updatedAt: new Date(),
 								}).then((planDocRef) => {
-									data.plans.push(planDocRef.id);
+									plans.push(planDocRef.id);
 									// eslint-disable-next-line @typescript-eslint/no-floating-promises
-									setDoc(queryDocumentSnapshot.ref, { ...data, updatedAt: new Date() });
+									setDoc(
+										queryDocumentSnapshot.ref,
+										{ plans, representativeStartDateTime: new Date(), representativePlanID: planDocRef.id },
+										{ merge: true },
+									);
 								});
 							}
 						});
