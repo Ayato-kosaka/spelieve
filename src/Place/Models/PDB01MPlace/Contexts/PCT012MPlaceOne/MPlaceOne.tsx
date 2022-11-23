@@ -30,6 +30,7 @@ export const PCT012MPlaceOneProvider = ({ children }: { children: ReactNode }) =
 			return;
 		}
 		setIsLoading(true);
+		setPlace(undefined);
 
 		const fetchData = async () => {
 			const q = query(
