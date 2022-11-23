@@ -5,7 +5,7 @@ import { PlaceControllerInterface, PlacePropsInterface } from 'spelieve-common/l
 
 import { BottomTabParamList } from '@/App';
 
-export const PPA002PlaceController = ({ place_id, language }: PlacePropsInterface): PlaceControllerInterface => {
+export const PPA002PlaceController = ({ place_id }: PlacePropsInterface): PlaceControllerInterface => {
 	const navigation = useNavigation<NativeStackNavigationProp<BottomTabParamList>>();
 
 	const onCreateItineraryClicked = (placeName: string) => {
