@@ -14,11 +14,9 @@ const ja: LangIf = {
 	Thursday: '木曜日',
 	Friday: '金曜日',
 	Saturday: '土曜日',
-	'No Tel Information': '電話番号の情報はありません',
 	'show more': 'もっと見る',
 
 	// PlaceController.ts
-	'No Website Infomation': 'ウェブサイト情報はありません',
 	'No Opening Hours Infomation': '営業時間の情報はありません',
 	'Open 24hours': '24時間営業',
 };
