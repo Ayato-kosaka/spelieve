@@ -18,6 +18,7 @@ export const IMC03103PlanGroupsEdit = ({
 	const planGroups = planGroupsDoc.data();
 
 	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/343 itinerary Plan のドラッグアンドドロップ
+	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/346 AddPlanGroup の実装
 
 	const [isMounted, setIsMounted] = useState<boolean>(false);
 

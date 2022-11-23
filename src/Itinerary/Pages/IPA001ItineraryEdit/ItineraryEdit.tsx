@@ -20,7 +20,7 @@ export const IPA001ItineraryEdit = ({
 	const { isPlansLoading, plansDocSnapMap } = useContext(ICT031PlansMap);
 	const { planGroupsQSnap, planGroupsCRef } = useContext(ICT021PlanGroupsList);
 
-	// TOD: あとで消す ?itineraryID=uMFhF6OQph2UUuKEsKNa
+	// TODO: あとで消す テスト用itineraryIDのメモ ?itineraryID=uMFhF6OQph2UUuKEsKNa
 
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	const { itineraryID, place_id, placeName } = route.params;
@@ -33,6 +33,7 @@ export const IPA001ItineraryEdit = ({
 		}
 	}, [itineraryID, setItineraryID]);
 
+	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/335 Itinerary 新規作成
 	const createItinerary = useCallback(async () => {
 		if (itineraryDocSnap) {
 			const itineray = await addDoc<ItineraryOneInterface>(itineraryDocSnap.ref.parent, {

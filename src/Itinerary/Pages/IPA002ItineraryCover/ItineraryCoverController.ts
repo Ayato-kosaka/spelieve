@@ -16,6 +16,8 @@ export function IPA002ItineraryCoverController({
 	const [pageItinerary, setPageItinerary] = useState<ItineraryOneInterface | undefined>(undefined);
 	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
 
+	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/347 Itineray ロック機能実装
+
 	useEffect(() => {
 		if (itineraryID) {
 			setItineraryID(itineraryID);
@@ -33,6 +35,7 @@ export function IPA002ItineraryCoverController({
 		setDoc<ItineraryOneInterface>(itineraryDocSnap!.ref, { ...pageItinerary!, updatedAt: new Date() });
 	}, [itineraryDocSnap, pageItinerary]);
 
+	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/345 ItineraryのDateを変えたらPlanGroupのDateも変える
 	const handleOnChange = useCallback(
 		(column: keyof ItineraryOneInterface) =>
 			({ nativeEvent }: { nativeEvent: TextInputChangeEventData }) => {
