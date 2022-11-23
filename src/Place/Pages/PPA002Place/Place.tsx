@@ -27,7 +27,6 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 		setPlaceID(place_id);
 	}, [place_id, setPlaceID]);
 
-	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/321 存在しないplace_idはずっとローディング
 	if (isLoading) {
 		return <ActivityIndicator animating />;
 	}
