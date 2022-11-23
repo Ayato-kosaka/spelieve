@@ -22,6 +22,11 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
 	const { isPlansLoading, plansDocSnapMap } = useContext(ICT031PlansMap);
 	const { planGroupsQSnap, planGroupsCRef } = useContext(ICT021PlanGroupsList);
+	const planGroupDocSnap = useMemo(
+		() => (PlanGroupsIndex != null ? planGroupsQSnap?.docs[PlanGroupsIndex] : undefined),
+		[PlanGroupsIndex, planGroupsQSnap],
+	);
+	const planGroup = useMemo(() => planGroupDocSnap?.data(), [planGroupDocSnap]);
 	const planDocSnap = useMemo(() => (planID ? plansDocSnapMap[planID] : undefined), [planID, plansDocSnapMap]);
 	const plan = useMemo(() => (planDocSnap ? planDocSnap.data() : undefined), [planDocSnap]);
 
@@ -76,7 +81,7 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 		[plan, planDocSnap],
 	);
 
-	if (!itineraryDocSnap || isPlansLoading || !planGroupsQSnap) {
+	if (!itineraryDocSnap || isPlansLoading || !planGroupsQSnap || !planGroupDocSnap || !planGroup) {
 		return <ActivityIndicator animating />;
 	}
 
@@ -104,16 +109,35 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 					<Searchbar placeholder="Search" value="" />
 				}
 			/>
-			{/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/336 span 用コンポーネントを作成する */}
 			<View>
 				<Text>{i18n.t('滞在時間')}</Text>
-				<CCO003DateTimePicker value={pagePlan.placeSpan} />
 				<CCO004DurationPicker
 					value={pagePlan.placeSpan}
 					onBlur={(newVal) => setDoc(planDocSnap!.ref, { placeSpan: newVal }, { merge: true })}
 				/>
 			</View>
-			{/* TODO: PPA002 がマージされたら取り込む。 <PMC01202PlaceInformation /> */}
+
+			<View>
+				<Text>{i18n.t('代表プランの開始時間')}</Text>
+				<CCO003DateTimePicker
+					value={planGroup.representativeStartDateTime}
+					// TODO: Controller に切り出す
+					onChange={(event, date) => {
+						if (event.type === 'set') {
+							// eslint-disable-next-line @typescript-eslint/no-floating-promises
+							setDoc(
+								planGroupDocSnap.ref,
+								{
+									representativeStartDateTime: date!,
+								},
+								{ merge: true },
+							);
+						}
+					}}
+					mode="time"
+				/>
+			</View>
+			{/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/344 PMC01202PlaceInformationの取り込み */}
 		</View>
 	);
 };

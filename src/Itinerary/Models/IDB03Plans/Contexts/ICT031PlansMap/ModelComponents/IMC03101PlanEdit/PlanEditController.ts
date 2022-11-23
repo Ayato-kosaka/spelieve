@@ -11,6 +11,7 @@ import { ICT031PlansMap } from '../..';
 import { BottomTabParamList } from '@/App';
 import * as CHK001Utils from '@/Common/Hooks/CHK001Utils';
 import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
+import { ICT021PlanGroupsList } from '@/Itinerary/Models/IDB02PlanGroups/Contexts/ICT021PlanGroupsList';
 
 export const IMC03101PlanEditController = ({
 	planID,
@@ -19,6 +20,7 @@ export const IMC03101PlanEditController = ({
 	planGroupsDoc,
 	isPlanGroupMounted,
 }: PlanEditPropsInterface): PlanEditControllerInterface => {
+	const { planGroupsQSnap } = useContext(ICT021PlanGroupsList);
 	const { plansCRef, plansDocSnapMap } = useContext(ICT031PlansMap);
 	const planDocSnap = useMemo(() => plansDocSnapMap[planID], [planID, plansDocSnapMap]);
 	const plan = useMemo(() => planDocSnap.data(), [planDocSnap]);
@@ -151,10 +153,11 @@ export const IMC03101PlanEditController = ({
 			screen: 'IPA003EditPlan',
 			params: {
 				itineraryID: itineraryDocSnap?.id,
+				PlanGroupsIndex: planGroupsQSnap?.docs.findIndex((element) => element.id === planGroupsDoc.id),
 				planID: planDocSnap.id,
 			},
 		});
-	}, [navigation, itineraryDocSnap?.id, planDocSnap.id]);
+	}, [navigation, itineraryDocSnap?.id, planDocSnap.id, planGroupsDoc.id, planGroupsQSnap]);
 
 	return { deletePlan, onPlanPress };
 };

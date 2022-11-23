@@ -34,18 +34,6 @@ export const IMC03101PlanEdit = ({
 	return (
 		<Pressable style={{ borderWidth: 1 }} onPress={onPlanPress}>
 			<MaterialCommunityIcons name="map-marker" />
-			{/* TODO: あとで消す */}
-			<Text>
-				props=
-				{JSON.stringify(
-					{
-						planID,
-						beforeAfterRepresentativeType,
-					},
-					null,
-					'\t',
-				)}
-			</Text>
 			<Text>{plan.title}</Text>
 			<Text>
 				{DateUtils.formatToHHMM(plan.placeStartTime)}~{DateUtils.formatToHHMM(plan.placeEndTime)}

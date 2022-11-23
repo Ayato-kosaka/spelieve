@@ -1,13 +1,11 @@
-import { QueryDocumentSnapshot, setDoc } from 'firebase/firestore';
+import { QueryDocumentSnapshot } from 'firebase/firestore';
 import { useContext, useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { Text } from 'react-native-paper';
 
 import { PlanGroupsListInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT021';
 
 import { ICT031PlansMap } from '../../PlansMap';
 
-import { CCO003DateTimePicker } from '@/Common/Components/CCO003DateTimePicker';
 import { IMC03101PlanEdit } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03101PlanEdit';
 import { IMC03102TrafficMovementEdit } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03102TrafficMovementEdit';
 
@@ -31,26 +29,6 @@ export const IMC03103PlanGroupsEdit = ({
 
 	return (
 		<View style={{ width: '100%' }}>
-			<Text>representativePlanID = {planGroups.representativePlanID}</Text>
-
-			{/* TODO: あとで消す */}
-			<View>
-				<Text>representativeStartDateTime</Text>
-				<CCO003DateTimePicker
-					value={planGroups.representativeStartDateTime}
-					onChange={(event, date) => {
-						if (event.type === 'set') {
-							// eslint-disable-next-line @typescript-eslint/no-floating-promises
-							setDoc(planGroupsDoc.ref, {
-								...planGroups,
-								representativeStartDateTime: date!,
-								updatedAt: new Date(),
-							});
-						}
-					}}
-					mode="time"
-				/>
-			</View>
 			{planGroups.plans.map((planID, index) => {
 				const beforeAfterRepresentativeType = (() => {
 					if (representativeFounded) {
