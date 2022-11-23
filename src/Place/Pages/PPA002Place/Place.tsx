@@ -49,11 +49,18 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 							</Text>
 						</MaterialCommunityIcons>
 					)}
-					<MaterialCommunityIcons name="phone-in-talk" size={20}>
-						<Text style={styles.infoText}>
-							{place.formatted_phone_number ? place.formatted_phone_number : i18n.t('No Tel Information')}
-						</Text>
-					</MaterialCommunityIcons>
+					{place.formatted_phone_number && (
+						<MaterialCommunityIcons name="phone-in-talk" size={20}>
+							<Text 
+								style={styles.infoText}
+								onPress={() => {
+									// eslint-disable-next-line @typescript-eslint/no-floating-promises
+									Linking.openURL(`tel:${place.formatted_phone_number!}`);
+								}}>
+								{place.formatted_phone_number}
+							</Text>
+						</MaterialCommunityIcons>
+					)}
 					<View>
 						<MaterialCommunityIcons name="clock-time-three-outline" size={20}>
 							<Text style={styles.infoText}>{i18n.t('Opening Hours')}</Text>
