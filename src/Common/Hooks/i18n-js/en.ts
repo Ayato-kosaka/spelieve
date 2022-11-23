@@ -15,6 +15,7 @@ const en: LangIf = {
 	Friday: 'Friday',
 	Saturday: 'Saturday',
 	'show more': 'show more',
+	'show more info at Google Map': 'show more info at Google Map',
 
 	// PlaceController.ts
 	'No Opening Hours Infomation': 'No Opening Hours Infomation',

@@ -15,6 +15,7 @@ const ja: LangIf = {
 	Friday: '金曜日',
 	Saturday: '土曜日',
 	'show more': 'もっと見る',
+	'show more info at Google Map': 'Googleマップの詳細情報',
 
 	// PlaceController.ts
 	'No Opening Hours Infomation': '営業時間の情報はありません',

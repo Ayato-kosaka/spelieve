@@ -14,6 +14,7 @@ export interface LangIf {
 	Friday: string;
 	Saturday: string;
 	'show more': string;
+	'show more info at Google Map': string;
 
 	// PlaceController.ts
 	'No Opening Hours Infomation': string;
