@@ -20,7 +20,7 @@ import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlac
 export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<BottomTabParamList, 'PPA002Place'>) => {
 	const { place, setPlaceID, isLoading } = useContext(PCT012MPlaceOne);
 	// eslint-disable-next-line @typescript-eslint/naming-convention
-	const { place_id, language } = route.params;
+	const { place_id } = route.params;
 	const { onCreateItineraryClicked } = PPA002PlaceController(route.params);
 
 	useEffect(() => {
