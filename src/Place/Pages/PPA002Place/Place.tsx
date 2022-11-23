@@ -3,10 +3,7 @@ import React, { useContext, useEffect } from 'react';
 import { FlatList, View, Image, Linking, ScrollView } from 'react-native';
 import { Text, ActivityIndicator } from 'react-native-paper';
 import { Rating } from 'react-native-ratings';
-import BookIcon from 'react-native-vector-icons/Entypo';
-import FetherIcon from 'react-native-vector-icons/Feather';
-import WebIcon from 'react-native-vector-icons/Foundation';
-import TimeIcon from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { PPA002PlaceController } from './PlaceController';
 import { styles } from './PlaceStyle';
@@ -36,11 +33,11 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 					<PMC01201GoogleMapPlaceOne />
 					<Image source={{ uri: place.imageUrl }} style={styles.image} />
 					<Text style={styles.infoText}>{place.name}</Text>
-					<BookIcon name="open-book" size={50} onPress={() => onCreateItineraryClicked(place.name)} />
-					<FetherIcon name="map-pin" size={20}>
+					<MaterialCommunityIcons name="book-open-variant" size={50} onPress={() => onCreateItineraryClicked(place.name)} />
+					<MaterialCommunityIcons name="google-maps" size={20}>
 						<Text style={styles.infoText}>{place.formatted_address}</Text>
-					</FetherIcon>
-					<WebIcon name="web" size={20}>
+					</MaterialCommunityIcons>
+					<MaterialCommunityIcons name="web" size={20}>
 						<Text
 							style={styles.urlLink}
 							onPress={() => {
@@ -49,16 +46,16 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 							}}>
 							{place.website ? place.website : i18n.t('No Web Infomation')}
 						</Text>
-					</WebIcon>
-					<FetherIcon name="phone-call" size={20}>
+					</MaterialCommunityIcons>
+					<MaterialCommunityIcons name="phone-in-talk" size={20}>
 						<Text style={styles.infoText}>
 							{place.formatted_phone_number ? place.formatted_phone_number : i18n.t('No Tel Information')}
 						</Text>
-					</FetherIcon>
+					</MaterialCommunityIcons>
 					<View>
-						<TimeIcon name="time-outline" size={20}>
+						<MaterialCommunityIcons name="clock-time-three-outline" size={20}>
 							<Text style={styles.infoText}>{i18n.t('Opening Hours')}</Text>
-						</TimeIcon>
+						</MaterialCommunityIcons>
 						{Array.isArray(place.openingHours) ? (
 							<FlatList
 								data={place.openingHours}
