@@ -8,8 +8,12 @@ export const styles = StyleSheet.create({
 	urlLink: {
 		color: 'blue',
 	},
-	image: {
+	imagelist: {
 		width: 200,
 		height: 190,
+	},
+	image: {
+		height: 200,
+		width: '100%',
 	},
 });

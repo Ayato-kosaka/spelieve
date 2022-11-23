@@ -14,7 +14,6 @@ import { styles } from './PlaceStyle';
 import { BottomTabParamList } from '@/App';
 import i18n from '@/Common/Hooks/i18n-js';
 import { PMC01201GoogleMapPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/ModelComponents/PMC01201GoogleMapPlaceOne/GoogleMapPlaceOne';
-import { PMC01203PlaceImage } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/ModelComponents/PMC01203PlaceImage/PlaceImage';
 import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/MPlaceOne';
 
 export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<BottomTabParamList, 'PPA002Place'>) => {
@@ -35,7 +34,7 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 			<View style={styles.container}>
 				<View>
 					<PMC01201GoogleMapPlaceOne />
-					<PMC01203PlaceImage />
+					<Image source={{ uri: place.imageUrl }} style={styles.image} />
 					<Text style={styles.infoText}>{place.name}</Text>
 					<BookIcon name="open-book" size={50} onPress={() => onCreateItineraryClicked(place.name)} />
 					<FetherIcon name="map-pin" size={20}>
@@ -104,7 +103,7 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 						data={place.photoUrls}
 						renderItem={(itemData) => (
 							<View>
-								<Image source={{ uri: itemData.item }} style={styles.image} />
+								<Image source={{ uri: itemData.item }} style={styles.imagelist} />
 							</View>
 						)}
 						numColumns={3}
