@@ -41,7 +41,7 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 						<Text
 							style={styles.urlLink}
 							onPress={() => {
-								// eslint-disable-next-line
+								// eslint-disable-next-line @typescript-eslint/no-floating-promises
 								Linking.openURL(`${place.website || ''}`);
 							}}>
 							{place.website ? place.website : i18n.t('No Web Infomation')}
