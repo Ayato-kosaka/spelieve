@@ -9,17 +9,17 @@ import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlac
 
 export const PPA002PlaceController = ({ place_id }: PlacePropsInterface): PlaceControllerInterface => {
 	const navigation = useNavigation<NativeStackNavigationProp<BottomTabParamList>>();
-	const { setPlaceID } = useContext(PCT012MPlaceOne);
+	const { place, setPlaceID } = useContext(PCT012MPlaceOne);
 
 	useEffect(() => {
 		setPlaceID(place_id);
 	}, [place_id, setPlaceID]);
 
-	const onCreateItineraryClicked = (placeName: string) => {
+	const onCreateItineraryClicked = () => {
 		// TODO: https://github.com/Ayato-kosaka/spelieve/issues/335 Itinerary 新規作成 
 		// navigation.navigate('Itinerary', {
 		// 	screen: 'ItineraryTopTabNavigator',
-		// 	params: { place_id, placeName },
+		// 	params: { place_id, placeName: place.name },
 		// });
 	};
 

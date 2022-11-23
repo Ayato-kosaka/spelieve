@@ -33,7 +33,7 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 					<PMC01201GoogleMapPlaceOne />
 					<Image source={{ uri: place.imageUrl }} style={styles.image} />
 					<Text style={styles.infoText}>{place.name}</Text>
-					<MaterialCommunityIcons name="book-open-variant" size={50} onPress={() => onCreateItineraryClicked(place.name)} />
+					<MaterialCommunityIcons name="book-open-variant" size={50} onPress={() => onCreateItineraryClicked()} />
 					<MaterialCommunityIcons name="google-maps" size={20}>
 						<Text style={styles.infoText}>{place.formatted_address}</Text>
 					</MaterialCommunityIcons>
