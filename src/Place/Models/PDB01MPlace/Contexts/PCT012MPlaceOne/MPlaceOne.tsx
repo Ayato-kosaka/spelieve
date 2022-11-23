@@ -90,7 +90,7 @@ export const PCT012MPlaceOneProvider = ({ children }: { children: ReactNode }) =
 			) {
 				await PlaceHttpPost<UpsertPlaceDataBodyInterface, undefined>('PBL002', { place_id: placeID, language }).catch(
 					() => {
-						setPlace(undefined);
+						setPlaceID(undefined);
 						setIsLoading(false);
 					},
 				);
