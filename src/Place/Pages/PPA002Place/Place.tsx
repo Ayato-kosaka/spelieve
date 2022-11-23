@@ -37,16 +37,18 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 					<MaterialCommunityIcons name="google-maps" size={20}>
 						<Text style={styles.infoText}>{place.formatted_address}</Text>
 					</MaterialCommunityIcons>
-					<MaterialCommunityIcons name="web" size={20}>
-						<Text
-							style={styles.urlLink}
-							onPress={() => {
-								// eslint-disable-next-line @typescript-eslint/no-floating-promises
-								Linking.openURL(`${place.website || ''}`);
-							}}>
-							{place.website ? place.website : i18n.t('No Web Infomation')}
-						</Text>
-					</MaterialCommunityIcons>
+					{place.website && (
+						<MaterialCommunityIcons name="web" size={20}>
+							<Text
+								style={styles.urlLink}
+								onPress={() => {
+									// eslint-disable-next-line @typescript-eslint/no-floating-promises
+									Linking.openURL(place.website!);
+								}}>
+								{place.website}
+							</Text>
+						</MaterialCommunityIcons>
+					)}
 					<MaterialCommunityIcons name="phone-in-talk" size={20}>
 						<Text style={styles.infoText}>
 							{place.formatted_phone_number ? place.formatted_phone_number : i18n.t('No Tel Information')}
