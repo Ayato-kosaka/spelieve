@@ -80,7 +80,8 @@ export const PCT012MPlaceOneProvider = ({ children }: { children: ReactNode }) =
 							openingHours: displayOpeningHours(data.openingHours),
 						};
 					},
-					(data) => data,
+					// Place では update 処理をフロントで行わないため、toModelは実装しない
+					(data) => data as unknown as MPlace,
 				),
 			);
 			let querySnap = await getDocs(q);
