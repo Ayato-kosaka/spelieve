@@ -9,10 +9,11 @@ export const PPA002PlaceController = ({ place_id }: PlacePropsInterface): PlaceC
 	const navigation = useNavigation<NativeStackNavigationProp<BottomTabParamList>>();
 
 	const onCreateItineraryClicked = (placeName: string) => {
-		navigation.navigate('Place', {
-			// screen: 'IPA001ItineraryEdit',
-			params: { place_id, placeName },
-		});
+		// TODO: https://github.com/Ayato-kosaka/spelieve/issues/335 Itinerary 新規作成 
+		// navigation.navigate('Itinerary', {
+		// 	screen: 'ItineraryTopTabNavigator',
+		// 	params: { place_id, placeName },
+		// });
 	};
 
 	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/320 画像押したらモーダルで開くようにする
