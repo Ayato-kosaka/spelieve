@@ -3,7 +3,7 @@ import { I18n } from 'i18n-js';
 
 import en from './en';
 import ja from './ja';
-// import Lang from './Lang';
+import Lang from './Lang';
 
 const i18n = new I18n({
 	ja,
@@ -23,4 +23,4 @@ i18n.missingBehavior = 'guess';
 i18n.locale = Localization.locale.slice(0, 2);
 
 export default i18n;
-// export const i18nLang = Lang;
+export const i18nLang = Lang;

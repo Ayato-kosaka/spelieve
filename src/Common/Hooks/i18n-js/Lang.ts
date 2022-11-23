@@ -1,7 +1,7 @@
-// import { LangIf } from './LangIf';
+import { LangIf } from './LangIf';
 
-// const lang: LangIf = {
-// 	welcome: 'welcome',
-// 	searchPlaceText: 'searchPlaceText',
-// };
-// export default lang;
+const lang: LangIf = {
+	welcome: 'welcome',
+	searchPlaceText: 'searchPlaceText',
+};
+export default lang;
