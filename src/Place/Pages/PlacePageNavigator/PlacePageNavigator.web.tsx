@@ -10,11 +10,7 @@ import { PPA002Place } from '../PPA002Place/Place';
 import { BottomTabParamList } from '@/App';
 import { ENV } from '@/ENV';
 import { PCT011MPlacesListProvider } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
-
-export type PlaceStackParamList = {
-	PPA001Places: PlacesPropsInterface; // 本来は PagePropsInterface を設定する
-	PPA002Place: PlacePropsInterface; // 本来は PagePropsInterface を設定する
-};
+import { PlaceStackParamList } from './PlacePageNavigator';
 
 const Stack = createNativeStackNavigator<PlaceStackParamList>();
 
