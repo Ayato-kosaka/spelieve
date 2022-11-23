@@ -105,7 +105,7 @@ export const PCT012MPlaceOneProvider = ({ children }: { children: ReactNode }) =
 
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		fetchData();
-	}, [collectionRef, placeID, language, isLoading]);
+	}, [collectionRef, placeID, language]);
 
 	// eslint-disable-next-line react/jsx-no-constructed-context-values
 	const value: MPlaceOneValInterface = {
