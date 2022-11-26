@@ -11,6 +11,7 @@ import { IPA002ItineraryCover } from './IPA002ItineraryCover';
 import { IPA003EditPlan } from './IPA003EditPlan';
 
 import i18n from '@/Common/Hooks/i18n-js';
+import { PCT012MPlaceOneProvider } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne';
 
 export type ItineraryStackParamList = {
 	IPA002ItineraryCover: ItineraryCoverPropsInterface;
@@ -24,27 +25,28 @@ export const ItineraryPageNavigator = () => (
 	<ICT011ItineraryOneProvider>
 		<ICT031PlansMapProvider>
 			<ICT021PlanGroupsListProvider>
-				{/* TODO: PCT012MPlaceOneProvider を設定する */}
-				<Stack.Navigator initialRouteName="ItineraryTopTabNavigator">
-					<Stack.Screen
-						name="ItineraryTopTabNavigator"
-						component={INV002ItineraryTopTabNavigator}
-						initialParams={{}}
-						options={{ title: 'TopTabNavigator' }}
-					/>
-					<Stack.Screen
-						name="IPA002ItineraryCover"
-						component={IPA002ItineraryCover}
-						initialParams={{}}
-						options={{ title: i18n.t('しおり設定') }}
-					/>
-					<Stack.Screen
-						name="IPA003EditPlan"
-						component={IPA003EditPlan}
-						initialParams={{}}
-						options={{ title: i18n.t('予定の設定') }}
-					/>
-				</Stack.Navigator>
+				<PCT012MPlaceOneProvider>
+					<Stack.Navigator initialRouteName="ItineraryTopTabNavigator">
+						<Stack.Screen
+							name="ItineraryTopTabNavigator"
+							component={INV002ItineraryTopTabNavigator}
+							initialParams={{}}
+							options={{ title: 'TopTabNavigator' }}
+						/>
+						<Stack.Screen
+							name="IPA002ItineraryCover"
+							component={IPA002ItineraryCover}
+							initialParams={{}}
+							options={{ title: i18n.t('しおり設定') }}
+						/>
+						<Stack.Screen
+							name="IPA003EditPlan"
+							component={IPA003EditPlan}
+							initialParams={{}}
+							options={{ title: i18n.t('予定の設定') }}
+						/>
+					</Stack.Navigator>
+				</PCT012MPlaceOneProvider>
 			</ICT021PlanGroupsListProvider>
 		</ICT031PlansMapProvider>
 	</ICT011ItineraryOneProvider>

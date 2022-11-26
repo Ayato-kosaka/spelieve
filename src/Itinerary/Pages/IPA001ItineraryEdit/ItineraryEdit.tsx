@@ -4,7 +4,6 @@ import React, { useCallback, useContext, useEffect } from 'react';
 import { ScrollView, ActivityIndicator } from 'react-native';
 
 import { ItineraryOneInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT011';
-import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 
 import { BottomTabParamList } from '@/App';
 import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
@@ -42,8 +41,8 @@ export const IPA001ItineraryEdit = ({
 				tags: [],
 				caption: '',
 				isUpdatable: true,
-				createdAt: DateUtils.initialDate(),
-				updatedAt: DateUtils.initialDate(),
+				createdAt: new Date(),
+				updatedAt: new Date(),
 			});
 			setItineraryID(itineray.id);
 		}

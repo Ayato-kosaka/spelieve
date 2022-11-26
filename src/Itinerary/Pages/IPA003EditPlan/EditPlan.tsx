@@ -15,6 +15,8 @@ import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts
 import { ICT021PlanGroupsList } from '@/Itinerary/Models/IDB02PlanGroups/Contexts/ICT021PlanGroupsList';
 import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap';
 import { PCO001SearchPlace } from '@/Place/Components/PCO001SearchPlace/SearchPlace';
+import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne';
+import { PMC01202PlaceInformation } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/ModelComponents/PMC01202PlaceInformation/PlaceInformation';
 
 export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<BottomTabParamList, 'IPA003EditPlan'>) => {
 	const { itineraryID, PlanGroupsIndex, planID } = route.params;
@@ -30,18 +32,27 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 	const planDocSnap = useMemo(() => (planID ? plansDocSnapMap[planID] : undefined), [planID, plansDocSnapMap]);
 	const plan = useMemo(() => (planDocSnap ? planDocSnap.data() : undefined), [planDocSnap]);
 
-	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/342 IPA003PlanEdit コンソールエラー解消
+	const { setPlaceID } = useContext(PCT012MPlaceOne);
 
 	// TODO: Conroller に移動する
 
 	const [pagePlan, setPagePlan] = useState<PlansMapInterface | undefined>(undefined);
 
+	// パラメータの itineraryID を監視しし、 Itinerary Context にセットする
 	useEffect(() => {
 		if (itineraryID) {
 			setItineraryID(itineraryID);
 		}
 	}, [itineraryID, setItineraryID]);
 
+	// Context の plan.place_id を監視し、 Place Context にセットする
+	useEffect(() => {
+		if (plan?.place_id) {
+			setPlaceID(plan?.place_id);
+		}
+	}, [plan?.place_id, setPlaceID]);
+
+	// Context の plan を監視し、 pagePlan にセットする
 	useEffect(() => {
 		if (plan) {
 			setPagePlan({ ...plan });
@@ -54,7 +65,7 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 	}, [pagePlan, planDocSnap]);
 
 	const navigate = useCallback(() => {
-		// TODO エラーを解消する
+		// TODO: https://github.com/Ayato-kosaka/spelieve/issues/342 IPA003PlanEdit コンソールエラー解消
 		navigation.navigate('Itinerary', {
 			screen: 'IPA001ItineraryEdit',
 			params: {
@@ -137,7 +148,7 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 					mode="time"
 				/>
 			</View>
-			{/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/344 PMC01202PlaceInformationの取り込み */}
+			<PMC01202PlaceInformation />
 		</View>
 	);
 };
