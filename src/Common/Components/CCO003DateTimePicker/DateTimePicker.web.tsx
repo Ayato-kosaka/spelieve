@@ -26,7 +26,7 @@ export const CCO003DateTimePicker = ({ ...props }: IOSNativeProps & AndroidNativ
 		if (props.mode === 'time') {
 			return 'hh:mm aa';
 		}
-		return 'MMMM d, yyyy h:mm aa';
+		return 'MMMM d, yyyy';
 	}, [props.mode]);
 
 	return (
