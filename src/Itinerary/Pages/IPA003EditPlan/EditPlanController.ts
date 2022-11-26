@@ -1,10 +1,9 @@
-import { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { setDoc } from 'firebase/firestore';
 import { useContext, useEffect, useMemo, useCallback, useState } from 'react';
-import { TextInputChangeEventData } from 'react-native';
 import { GooglePlaceData } from 'react-native-google-places-autocomplete';
 
+import { EditPlanControllerInterface } from 'spelieve-common/lib/Interfaces';
 import { PlansMapInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT031';
 
 import { BottomTabParamList } from '@/App';
@@ -13,12 +12,10 @@ import { ICT021PlanGroupsList } from '@/Itinerary/Models/IDB02PlanGroups/Context
 import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap';
 import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne';
 
-// TODO: PG_DATA に移行する
-
 export const IPA003EditPlanController = ({
 	route,
 	navigation,
-}: NativeStackScreenProps<BottomTabParamList, 'IPA003EditPlan'>) => {
+}: NativeStackScreenProps<BottomTabParamList, 'IPA003EditPlan'>): EditPlanControllerInterface => {
 	const { itineraryID, PlanGroupsIndex, planID } = route.params;
 
 	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
@@ -88,8 +85,8 @@ export const IPA003EditPlanController = ({
 		});
 	}, [navigation, itineraryID]);
 
-	const onChangeMemo = useCallback(
-		({ nativeEvent }: { nativeEvent: TextInputChangeEventData }): void => {
+	const onChangeMemo: EditPlanControllerInterface['onChangeMemo'] = useCallback(
+		({ nativeEvent }) => {
 			setPagePlan({ ...pagePlan!, memo: nativeEvent.text });
 		},
 		[pagePlan],
@@ -118,21 +115,22 @@ export const IPA003EditPlanController = ({
 		);
 	}, [planGroupDocSnap, planDocSnap, plan?.placeStartTime]);
 
-	const updateRepresentativeStartDateTime: (event: DateTimePickerEvent, date?: Date | undefined) => void = useCallback(
-		(event, date) => {
-			if (event.type === 'set' && planGroupDocSnap) {
-				// eslint-disable-next-line @typescript-eslint/no-floating-promises
-				setDoc(
-					planGroupDocSnap.ref,
-					{
-						representativeStartDateTime: date!,
-					},
-					{ merge: true },
-				);
-			}
-		},
-		[planGroupDocSnap],
-	);
+	const updateRepresentativeStartDateTime: EditPlanControllerInterface['updateRepresentativeStartDateTime'] =
+		useCallback(
+			(event, date) => {
+				if (event.type === 'set' && planGroupDocSnap) {
+					// eslint-disable-next-line @typescript-eslint/no-floating-promises
+					setDoc(
+						planGroupDocSnap.ref,
+						{
+							representativeStartDateTime: date,
+						},
+						{ merge: true },
+					);
+				}
+			},
+			[planGroupDocSnap],
+		);
 
 	return {
 		pagePlan: pagePlan!,

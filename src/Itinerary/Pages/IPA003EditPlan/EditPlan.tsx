@@ -10,7 +10,6 @@ import { BottomTabParamList } from '@/App';
 import { CCO003DateTimePicker } from '@/Common/Components/CCO003DateTimePicker';
 import { CCO004DurationPicker } from '@/Common/Components/CCO004DurationPicker';
 import i18n from '@/Common/Hooks/i18n-js';
-import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
 import { ICT021PlanGroupsList } from '@/Itinerary/Models/IDB02PlanGroups/Contexts/ICT021PlanGroupsList';
 import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap';
 import { PCO001SearchPlace } from '@/Place/Components/PCO001SearchPlace/SearchPlace';
@@ -19,9 +18,8 @@ import { PMC01202PlaceInformation } from '@/Place/Models/PDB01MPlace/Contexts/PC
 export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<BottomTabParamList, 'IPA003EditPlan'>) => {
 	const { PlanGroupsIndex, planID } = route.params;
 
-	const { itineraryDocSnap } = useContext(ICT011ItineraryOne);
-	const { isPlansLoading, plansDocSnapMap } = useContext(ICT031PlansMap);
-	const { planGroupsQSnap, planGroupsCRef } = useContext(ICT021PlanGroupsList);
+	const { plansDocSnapMap } = useContext(ICT031PlansMap);
+	const { planGroupsQSnap } = useContext(ICT021PlanGroupsList);
 	const planGroupDocSnap = useMemo(
 		() => (PlanGroupsIndex != null ? planGroupsQSnap?.docs[PlanGroupsIndex] : undefined),
 		[PlanGroupsIndex, planGroupsQSnap],
