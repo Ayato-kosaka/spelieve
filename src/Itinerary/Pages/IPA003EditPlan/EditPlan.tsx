@@ -38,6 +38,7 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 		deleteTag,
 		updateRepresentativeStartDateTime,
 		setPlanToRepresentativePlan,
+		onChangeSearchPlace,
 		onAutoCompleteClicked,
 		onChangeMemo,
 	} = IPA003EditPlanController({ route, navigation });
@@ -54,7 +55,13 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 	return (
 		<ScrollView>
 			<Image source={{ uri: pagePlan.imageUrl }} />
-			<PCO001SearchPlace onAutoCompleteClicked={onAutoCompleteClicked} hideCities />
+			<PCO001SearchPlace
+				onAutoCompleteClicked={onAutoCompleteClicked}
+				hideCities
+				fetchDetails={false}
+				value={pagePlan.title}
+				onChange={onChangeSearchPlace}
+			/>
 			<Divider style={{ marginVertical: 20 }} />
 			<TextInput label={i18n.t('メモ')} value={pagePlan.memo} onChange={onChangeMemo} onBlur={updatePlan} multiline />
 			<FlatList
@@ -93,7 +100,7 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 					/>
 				</View>
 			) : (
-				<Button title={i18n.t('この予定を基準の予定とする')} onPress={setPlanToRepresentativePlan} />
+				<Button title={i18n.t('この予定を基準の予定にする')} onPress={setPlanToRepresentativePlan} />
 			)}
 			<PMC01202PlaceInformation />
 		</ScrollView>

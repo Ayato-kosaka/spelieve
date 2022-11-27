@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { setDoc } from 'firebase/firestore';
 import { useContext, useEffect, useMemo, useCallback, useState } from 'react';
+import { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
 import { GooglePlaceData } from 'react-native-google-places-autocomplete';
 
 import { EditPlanControllerInterface } from 'spelieve-common/lib/Interfaces';
@@ -20,7 +21,7 @@ export const IPA003EditPlanController = ({
 
 	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
 	const { isPlansLoading, plansDocSnapMap } = useContext(ICT031PlansMap);
-	const { planGroupsQSnap, planGroupsCRef } = useContext(ICT021PlanGroupsList);
+	const { planGroupsQSnap } = useContext(ICT021PlanGroupsList);
 	const planGroupDocSnap = useMemo(
 		() => (PlanGroupsIndex != null ? planGroupsQSnap?.docs[PlanGroupsIndex] : undefined),
 		[PlanGroupsIndex, planGroupsQSnap],
@@ -30,9 +31,11 @@ export const IPA003EditPlanController = ({
 	const planDocSnap = useMemo(() => (planID ? plansDocSnapMap[planID] : undefined), [planID, plansDocSnapMap]);
 	const plan = useMemo(() => (planDocSnap ? planDocSnap.data() : undefined), [planDocSnap]);
 
-	const { setPlaceID } = useContext(PCT012MPlaceOne);
+	const { setPlaceID, place } = useContext(PCT012MPlaceOne);
 
 	const [pagePlan, setPagePlan] = useState<PlansMapInterface | undefined>(undefined);
+
+	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/342 IPA003PlanEdit コンソールエラー解消
 
 	// パラメータの itineraryID を監視しし、 Itinerary Context にセットする
 	useEffect(() => {
@@ -41,12 +44,21 @@ export const IPA003EditPlanController = ({
 		}
 	}, [itineraryID, setItineraryID]);
 
-	// Context の plan.place_id を監視し、 Place Context にセットする
+	// plan.place_id を監視し、 Place Context にセットする
 	useEffect(() => {
 		if (plan?.place_id) {
 			setPlaceID(plan?.place_id);
 		}
 	}, [plan?.place_id, setPlaceID]);
+
+	// place.name を監視し、plan.title を更新する
+	useEffect(() => {
+		if (!!place && place.name !== plan?.title && planDocSnap) {
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			setDoc(planDocSnap?.ref, { title: place.name }, { merge: true });
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [place?.name]);
 
 	// Context の plan を監視し、 pagePlan にセットする
 	useEffect(() => {
@@ -76,7 +88,6 @@ export const IPA003EditPlanController = ({
 	}, [pagePlan, planDocSnap]);
 
 	const navigateToItineraryEdit = useCallback(() => {
-		// TODO: https://github.com/Ayato-kosaka/spelieve/issues/342 IPA003PlanEdit コンソールエラー解消
 		navigation.navigate('Itinerary', {
 			screen: 'IPA001ItineraryEdit',
 			params: {
@@ -85,6 +96,10 @@ export const IPA003EditPlanController = ({
 		});
 	}, [navigation, itineraryID]);
 
+	const onChangeSearchPlace: (e: NativeSyntheticEvent<TextInputChangeEventData>) => void = (e) => {
+		setPagePlan({ ...pagePlan!, title: e.nativeEvent.text });
+	};
+
 	const onChangeMemo: EditPlanControllerInterface['onChangeMemo'] = useCallback(
 		({ nativeEvent }) => {
 			setPagePlan({ ...pagePlan!, memo: nativeEvent.text });
@@ -92,10 +107,20 @@ export const IPA003EditPlanController = ({
 		[pagePlan],
 	);
 
-	const onAutoCompleteClicked = useCallback((data: GooglePlaceData): void => {
-		// TODO: 実装する
-		// TODO: detailを入れなくする
-	}, []);
+	const onAutoCompleteClicked = useCallback(
+		(data: GooglePlaceData): void => {
+			if (!planDocSnap) {
+				return;
+			}
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			setDoc(
+				planDocSnap.ref,
+				{ place_id: data.place_id, title: data.structured_formatting.main_text },
+				{ merge: true },
+			);
+		},
+		[planDocSnap],
+	);
 
 	const deleteTag = useCallback(
 		(index: number): void => {
@@ -142,6 +167,7 @@ export const IPA003EditPlanController = ({
 		deleteTag,
 		updateRepresentativeStartDateTime,
 		setPlanToRepresentativePlan,
+		onChangeSearchPlace,
 		onAutoCompleteClicked,
 		onChangeMemo,
 	};

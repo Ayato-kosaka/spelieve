@@ -14,7 +14,7 @@ import { IPA004ItineraryPreview } from '@/Itinerary/Pages/IPA004ItineraryPreview
 
 export type TopTabParamList = {
 	IPA001ItineraryEdit: ItineraryEditPropsInterface;
-	IPA004ItineraryPreview: ItineraryEditPropsInterface; // TODO: 要修正
+	IPA004ItineraryPreview: ItineraryEditPropsInterface;
 };
 
 const Tab = createMaterialTopTabNavigator<TopTabParamList>();

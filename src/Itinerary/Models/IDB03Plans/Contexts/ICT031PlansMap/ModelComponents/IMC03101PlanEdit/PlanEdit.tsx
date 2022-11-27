@@ -32,7 +32,9 @@ export const IMC03101PlanEdit = ({
 	});
 
 	return (
-		<Pressable style={{ borderWidth: 1 }} onPress={onPlanPress}>
+		<Pressable
+			style={{ borderWidth: 1, borderColor: beforeAfterRepresentativeType === 'representative' ? 'red' : 'black' }}
+			onPress={onPlanPress}>
 			<MaterialCommunityIcons name="map-marker" />
 			<Text>{plan.title}</Text>
 			<Text>
