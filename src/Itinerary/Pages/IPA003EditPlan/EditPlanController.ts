@@ -60,6 +60,15 @@ export const IPA003EditPlanController = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [place?.name]);
 
+	// place.imageUrl を監視し、plan.imageUrl を更新する
+	useEffect(() => {
+		if (!!place && place.imageUrl !== plan?.imageUrl && planDocSnap) {
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			setDoc(planDocSnap?.ref, { imageUrl: place.imageUrl }, { merge: true });
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [place?.imageUrl]);
+
 	// Context の plan を監視し、 pagePlan にセットする
 	useEffect(() => {
 		if (plan) {

@@ -54,7 +54,13 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 
 	return (
 		<ScrollView>
-			<Image source={{ uri: pagePlan.imageUrl }} />
+			<Image
+				source={{ uri: pagePlan.imageUrl }}
+				style={{
+					height: '50vw',
+					width: '100vw',
+				}}
+			/>
 			<PCO001SearchPlace
 				onAutoCompleteClicked={onAutoCompleteClicked}
 				hideCities
