@@ -13,6 +13,7 @@
     "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\" && eslint \"{src,apps,libs,test}/**/*.{js,jsx,ts,tsx}\" --max-warnings=0"
   },
   "dependencies": {
+    "@elastic/elasticsearch": "^8.5.0",
     "@react-google-maps/api": "^2.13.1",
     "@react-native-community/slider": "4.3.3",
     "@react-navigation/material-bottom-tabs": "^6.2.4",
