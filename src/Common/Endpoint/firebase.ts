@@ -9,7 +9,9 @@ import { ENV } from '@/ENV';
 
 // Initialize Firebase
 const app = initializeApp(ENV.FIREBASE_CONFIG);
-getAnalytics(app);
+if (process.env.NODE_ENV === 'production') {
+	getAnalytics(app);
+}
 initializeFirestore(app, {
 	ignoreUndefinedProperties: true,
 });
