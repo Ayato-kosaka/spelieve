@@ -1,11 +1,10 @@
-import { LoadScript } from '@react-google-maps/api';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { NavigationContainer, NavigatorScreenParams } from '@react-navigation/native';
 import registerRootComponent from 'expo/build/launch/registerRootComponent';
 import { Provider as PaperProvider } from 'react-native-paper';
 
+import { AppProvider } from './AppProvider';
 import i18n from './Common/Hooks/i18n-js';
-import { ENV } from './ENV';
 import { ItineraryPageNavigator, ItineraryStackParamList } from './Itinerary/Pages/ItineraryPageNavigator';
 import { PlacePageNavigator, PlaceStackParamList } from './Place/Pages/PlacePageNavigator/PlacePageNavigator';
 
@@ -23,7 +22,7 @@ export const App = () => (
 			prefixes: ['spelieve.com'],
 		}}>
 		<PaperProvider>
-			<LoadScript googleMapsApiKey={ENV.GCP_API_KEY}>
+			<AppProvider>
 				<BottomTab.Navigator initialRouteName="Itinerary">
 					<BottomTab.Screen
 						name="Itinerary"
@@ -42,7 +41,7 @@ export const App = () => (
 						}}
 					/>
 				</BottomTab.Navigator>
-			</LoadScript>
+			</AppProvider>
 		</PaperProvider>
 	</NavigationContainer>
 );
