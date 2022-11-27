@@ -10,16 +10,10 @@ export const IPA004ItineraryPreview = ({
 	route,
 	navigation,
 }: NativeStackScreenProps<BottomTabParamList, 'IPA004ItineraryPreview'>) => {
-	const { itinerary, planGroups, plans, navigateToTop, needToNavigateToTop, needToShowActivityIndicator } =
-		IPA004ItineraryPreviewController({
-			route,
-			navigation,
-		});
-
-	if (needToNavigateToTop) {
-		navigateToTop();
-		return <ActivityIndicator animating />;
-	}
+	const { itinerary, planGroups, plans, needToShowActivityIndicator } = IPA004ItineraryPreviewController({
+		route,
+		navigation,
+	});
 
 	if (needToShowActivityIndicator) {
 		return <ActivityIndicator animating />;

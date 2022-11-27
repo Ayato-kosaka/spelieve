@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useCallback, useContext, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 
 import { ItineraryPreviewControllerInterface } from 'spelieve-common/lib/Interfaces';
 import { ItineraryOneInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT011';
@@ -22,6 +22,16 @@ export const IPA004ItineraryPreviewController = ({
 
 	const { itineraryID } = route.params;
 
+	useEffect(() => {
+		if ((!itineraryDocSnap && !itineraryID) || (itineraryDocSnap && !itineraryDocSnap.exists())) {
+			// TODO: https://github.com/Ayato-kosaka/spelieve/issues/361 navigation.navigate が動かない
+			navigation.navigate('Itinerary', {
+				screen: 'HelloSpelieve',
+				params: {},
+			});
+		}
+	}, [itineraryDocSnap, itineraryID, navigation]);
+
 	const { plansDocSnapMap, isPlansLoading } = useContext(ICT031PlansMap);
 	const plans = useMemo(() => {
 		const ret: { [id: string]: PlansMapInterface } = {};
@@ -31,15 +41,6 @@ export const IPA004ItineraryPreviewController = ({
 		return ret;
 	}, [plansDocSnapMap]);
 
-	const navigateToTop = useCallback(
-		() =>
-			navigation.navigate('Itinerary', {
-				screen: 'HelloSpelieve',
-				params: {},
-			}),
-		[navigation],
-	);
-	const needToNavigateToTop = useMemo(() => !itinerary && !itineraryID, [itinerary, itineraryID]);
 	const needToShowActivityIndicator = useMemo(
 		() => !itinerary || !planGroups || isPlansLoading,
 		[itinerary, planGroups, isPlansLoading],
@@ -49,8 +50,6 @@ export const IPA004ItineraryPreviewController = ({
 		itinerary: itinerary!,
 		planGroups: planGroups!,
 		plans,
-		navigateToTop,
-		needToNavigateToTop,
 		needToShowActivityIndicator,
 	};
 };
