@@ -6,7 +6,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import { PCT012MPlaceOne } from '../../MPlaceOne';
 
-
 import { styles } from './PlaceInformationStyle';
 
 import i18n from '@/Common/Hooks/i18n-js';

@@ -10,8 +10,6 @@ import {
 } from 'spelieve-common/lib/Interfaces';
 
 import { BottomTabParamList } from '@/App';
-import i18n from '@/Common/Hooks/i18n-js';
-import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001GooglePlaceAPI';
 import { PCT011MPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
 
 export const PPA001PlacesController = ({
