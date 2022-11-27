@@ -19,12 +19,10 @@ export const IPA001ItineraryEdit = ({
 	const { isPlansLoading, plansDocSnapMap } = useContext(ICT031PlansMap);
 	const { planGroupsQSnap, planGroupsCRef } = useContext(ICT021PlanGroupsList);
 
-	// TODO: あとで消す テスト用itineraryIDのメモ ?itineraryID=uMFhF6OQph2UUuKEsKNa
-
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	const { itineraryID, place_id, placeName } = route.params;
 
-	// TODO: Conroller に移動する
+	// TODO: 課題解消後Conroller に移動する
 
 	useEffect(() => {
 		if (itineraryID) {
