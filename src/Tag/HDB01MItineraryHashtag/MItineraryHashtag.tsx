@@ -1,53 +1,70 @@
 import { useState } from 'react';
-import { Searchbar } from 'react-native-paper';
+import { TouchableOpacity } from 'react-native';
+import { AutocompleteInput } from 'react-native-autocomplete-input';
+import { Searchbar, Text } from 'react-native-paper';
+
+import { styles } from './MItineraryHashtagStyle';
+
 import { ENV } from '@/ENV';
 
-export const MItineraryHashtag = () => {
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [tags, setTags] = useState<Array<string>>([]);
-  const indexName: string = 'search-itinerary-tags';
 
-  const fetchSetTags = (query: string) => {
 
-    const requestUrl = ENV.ELASTIC_CLOUD_BASE_URL + `/${indexName}/_search`
-    const data = {
-      'query': {
-        'match': {
-          'tag': query
-        }
-      },
-      'sort': {
-        'attached_count': 'desc'
-      }
-    }
+export const HDB01MItineraryHashtag = ({ onAutoCompleteClicked }) => {
+	const [searchQuery, setSearchQuery] = useState<string>('');
+	const [tags, setTags] = useState<Array<string>>([]);
+	const indexName = 'search-m_itinerary_hashtags';
 
-    const fetchTag = async () => {
-      const response = await fetch(requestUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `ApiKey ${ENV.ELASTIC_CLOUD_API_KEY}`,
-        },
-        body: JSON.stringify(data)
-      });
-      return response.json()
+	const fetchSetTags = (query: string) => {
+		const requestUrl = `${ENV.ELASTIC_CLOUD_BASE_URL  }/${indexName}/_search`;
+		const data = {
+			query: {
+				match: {
+					tag: query,
+				},
+			},
+			sort: {
+				attached_count: 'desc',
+			},
+		};
 
-    }
-    fetchTag()
-    .then(res => {
-      console.log(res.hits)
-    })
-    .catch(e => console.log(e));
-  }
+		const fetchTag = async () => {
+			const response = await fetch(requestUrl, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `ApiKey ${ENV.ELASTIC_CLOUD_API_KEY}`,
+				},
+				body: JSON.stringify(data),
+			});
+			return response.json();
+		};
 
-  const onChangeQuery = async (query: string) => {
-    setSearchQuery(query);
-    fetchSetTags(searchQuery);
-  };
+		fetchTag()
+			.then((res) => {
+				setTags(res.hits.hits.map((doc) => doc._source.tag));
+			})
+			.catch((e) => console.log(e));
+	};
 
-  return (
-    <>
-      <Searchbar value={searchQuery} placeholder='Search Tag' onChangeText={onChangeQuery} />
-    </>
-  );
-}
+	const onChangeQuery = (query: string) => {
+		fetchSetTags(query);
+		setSearchQuery(query);
+	};
+
+	return (
+		<>
+			<AutocompleteInput
+				data={tags}
+				value={searchQuery}
+				onChangeText={onChangeQuery}
+				flatListProps={{
+					renderItem: ({ item }) => (
+							<TouchableOpacity onPress={onAutoCompleteClicked}>
+								<Text style={styles.tagText}>{item}</Text>
+							</TouchableOpacity>
+						),
+				}}
+			/>
+		</>
+	);
+};
