@@ -1,21 +1,19 @@
 import { useState } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { ListRenderItemInfo, TouchableOpacity } from 'react-native';
 import { AutocompleteInput } from 'react-native-autocomplete-input';
-import { Searchbar, Text } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 
 import { styles } from './MItineraryHashtagStyle';
 
 import { ENV } from '@/ENV';
 
-
-
 export const HDB01MItineraryHashtag = ({ onAutoCompleteClicked }) => {
 	const [searchQuery, setSearchQuery] = useState<string>('');
-	const [tags, setTags] = useState<Array<string>>([]);
+	const [tags, setTags] = useState<string[]>([]);
 	const indexName = 'search-m_itinerary_hashtags';
 
 	const fetchSetTags = (query: string) => {
-		const requestUrl = `${ENV.ELASTIC_CLOUD_BASE_URL  }/${indexName}/_search`;
+		const requestUrl = `${ENV.ELASTIC_CLOUD_BASE_URL}/${indexName}/_search`;
 		const data = {
 			query: {
 				match: {
@@ -52,19 +50,17 @@ export const HDB01MItineraryHashtag = ({ onAutoCompleteClicked }) => {
 	};
 
 	return (
-		<>
-			<AutocompleteInput
+		<AutocompleteInput
 				data={tags}
 				value={searchQuery}
 				onChangeText={onChangeQuery}
 				flatListProps={{
-					renderItem: ({ item }) => (
-							<TouchableOpacity onPress={onAutoCompleteClicked}>
-								<Text style={styles.tagText}>{item}</Text>
-							</TouchableOpacity>
-						),
+					renderItem: ({ item }: ListRenderItemInfo<string>) => (
+						<TouchableOpacity onPress={(item) => onAutoCompleteClicked(item)}>
+							<Text style={styles.tagText}>{item}</Text>
+						</TouchableOpacity>
+					),
 				}}
 			/>
-		</>
 	);
 };
