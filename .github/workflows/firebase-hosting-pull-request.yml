@@ -7,10 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Checkout secret repo
+      - name: Checkout spelieve-secret
         uses: actions/checkout@v3
         with:
-          repository: Ayato-kosaka/spelieve-secret
+          repository: Ayato-kosaka/spelieve-secret@main
+          token: ${{ secrets.GITHUB_TOKEN }}
           path: spelieve-secret
       - run: 'ls'
       - run: 'npm ci && npm i -g expo-cli && expo build:web'
