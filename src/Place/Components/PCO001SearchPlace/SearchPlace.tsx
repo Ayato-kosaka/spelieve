@@ -18,7 +18,7 @@ export const PCO001SearchPlace = ({ onAutoCompleteClicked, hideCities }: SearchP
 		}}
 		requestUrl={{
 			useOnPlatform: 'web',
-			url: `https://maps.googleapis.com/maps/api`,
+			url: 'https://maps.googleapis.com/maps/api',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 			},
