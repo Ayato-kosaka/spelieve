@@ -1,4 +1,4 @@
-name: Deploy to Firebase Hosting on PR
+name: Deploy to Firebase Hosting Release Environment
 on:
   pull_request:
   workflow_dispatch:
@@ -10,7 +10,7 @@ jobs:
       - name: Checkout spelieve-secret
         uses: actions/checkout@v3
         with:
-          repository: Ayato-kosaka/spelieve-common
+          repository: Ayato-kosaka/spelieve-secret
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           path: spelieve-secret
       - run: 'ls'
