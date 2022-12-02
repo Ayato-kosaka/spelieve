@@ -10,7 +10,7 @@ jobs:
       - name: Checkout spelieve-secret
         uses: actions/checkout@v3
         with:
-          repository: Ayato-kosaka/spelieve@main
+          repository: Ayato-kosaka/spelieve@master
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           path: spelieve-secret
       - run: 'ls'
