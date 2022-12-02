@@ -20,3 +20,4 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ITINERARY_4AEE3 }}'
           projectId: itinerary-4aee3
+          channelID: Release
