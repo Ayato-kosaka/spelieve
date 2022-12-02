@@ -12,7 +12,6 @@ export const CPA001HelloSpelieve = ({
 		<Button
 			title="始める"
 			onPress={() =>
-				// TODO: https://github.com/Ayato-kosaka/spelieve/issues/360 navigation.push を利用する
 				navigation.navigate('Itinerary', {
 					screen: 'ItineraryTopTabNavigator',
 					params: {

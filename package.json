@@ -13,6 +13,7 @@
     "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\" && eslint \"{src,apps,libs,test}/**/*.{js,jsx,ts,tsx}\" --max-warnings=0"
   },
   "dependencies": {
+    "@googlemaps/google-maps-services-js": "^3.3.16",
     "@react-google-maps/api": "^2.13.1",
     "@react-native-community/datetimepicker": "^6.7.1",
     "@react-native-community/slider": "4.3.3",
