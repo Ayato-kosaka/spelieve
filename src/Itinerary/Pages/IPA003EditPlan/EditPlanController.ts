@@ -44,11 +44,11 @@ export const IPA003EditPlanController = ({
 		}
 	}, [itineraryID, setItineraryID]);
 
+	console.log('place', place);
+
 	// plan.place_id を監視し、 Place Context にセットする
 	useEffect(() => {
-		if (plan?.place_id) {
-			setPlaceID(plan?.place_id);
-		}
+		setPlaceID(plan?.place_id);
 	}, [plan?.place_id, setPlaceID]);
 
 	// place.name を監視し、plan.title を更新する

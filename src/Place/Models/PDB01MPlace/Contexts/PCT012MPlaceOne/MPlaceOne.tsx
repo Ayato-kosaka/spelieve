@@ -26,11 +26,11 @@ export const PCT012MPlaceOneProvider = ({ children }: { children: ReactNode }) =
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	useEffect(() => {
+		setPlace(undefined);
 		if (!placeID || !language) {
 			return;
 		}
 		setIsLoading(true);
-		setPlace(undefined);
 
 		const fetchData = async () => {
 			const q = query(
