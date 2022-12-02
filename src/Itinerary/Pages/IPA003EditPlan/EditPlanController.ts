@@ -44,8 +44,6 @@ export const IPA003EditPlanController = ({
 		}
 	}, [itineraryID, setItineraryID]);
 
-	console.log('place', place);
-
 	// plan.place_id を監視し、 Place Context にセットする
 	useEffect(() => {
 		setPlaceID(plan?.place_id);
