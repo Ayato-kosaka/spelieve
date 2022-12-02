@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: Ayato-kosaka/spelieve-secret@main
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
           path: spelieve-secret
       - run: 'ls'
       - run: 'npm ci && npm i -g expo-cli && expo build:web'
