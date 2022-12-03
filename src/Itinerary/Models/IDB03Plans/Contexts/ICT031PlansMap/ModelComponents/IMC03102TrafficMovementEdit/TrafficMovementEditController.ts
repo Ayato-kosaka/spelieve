@@ -1,4 +1,4 @@
-import { Client, DirectionsRequest, DirectionsResponse, TravelMode } from '@googlemaps/google-maps-services-js';
+import { Client, DirectionsRequest, DirectionsResponse, Language, TrafficModel, TravelMode } from '@googlemaps/google-maps-services-js';
 import { addDoc, setDoc } from 'firebase/firestore';
 import { useCallback, useContext, useMemo, useState, useEffect } from 'react';
 
@@ -12,6 +12,8 @@ import { ICT031PlansMap } from '../..';
 
 import 'react-spring-bottom-sheet/dist/style.css';
 import { PlaceHttpPost } from '@/Place/Endpoint/PlaceHttpPost';
+import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001GooglePlaceAPI';
+import i18n from '@/Common/Hooks/i18n-js';
 
 export const IMC03102TrafficMovementEditController = ({
 	planID,
@@ -63,29 +65,24 @@ export const IMC03102TrafficMovementEditController = ({
 		if (!plan.transportationMode || !nextPlan || !plan.place_id || !nextPlan.place_id) {
 			return;
 		}
-		const client = new Client({});
-		await PlaceHttpPost<Omit<DirectionsRequest['params'], 'key'>, DirectionsResponse>('PBL003', {
+		const directionsResponse = await PlaceHttpPost<Omit<DirectionsRequest['params'], 'key'>, DirectionsResponse>('PBL003', {
 			origin: `place_id:${plan.place_id}`,
 			destination: `placeId:${nextPlan.place_id}`,
-			// mode: plan.transportationMode,
-			// avoidFerries: plan.avoidFerries,
-			// avoidHighways: plan.avoidHighways,
-			// avoidTolls: plan.avoidTolls,
-			// drivingOptions: {
-			// 	departureTime: plan.placeEndTime > new Date() ? plan.placeEndTime : new Date(),
-			// 	trafficModel: google.maps.TrafficModel.BEST_GUESS,
-			// },
-			// language: Object.keys(GooglePlaceLanguageTagFromIETFLanguageTag).includes(i18n.locale)
-			// 	? Language[
-			// 			GooglePlaceLanguageTagFromIETFLanguageTag[
-			// 				(i18n.locale as keyof typeof GooglePlaceLanguageTagFromIETFLanguageTag)
-			// 			]
-			// 	  ]
-			// 	: undefined,
-			optimize: false,
+			mode: plan.transportationMode,
+			alternatives: false,
+			// TODO: avoid?: TravelRestriction[];
+			language: GooglePlaceLanguageTagFromIETFLanguageTag[i18n.locale],
+			units: undefined,
 			region: undefined,
-			// transitOptions,
-		}).then((value) => console.log(value));
+			// TODO: arrival_time, departure_time を transit と合わせて再考慮する
+			// arrival_time: beforeAfterRepresentativeType === 'before' ? dependentPlan.placeStartTime : undefined,
+			departure_time: plan.placeEndTime > new Date() ? plan.placeEndTime : new Date(),
+			traffic_model: TrafficModel.best_guess,
+			transit_mode: plan.transitModes,
+			transit_routing_preference: plan.transitRoutingPreference,
+			optimize: false,
+		});
+		console.log(directionsResponse)
 
 		// const directionsService = new google.maps.DirectionsService();
 		// directionsService.route(
