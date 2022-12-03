@@ -1,4 +1,9 @@
-import { TransitMode, TravelMode, TransitRoutingPreference } from '@googlemaps/google-maps-services-js';
+import {
+	TransitMode,
+	TravelMode,
+	TransitRoutingPreference,
+	TravelRestriction,
+} from '@googlemaps/google-maps-services-js';
 import { collection, query, onSnapshot } from 'firebase/firestore';
 import { useState, createContext, useEffect, useMemo, useContext, ReactNode } from 'react';
 
@@ -7,7 +12,11 @@ import { Plans } from 'spelieve-common/lib/Models/Itinerary/IDB03/Plans';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
 import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
-import { transitModeConverter, travelModeConverter } from '@/Place/Hooks/PHK001GooglePlaceAPI';
+import {
+	transitModeConverter,
+	travelModeConverter,
+	travelRestrictionConverter,
+} from '@/Place/Hooks/PHK001GooglePlaceAPI';
 
 export const ICT031PlansMap = createContext({} as PlansMapValInterface);
 
@@ -34,6 +43,9 @@ export const ICT031PlansMapProvider = ({ children }: { children: ReactNode }) =>
 							[TransitRoutingPreference.fewer_transfers, TransitRoutingPreference.less_walking].find(
 								(transitRoutingPreference) => transitRoutingPreference === data.transitRoutingPreference,
 							) || TransitRoutingPreference.fewer_transfers,
+						avoid: data.avoid
+							.map((e) => (Object.keys(travelRestrictionConverter) as TravelRestriction[]).find((item) => e === item))
+							.filter((item): item is TravelRestriction => item !== undefined),
 					}),
 					(data) => data,
 				),

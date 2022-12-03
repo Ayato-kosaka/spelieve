@@ -1,4 +1,9 @@
-import { TransitMode, TravelMode, TransitRoutingPreference } from '@googlemaps/google-maps-services-js';
+import {
+	TransitMode,
+	TravelMode,
+	TransitRoutingPreference,
+	TravelRestriction,
+} from '@googlemaps/google-maps-services-js';
 import { Button, FlatList, Pressable } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -11,7 +16,11 @@ import { IMC03104EditDirectionsModeController } from './EditDirectionsModeContro
 import i18n from '@/Common/Hooks/i18n-js';
 
 import 'react-spring-bottom-sheet/dist/style.css';
-import { transitModeConverter, travelModeConverter } from '@/Place/Hooks/PHK001GooglePlaceAPI';
+import {
+	transitModeConverter,
+	travelModeConverter,
+	travelRestrictionConverter,
+} from '@/Place/Hooks/PHK001GooglePlaceAPI';
 
 export const IMC03104EditDirectionsMode = ({
 	planID,
@@ -122,30 +131,25 @@ export const IMC03104EditDirectionsMode = ({
 					<Divider />
 				</>
 			)}
-			<Pressable
-				style={{ flexDirection: 'row', alignItems: 'center' }}
-				onPress={() => {
-					setDirectionsMode({ ...directionsMode, avoidHighways: !directionsMode.avoidHighways });
-				}}>
-				<Text>{i18n.t('Avoid highways')}</Text>
-				<MaterialCommunityIcons name={directionsMode.avoidHighways ? 'check' : ''} />
-			</Pressable>
-			<Pressable
-				style={{ flexDirection: 'row', alignItems: 'center' }}
-				onPress={() => {
-					setDirectionsMode({ ...directionsMode, avoidTolls: !directionsMode.avoidTolls });
-				}}>
-				<Text>{i18n.t('Avoid tolls')}</Text>
-				<MaterialCommunityIcons name={directionsMode.avoidTolls ? 'check' : ''} />
-			</Pressable>
-			<Pressable
-				style={{ flexDirection: 'row', alignItems: 'center' }}
-				onPress={() => {
-					setDirectionsMode({ ...directionsMode, avoidFerries: !directionsMode.avoidFerries });
-				}}>
-				<Text>{i18n.t('Avoid ferries')}</Text>
-				<MaterialCommunityIcons name={directionsMode.avoidFerries ? 'check' : ''} />
-			</Pressable>
+			<FlatList
+				data={[TravelRestriction.highways, TravelRestriction.tolls, TravelRestriction.ferries]}
+				renderItem={(renderItemInfo) => (
+					<Pressable
+						style={{ flexDirection: 'row', alignItems: 'center' }}
+						onPress={() => {
+							const travelRestrictions = [...directionsMode.avoid];
+							if (travelRestrictions.includes(renderItemInfo.item)) {
+								travelRestrictions.splice(travelRestrictions.indexOf(renderItemInfo.item), 1);
+							} else {
+								travelRestrictions.push(renderItemInfo.item);
+							}
+							setDirectionsMode({ ...directionsMode, avoid: travelRestrictions });
+						}}>
+						<Text>{travelRestrictionConverter[renderItemInfo.item].title}</Text>
+						<MaterialCommunityIcons name={directionsMode.avoid.includes(renderItemInfo.item) ? 'check' : ''} />
+					</Pressable>
+				)}
+			/>
 			<Button
 				title={i18n.t('決定')}
 				onPress={() => {

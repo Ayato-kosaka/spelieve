@@ -16,13 +16,11 @@ export const IMC03104EditDirectionsModeController = ({
 	const planDocSnap = useMemo(() => plansDocSnapMap[planID], [planID, plansDocSnapMap]);
 	const plan = useMemo(() => planDocSnap.data(), [planDocSnap]);
 	const [directionsMode, setDirectionsMode] = useState<EditDirectionsModeControllerInterface['directionsMode']>(
-		(({ transportationMode, transitModes, transitRoutingPreference, avoidHighways, avoidTolls, avoidFerries }) => ({
+		(({ transportationMode, transitModes, transitRoutingPreference, avoid }) => ({
 			transportationMode,
 			transitModes,
 			transitRoutingPreference,
-			avoidHighways,
-			avoidTolls,
-			avoidFerries,
+			avoid,
 		}))(plan),
 	);
 

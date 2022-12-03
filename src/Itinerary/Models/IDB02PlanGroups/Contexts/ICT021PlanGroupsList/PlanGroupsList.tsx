@@ -59,9 +59,7 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 									placeEndTime: new Date(),
 									tags: [],
 									transportationSpan: DateUtils.initialDate(),
-									avoidFerries: false,
-									avoidHighways: false,
-									avoidTolls: false,
+									avoid: [],
 									transitModes: [
 										TransitMode.bus,
 										TransitMode.rail,

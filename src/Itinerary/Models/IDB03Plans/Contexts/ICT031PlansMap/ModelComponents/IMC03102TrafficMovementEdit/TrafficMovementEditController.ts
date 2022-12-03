@@ -37,28 +37,29 @@ export const IMC03102TrafficMovementEditController = ({
 		() => (nextPlanID ? plansDocSnapMap[nextPlanID].data() : undefined),
 		[nextPlanID, plansDocSnapMap],
 	);
-	const transitOptions = useMemo(() => {
-		if (plan.transportationMode === TravelMode.transit) {
-			const arrivalTime = beforeAfterRepresentativeType === 'before' ? dependentPlan.placeStartTime : undefined;
-			const departureTime = ['representative', 'after'].includes(beforeAfterRepresentativeType)
-				? plan.placeEndTime
-				: undefined;
-			return {
-				arrivalTime,
-				departureTime,
-				modes: plan.transitModes,
-				routingPreference: plan.transitRoutingPreference,
-			};
+
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	const arrival_time = useMemo(() => {
+		// TODO: plan.transportationMode === TravelMode.transit && beforeAfterRepresentativeType === 'before' ?
+		if (beforeAfterRepresentativeType === 'before') {
+			if (plan.transportationMode === TravelMode.transit) {
+				return dependentPlan.placeStartTime;
+			}
+			return undefined;
 		}
 		return undefined;
-	}, [
-		plan.transportationMode,
-		beforeAfterRepresentativeType,
-		dependentPlan,
-		plan.placeEndTime,
-		plan.transitModes,
-		plan.transitRoutingPreference,
-	]);
+	}, [plan.transportationMode, beforeAfterRepresentativeType, dependentPlan.placeStartTime]);
+
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	const departure_time = useMemo(() => {
+		if (['representative', 'after'].includes(beforeAfterRepresentativeType)) {
+			if (plan.transportationMode === TravelMode.transit) {
+				return plan.placeEndTime.getTime();
+			}
+			return 'now';
+		}
+		return undefined;
+	}, [plan.transportationMode, beforeAfterRepresentativeType, plan.placeEndTime]);
 
 	/** **********************************************************************************************
 	 * Google Map Directions を用いて予定間の移動時間を計算する
@@ -76,31 +77,27 @@ export const IMC03102TrafficMovementEditController = ({
 			mode: plan.transportationMode,
 			waypoints: [],
 			alternatives: false,
-			// TODO: avoid?: TravelRestriction[];
+			avoid: plan.avoid,
 			language: GooglePlaceLanguageTagFromIETFLanguageTag[i18n.locale],
 			units: undefined,
 			region: undefined,
-			// TODO: arrival_time, departure_time を transit と合わせて再考慮する
-			// arrival_time: beforeAfterRepresentativeType === 'before' ? dependentPlan.placeStartTime : undefined,
-			departure_time: 'now',
+			arrival_time,
+			departure_time,
 			traffic_model: TrafficModel.best_guess,
 			transit_mode: plan.transitModes,
 			transit_routing_preference: plan.transitRoutingPreference,
 			optimize: false,
 		});
 		Logger('IMC03102TrafficMovementEdit', 'directionsService.route.result', planID);
-		if (directionsResponse.status === 200) {
+		if (directionsResponse.status === 200 && directionsResponse.data.status === 'OK') {
 			/** **********************************************************************************************
-			 * DRIVING, WALKING, BICYCLING の場合 transportationSpan をレスポンスから設定する
+			 * transportationSpan をレスポンスから設定する
 			 * before の場合 transportationArrivalTime に次の予定の placeStartTime を設定し、
 			 * *	transportationDepartureTime を transportationArrivalTime - transportationSpan で計算する
 			 * after の場合 transportationDepartureTime に自分の予定の placeEndTime を設定し、
 			 * *	transportationArrivalTime を transportationDepartureTime + transportationSpan で計算する
 			 *********************************************************************************************** */
-			if (
-				plan.transportationMode &&
-				[TravelMode.driving, TravelMode.walking, TravelMode.bicycling].includes(plan.transportationMode)
-			) {
+			if (plan.transportationMode) {
 				const transportationSpan: PlansMapInterface['transportationSpan'] = plan.placeSpan;
 				transportationSpan.setDate(1);
 				transportationSpan.setHours(0);
@@ -131,29 +128,26 @@ export const IMC03102TrafficMovementEditController = ({
 			}
 		} else {
 			/* ERROR の場合は、TravelMode を undefined に変更する */
-			// eslint-disable-next-line @typescript-eslint/no-floating-promises
-			setDoc(
-				planDocSnap.ref,
-				{
-					transportationMode: undefined,
-				},
-				{ merge: true },
-			);
+			await setDoc(planDocSnap.ref, {
+				...planDocSnap.data(),
+				transportationMode: undefined,
+			});
 		}
 	}, [
 		plan.place_id,
 		planID,
 		nextPlan,
-		plan.avoidFerries,
-		plan.avoidHighways,
-		plan.avoidTolls,
-		transitOptions,
+		plan.avoid,
 		plan.transportationMode,
 		plan.placeEndTime,
 		dependentPlan,
+		arrival_time,
+		departure_time,
 		beforeAfterRepresentativeType,
 		plan.placeSpan,
 		planDocSnap,
+		plan.transitModes,
+		plan.transitRoutingPreference,
 	]);
 
 	const cleatTransportationTime = useCallback(() => {
@@ -210,9 +204,7 @@ export const IMC03102TrafficMovementEditController = ({
 			placeEndTime: plan.transportationArrivalTime || plan.placeEndTime,
 			tags: [],
 			transportationSpan: DateUtils.initialDate(),
-			avoidFerries: plan.avoidFerries,
-			avoidHighways: plan.avoidHighways,
-			avoidTolls: plan.avoidTolls,
+			avoid: plan.avoid,
 			transitModes: plan.transitModes,
 			transitRoutingPreference: plan.transitRoutingPreference,
 			createdAt: new Date(),
@@ -227,9 +219,7 @@ export const IMC03102TrafficMovementEditController = ({
 		plansIndex,
 		plan.placeEndTime,
 		plan.transportationArrivalTime,
-		plan.avoidFerries,
-		plan.avoidHighways,
-		plan.avoidTolls,
+		plan.avoid,
 		plan.transitModes,
 		plan.transitRoutingPreference,
 		planGroupsDoc.ref,
