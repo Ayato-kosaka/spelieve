@@ -1,5 +1,4 @@
 import { TransitMode, TravelMode, TransitRoutingPreference } from '@googlemaps/google-maps-services-js';
-import { useContext } from 'react';
 import { Button, FlatList, Pressable } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -10,16 +9,15 @@ import { EditDirectionsModePropsInterface } from 'spelieve-common/lib/Interfaces
 import { IMC03104EditDirectionsModeController } from './EditDirectionsModeController';
 
 import i18n from '@/Common/Hooks/i18n-js';
-import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap';
 
 import 'react-spring-bottom-sheet/dist/style.css';
+import { transitModeConverter, travelModeConverter } from '@/Place/Hooks/PHK001GooglePlaceAPI';
 
 export const IMC03104EditDirectionsMode = ({
 	planID,
 	bottomSheetVisible,
 	setBottomSheetVisible,
 }: EditDirectionsModePropsInterface) => {
-	const { travelModeConverter, transitModeConverter } = useContext(ICT031PlansMap);
 	const { directionsMode, setDirectionsMode, onClose } = IMC03104EditDirectionsModeController({
 		planID,
 		bottomSheetVisible,

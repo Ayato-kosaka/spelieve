@@ -1,4 +1,4 @@
-import { Client, DirectionsRequest, DirectionsResponse, Language, TrafficModel, TravelMode } from '@googlemaps/google-maps-services-js';
+import { DirectionsRequest, DirectionsResponse, TrafficModel, TravelMode } from '@googlemaps/google-maps-services-js';
 import { addDoc, setDoc } from 'firebase/firestore';
 import { useCallback, useContext, useMemo, useState, useEffect } from 'react';
 
@@ -12,10 +12,10 @@ import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 import { ICT031PlansMap } from '../..';
 
 import 'react-spring-bottom-sheet/dist/style.css';
+import { Logger } from '@/Common/Hooks/CHK001Utils';
+import i18n from '@/Common/Hooks/i18n-js';
 import { PlaceHttpPost } from '@/Place/Endpoint/PlaceHttpPost';
 import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001GooglePlaceAPI';
-import i18n from '@/Common/Hooks/i18n-js';
-import { Logger } from '@/Common/Hooks/CHK001Utils';
 
 export const IMC03102TrafficMovementEditController = ({
 	planID,
@@ -27,7 +27,7 @@ export const IMC03102TrafficMovementEditController = ({
 }: TrafficMovementEditPropsInterface): TrafficMovementEditControllerInterface => {
 	const [bottomSheetVisible, setBottomSheetVisible] = useState<boolean>(false);
 
-	const { plansCRef, plansDocSnapMap, travelModeConverter, transitModeConverter } = useContext(ICT031PlansMap);
+	const { plansCRef, plansDocSnapMap } = useContext(ICT031PlansMap);
 	const planDocSnap = useMemo(() => plansDocSnapMap[planID], [planID, plansDocSnapMap]);
 	const plan = useMemo(() => planDocSnap.data(), [planDocSnap]);
 	const planGroups = useMemo(() => planGroupsDoc.data(), [planGroupsDoc]);
@@ -67,7 +67,10 @@ export const IMC03102TrafficMovementEditController = ({
 		if (!plan.transportationMode || !nextPlan || !plan.place_id || !nextPlan.place_id) {
 			return;
 		}
-		const directionsResponse = await PlaceHttpPost<Omit<DirectionsRequest['params'], 'key'>, Pick<DirectionsResponse, 'status' | 'data'>>('PBL003', {
+		const directionsResponse = await PlaceHttpPost<
+			Omit<DirectionsRequest['params'], 'key'>,
+			Pick<DirectionsResponse, 'status' | 'data'>
+		>('PBL003', {
 			origin: `place_id:${plan.place_id}`,
 			destination: `place_id:${nextPlan.place_id}`,
 			mode: plan.transportationMode,
@@ -86,7 +89,7 @@ export const IMC03102TrafficMovementEditController = ({
 			optimize: false,
 		});
 		Logger('IMC03102TrafficMovementEdit', 'directionsService.route.result', planID);
-		if(directionsResponse.status === 200){
+		if (directionsResponse.status === 200) {
 			/** **********************************************************************************************
 			 * DRIVING, WALKING, BICYCLING の場合 transportationSpan をレスポンスから設定する
 			 * before の場合 transportationArrivalTime に次の予定の placeStartTime を設定し、
@@ -96,9 +99,7 @@ export const IMC03102TrafficMovementEditController = ({
 			 *********************************************************************************************** */
 			if (
 				plan.transportationMode &&
-				[TravelMode.driving, TravelMode.walking, TravelMode.bicycling].includes(
-					plan.transportationMode,
-				)
+				[TravelMode.driving, TravelMode.walking, TravelMode.bicycling].includes(plan.transportationMode)
 			) {
 				const transportationSpan: PlansMapInterface['transportationSpan'] = plan.placeSpan;
 				transportationSpan.setDate(1);
@@ -128,7 +129,7 @@ export const IMC03102TrafficMovementEditController = ({
 				// eslint-disable-next-line @typescript-eslint/no-floating-promises
 				setDoc(planDocSnap.ref, { ...val, transportationSpan }, { merge: true });
 			}
-		}else{
+		} else {
 			/* ERROR の場合は、TravelMode を undefined に変更する */
 			// eslint-disable-next-line @typescript-eslint/no-floating-promises
 			setDoc(

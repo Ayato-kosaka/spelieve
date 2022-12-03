@@ -6,8 +6,8 @@ import { PlansMapInterface, PlansMapValInterface } from 'spelieve-common/lib/Int
 import { Plans } from 'spelieve-common/lib/Models/Itinerary/IDB03/Plans';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
-import i18n from '@/Common/Hooks/i18n-js';
 import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
+import { transitModeConverter, travelModeConverter } from '@/Place/Hooks/PHK001GooglePlaceAPI';
 
 export const ICT031PlansMap = createContext({} as PlansMapValInterface);
 
@@ -16,65 +16,6 @@ export const ICT031PlansMapProvider = ({ children }: { children: ReactNode }) =>
 	const [isPlansLoading, setIsPlansLoading] = useState<boolean>(true);
 
 	const { itineraryDocSnap } = useContext(ICT011ItineraryOne);
-
-	// TODO: travel mode を hooks に切り出す
-	const travelModeConverter: {
-		[key in TravelMode]: {
-			iconName: string;
-			title: string;
-		};
-	} = useMemo(
-		() => ({
-			[TravelMode.bicycling]: {
-				iconName: 'bicycle',
-				title: i18n.t('Bicycling'),
-			},
-			[TravelMode.driving]: {
-				iconName: 'car',
-				title: i18n.t('Driving'),
-			},
-			[TravelMode.transit]: {
-				iconName: 'subway-variant',
-				title: i18n.t('Transit'),
-			},
-			[TravelMode.walking]: {
-				iconName: 'walk',
-				title: i18n.t('Walking'),
-			},
-		}),
-		[],
-	);
-
-	const transitModeConverter: {
-		[key in TransitMode]: {
-			iconName: string;
-			title: string;
-		};
-	} = useMemo(
-		() => ({
-			[TransitMode.bus]: {
-				iconName: 'bus',
-				title: i18n.t('Bus'),
-			},
-			[TransitMode.rail]: {
-				iconName: 'train-variant',
-				title: i18n.t('Rail'),
-			},
-			[TransitMode.subway]: {
-				iconName: 'subway',
-				title: i18n.t('Subway'),
-			},
-			[TransitMode.train]: {
-				iconName: 'train',
-				title: i18n.t('Train'),
-			},
-			[TransitMode.tram]: {
-				iconName: 'tram',
-				title: i18n.t('Tram'),
-			},
-		}),
-		[],
-	);
 
 	const plansCRef = useMemo(() => {
 		if (itineraryDocSnap) {
@@ -99,7 +40,7 @@ export const ICT031PlansMapProvider = ({ children }: { children: ReactNode }) =>
 			);
 		}
 		return undefined;
-	}, [itineraryDocSnap, transitModeConverter, travelModeConverter]);
+	}, [itineraryDocSnap]);
 
 	useEffect(() => {
 		if (plansCRef) {
@@ -131,10 +72,8 @@ export const ICT031PlansMapProvider = ({ children }: { children: ReactNode }) =>
 			plansDocSnapMap,
 			plansCRef,
 			isPlansLoading,
-			travelModeConverter,
-			transitModeConverter,
 		}),
-		[plansDocSnapMap, plansCRef, isPlansLoading, transitModeConverter, travelModeConverter],
+		[plansDocSnapMap, plansCRef, isPlansLoading],
 	);
 
 	return <ICT031PlansMap.Provider value={value}>{children}</ICT031PlansMap.Provider>;
