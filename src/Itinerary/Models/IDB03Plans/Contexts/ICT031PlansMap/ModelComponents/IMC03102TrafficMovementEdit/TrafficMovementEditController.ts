@@ -67,10 +67,11 @@ export const IMC03102TrafficMovementEditController = ({
 		if (!plan.transportationMode || !nextPlan || !plan.place_id || !nextPlan.place_id) {
 			return;
 		}
-		const directionsResponse = await PlaceHttpPost<Omit<DirectionsRequest['params'], 'key'>, DirectionsResponse>('PBL003', {
+		const directionsResponse = await PlaceHttpPost<Omit<DirectionsRequest['params'], 'key'>, Pick<DirectionsResponse, 'status' | 'data'>>('PBL003', {
 			origin: `place_id:${plan.place_id}`,
-			destination: `placeId:${nextPlan.place_id}`,
+			destination: `place_id:${nextPlan.place_id}`,
 			mode: plan.transportationMode,
+			waypoints: [],
 			alternatives: false,
 			// TODO: avoid?: TravelRestriction[];
 			language: GooglePlaceLanguageTagFromIETFLanguageTag[i18n.locale],
@@ -78,7 +79,7 @@ export const IMC03102TrafficMovementEditController = ({
 			region: undefined,
 			// TODO: arrival_time, departure_time を transit と合わせて再考慮する
 			// arrival_time: beforeAfterRepresentativeType === 'before' ? dependentPlan.placeStartTime : undefined,
-			departure_time: plan.placeEndTime > new Date() ? plan.placeEndTime : new Date(),
+			departure_time: 'now',
 			traffic_model: TrafficModel.best_guess,
 			transit_mode: plan.transitModes,
 			transit_routing_preference: plan.transitRoutingPreference,
