@@ -12,7 +12,6 @@ import { IMC03102TrafficMovementEditController } from './TrafficMovementEditCont
 
 import i18n from '@/Common/Hooks/i18n-js';
 import { IMC03104EditDirectionsMode } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03104EditDirectionsMode';
-import 'react-spring-bottom-sheet/dist/style.css';
 import { travelModeConverter } from '@/Place/Hooks/PHK001GooglePlaceAPI';
 
 export const IMC03102TrafficMovementEdit = ({
