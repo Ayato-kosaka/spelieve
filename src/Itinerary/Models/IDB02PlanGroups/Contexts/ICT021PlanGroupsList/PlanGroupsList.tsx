@@ -1,9 +1,9 @@
+import { TransitMode, TransitRoutingPreference } from '@googlemaps/google-maps-services-js';
 import { collection, query, QuerySnapshot, onSnapshot, addDoc, orderBy, setDoc } from 'firebase/firestore';
 import { useState, createContext, useEffect, useContext, useMemo, ReactNode } from 'react';
 
 import { PlanGroupsListInterface, PlanGroupsListValInterface } from 'spelieve-common/lib/Interfaces/Itinerary';
 import { PlanGroups } from 'spelieve-common/lib/Models/Itinerary/IDB02/PlanGroups';
-import { Plans } from 'spelieve-common/lib/Models/Itinerary/IDB03/Plans';
 import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
@@ -52,7 +52,7 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 							const plans = [...queryDocumentSnapshot.data().plans];
 							if (plans.length === 0) {
 								// eslint-disable-next-line @typescript-eslint/no-floating-promises
-								addDoc<Plans>(plansCRef, {
+								addDoc(plansCRef, {
 									title: '',
 									placeSpan: DateUtils.initialDate(),
 									placeStartTime: new Date(),
@@ -63,13 +63,13 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 									avoidHighways: false,
 									avoidTolls: false,
 									transitModes: [
-										google.maps.TransitMode.BUS,
-										google.maps.TransitMode.RAIL,
-										google.maps.TransitMode.SUBWAY,
-										google.maps.TransitMode.TRAIN,
-										google.maps.TransitMode.TRAM,
+										TransitMode.bus,
+										TransitMode.rail,
+										TransitMode.subway,
+										TransitMode.train,
+										TransitMode.tram,
 									],
-									transitRoutePreference: google.maps.TransitRoutePreference.FEWER_TRANSFERS,
+									transitRoutingPreference: TransitRoutingPreference.fewer_transfers,
 									createdAt: new Date(),
 									updatedAt: new Date(),
 								}).then((planDocRef) => {

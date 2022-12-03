@@ -1,4 +1,4 @@
-import { Client } from '@googlemaps/google-maps-services-js';
+import { Client, DirectionsRequest, DirectionsResponse, TravelMode } from '@googlemaps/google-maps-services-js';
 import { addDoc, setDoc } from 'firebase/firestore';
 import { useCallback, useContext, useMemo, useState, useEffect } from 'react';
 
@@ -11,7 +11,7 @@ import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 import { ICT031PlansMap } from '../..';
 
 import 'react-spring-bottom-sheet/dist/style.css';
-import { ENV } from '@/ENV';
+import { PlaceHttpPost } from '@/Place/Endpoint/PlaceHttpPost';
 
 export const IMC03102TrafficMovementEditController = ({
 	planID,
@@ -34,7 +34,7 @@ export const IMC03102TrafficMovementEditController = ({
 		[nextPlanID, plansDocSnapMap],
 	);
 	const transitOptions = useMemo(() => {
-		if (plan.transportationMode === google.maps.TravelMode.TRANSIT) {
+		if (plan.transportationMode === TravelMode.transit) {
 			const arrivalTime = beforeAfterRepresentativeType === 'before' ? dependentPlan.placeStartTime : undefined;
 			const departureTime = ['representative', 'after'].includes(beforeAfterRepresentativeType)
 				? plan.placeEndTime
@@ -43,7 +43,7 @@ export const IMC03102TrafficMovementEditController = ({
 				arrivalTime,
 				departureTime,
 				modes: plan.transitModes,
-				routingPreference: plan.transitRoutePreference,
+				routingPreference: plan.transitRoutingPreference,
 			};
 		}
 		return undefined;
@@ -53,7 +53,7 @@ export const IMC03102TrafficMovementEditController = ({
 		dependentPlan,
 		plan.placeEndTime,
 		plan.transitModes,
-		plan.transitRoutePreference,
+		plan.transitRoutingPreference,
 	]);
 
 	/** **********************************************************************************************
@@ -64,34 +64,28 @@ export const IMC03102TrafficMovementEditController = ({
 			return;
 		}
 		const client = new Client({});
-		await client
-			.directions({
-				params: {
-					key: ENV.GCP_API_KEY,
-					origin: `place_id:${plan.place_id}`,
-					destination: `placeId:${nextPlan.place_id}`,
-					// mode: plan.transportationMode,
-					// avoidFerries: plan.avoidFerries,
-					// avoidHighways: plan.avoidHighways,
-					// avoidTolls: plan.avoidTolls,
-					// drivingOptions: {
-					// 	departureTime: plan.placeEndTime > new Date() ? plan.placeEndTime : new Date(),
-					// 	trafficModel: google.maps.TrafficModel.BEST_GUESS,
-					// },
-					// language: Object.keys(GooglePlaceLanguageTagFromIETFLanguageTag).includes(i18n.locale)
-					// 	? Language[
-					// 			GooglePlaceLanguageTagFromIETFLanguageTag[
-					// 				(i18n.locale as keyof typeof GooglePlaceLanguageTagFromIETFLanguageTag)
-					// 			]
-					// 	  ]
-					// 	: undefined,
-					optimize: false,
-					region: undefined,
-					// transitOptions,
-					waypoints: undefined,
-				},
-			})
-			.then((value) => console.log(value));
+		await PlaceHttpPost<Omit<DirectionsRequest['params'], 'key'>, DirectionsResponse>('PBL003', {
+			origin: `place_id:${plan.place_id}`,
+			destination: `placeId:${nextPlan.place_id}`,
+			// mode: plan.transportationMode,
+			// avoidFerries: plan.avoidFerries,
+			// avoidHighways: plan.avoidHighways,
+			// avoidTolls: plan.avoidTolls,
+			// drivingOptions: {
+			// 	departureTime: plan.placeEndTime > new Date() ? plan.placeEndTime : new Date(),
+			// 	trafficModel: google.maps.TrafficModel.BEST_GUESS,
+			// },
+			// language: Object.keys(GooglePlaceLanguageTagFromIETFLanguageTag).includes(i18n.locale)
+			// 	? Language[
+			// 			GooglePlaceLanguageTagFromIETFLanguageTag[
+			// 				(i18n.locale as keyof typeof GooglePlaceLanguageTagFromIETFLanguageTag)
+			// 			]
+			// 	  ]
+			// 	: undefined,
+			optimize: false,
+			region: undefined,
+			// transitOptions,
+		}).then((value) => console.log(value));
 
 		// const directionsService = new google.maps.DirectionsService();
 		// directionsService.route(
@@ -246,7 +240,7 @@ export const IMC03102TrafficMovementEditController = ({
 			avoidHighways: plan.avoidHighways,
 			avoidTolls: plan.avoidTolls,
 			transitModes: plan.transitModes,
-			transitRoutePreference: plan.transitRoutePreference,
+			transitRoutingPreference: plan.transitRoutingPreference,
 			createdAt: new Date(),
 			updatedAt: new Date(),
 		});
@@ -263,7 +257,7 @@ export const IMC03102TrafficMovementEditController = ({
 		plan.avoidHighways,
 		plan.avoidTolls,
 		plan.transitModes,
-		plan.transitRoutePreference,
+		plan.transitRoutingPreference,
 		planGroupsDoc.ref,
 	]);
 

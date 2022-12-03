@@ -1,3 +1,4 @@
+import { TransitMode, TravelMode, TransitRoutingPreference } from '@googlemaps/google-maps-services-js';
 import { collection, query, onSnapshot } from 'firebase/firestore';
 import { useState, createContext, useEffect, useMemo, useContext, ReactNode } from 'react';
 
@@ -16,31 +17,27 @@ export const ICT031PlansMapProvider = ({ children }: { children: ReactNode }) =>
 
 	const { itineraryDocSnap } = useContext(ICT011ItineraryOne);
 
-	// Hooks では、google.maps のEnumを参照出来ないため、Context で定義する
+	// TODO: travel mode を hooks に切り出す
 	const travelModeConverter: {
-		[key in google.maps.TravelMode]: {
+		[key in TravelMode]: {
 			iconName: string;
 			title: string;
 		};
 	} = useMemo(
 		() => ({
-			[google.maps.TravelMode.BICYCLING]: {
+			[TravelMode.bicycling]: {
 				iconName: 'bicycle',
 				title: i18n.t('Bicycling'),
 			},
-			[google.maps.TravelMode.DRIVING]: {
+			[TravelMode.driving]: {
 				iconName: 'car',
 				title: i18n.t('Driving'),
 			},
-			[google.maps.TravelMode.TRANSIT]: {
+			[TravelMode.transit]: {
 				iconName: 'subway-variant',
 				title: i18n.t('Transit'),
 			},
-			[google.maps.TravelMode.TWO_WHEELER]: {
-				iconName: 'atv',
-				title: i18n.t('Two wheeler'),
-			},
-			[google.maps.TravelMode.WALKING]: {
+			[TravelMode.walking]: {
 				iconName: 'walk',
 				title: i18n.t('Walking'),
 			},
@@ -49,29 +46,29 @@ export const ICT031PlansMapProvider = ({ children }: { children: ReactNode }) =>
 	);
 
 	const transitModeConverter: {
-		[key in google.maps.TransitMode]: {
+		[key in TransitMode]: {
 			iconName: string;
 			title: string;
 		};
 	} = useMemo(
 		() => ({
-			[google.maps.TransitMode.BUS]: {
+			[TransitMode.bus]: {
 				iconName: 'bus',
 				title: i18n.t('Bus'),
 			},
-			[google.maps.TransitMode.RAIL]: {
+			[TransitMode.rail]: {
 				iconName: 'train-variant',
 				title: i18n.t('Rail'),
 			},
-			[google.maps.TransitMode.SUBWAY]: {
+			[TransitMode.subway]: {
 				iconName: 'subway',
 				title: i18n.t('Subway'),
 			},
-			[google.maps.TransitMode.TRAIN]: {
+			[TransitMode.train]: {
 				iconName: 'train',
 				title: i18n.t('Train'),
 			},
-			[google.maps.TransitMode.TRAM]: {
+			[TransitMode.tram]: {
 				iconName: 'tram',
 				title: i18n.t('Tram'),
 			},
@@ -86,18 +83,16 @@ export const ICT031PlansMapProvider = ({ children }: { children: ReactNode }) =>
 					Plans,
 					(data) => ({
 						...data,
-						transportationMode: (Object.keys(travelModeConverter) as google.maps.TravelMode[]).find(
+						transportationMode: (Object.keys(travelModeConverter) as TravelMode[]).find(
 							(travelMode) => travelMode === data.transportationMode,
 						),
 						transitModes: data.transitModes
-							.map((e) => (Object.keys(transitModeConverter) as google.maps.TransitMode[]).find((item) => e === item))
-							.filter((item): item is google.maps.TransitMode => item !== undefined),
-						transitRoutePreference:
-							[
-								google.maps.TransitRoutePreference.FEWER_TRANSFERS,
-								google.maps.TransitRoutePreference.LESS_WALKING,
-							].find((transitRoutePreference) => transitRoutePreference === data.transitRoutePreference) ||
-							google.maps.TransitRoutePreference.FEWER_TRANSFERS,
+							.map((e) => (Object.keys(transitModeConverter) as TransitMode[]).find((item) => e === item))
+							.filter((item): item is TransitMode => item !== undefined),
+						transitRoutingPreference:
+							[TransitRoutingPreference.fewer_transfers, TransitRoutingPreference.less_walking].find(
+								(transitRoutingPreference) => transitRoutingPreference === data.transitRoutingPreference,
+							) || TransitRoutingPreference.fewer_transfers,
 					}),
 					(data) => data,
 				),

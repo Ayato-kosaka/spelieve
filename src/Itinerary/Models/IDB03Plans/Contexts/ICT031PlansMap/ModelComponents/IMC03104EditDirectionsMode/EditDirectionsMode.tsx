@@ -1,3 +1,4 @@
+import { TransitMode, TravelMode, TransitRoutingPreference } from '@googlemaps/google-maps-services-js';
 import { useContext } from 'react';
 import { Button, FlatList, Pressable } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
@@ -35,12 +36,7 @@ export const IMC03104EditDirectionsMode = ({
 			}}
 			snapPoints={({ minHeight }) => minHeight}>
 			<FlatList
-				data={[
-					google.maps.TravelMode.WALKING,
-					google.maps.TravelMode.BICYCLING,
-					google.maps.TravelMode.DRIVING,
-					google.maps.TravelMode.TRANSIT,
-				]}
+				data={[TravelMode.walking, TravelMode.bicycling, TravelMode.driving, TravelMode.transit]}
 				horizontal
 				renderItem={(renderItemInfo) => (
 					<Pressable
@@ -63,16 +59,10 @@ export const IMC03104EditDirectionsMode = ({
 				contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-around' }}
 			/>
 			<Divider />
-			{directionsMode.transportationMode === google.maps.TravelMode.TRANSIT && (
+			{directionsMode.transportationMode === TravelMode.transit && (
 				<>
 					<FlatList
-						data={[
-							google.maps.TransitMode.BUS,
-							google.maps.TransitMode.RAIL,
-							google.maps.TransitMode.SUBWAY,
-							google.maps.TransitMode.TRAIN,
-							google.maps.TransitMode.TRAM,
-						]}
+						data={[TransitMode.bus, TransitMode.rail, TransitMode.subway, TransitMode.train, TransitMode.tram]}
 						horizontal
 						renderItem={(renderItemInfo) => (
 							<Pressable
@@ -102,13 +92,13 @@ export const IMC03104EditDirectionsMode = ({
 						onPress={() =>
 							setDirectionsMode({
 								...directionsMode,
-								transitRoutePreference: google.maps.TransitRoutePreference.FEWER_TRANSFERS,
+								transitRoutingPreference: TransitRoutingPreference.fewer_transfers,
 							})
 						}>
 						<Text>{i18n.t('乗り換えが少ないルート')}</Text>
 						<MaterialCommunityIcons
 							name={
-								directionsMode.transitRoutePreference === google.maps.TransitRoutePreference.FEWER_TRANSFERS
+								directionsMode.transitRoutingPreference === TransitRoutingPreference.fewer_transfers
 									? 'checkbox-blank-circle'
 									: ''
 							}
@@ -119,13 +109,13 @@ export const IMC03104EditDirectionsMode = ({
 						onPress={() =>
 							setDirectionsMode({
 								...directionsMode,
-								transitRoutePreference: google.maps.TransitRoutePreference.LESS_WALKING,
+								transitRoutingPreference: TransitRoutingPreference.less_walking,
 							})
 						}>
 						<Text>{i18n.t('歩きが少ないルート')}</Text>
 						<MaterialCommunityIcons
 							name={
-								directionsMode.transitRoutePreference === google.maps.TransitRoutePreference.LESS_WALKING
+								directionsMode.transitRoutingPreference === TransitRoutingPreference.less_walking
 									? 'checkbox-blank-circle'
 									: ''
 							}
