@@ -3,6 +3,7 @@ import { addDoc, setDoc } from 'firebase/firestore';
 import { useCallback, useContext, useMemo, useState, useEffect } from 'react';
 
 import {
+	PlansMapInterface,
 	TrafficMovementEditControllerInterface,
 	TrafficMovementEditPropsInterface,
 } from 'spelieve-common/lib/Interfaces';
@@ -14,6 +15,7 @@ import 'react-spring-bottom-sheet/dist/style.css';
 import { PlaceHttpPost } from '@/Place/Endpoint/PlaceHttpPost';
 import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001GooglePlaceAPI';
 import i18n from '@/Common/Hooks/i18n-js';
+import { Logger } from '@/Common/Hooks/CHK001Utils';
 
 export const IMC03102TrafficMovementEditController = ({
 	planID,
@@ -82,87 +84,60 @@ export const IMC03102TrafficMovementEditController = ({
 			transit_routing_preference: plan.transitRoutingPreference,
 			optimize: false,
 		});
-		console.log(directionsResponse)
-
-		// const directionsService = new google.maps.DirectionsService();
-		// directionsService.route(
-		// 	{
-		// 		origin: { placeId: plan.place_id },
-		// 		destination: { placeId: nextPlan.place_id },
-		// 		travelMode: plan.transportationMode,
-		// 		avoidFerries: plan.avoidFerries,
-		// 		avoidHighways: plan.avoidHighways,
-		// 		avoidTolls: plan.avoidTolls,
-		// 		drivingOptions: {
-		// 			departureTime: plan.placeEndTime > new Date() ? plan.placeEndTime : new Date(),
-		// 			trafficModel: google.maps.TrafficModel.BEST_GUESS,
-		// 		},
-		// 		language: GooglePlaceLanguageTagFromIETFLanguageTag[i18n.locale],
-		// 		optimizeWaypoints: false,
-		// 		provideRouteAlternatives: false,
-		// 		region: undefined,
-		// 		transitOptions,
-		// 		unitSystem: undefined,
-		// 		waypoints: undefined,
-		// 	},
-		// 	(result, status) => {
-		// 		Logger('IMC03102TrafficMovementEdit', 'directionsService.route.result', planID);
-		// 		if (status === google.maps.DirectionsStatus.OK) {
-		// 			/** **********************************************************************************************
-		// 			 * DRIVING, WALKING, BICYCLING の場合 transportationSpan をレスポンスから設定する
-		// 			 * before の場合 transportationArrivalTime に次の予定の placeStartTime を設定し、
-		// 			 * *	transportationDepartureTime を transportationArrivalTime - transportationSpan で計算する
-		// 			 * after の場合 transportationDepartureTime に自分の予定の placeEndTime を設定し、
-		// 			 * *	transportationArrivalTime を transportationDepartureTime + transportationSpan で計算する
-		// 			 *********************************************************************************************** */
-		// 			if (
-		// 				plan.transportationMode &&
-		// 				[google.maps.TravelMode.DRIVING, google.maps.TravelMode.WALKING, google.maps.TravelMode.BICYCLING].includes(
-		// 					plan.transportationMode,
-		// 				)
-		// 			) {
-		// 				const transportationSpan: PlansMapInterface['transportationSpan'] = plan.placeSpan;
-		// 				transportationSpan.setDate(1);
-		// 				transportationSpan.setHours(0);
-		// 				transportationSpan.setMinutes(0);
-		// 				transportationSpan.setSeconds(result?.routes[0].legs[0].duration?.value || 0);
-		// 				const val: Pick<PlansMapInterface, 'transportationDepartureTime' | 'transportationArrivalTime'> = (() => {
-		// 					if (beforeAfterRepresentativeType === 'before') {
-		// 						return {
-		// 							transportationArrivalTime: dependentPlan.placeStartTime,
-		// 							transportationDepartureTime: DateUtils.subtraction(dependentPlan.placeStartTime, transportationSpan, [
-		// 								'Hours',
-		// 								'Minutes',
-		// 								'Seconds',
-		// 							]),
-		// 						};
-		// 					}
-		// 					return {
-		// 						transportationDepartureTime: plan.placeEndTime,
-		// 						transportationArrivalTime: DateUtils.addition(plan.placeEndTime, transportationSpan, [
-		// 							'Hours',
-		// 							'Minutes',
-		// 							'Seconds',
-		// 						]),
-		// 					};
-		// 				})();
-		// 				// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		// 				setDoc(planDocSnap.ref, { ...val, transportationSpan }, { merge: true });
-		// 			}
-		// 			// TODO: https://github.com/Ayato-kosaka/spelieve/issues/337 Transit での Directions が必ず "ZERO_RESULTS" を返す
-		// 		} else if (status === google.maps.DirectionsStatus.ZERO_RESULTS) {
-		// 			/* ZERO_RESULTS の場合は、交通機関の特定に失敗しているため、TravelMode を undefined に変更する */
-		// 			// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		// 			setDoc(
-		// 				planDocSnap.ref,
-		// 				{
-		// 					transportationMode: undefined,
-		// 				},
-		// 				{ merge: true },
-		// 			);
-		// 		}
-		// 	},
-		// );
+		Logger('IMC03102TrafficMovementEdit', 'directionsService.route.result', planID);
+		if(directionsResponse.status === 200){
+			/** **********************************************************************************************
+			 * DRIVING, WALKING, BICYCLING の場合 transportationSpan をレスポンスから設定する
+			 * before の場合 transportationArrivalTime に次の予定の placeStartTime を設定し、
+			 * *	transportationDepartureTime を transportationArrivalTime - transportationSpan で計算する
+			 * after の場合 transportationDepartureTime に自分の予定の placeEndTime を設定し、
+			 * *	transportationArrivalTime を transportationDepartureTime + transportationSpan で計算する
+			 *********************************************************************************************** */
+			if (
+				plan.transportationMode &&
+				[TravelMode.driving, TravelMode.walking, TravelMode.bicycling].includes(
+					plan.transportationMode,
+				)
+			) {
+				const transportationSpan: PlansMapInterface['transportationSpan'] = plan.placeSpan;
+				transportationSpan.setDate(1);
+				transportationSpan.setHours(0);
+				transportationSpan.setMinutes(0);
+				transportationSpan.setSeconds(directionsResponse.data.routes[0].legs[0].duration?.value || 0);
+				const val: Pick<PlansMapInterface, 'transportationDepartureTime' | 'transportationArrivalTime'> = (() => {
+					if (beforeAfterRepresentativeType === 'before') {
+						return {
+							transportationArrivalTime: dependentPlan.placeStartTime,
+							transportationDepartureTime: DateUtils.subtraction(dependentPlan.placeStartTime, transportationSpan, [
+								'Hours',
+								'Minutes',
+								'Seconds',
+							]),
+						};
+					}
+					return {
+						transportationDepartureTime: plan.placeEndTime,
+						transportationArrivalTime: DateUtils.addition(plan.placeEndTime, transportationSpan, [
+							'Hours',
+							'Minutes',
+							'Seconds',
+						]),
+					};
+				})();
+				// eslint-disable-next-line @typescript-eslint/no-floating-promises
+				setDoc(planDocSnap.ref, { ...val, transportationSpan }, { merge: true });
+			}
+		}else{
+			/* ERROR の場合は、TravelMode を undefined に変更する */
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			setDoc(
+				planDocSnap.ref,
+				{
+					transportationMode: undefined,
+				},
+				{ merge: true },
+			);
+		}
 	}, [
 		plan.place_id,
 		planID,
