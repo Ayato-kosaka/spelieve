@@ -7,15 +7,13 @@ import {
 import { Button, FlatList, Pressable } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { BottomSheet } from 'react-spring-bottom-sheet';
 
 import { EditDirectionsModePropsInterface } from 'spelieve-common/lib/Interfaces/Itinerary/IMC03104';
 
 import { IMC03104EditDirectionsModeController } from './EditDirectionsModeController';
 
+import { CCO005BottomSheet } from '@/Common/Components/CCO005BottomSheet/BottomSheet';
 import i18n from '@/Common/Hooks/i18n-js';
-
-import 'react-spring-bottom-sheet/dist/style.css';
 import {
 	transitModeConverter,
 	travelModeConverter,
@@ -33,15 +31,11 @@ export const IMC03104EditDirectionsMode = ({
 		setBottomSheetVisible,
 	});
 
-	/* TO @Takapy: BottomSheetのコンポーネントがiOSで使えるか確認してほしい！ */
 	return (
-		<BottomSheet
-			open={bottomSheetVisible}
-			onDismiss={() => {
-				setBottomSheetVisible(false);
-				onClose();
-			}}
-			snapPoints={({ minHeight }) => minHeight}>
+		<CCO005BottomSheet
+			bottomSheetVisible={bottomSheetVisible}
+			setBottomSheetVisible={setBottomSheetVisible}
+			onClose={onClose}>
 			<FlatList
 				data={[TravelMode.walking, TravelMode.bicycling, TravelMode.driving, TravelMode.transit]}
 				horizontal
@@ -157,6 +151,6 @@ export const IMC03104EditDirectionsMode = ({
 					onClose();
 				}}
 			/>
-		</BottomSheet>
+		</CCO005BottomSheet>
 	);
 };

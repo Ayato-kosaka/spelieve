@@ -1,4 +1,6 @@
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { ReactNode } from 'react';
-import { View } from 'react-native';
 
-export const AppProvider = ({ children }: { children: ReactNode }) => <View>{children}</View>;
+export const AppProvider = ({ children }: { children: ReactNode }) => (
+	<BottomSheetModalProvider>{children}</BottomSheetModalProvider>
+);
