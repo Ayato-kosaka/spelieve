@@ -1,7 +1,6 @@
 import { setDoc } from 'firebase/firestore';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
-import 'react-spring-bottom-sheet/dist/style.css';
 import {
 	EditDirectionsModeControllerInterface,
 	EditDirectionsModePropsInterface,

@@ -11,7 +11,6 @@ import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 
 import { ICT031PlansMap } from '../..';
 
-import 'react-spring-bottom-sheet/dist/style.css';
 import { Logger } from '@/Common/Hooks/CHK001Utils';
 import i18n from '@/Common/Hooks/i18n-js';
 import { PlaceHttpPost } from '@/Place/Endpoint/PlaceHttpPost';
