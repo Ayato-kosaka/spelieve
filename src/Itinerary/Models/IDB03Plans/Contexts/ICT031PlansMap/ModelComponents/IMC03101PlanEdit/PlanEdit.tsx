@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react';
-import { Button, FlatList, Pressable } from 'react-native';
+import { Button, Pressable } from 'react-native';
 import { Chip, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -40,7 +40,9 @@ export const IMC03101PlanEdit = ({
 			<Text>
 				{DateUtils.formatToHHMM(plan.placeStartTime)}~{DateUtils.formatToHHMM(plan.placeEndTime)}
 			</Text>
-			<FlatList data={plan.tags} renderItem={(renderItemInfo) => <Chip>{renderItemInfo.item}</Chip>} />
+			{plan.tags.map((tag) => (
+				<Chip>{tag}</Chip>
+			))}
 			<Button
 				title={i18n.t('予定を削除')}
 				onPress={() => {

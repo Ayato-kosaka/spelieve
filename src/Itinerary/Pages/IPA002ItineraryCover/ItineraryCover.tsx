@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ActivityIndicator, FlatList, Image, ScrollView, View } from 'react-native';
+import { ActivityIndicator, Image, ScrollView, View } from 'react-native';
 import { Chip, TextInput, Searchbar, Text } from 'react-native-paper';
 
 import { IPA002ItineraryCoverController } from './ItineraryCoverController';
@@ -50,19 +50,15 @@ export const IPA002ItineraryCover = ({
 				onChange={handleOnChange('subTitle')}
 				onBlur={updateItinerary}
 			/>
-			<FlatList
-				data={pageItinerary.tags}
-				horizontal
-				renderItem={(renderItemInfo) => (
-					<Chip closeIcon="close-circle" onClose={() => deleteTag(renderItemInfo.index)}>
-						{renderItemInfo.item}
+			<View style={{ flexDirection: 'row' }}>
+				{pageItinerary.tags.map((tag, index) => (
+					<Chip closeIcon="close-circle" onClose={() => deleteTag(index)}>
+						{tag}
 					</Chip>
-				)}
-				ListFooterComponent={
-					/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/298 Tagを取得するSearchBarを実装する */
-					<Searchbar placeholder="Search" value="" />
-				}
-			/>
+				))}
+				{/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/298 Tagを取得するSearchBarを実装する */}
+				<Searchbar placeholder="Search" value="" />
+			</View>
 			<View>
 				<Text>{i18n.t('滞在開始日')}</Text>
 				<CCO003DateTimePicker

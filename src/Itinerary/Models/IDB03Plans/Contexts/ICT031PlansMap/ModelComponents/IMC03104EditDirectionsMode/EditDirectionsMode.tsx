@@ -4,7 +4,7 @@ import {
 	TransitRoutingPreference,
 	TravelRestriction,
 } from '@googlemaps/google-maps-services-js';
-import { Button, FlatList, Pressable } from 'react-native';
+import { Button, Pressable, View } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -36,57 +36,52 @@ export const IMC03104EditDirectionsMode = ({
 			bottomSheetVisible={bottomSheetVisible}
 			setBottomSheetVisible={setBottomSheetVisible}
 			onClose={onClose}>
-			<FlatList
-				data={[TravelMode.walking, TravelMode.bicycling, TravelMode.driving, TravelMode.transit]}
-				horizontal
-				renderItem={(renderItemInfo) => (
+			<View style={{ flexDirection: 'row', flexGrow: 1, justifyContent: 'space-around' }}>
+				{[TravelMode.walking, TravelMode.bicycling, TravelMode.driving, TravelMode.transit].map((travelMode) => (
 					<Pressable
 						onPress={() => {
 							setDirectionsMode({
 								...directionsMode,
-								transportationMode:
-									directionsMode.transportationMode === renderItemInfo.item ? undefined : renderItemInfo.item,
+								transportationMode: directionsMode.transportationMode === travelMode ? undefined : travelMode,
 							});
 						}}
 						style={{
 							flexDirection: 'column',
 							alignItems: 'center',
-							backgroundColor: renderItemInfo.item === directionsMode.transportationMode ? 'red' : 'white',
+							backgroundColor: travelMode === directionsMode.transportationMode ? 'red' : 'white',
 						}}>
-						<MaterialCommunityIcons name={travelModeConverter[renderItemInfo.item].iconName} />
-						<Text>{travelModeConverter[renderItemInfo.item].title}</Text>
+						<MaterialCommunityIcons name={travelModeConverter[travelMode].iconName} />
+						<Text>{travelModeConverter[travelMode].title}</Text>
 					</Pressable>
-				)}
-				contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-around' }}
-			/>
+				))}
+			</View>
 			<Divider />
 			{directionsMode.transportationMode === TravelMode.transit && (
 				<>
-					<FlatList
-						data={[TransitMode.bus, TransitMode.rail, TransitMode.subway, TransitMode.train, TransitMode.tram]}
-						horizontal
-						renderItem={(renderItemInfo) => (
-							<Pressable
-								onPress={() => {
-									const transitModes = [...directionsMode.transitModes];
-									if (transitModes.includes(renderItemInfo.item)) {
-										transitModes.splice(transitModes.indexOf(renderItemInfo.item), 1);
-									} else {
-										transitModes.push(renderItemInfo.item);
-									}
-									setDirectionsMode({ ...directionsMode, transitModes });
-								}}
-								style={{
-									flexDirection: 'column',
-									alignItems: 'center',
-									backgroundColor: directionsMode.transitModes.includes(renderItemInfo.item) ? 'red' : 'white',
-								}}>
-								<MaterialCommunityIcons name={transitModeConverter[renderItemInfo.item].iconName} />
-								<Text>{transitModeConverter[renderItemInfo.item].title}</Text>
-							</Pressable>
+					<View style={{ flexDirection: 'row', flexGrow: 1, justifyContent: 'space-around' }}>
+						{[TransitMode.bus, TransitMode.rail, TransitMode.subway, TransitMode.train, TransitMode.tram].map(
+							(transitMode) => (
+								<Pressable
+									onPress={() => {
+										const transitModes = [...directionsMode.transitModes];
+										if (transitModes.includes(transitMode)) {
+											transitModes.splice(transitModes.indexOf(transitMode), 1);
+										} else {
+											transitModes.push(transitMode);
+										}
+										setDirectionsMode({ ...directionsMode, transitModes });
+									}}
+									style={{
+										flexDirection: 'column',
+										alignItems: 'center',
+										backgroundColor: directionsMode.transitModes.includes(transitMode) ? 'red' : 'white',
+									}}>
+									<MaterialCommunityIcons name={transitModeConverter[transitMode].iconName} />
+									<Text>{transitModeConverter[transitMode].title}</Text>
+								</Pressable>
+							),
 						)}
-						contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-around' }}
-					/>
+					</View>
 					<Divider />
 					<Pressable
 						style={{ flexDirection: 'row', alignItems: 'center' }}
@@ -125,25 +120,24 @@ export const IMC03104EditDirectionsMode = ({
 					<Divider />
 				</>
 			)}
-			<FlatList
-				data={[TravelRestriction.highways, TravelRestriction.tolls, TravelRestriction.ferries]}
-				renderItem={(renderItemInfo) => (
+			<View>
+				{[TravelRestriction.highways, TravelRestriction.tolls, TravelRestriction.ferries].map((travelRestriction) => (
 					<Pressable
 						style={{ flexDirection: 'row', alignItems: 'center' }}
 						onPress={() => {
 							const travelRestrictions = [...directionsMode.avoid];
-							if (travelRestrictions.includes(renderItemInfo.item)) {
-								travelRestrictions.splice(travelRestrictions.indexOf(renderItemInfo.item), 1);
+							if (travelRestrictions.includes(travelRestriction)) {
+								travelRestrictions.splice(travelRestrictions.indexOf(travelRestriction), 1);
 							} else {
-								travelRestrictions.push(renderItemInfo.item);
+								travelRestrictions.push(travelRestriction);
 							}
 							setDirectionsMode({ ...directionsMode, avoid: travelRestrictions });
 						}}>
-						<Text>{travelRestrictionConverter[renderItemInfo.item].title}</Text>
-						<MaterialCommunityIcons name={directionsMode.avoid.includes(renderItemInfo.item) ? 'check' : ''} />
+						<Text>{travelRestrictionConverter[travelRestriction].title}</Text>
+						<MaterialCommunityIcons name={directionsMode.avoid.includes(travelRestriction) ? 'check' : ''} />
 					</Pressable>
-				)}
-			/>
+				))}
+			</View>
 			<Button
 				title={i18n.t('決定')}
 				onPress={() => {

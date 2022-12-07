@@ -1,4 +1,5 @@
-import { FlatList, Image, View } from 'react-native';
+import { Image, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -14,7 +15,7 @@ interface ItineraryPostPropsInterface {
 }
 
 export const ICO001ItineraryPost = ({ itinerary, planGroups, plans }: ItineraryPostPropsInterface) => (
-	<View>
+	<ScrollView>
 		<Image
 			source={{ uri: itinerary.imageUrl }}
 			style={{
@@ -22,39 +23,33 @@ export const ICO001ItineraryPost = ({ itinerary, planGroups, plans }: ItineraryP
 				width: '100vw',
 			}}
 		/>
-		<FlatList
-			data={planGroups}
-			renderItem={(planGroupItemInfo) => (
-				<FlatList
-					data={planGroupItemInfo.item.plans}
-					renderItem={(planIDItemInfo) => {
-						const plan = plans[planIDItemInfo.item];
-						return (
+		{planGroups.map((planGroup) =>
+			planGroup.plans.map((planId) => {
+				const plan = plans[planId];
+				return (
+					<View>
+						<Image
+							source={{ uri: plan.imageUrl }}
+							style={{
+								height: '50vw',
+								width: '100vw',
+							}}
+						/>
+						{plan.transportationMode && plan.transportationDepartureTime && (
 							<View>
-								<Image
-									source={{ uri: plan.imageUrl }}
-									style={{
-										height: '50vw',
-										width: '100vw',
-									}}
-								/>
-								{plan.transportationMode && plan.transportationDepartureTime && (
-									<View>
-										<MaterialCommunityIcons name={travelModeConverter[plan.transportationMode].iconName} />
-										<Text>
-											{plan.transportationDepartureTime ? DateUtils.formatToHHMM(plan.transportationDepartureTime) : ''}
-										</Text>
-										<Text>~</Text>
-										<Text>
-											{plan.transportationArrivalTime ? DateUtils.formatToHHMM(plan.transportationArrivalTime) : ''}
-										</Text>
-									</View>
-								)}
+								<MaterialCommunityIcons name={travelModeConverter[plan.transportationMode].iconName} />
+								<Text>
+									{plan.transportationDepartureTime ? DateUtils.formatToHHMM(plan.transportationDepartureTime) : ''}
+								</Text>
+								<Text>~</Text>
+								<Text>
+									{plan.transportationArrivalTime ? DateUtils.formatToHHMM(plan.transportationArrivalTime) : ''}
+								</Text>
 							</View>
-						);
-					}}
-				/>
-			)}
-		/>
-	</View>
+						)}
+					</View>
+				);
+			}),
+		)}
+	</ScrollView>
 );

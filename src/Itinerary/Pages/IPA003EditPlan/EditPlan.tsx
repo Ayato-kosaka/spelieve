@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { setDoc } from 'firebase/firestore';
 import { useContext, useMemo } from 'react';
-import { ActivityIndicator, Button, FlatList, Image, ScrollView, View } from 'react-native';
+import { ActivityIndicator, Button, Image, ScrollView, View } from 'react-native';
 import { Chip, Divider, Searchbar, Text, TextInput } from 'react-native-paper';
 
 import { IPA003EditPlanController } from './EditPlanController';
@@ -70,19 +70,15 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 			/>
 			<Divider style={{ marginVertical: 20 }} />
 			<TextInput label={i18n.t('メモ')} value={pagePlan.memo} onChange={onChangeMemo} onBlur={updatePlan} multiline />
-			<FlatList
-				data={pagePlan.tags}
-				horizontal
-				renderItem={(renderItemInfo) => (
-					<Chip closeIcon="close-circle" onClose={() => deleteTag(renderItemInfo.index)}>
-						{renderItemInfo.item}
+			<View style={{ flexDirection: 'row' }}>
+				{pagePlan.tags.map((tag, index) => (
+					<Chip closeIcon="close-circle" onClose={() => deleteTag(index)}>
+						{tag}
 					</Chip>
-				)}
-				ListFooterComponent={
-					/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/298 Tagを取得するSearchBarを実装する */
-					<Searchbar placeholder="Search" value="" />
-				}
-			/>
+				))}
+				{/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/298 Tagを取得するSearchBarを実装する */}
+				<Searchbar placeholder="Search" value="" />
+			</View>
 			<View>
 				<Text>{i18n.t('滞在時間')}</Text>
 				<CCO004DurationPicker
