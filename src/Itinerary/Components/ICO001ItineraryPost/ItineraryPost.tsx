@@ -27,7 +27,7 @@ export const ICO001ItineraryPost = ({ itinerary, planGroups, plans }: ItineraryP
 			planGroup.plans.map((planId) => {
 				const plan = plans[planId];
 				return (
-					<View>
+					<View key={planId}>
 						<Image
 							source={{ uri: plan.imageUrl }}
 							style={{
