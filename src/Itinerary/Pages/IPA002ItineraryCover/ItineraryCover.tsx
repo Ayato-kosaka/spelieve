@@ -33,8 +33,8 @@ export const IPA002ItineraryCover = ({
 				<Image
 					source={{ uri: pageItinerary.imageUrl }}
 					style={{
-						height: '100pt',
-						width: '100pt',
+						height: 100,
+						width: 100,
 					}}
 				/>
 			)}
