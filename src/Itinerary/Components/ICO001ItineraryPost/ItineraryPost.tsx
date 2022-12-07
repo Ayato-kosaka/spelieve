@@ -19,8 +19,8 @@ export const ICO001ItineraryPost = ({ itinerary, planGroups, plans }: ItineraryP
 		<Image
 			source={{ uri: itinerary.imageUrl }}
 			style={{
-				height: '100vw',
-				width: '100vw',
+				height: '100pt',
+				width: '100pt',
 			}}
 		/>
 		{planGroups.map((planGroup) =>
@@ -31,8 +31,8 @@ export const ICO001ItineraryPost = ({ itinerary, planGroups, plans }: ItineraryP
 						<Image
 							source={{ uri: plan.imageUrl }}
 							style={{
-								height: '50vw',
-								width: '100vw',
+								height: '50pt',
+								width: '100pt',
 							}}
 						/>
 						{plan.transportationMode && plan.transportationDepartureTime && (

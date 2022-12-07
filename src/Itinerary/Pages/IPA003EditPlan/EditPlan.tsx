@@ -57,8 +57,8 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 			<Image
 				source={{ uri: pagePlan.imageUrl }}
 				style={{
-					height: '50vw',
-					width: '100vw',
+					height: '50pt',
+					width: '100pt',
 				}}
 			/>
 			<PCO001SearchPlace
