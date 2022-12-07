@@ -9,6 +9,8 @@ export const CCO005BottomSheet = ({
 	setBottomSheetVisible,
 	onClose,
 }: BottomSheetPropsInterface) => {
+	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/376 BottomSheetModal で背景が暗くならない
+	
 	// ref
 	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
