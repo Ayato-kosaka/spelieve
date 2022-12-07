@@ -52,7 +52,7 @@ export const IPA002ItineraryCover = ({
 			/>
 			<View style={{ flexDirection: 'row' }}>
 				{pageItinerary.tags.map((tag, index) => (
-					<Chip closeIcon="close-circle" onClose={() => deleteTag(index)}>
+					<Chip key={tag} closeIcon="close-circle" onClose={() => deleteTag(index)}>
 						{tag}
 					</Chip>
 				))}

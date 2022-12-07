@@ -72,7 +72,7 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 			<TextInput label={i18n.t('メモ')} value={pagePlan.memo} onChange={onChangeMemo} onBlur={updatePlan} multiline />
 			<View style={{ flexDirection: 'row' }}>
 				{pagePlan.tags.map((tag, index) => (
-					<Chip closeIcon="close-circle" onClose={() => deleteTag(index)}>
+					<Chip key={tag} closeIcon="close-circle" onClose={() => deleteTag(index)}>
 						{tag}
 					</Chip>
 				))}
