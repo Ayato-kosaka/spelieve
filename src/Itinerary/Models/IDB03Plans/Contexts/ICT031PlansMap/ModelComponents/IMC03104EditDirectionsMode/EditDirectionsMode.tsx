@@ -39,6 +39,7 @@ export const IMC03104EditDirectionsMode = ({
 			<View style={{ flexDirection: 'row', flexGrow: 1, justifyContent: 'space-around' }}>
 				{[TravelMode.walking, TravelMode.bicycling, TravelMode.driving, TravelMode.transit].map((travelMode) => (
 					<Pressable
+						key={travelMode}
 						onPress={() => {
 							setDirectionsMode({
 								...directionsMode,
@@ -62,6 +63,7 @@ export const IMC03104EditDirectionsMode = ({
 						{[TransitMode.bus, TransitMode.rail, TransitMode.subway, TransitMode.train, TransitMode.tram].map(
 							(transitMode) => (
 								<Pressable
+									key={transitMode}
 									onPress={() => {
 										const transitModes = [...directionsMode.transitModes];
 										if (transitModes.includes(transitMode)) {
@@ -123,6 +125,7 @@ export const IMC03104EditDirectionsMode = ({
 			<View>
 				{[TravelRestriction.highways, TravelRestriction.tolls, TravelRestriction.ferries].map((travelRestriction) => (
 					<Pressable
+						key={travelRestriction}
 						style={{ flexDirection: 'row', alignItems: 'center' }}
 						onPress={() => {
 							const travelRestrictions = [...directionsMode.avoid];
