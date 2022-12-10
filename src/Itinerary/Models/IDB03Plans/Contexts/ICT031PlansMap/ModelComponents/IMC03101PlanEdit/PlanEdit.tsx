@@ -41,7 +41,7 @@ export const IMC03101PlanEdit = ({
 				{DateUtils.formatToHHMM(plan.placeStartTime)}~{DateUtils.formatToHHMM(plan.placeEndTime)}
 			</Text>
 			{plan.tags.map((tag) => (
-				<Chip>{tag}</Chip>
+				<Chip key={tag}>{tag}</Chip>
 			))}
 			<Button
 				title={i18n.t('予定を削除')}
