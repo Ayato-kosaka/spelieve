@@ -6,7 +6,13 @@ import i18n from '@/Common/Hooks/i18n-js';
 import { ENV } from '@/ENV';
 import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001GooglePlaceAPI';
 
-export const PCO001SearchPlace = ({ onAutoCompleteClicked, hideCities }: SearchPlacePropsInterface) => (
+export const PCO001SearchPlace = ({
+	onAutoCompleteClicked,
+	hideCities,
+	fetchDetails,
+	value,
+	onChange,
+}: SearchPlacePropsInterface) => (
 	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/309 Web用プロキシサーバ立てる
 	<GooglePlacesAutocomplete
 		placeholder={i18n.t('searchPlaceText')}
@@ -23,6 +29,10 @@ export const PCO001SearchPlace = ({ onAutoCompleteClicked, hideCities }: SearchP
 				'Access-Control-Allow-Origin': '*',
 			},
 		}}
-		fetchDetails
+		fetchDetails={fetchDetails}
+		textInputProps={{
+			value,
+			onChange,
+		}}
 	/>
 );

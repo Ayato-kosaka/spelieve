@@ -1,10 +1,11 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ActivityIndicator, FlatList, Image, ScrollView } from 'react-native';
-import { Chip, TextInput, Searchbar } from 'react-native-paper';
+import { ActivityIndicator, Dimensions, Image, ScrollView, View } from 'react-native';
+import { Chip, TextInput, Searchbar, Text } from 'react-native-paper';
 
 import { IPA002ItineraryCoverController } from './ItineraryCoverController';
 
 import { BottomTabParamList } from '@/App';
+import { CCO003DateTimePicker } from '@/Common/Components/CCO003DateTimePicker';
 import i18n from '@/Common/Hooks/i18n-js';
 
 export const IPA002ItineraryCover = ({
@@ -12,7 +13,7 @@ export const IPA002ItineraryCover = ({
 	navigation,
 }: NativeStackScreenProps<BottomTabParamList, 'IPA002ItineraryCover'>) => {
 	const { itineraryID } = route.params;
-	const { pageItinerary, updateItinerary, handleOnChange, deleteTag, shouldNavigate, isLoading } =
+	const { pageItinerary, updateItinerary, handleOnChange, deleteTag, shouldNavigate, isLoading, setPageItinerary } =
 		IPA002ItineraryCoverController({ itineraryID });
 
 	if (shouldNavigate) {
@@ -23,6 +24,8 @@ export const IPA002ItineraryCover = ({
 		return <ActivityIndicator animating />;
 	}
 
+	// TODO: ↓Style に切り出す
+	const WINDOW = Dimensions.get('window');
 	/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/300 Itinerary の style を修正する */
 
 	return (
@@ -32,8 +35,8 @@ export const IPA002ItineraryCover = ({
 				<Image
 					source={{ uri: pageItinerary.imageUrl }}
 					style={{
-						height: '100vw',
-						width: '100vw',
+						height: WINDOW.width,
+						width: WINDOW.width,
 					}}
 				/>
 			)}
@@ -49,26 +52,26 @@ export const IPA002ItineraryCover = ({
 				onChange={handleOnChange('subTitle')}
 				onBlur={updateItinerary}
 			/>
-			<FlatList
-				data={pageItinerary.tags}
-				horizontal
-				renderItem={(renderItemInfo) => (
-					<Chip closeIcon="close-circle" onClose={() => deleteTag(renderItemInfo.index)}>
-						{renderItemInfo.item}
+			<View style={{ flexDirection: 'row' }}>
+				{pageItinerary.tags.map((tag, index) => (
+					<Chip key={tag} closeIcon="close-circle" onClose={() => deleteTag(index)}>
+						{tag}
 					</Chip>
-				)}
-				ListFooterComponent={
-					/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/298 Tagを取得するSearchBarを実装する */
-					<Searchbar placeholder="Search" value="" />
-				}
-			/>
-			{/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/299 DatePickerを実装する */}
-			<TextInput
-				label={i18n.t('滞在開始日')}
-				value={`${pageItinerary.startDate.getMonth() + 1}/${pageItinerary.startDate.getDate()}`}
-				onChange={handleOnChange('startDate')}
-				onBlur={updateItinerary}
-			/>
+				))}
+				{/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/298 Tagを取得するSearchBarを実装する */}
+				<Searchbar placeholder="Search" value="" />
+			</View>
+			<View>
+				<Text>{i18n.t('滞在開始日')}</Text>
+				<CCO003DateTimePicker
+					value={pageItinerary.startDate}
+					onChange={(event, date) => {
+						if (event.type === 'set') {
+							setPageItinerary({ ...pageItinerary, startDate: date! });
+						}
+					}}
+				/>
+			</View>
 			<TextInput
 				label={i18n.t('キャプション')}
 				value={pageItinerary.caption}

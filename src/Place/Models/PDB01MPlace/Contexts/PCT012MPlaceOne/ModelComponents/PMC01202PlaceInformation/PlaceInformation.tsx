@@ -6,7 +6,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import { PCT012MPlaceOne } from '../../MPlaceOne';
 
-
 import { styles } from './PlaceInformationStyle';
 
 import i18n from '@/Common/Hooks/i18n-js';
@@ -52,6 +51,7 @@ export const PMC01202PlaceInformation = () => {
 					<Text style={styles.infoText}>{i18n.t('Opening Hours')}</Text>
 				</MaterialCommunityIcons>
 				{Array.isArray(place.openingHours) ? (
+					// TODO: https://github.com/Ayato-kosaka/spelieve/issues/377 PMC01202PlaceInformationのFlatList をmapに変更する
 					<FlatList
 						data={place.openingHours}
 						renderItem={(itemData) => {

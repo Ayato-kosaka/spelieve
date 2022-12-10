@@ -1,5 +1,5 @@
 import { setDoc } from 'firebase/firestore';
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, useCallback } from 'react';
 import { TextInputChangeEventData } from 'react-native';
 
 import {
@@ -16,6 +16,8 @@ export function IPA002ItineraryCoverController({
 	const [pageItinerary, setPageItinerary] = useState<ItineraryOneInterface | undefined>(undefined);
 	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
 
+	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/347 Itineray ロック機能実装
+
 	useEffect(() => {
 		if (itineraryID) {
 			setItineraryID(itineraryID);
@@ -28,22 +30,28 @@ export function IPA002ItineraryCoverController({
 		}
 	}, [itineraryDocSnap]);
 
-	const updateItinerary = (): void => {
+	const updateItinerary = useCallback(() => {
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		setDoc<ItineraryOneInterface>(itineraryDocSnap!.ref, { ...pageItinerary! });
-	};
+		setDoc<ItineraryOneInterface>(itineraryDocSnap!.ref, { ...pageItinerary!, updatedAt: new Date() });
+	}, [itineraryDocSnap, pageItinerary]);
 
-	const handleOnChange =
+	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/345 ItineraryのDateを変えたらPlanGroupのDateも変える
+	const handleOnChange = useCallback(
 		(column: keyof ItineraryOneInterface) =>
-		({ nativeEvent }: { nativeEvent: TextInputChangeEventData }) => {
-			setPageItinerary({ ...pageItinerary!, [column]: nativeEvent.text });
-		};
+			({ nativeEvent }: { nativeEvent: TextInputChangeEventData }) => {
+				setPageItinerary({ ...pageItinerary!, [column]: nativeEvent.text });
+			},
+		[pageItinerary],
+	);
 
-	const deleteTag = (index: number): void => {
-		const newTags: string[] = pageItinerary!.tags.splice(index, 1);
-		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		setDoc<ItineraryOneInterface>(itineraryDocSnap!.ref, { ...pageItinerary!, tags: newTags });
-	};
+	const deleteTag = useCallback(
+		(index: number): void => {
+			const newTags: string[] = pageItinerary!.tags.splice(index, 1);
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			setDoc<ItineraryOneInterface>(itineraryDocSnap!.ref, { tags: newTags }, { merge: true });
+		},
+		[itineraryDocSnap, pageItinerary],
+	);
 
 	const shouldNavigate: boolean = !itineraryID || (!!itineraryDocSnap && !itineraryDocSnap.exists());
 
@@ -56,5 +64,6 @@ export function IPA002ItineraryCoverController({
 		deleteTag,
 		shouldNavigate,
 		isLoading,
+		setPageItinerary,
 	};
 }

@@ -1,13 +1,10 @@
+import { TransitMode, TransitRoutingPreference } from '@googlemaps/google-maps-services-js';
 import { collection, query, QuerySnapshot, onSnapshot, addDoc, orderBy, setDoc } from 'firebase/firestore';
 import { useState, createContext, useEffect, useContext, useMemo, ReactNode } from 'react';
 
-import {
-	PlanGroupsListInterface,
-	PlanGroupsListValInterface,
-	PlansMapInterface,
-} from 'spelieve-common/lib/Interfaces/Itinerary';
+import { PlanGroupsListInterface, PlanGroupsListValInterface } from 'spelieve-common/lib/Interfaces/Itinerary';
 import { PlanGroups } from 'spelieve-common/lib/Models/Itinerary/IDB02/PlanGroups';
-import { Plans } from 'spelieve-common/lib/Models/Itinerary/IDB03/Plans';
+import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
 import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
@@ -40,16 +37,47 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 				query(planGroupsCRef, orderBy(PlanGroups.Cols.representativeStartDateTime)),
 				(querySnap) => {
 					if (querySnap.empty) {
-						/* eslint @typescript-eslint/no-floating-promises: 0 */
-						addDoc(planGroupsCRef, { ...PlanGroups.fromJSON({}) });
+						// eslint-disable-next-line @typescript-eslint/no-floating-promises
+						addDoc(planGroupsCRef, {
+							plans: [],
+							representativePlanID: '',
+							dayNumber: 0,
+							time: DateUtils.initialDate(),
+							representativeStartDateTime: DateUtils.initialDate(),
+							createdAt: new Date(),
+							updatedAt: new Date(),
+						});
 					} else {
 						querySnap.docs.forEach((queryDocumentSnapshot) => {
-							const data: PlanGroupsListInterface = queryDocumentSnapshot.data();
-							if (!data.plans.length) {
-								addDoc<PlansMapInterface>(plansCRef, { ...Plans.fromJSON({}) }).then((planDocRef) => {
-									data.plans.push(planDocRef.id);
-									/* eslint @typescript-eslint/no-floating-promises: 0 */
-									setDoc(queryDocumentSnapshot.ref, { ...data });
+							const plans = [...queryDocumentSnapshot.data().plans];
+							if (plans.length === 0) {
+								// eslint-disable-next-line @typescript-eslint/no-floating-promises
+								addDoc(plansCRef, {
+									title: '',
+									placeSpan: DateUtils.initialDate(),
+									placeStartTime: new Date(),
+									placeEndTime: new Date(),
+									tags: [],
+									transportationSpan: DateUtils.initialDate(),
+									avoid: [],
+									transitModes: [
+										TransitMode.bus,
+										TransitMode.rail,
+										TransitMode.subway,
+										TransitMode.train,
+										TransitMode.tram,
+									],
+									transitRoutingPreference: TransitRoutingPreference.fewer_transfers,
+									createdAt: new Date(),
+									updatedAt: new Date(),
+								}).then((planDocRef) => {
+									plans.push(planDocRef.id);
+									// eslint-disable-next-line @typescript-eslint/no-floating-promises
+									setDoc(
+										queryDocumentSnapshot.ref,
+										{ plans, representativeStartDateTime: new Date(), representativePlanID: planDocRef.id },
+										{ merge: true },
+									);
 								});
 							}
 						});
@@ -62,10 +90,12 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 		return () => undefined;
 	}, [planGroupsCRef, plansCRef]);
 
-	/* eslint react/jsx-no-constructed-context-values: 0 */
-	const value: PlanGroupsListValInterface = {
-		planGroupsQSnap,
-		planGroupsCRef,
-	};
+	const value: PlanGroupsListValInterface = useMemo(
+		() => ({
+			planGroupsQSnap,
+			planGroupsCRef,
+		}),
+		[planGroupsQSnap, planGroupsCRef],
+	);
 	return <ICT021PlanGroupsList.Provider value={value}>{children}</ICT021PlanGroupsList.Provider>;
 };

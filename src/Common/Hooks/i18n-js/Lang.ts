@@ -3,5 +3,18 @@ import { LangIf } from './LangIf';
 const lang: LangIf = {
 	welcome: 'welcome',
 	searchPlaceText: 'searchPlaceText',
+	'Opening Hours': 'Opening Hours',
+	'Customer Reviews': 'Customer Reviews',
+	Sunday: 'Sunday',
+	Monday: 'Monday',
+	Tuesday: 'Tuesday',
+	Wednesday: 'Wednesday',
+	Thursday: 'Thursday',
+	Friday: 'Friday',
+	Saturday: 'Saturday',
+	'show more': 'show more',
+	'show more info at Google Map': 'show more info at Google Map',
+	'No Opening Hours Infomation': 'No Opening Hours Infomation',
+	'Open 24hours': 'Open 24hours',
 };
 export default lang;

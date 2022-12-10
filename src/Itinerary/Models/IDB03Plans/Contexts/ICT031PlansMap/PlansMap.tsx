@@ -1,3 +1,9 @@
+import {
+	TransitMode,
+	TravelMode,
+	TransitRoutingPreference,
+	TravelRestriction,
+} from '@googlemaps/google-maps-services-js';
 import { collection, query, onSnapshot } from 'firebase/firestore';
 import { useState, createContext, useEffect, useMemo, useContext, ReactNode } from 'react';
 
@@ -6,6 +12,11 @@ import { Plans } from 'spelieve-common/lib/Models/Itinerary/IDB03/Plans';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
 import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
+import {
+	transitModeConverter,
+	travelModeConverter,
+	travelRestrictionConverter,
+} from '@/Place/Hooks/PHK001GooglePlaceAPI';
 
 export const ICT031PlansMap = createContext({} as PlansMapValInterface);
 
@@ -20,7 +31,22 @@ export const ICT031PlansMapProvider = ({ children }: { children: ReactNode }) =>
 			return collection(itineraryDocSnap.ref, Plans.modelName).withConverter(
 				FirestoreConverter<Plans, PlansMapInterface>(
 					Plans,
-					(data) => data,
+					(data) => ({
+						...data,
+						transportationMode: (Object.keys(travelModeConverter) as TravelMode[]).find(
+							(travelMode) => travelMode === data.transportationMode,
+						),
+						transitModes: data.transitModes
+							.map((e) => (Object.keys(transitModeConverter) as TransitMode[]).find((item) => e === item))
+							.filter((item): item is TransitMode => item !== undefined),
+						transitRoutingPreference:
+							[TransitRoutingPreference.fewer_transfers, TransitRoutingPreference.less_walking].find(
+								(transitRoutingPreference) => transitRoutingPreference === data.transitRoutingPreference,
+							) || TransitRoutingPreference.fewer_transfers,
+						avoid: data.avoid
+							.map((e) => (Object.keys(travelRestrictionConverter) as TravelRestriction[]).find((item) => e === item))
+							.filter((item): item is TravelRestriction => item !== undefined),
+					}),
 					(data) => data,
 				),
 			);
@@ -53,12 +79,14 @@ export const ICT031PlansMapProvider = ({ children }: { children: ReactNode }) =>
 		return () => undefined;
 	}, [plansCRef]);
 
-	/* eslint react/jsx-no-constructed-context-values: 0 */
-	const value: PlansMapValInterface = {
-		plansDocSnapMap,
-		plansCRef,
-		isPlansLoading,
-	};
+	const value: PlansMapValInterface = useMemo(
+		() => ({
+			plansDocSnapMap,
+			plansCRef,
+			isPlansLoading,
+		}),
+		[plansDocSnapMap, plansCRef, isPlansLoading],
+	);
 
 	return <ICT031PlansMap.Provider value={value}>{children}</ICT031PlansMap.Provider>;
 };
