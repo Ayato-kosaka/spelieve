@@ -8,6 +8,7 @@ import { PPA002Place } from '../PPA002Place/Place';
 
 import { BottomTabParamList } from '@/App';
 import { PCT011MPlacesListProvider } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
+import { theme } from '@/ThemeProvider';
 
 export type PlaceStackParamList = {
 	PPA001Places: PlacesPropsInterface;

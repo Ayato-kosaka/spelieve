@@ -6,6 +6,7 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import i18n from './Common/Hooks/i18n-js';
 import { ItineraryPageNavigator, ItineraryStackParamList } from './Itinerary/Pages/ItineraryPageNavigator';
 import { PlacePageNavigator, PlaceStackParamList } from './Place/Pages/PlacePageNavigator/PlacePageNavigator';
+import { theme } from './ThemeProvider';
 
 export type BottomTabParamList = {
 	Itinerary: NavigatorScreenParams<ItineraryStackParamList>;
@@ -20,7 +21,7 @@ export const App = () => (
 		linking={{
 			prefixes: ['spelieve.com'],
 		}}>
-		<PaperProvider>
+		<PaperProvider theme={theme}>
 			<BottomTab.Navigator initialRouteName="Itinerary">
 				<BottomTab.Screen
 					name="Itinerary"
