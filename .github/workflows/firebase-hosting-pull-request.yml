@@ -13,8 +13,9 @@ jobs:
           repository: Ayato-kosaka/spelieve-secret
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           path: spelieve-secret
-      - run: 'mv ./spelieve-secret/spelieve-frontend/ENV.ts ./src'
-      - run: 'npm ci && npm i -g expo-cli && NODE_ENVIRONMENT=development expo build:web'
+      - run: 'mv ./spelieve-secret/spelieve-frontend/release/ENV.ts ./src'
+      - run: 'rm -rf spelieve-secret/'
+      - run: 'npm ci && npm i -g expo-cli && expo build:web'
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
