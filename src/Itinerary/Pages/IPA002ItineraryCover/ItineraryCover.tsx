@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ActivityIndicator, Image, ScrollView, View } from 'react-native';
+import { ActivityIndicator, Dimensions, Image, ScrollView, View } from 'react-native';
 import { Chip, TextInput, Searchbar, Text } from 'react-native-paper';
 
 import { IPA002ItineraryCoverController } from './ItineraryCoverController';
@@ -24,6 +24,8 @@ export const IPA002ItineraryCover = ({
 		return <ActivityIndicator animating />;
 	}
 
+	// TODO: ↓Style に切り出す
+	const WINDOW = Dimensions.get('window');
 	/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/300 Itinerary の style を修正する */
 
 	return (
@@ -33,8 +35,8 @@ export const IPA002ItineraryCover = ({
 				<Image
 					source={{ uri: pageItinerary.imageUrl }}
 					style={{
-						height: 100,
-						width: 100,
+						height: WINDOW.width,
+						width: WINDOW.width,
 					}}
 				/>
 			)}
