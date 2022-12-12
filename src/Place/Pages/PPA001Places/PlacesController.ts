@@ -1,13 +1,13 @@
+import { AddressType, PlaceAutocompleteResult } from '@googlemaps/google-maps-services-js';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useContext, useEffect, useState } from 'react';
-import { GooglePlaceData, GooglePlaceDetail, AddressComponent } from 'react-native-google-places-autocomplete';
 
 import {
 	MPlacesListAddressInterface,
-	PlacesControllerInterface,
 	PlacesPropsInterface,
 } from 'spelieve-common/lib/Interfaces';
+import { MPlace } from 'spelieve-common/lib/Models/Place/PDB01/MPlace';
 
 import { BottomTabParamList } from '@/App';
 import { PCT011MPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
@@ -17,7 +17,7 @@ export const PPA001PlacesController = ({
 	administrativeAreaLevel1,
 	administrativeAreaLevel2,
 	locality,
-}: PlacesPropsInterface): PlacesControllerInterface => {
+}: PlacesPropsInterface) => {
 	const { placesList, setAddress } = useContext(PCT011MPlacesList);
 	const navigation = useNavigation<NativeStackNavigationProp<BottomTabParamList>>();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -57,28 +57,23 @@ export const PPA001PlacesController = ({
 		});
 	};
 
-	const onAutoCompleteClicked = (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
-		const isIncludes = (arr: Array<string>, target: Array<string>) => arr.some((el) => target.includes(el));
-		const pointType: Array<string> = ['establishment', 'street_address'];
-		const sendedDataTypes: Array<string> = details?.types || [];
+	const onAutoCompleteClicked = (data: PlaceAutocompleteResult, details: MPlace | null) => {
+		const isIncludes = (arr: AddressType[], target: AddressType[]) => arr.some((el) => target.includes(el));
+		const addressType: AddressType[] = [AddressType.establishment, AddressType.geocode];
+		const sendedDataTypes: AddressType[] = data.types || [];
 
-		if (isIncludes(sendedDataTypes, pointType)) {
+		if (isIncludes(sendedDataTypes, addressType)) {
 			// 地点
 			onPlaceSelected(data.place_id);
 		} else {
 			// 地名
-			const addressParts: AddressComponent[] = details?.address_components || [];
+			const searchedAddress: MPlacesListAddressInterface = {
+				country: details?.country,
+				administrativeAreaLevel1: details?.administrativeAreaLevel1,
+				administrativeAreaLevel2: details?.administrativeAreaLevel2,
+				locality: details?.locality,
+			};
 
-			const searchedAddress: MPlacesListAddressInterface = {};
-
-			searchedAddress.country = addressParts.find((addressPart) => addressPart.types.includes('country'))?.long_name;
-			searchedAddress.administrativeAreaLevel1 = addressParts.find((addressPart) =>
-				addressPart.types.includes('administrative_area_level_1'),
-			)?.long_name;
-			searchedAddress.administrativeAreaLevel2 = addressParts.find((addressPart) =>
-				addressPart.types.includes('administrative_area_level_2'),
-			)?.long_name;
-			searchedAddress.locality = addressParts.find((addressPart) => addressPart.types.includes('locality'))?.long_name;
 			navigation.navigate('Place', {
 				screen: 'PPA001Places',
 				params: searchedAddress,

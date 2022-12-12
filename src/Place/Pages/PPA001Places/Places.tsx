@@ -5,7 +5,7 @@ import { ActivityIndicator } from 'react-native-paper';
 import { PPA001PlacesController } from './PlacesController';
 
 import { BottomTabParamList } from '@/App';
-import { PCO001SearchPlace } from '@/Place/Components/PCO001SearchPlace/SearchPlace';
+import { PCO002GooglePlacesAutocomplete } from '@/Place/Components/PCO002GooglePlacesAutocomplete/GooglePlacesAutocomplete';
 import { PMC01101GoogleMapPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList/ModelComponents/PMC01101GoogleMapPlacesList/GoogleMapPlacesList';
 import { PMC01102PlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList/ModelComponents/PMC01102PlacesList/PlacesList';
 
@@ -18,7 +18,12 @@ export const PPA001Places = ({ navigation, route }: NativeStackScreenProps<Botto
 	return (
 		<>
 			<PMC01101GoogleMapPlacesList />
-			<PCO001SearchPlace onAutoCompleteClicked={onAutoCompleteClicked} hideCities={false} fetchDetails />
+			{/* <PCO001SearchPlace onAutoCompleteClicked={onAutoCompleteClicked} hideCities={false} fetchDetails /> */}
+			<PCO002GooglePlacesAutocomplete
+				onAutoCompleteClicked={onAutoCompleteClicked}
+				onlySpot={false}
+				fetchDetails
+			/>
 			<PMC01102PlacesList onPlaceSelected={onPlaceSelected} />
 		</>
 	);

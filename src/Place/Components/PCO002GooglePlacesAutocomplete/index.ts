@@ -1,1 +1,1 @@
-export * from './PCO002GooglePlacesAutocomplete';
+export * from './GooglePlacesAutocomplete';
