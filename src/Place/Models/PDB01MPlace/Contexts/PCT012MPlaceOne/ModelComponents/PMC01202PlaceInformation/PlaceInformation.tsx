@@ -50,18 +50,17 @@ export const PMC01202PlaceInformation = () => {
 				<MaterialCommunityIcons name="clock-time-three-outline" size={20}>
 					<Text style={styles.infoText}>{i18n.t('Opening Hours')}</Text>
 				</MaterialCommunityIcons>
-				{Array.isArray(place.openingHours) ? 
-					place.openingHours.map(([day, time]) => {
-						return (
-							<View>
-								<Text style={styles.infoText}>
-									{day} {time}
-								</Text>
-							</View>
-						);
-					}) 
-					: (<Text style={styles.infoText}>{place.openingHours}</Text>)
-				}
+				{Array.isArray(place.openingHours) ? (
+					place.openingHours.map(([day, time]) => (
+						<View key={day}>
+							<Text style={styles.infoText}>
+								{day} {time}
+							</Text>
+						</View>
+					))
+				) : (
+					<Text style={styles.infoText}>{place.openingHours}</Text>
+				)}
 			</View>
 			<View>
 				<Text style={styles.infoText}>{i18n.t('Customer Reviews')}</Text>
