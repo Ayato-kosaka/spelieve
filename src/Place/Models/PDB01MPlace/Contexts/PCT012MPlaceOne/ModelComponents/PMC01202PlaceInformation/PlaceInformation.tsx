@@ -50,25 +50,18 @@ export const PMC01202PlaceInformation = () => {
 				<MaterialCommunityIcons name="clock-time-three-outline" size={20}>
 					<Text style={styles.infoText}>{i18n.t('Opening Hours')}</Text>
 				</MaterialCommunityIcons>
-				{Array.isArray(place.openingHours) ? (
-					// TODO: https://github.com/Ayato-kosaka/spelieve/issues/377 PMC01202PlaceInformationのFlatList をmapに変更する
-					<FlatList
-						data={place.openingHours}
-						renderItem={(itemData) => {
-							const [day, time] = itemData.item;
-							return (
-								<View>
-									<Text style={styles.infoText}>
-										{day} {time}
-									</Text>
-								</View>
-							);
-						}}
-						numColumns={1}
-					/>
-				) : (
-					<Text style={styles.infoText}>{place.openingHours}</Text>
-				)}
+				{Array.isArray(place.openingHours) ? 
+					place.openingHours.map(([day, time]) => {
+						return (
+							<View>
+								<Text style={styles.infoText}>
+									{day} {time}
+								</Text>
+							</View>
+						);
+					}) 
+					: (<Text style={styles.infoText}>{place.openingHours}</Text>)
+				}
 			</View>
 			<View>
 				<Text style={styles.infoText}>{i18n.t('Customer Reviews')}</Text>
