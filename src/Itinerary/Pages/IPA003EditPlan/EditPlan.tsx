@@ -63,10 +63,8 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 			/>
 			<PCO002GooglePlacesAutocomplete
 				onAutoCompleteClicked={onAutoCompleteClicked}
-				hideCities
+				onlySpot
 				fetchDetails={false}
-				value={pagePlan.title}
-				onChange={onChangeSearchPlace}
 			/>
 			<Divider style={{ marginVertical: 20 }} />
 			<TextInput label={i18n.t('メモ')} value={pagePlan.memo} onChange={onChangeMemo} onBlur={updatePlan} multiline />
