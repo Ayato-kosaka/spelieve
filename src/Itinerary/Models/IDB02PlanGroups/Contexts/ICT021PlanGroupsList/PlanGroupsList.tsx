@@ -4,6 +4,7 @@ import { useState, createContext, useEffect, useContext, useMemo, ReactNode, use
 
 import { PlanGroupsListInterface, PlanGroupsListValInterface } from 'spelieve-common/lib/Interfaces/Itinerary';
 import { PlanGroups } from 'spelieve-common/lib/Models/Itinerary/IDB02/PlanGroups';
+import { Plans } from 'spelieve-common/lib/Models/Itinerary/IDB03/Plans';
 import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
@@ -35,7 +36,7 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 		if (!plansCRef || !planGroupsCRef) {
 			return;
 		}
-		await addDoc(plansCRef, {
+		const newPlan: Plans = {
 			title: '',
 			placeSpan: DateUtils.initialDate(),
 			placeStartTime: new Date(),
@@ -47,13 +48,14 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 			transitRoutingPreference: TransitRoutingPreference.fewer_transfers,
 			createdAt: new Date(),
 			updatedAt: new Date(),
-		});
+		};
+		const planDocRef = await addDoc(plansCRef, newPlan);
 		await addDoc(planGroupsCRef, {
-			plans: [],
-			representativePlanID: '',
+			plans: [planDocRef.id],
+			representativePlanID: planDocRef.id,
 			dayNumber: 0,
 			time: DateUtils.initialDate(),
-			representativeStartDateTime: DateUtils.initialDate(),
+			representativeStartDateTime: newPlan.placeStartTime,
 			createdAt: new Date(),
 			updatedAt: new Date(),
 		});

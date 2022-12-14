@@ -24,14 +24,10 @@ export const IPA001ItineraryEdit = ({
 
 	// TODO: 課題解消後Conroller に移動する
 
-	useEffect(() => {
-		if (itineraryID) {
-			setItineraryID(itineraryID);
-		}
-	}, [itineraryID, setItineraryID]);
-
+	console.log({ itineraryDocSnap, isPlansLoading, planGroupsQSnap });
 	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/335 Itinerary 新規作成
 	const createItinerary = useCallback(async () => {
+		console.log('createItinerary', itineraryDocSnap);
 		if (itineraryDocSnap) {
 			const itineray = await addDoc<ItineraryOneInterface>(itineraryDocSnap.ref.parent, {
 				title: '',
@@ -42,15 +38,22 @@ export const IPA001ItineraryEdit = ({
 				createdAt: new Date(),
 				updatedAt: new Date(),
 			});
-			setItineraryID(itineray.id);
+			navigation.setParams({ itineraryID: itineray.id });
 		}
-	}, [itineraryDocSnap, setItineraryID]);
+	}, [itineraryDocSnap, navigation]);
+
+	useEffect(() => {
+		if (itineraryID) {
+			setItineraryID(itineraryID);
+		}
+	}, [itineraryID, setItineraryID]);
 
 	if (!itineraryDocSnap || isPlansLoading || !planGroupsQSnap) {
 		return <ActivityIndicator animating />;
 	}
 
 	if (!itineraryDocSnap.exists()) {
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		createItinerary();
 		return <ActivityIndicator animating />;
 	}
