@@ -27,7 +27,7 @@ export const PCO002GooglePlacesAutocomplete = ({
 			onChangeText={onChangeInput}
 			flatListProps={{
 				// TODO: 「'item' PropType is defined but prop is never used」eslintエラーが出る
-				renderItem: ({ item }: { item: PlaceAutocompleteResult }) => (
+				renderItem: ({ item }: ListRenderItemInfo<PlaceAutocompleteResult>) => (
 					<TouchableOpacity onPress={() => onPressAutocomplete(item)}>
 						<Text style={{ color: 'black' }}>{item.description}</Text>
 					</TouchableOpacity>
