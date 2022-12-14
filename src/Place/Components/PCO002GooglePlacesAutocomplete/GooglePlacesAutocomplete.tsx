@@ -1,4 +1,5 @@
 import { PlaceAutocompleteResult } from '@googlemaps/google-maps-services-js';
+import { ListRenderItemInfo } from 'react-native';
 import { AutocompleteInput } from 'react-native-autocomplete-input';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Text } from 'react-native-paper';
@@ -7,7 +8,6 @@ import { PCO002GooglePlacesAutocompleteController } from './GooglePlacesAutocomp
 import { GooglePlacesAutocompletePropsInterface } from './GooglePlacesAutocompletePropsInterface';
 
 import i18n from '@/Common/Hooks/i18n-js';
-import { ListRenderItemInfo } from 'react-native';
 
 export const PCO002GooglePlacesAutocomplete = ({
 	// TODO: 「'onAutoCompleteClicked' is missing in props validation」ESlintErrorが出る(onlySpot, fetchDetailsも)

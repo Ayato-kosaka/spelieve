@@ -3,10 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useContext, useEffect, useState } from 'react';
 
-import {
-	MPlacesListAddressInterface,
-	PlacesPropsInterface,
-} from 'spelieve-common/lib/Interfaces';
+import { MPlacesListAddressInterface, PlacesPropsInterface } from 'spelieve-common/lib/Interfaces';
 import { MPlace } from 'spelieve-common/lib/Models/Place/PDB01/MPlace';
 
 import { BottomTabParamList } from '@/App';
