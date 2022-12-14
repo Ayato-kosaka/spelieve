@@ -26,22 +26,18 @@ export const PCO002GooglePlacesAutocompleteController = ({
 
 	const onChangeInput = (input: string) => {
 		setSearchInput(input);
-		const fetchPlaceAutocomplete = async () => {
-			await PlaceHttpPost<Omit<PlaceAutocompleteRequest['params'], 'key'>, PlaceAutocompleteResponse>('PBL004', {
-				input,
-				language: GooglePlaceLanguageTagFromIETFLanguageTag[i18n.locale],
-				types: onlySpot ? ('geocode|establishment' as unknown as PlaceAutocompleteType) : undefined,
+		PlaceHttpPost<Omit<PlaceAutocompleteRequest['params'], 'key'>, PlaceAutocompleteResponse>('PBL004', {
+			input,
+			language: GooglePlaceLanguageTagFromIETFLanguageTag[i18n.locale],
+			types: onlySpot ? ('geocode|establishment' as unknown as PlaceAutocompleteType) : undefined,
+		})
+			.then((res) => {
+				setplacesResult(res.data.predictions);
 			})
-				.then((res) => {
-					setplacesResult(res.data.predictions);
-				})
-				// eslint-disable-next-line no-console
-				.catch((e) =>
-					Logger('PCO002GooglePlacesAutocompleteController', 'onChangeInput.fetchPlaceAutocomplete.catch', e),
-				);
-		};
-		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		fetchPlaceAutocomplete();
+			// eslint-disable-next-line no-console
+			.catch((e) =>
+				Logger('PCO002GooglePlacesAutocompleteController', 'onChangeInput.fetchPlaceAutocomplete.catch', e),
+			);
 	};
 
 	const onPressAutocomplete = (place: PlaceAutocompleteResult) => {
