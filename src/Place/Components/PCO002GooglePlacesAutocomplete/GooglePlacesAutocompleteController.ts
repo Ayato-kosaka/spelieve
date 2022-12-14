@@ -22,7 +22,7 @@ export const PCO002GooglePlacesAutocompleteController = ({
 	fetchDetails,
 }: GooglePlacesAutocompletePropsInterface) => {
 	const [searchInput, setSearchInput] = useState<string>('');
-	const [placesResult, setPlacesResult] = useState<PlaceAutocompleteResult[]>([]); // TODO: PlaceDetailsの型？で管理 (name, place_idが必要)
+	const [placesResult, setPlacesResult] = useState<PlaceAutocompleteResult[]>([]);
 
 	const onChangeInput = (input: string) => {
 		setSearchInput(input);
