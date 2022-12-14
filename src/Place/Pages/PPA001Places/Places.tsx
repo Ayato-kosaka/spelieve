@@ -8,6 +8,7 @@ import { BottomTabParamList } from '@/App';
 import { PCO001SearchPlace } from '@/Place/Components/PCO001SearchPlace/SearchPlace';
 import { PMC01101GoogleMapPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList/ModelComponents/PMC01101GoogleMapPlacesList/GoogleMapPlacesList';
 import { PMC01102PlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList/ModelComponents/PMC01102PlacesList/PlacesList';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export const PPA001Places = ({ navigation, route }: NativeStackScreenProps<BottomTabParamList, 'PPA001Places'>) => {
 	const { onAutoCompleteClicked, onPlaceSelected, isLoading } = PPA001PlacesController(route.params);
@@ -17,6 +18,7 @@ export const PPA001Places = ({ navigation, route }: NativeStackScreenProps<Botto
 	}
 	return (
 		<>
+			<SafeAreaView />
 			<PMC01101GoogleMapPlacesList />
 			<PCO001SearchPlace onAutoCompleteClicked={onAutoCompleteClicked} hideCities={false} fetchDetails />
 			<PMC01102PlacesList onPlaceSelected={onPlaceSelected} />
