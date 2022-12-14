@@ -61,11 +61,7 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 					width: 100,
 				}}
 			/>
-			<PCO002GooglePlacesAutocomplete
-				onAutoCompleteClicked={onAutoCompleteClicked}
-				onlySpot
-				fetchDetails={false}
-			/>
+			<PCO002GooglePlacesAutocomplete onAutoCompleteClicked={onAutoCompleteClicked} onlySpot fetchDetails={false} />
 			<Divider style={{ marginVertical: 20 }} />
 			<TextInput label={i18n.t('メモ')} value={pagePlan.memo} onChange={onChangeMemo} onBlur={updatePlan} multiline />
 			<View style={{ flexDirection: 'row' }}>
