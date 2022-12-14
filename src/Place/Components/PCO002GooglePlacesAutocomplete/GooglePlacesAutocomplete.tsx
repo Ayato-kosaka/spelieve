@@ -7,6 +7,7 @@ import { PCO002GooglePlacesAutocompleteController } from './GooglePlacesAutocomp
 import { GooglePlacesAutocompletePropsInterface } from './GooglePlacesAutocompletePropsInterface';
 
 import i18n from '@/Common/Hooks/i18n-js';
+import { ListRenderItemInfo } from 'react-native';
 
 export const PCO002GooglePlacesAutocomplete = ({
 	// TODO: 「'onAutoCompleteClicked' is missing in props validation」ESlintErrorが出る(onlySpot, fetchDetailsも)
@@ -26,7 +27,6 @@ export const PCO002GooglePlacesAutocomplete = ({
 			value={searchInput}
 			onChangeText={onChangeInput}
 			flatListProps={{
-				// TODO: 「'item' PropType is defined but prop is never used」eslintエラーが出る
 				renderItem: ({ item }: ListRenderItemInfo<PlaceAutocompleteResult>) => (
 					<TouchableOpacity onPress={() => onPressAutocomplete(item)}>
 						<Text style={{ color: 'black' }}>{item.description}</Text>
