@@ -141,7 +141,6 @@ export const IMC03101PlanEditController = ({
 	const deletePlan = useCallback(async () => {
 		const newPlanGroup = { ...planGroup };
 		newPlanGroup.plans.splice(plansIndex, 1);
-		await deleteDoc(doc(plansCRef!, planID));
 		if (newPlanGroup.plans.length !== 0) {
 			if (newPlanGroup.representativePlanID === planID) {
 				[newPlanGroup.representativePlanID] = newPlanGroup.plans;
@@ -152,6 +151,7 @@ export const IMC03101PlanEditController = ({
 		} else {
 			await deleteDoc(planGroupsDoc.ref);
 		}
+		await deleteDoc(doc(plansCRef!, planID));
 	}, [planGroup, plansIndex, plansCRef, planID, planGroupsDoc.ref, plansDocSnapMap]);
 
 	const navigation = useNavigation<NativeStackNavigationProp<BottomTabParamList>>();
