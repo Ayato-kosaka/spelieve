@@ -2,7 +2,6 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { setDoc } from 'firebase/firestore';
 import { useContext, useEffect, useMemo, useCallback, useState } from 'react';
 import { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
-import { GooglePlaceData } from 'react-native-google-places-autocomplete';
 
 import { EditPlanControllerInterface } from 'spelieve-common/lib/Interfaces';
 import { PlansMapInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT031';
@@ -12,6 +11,7 @@ import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts
 import { ICT021PlanGroupsList } from '@/Itinerary/Models/IDB02PlanGroups/Contexts/ICT021PlanGroupsList';
 import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap';
 import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne';
+import { PlaceAutocompleteResult } from '@googlemaps/google-maps-services-js';
 
 export const IPA003EditPlanController = ({
 	route,
@@ -115,7 +115,7 @@ export const IPA003EditPlanController = ({
 	);
 
 	const onAutoCompleteClicked = useCallback(
-		(data: GooglePlaceData): void => {
+		(data: PlaceAutocompleteResult): void => {
 			if (!planDocSnap) {
 				return;
 			}
