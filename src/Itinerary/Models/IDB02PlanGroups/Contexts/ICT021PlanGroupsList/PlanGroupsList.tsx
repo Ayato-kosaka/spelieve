@@ -66,10 +66,6 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 			const unsubscribe = onSnapshot(
 				query(planGroupsCRef, orderBy(PlanGroups.Cols.representativeStartDateTime)),
 				(querySnap) => {
-					if (querySnap.empty) {
-						// eslint-disable-next-line @typescript-eslint/no-floating-promises
-						createPlanGroup();
-					}
 					setPlanGroupsQSnap(querySnap);
 				},
 			);

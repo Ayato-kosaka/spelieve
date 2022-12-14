@@ -4,12 +4,14 @@ import { useCallback, useContext, useEffect } from 'react';
 
 import { BottomTabParamList } from '@/App';
 import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
+import { ICT021PlanGroupsList } from '@/Itinerary/Models/IDB02PlanGroups/Contexts/ICT021PlanGroupsList';
 
 export const IPA001ItineraryEditController = ({
 	route,
 	navigation,
 }: NativeStackScreenProps<BottomTabParamList, 'IPA001ItineraryEdit'>) => {
 	const { setItineraryID, itineraryCRef } = useContext(ICT011ItineraryOne);
+	const { planGroupsQSnap, createPlanGroup } = useContext(ICT021PlanGroupsList);
 
 	const { itineraryID } = route.params;
 
@@ -36,6 +38,13 @@ export const IPA001ItineraryEditController = ({
 			createItinerary();
 		}
 	}, [createItinerary, itineraryID, setItineraryID]);
+
+	useEffect(() => {
+		if (planGroupsQSnap?.empty) {
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			createPlanGroup();
+		}
+	}, [createPlanGroup, planGroupsQSnap?.empty]);
 
 	return {
 		createItinerary,
