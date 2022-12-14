@@ -22,7 +22,7 @@ export const PCO002GooglePlacesAutocompleteController = ({
 	fetchDetails,
 }: GooglePlacesAutocompletePropsInterface) => {
 	const [searchInput, setSearchInput] = useState<string>('');
-	const [placesResult, setplacesResult] = useState<PlaceAutocompleteResult[]>([]); // TODO: PlaceDetailsの型？で管理 (name, place_idが必要)
+	const [placesResult, setPlacesResult] = useState<PlaceAutocompleteResult[]>([]); // TODO: PlaceDetailsの型？で管理 (name, place_idが必要)
 
 	const onChangeInput = (input: string) => {
 		setSearchInput(input);
@@ -32,12 +32,12 @@ export const PCO002GooglePlacesAutocompleteController = ({
 			types: onlySpot ? ('geocode|establishment' as unknown as PlaceAutocompleteType) : undefined,
 		})
 			.then((res) => {
-				setplacesResult(res.data.predictions);
+				setPlacesResult(res.data.predictions);
 			})
 			// eslint-disable-next-line no-console
-			.catch((e) =>
-				Logger('PCO002GooglePlacesAutocompleteController', 'onChangeInput.fetchPlaceAutocomplete.catch', e),
-			);
+			.catch((e) =>{
+				setPlacesResult([]);
+			});
 	};
 
 	const onPressAutocomplete = (place: PlaceAutocompleteResult) => {
