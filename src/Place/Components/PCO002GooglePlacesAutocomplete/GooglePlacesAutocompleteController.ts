@@ -41,7 +41,7 @@ export const PCO002GooglePlacesAutocompleteController = ({
 
 	const onPressAutocomplete = (place: PlaceAutocompleteResult) => {
 		const fetchDetail = async () => {
-			let detail = null;
+			let detail: MPlace | null = null;
 			if (fetchDetails) {
 				detail = await PlaceHttpPost<UpsertPlaceDataBodyInterface, MPlace>('PBL002', {
 					place_id: place.place_id,
