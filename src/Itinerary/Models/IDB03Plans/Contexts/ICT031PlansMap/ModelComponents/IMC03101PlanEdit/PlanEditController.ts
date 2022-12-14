@@ -24,8 +24,8 @@ export const IMC03101PlanEditController = ({
 	const { plansCRef, plansDocSnapMap } = useContext(ICT031PlansMap);
 	const planDocSnap = useMemo(() => plansDocSnapMap[planID], [planID, plansDocSnapMap]);
 	const plan = useMemo(() => planDocSnap.data(), [planDocSnap]);
-	const planGroups = useMemo(() => planGroupsDoc.data(), [planGroupsDoc]);
-	const plansIndex = useMemo(() => planGroups.plans.indexOf(planID), [planGroups, planID]);
+	const planGroup = useMemo(() => planGroupsDoc.data(), [planGroupsDoc]);
+	const plansIndex = useMemo(() => planGroup.plans.indexOf(planID), [planGroup, planID]);
 	const dependentPlan = useMemo(() => plansDocSnapMap[dependentPlanID].data(), [dependentPlanID, plansDocSnapMap]);
 
 	/** **********************************************************************************************
@@ -139,11 +139,20 @@ export const IMC03101PlanEditController = ({
 	}, [plan.placeStartTime.getTime(), plan.placeSpan.getTime(), beforeAfterRepresentativeType]);
 
 	const deletePlan = useCallback(async () => {
-		const newPlans = [...planGroups.plans];
-		newPlans.splice(plansIndex, 1);
-		await setDoc(planGroupsDoc.ref, { plans: newPlans }, { merge: true });
+		const newPlanGroup = { ...planGroup };
+		newPlanGroup.plans.splice(plansIndex, 1);
 		await deleteDoc(doc(plansCRef!, planID));
-	}, [plansCRef, planGroups, planID, plansIndex, planGroupsDoc.ref]);
+		if (newPlanGroup.plans.length !== 0) {
+			if (newPlanGroup.representativePlanID === planID) {
+				[newPlanGroup.representativePlanID] = newPlanGroup.plans;
+				newPlanGroup.representativeStartDateTime =
+					plansDocSnapMap[newPlanGroup.representativePlanID].data().placeStartTime;
+			}
+			await setDoc(planGroupsDoc.ref, { ...newPlanGroup });
+		} else {
+			await deleteDoc(planGroupsDoc.ref);
+		}
+	}, [planGroup, plansIndex, plansCRef, planID, planGroupsDoc.ref, plansDocSnapMap]);
 
 	const navigation = useNavigation<NativeStackNavigationProp<BottomTabParamList>>();
 	const { itineraryDocSnap } = useContext(ICT011ItineraryOne);
