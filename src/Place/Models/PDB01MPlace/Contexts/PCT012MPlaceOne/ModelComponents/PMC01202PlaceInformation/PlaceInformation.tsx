@@ -51,21 +51,13 @@ export const PMC01202PlaceInformation = () => {
 					<Text style={styles.infoText}>{i18n.t('Opening Hours')}</Text>
 				</MaterialCommunityIcons>
 				{Array.isArray(place.openingHours) ? (
-					// TODO: https://github.com/Ayato-kosaka/spelieve/issues/377 PMC01202PlaceInformationのFlatList をmapに変更する
-					<FlatList
-						data={place.openingHours}
-						renderItem={(itemData) => {
-							const [day, time] = itemData.item;
-							return (
-								<View>
-									<Text style={styles.infoText}>
-										{day} {time}
-									</Text>
-								</View>
-							);
-						}}
-						numColumns={1}
-					/>
+					place.openingHours.map(([day, time]) => (
+						<View key={`${day}${time}`}>
+							<Text style={styles.infoText}>
+								{day} {time}
+							</Text>
+						</View>
+					))
 				) : (
 					<Text style={styles.infoText}>{place.openingHours}</Text>
 				)}
