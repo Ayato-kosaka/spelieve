@@ -15,12 +15,10 @@ export const PMC01102PlacesList = ({ onPlaceSelected }: PlacesListPropsInterface
 			<FlatList
 				data={placesList}
 				renderItem={(itemData) => (
-					<View>
-						<TouchableOpacity onPress={() => onPlaceSelected(itemData.item.place_id)}>
-							<Image source={{ uri: itemData.item.imageUrl }} style={styles.image} />
-							<Text style={styles.placeName}>{itemData.item.name}</Text>
-						</TouchableOpacity>
-					</View>
+					<TouchableOpacity onPress={() => onPlaceSelected(itemData.item.place_id)} style={styles.item}>
+						<Image source={{ uri: itemData.item.imageUrl }} style={styles.image} />
+						<Text style={styles.placeName}>{itemData.item.name}</Text>
+					</TouchableOpacity>
 				)}
 				numColumns={2}
 				onEndReached={retrieveMore}
