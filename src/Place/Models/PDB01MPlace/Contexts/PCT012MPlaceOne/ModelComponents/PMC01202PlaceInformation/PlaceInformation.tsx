@@ -52,7 +52,7 @@ export const PMC01202PlaceInformation = () => {
 				</MaterialCommunityIcons>
 				{Array.isArray(place.openingHours) ? (
 					place.openingHours.map(([day, time]) => (
-						<View key={day}>
+						<View key={`${day}${time}`}>
 							<Text style={styles.infoText}>
 								{day} {time}
 							</Text>
