@@ -1,10 +1,8 @@
 import { QueryDocumentSnapshot } from 'firebase/firestore';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 import { PlanGroupsListInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT021';
-
-import { ICT031PlansMap } from '../../PlansMap';
 
 import { IMC03101PlanEdit } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03101PlanEdit';
 import { IMC03102TrafficMovementEdit } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03102TrafficMovementEdit';
@@ -14,11 +12,9 @@ export const IMC03103PlanGroupsEdit = ({
 }: {
 	planGroupsDoc: QueryDocumentSnapshot<PlanGroupsListInterface>;
 }) => {
-	const { plansCRef } = useContext(ICT031PlansMap);
 	const planGroups = planGroupsDoc.data();
 
 	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/343 itinerary Plan のドラッグアンドドロップ
-	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/346 AddPlanGroup の実装
 
 	const [isMounted, setIsMounted] = useState<boolean>(false);
 
