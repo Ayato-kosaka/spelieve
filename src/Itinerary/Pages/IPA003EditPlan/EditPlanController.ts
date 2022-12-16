@@ -35,14 +35,25 @@ export const IPA003EditPlanController = ({
 
 	const [pagePlan, setPagePlan] = useState<PlansMapInterface | undefined>(undefined);
 
-	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/342 IPA003PlanEdit コンソールエラー解消
+	const navigateToItineraryEdit = useCallback(() => {
+		navigation.navigate('Itinerary', {
+			screen: 'IPA001ItineraryEdit',
+			params: {
+				itineraryID,
+			},
+		});
+	}, [navigation, itineraryID]);
 
-	// パラメータの itineraryID を監視しし、 Itinerary Context にセットする
+	// パラメータを監視し、不足があれば navigateToItineraryEdit する
 	useEffect(() => {
-		if (itineraryID) {
-			setItineraryID(itineraryID);
+		if (itineraryID === undefined || PlanGroupsIndex === undefined || planID === undefined) {
+			// TODO: https://github.com/Ayato-kosaka/spelieve/issues/397 HelloSpelieve に遷移できない
+			navigation.navigate('Itinerary', {
+				screen: 'HelloSpelieve',
+				params: {},
+			});
 		}
-	}, [itineraryID, setItineraryID]);
+	}, [PlanGroupsIndex, itineraryID, navigateToItineraryEdit, navigation, planID, setItineraryID]);
 
 	// plan.place_id を監視し、 Place Context にセットする
 	useEffect(() => {
@@ -80,28 +91,19 @@ export const IPA003EditPlanController = ({
 	);
 
 	const isNeedToShowActivityIndicator = useMemo(
-		() => !itineraryDocSnap || isPlansLoading || !planGroupsQSnap || !planGroupDocSnap || !planGroup,
-		[itineraryDocSnap, isPlansLoading, planGroupsQSnap, planGroupDocSnap, planGroup],
+		() => !itineraryDocSnap || isPlansLoading || !planGroupsQSnap || !planGroupDocSnap || !planGroup || !pagePlan,
+		[itineraryDocSnap, isPlansLoading, planGroupsQSnap, planGroupDocSnap, planGroup, pagePlan],
 	);
 
 	const isNeedToNavigateToItineraryEdit = useMemo(
-		() => !isNeedToShowActivityIndicator && (!itineraryDocSnap!.exists() || !pagePlan),
-		[isNeedToShowActivityIndicator, itineraryDocSnap, pagePlan],
+		() => !isNeedToShowActivityIndicator && !itineraryDocSnap!.exists(),
+		[isNeedToShowActivityIndicator, itineraryDocSnap],
 	);
 
 	const updatePlan = useCallback(() => {
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		setDoc(planDocSnap!.ref, { ...pagePlan });
 	}, [pagePlan, planDocSnap]);
-
-	const navigateToItineraryEdit = useCallback(() => {
-		navigation.navigate('Itinerary', {
-			screen: 'IPA001ItineraryEdit',
-			params: {
-				itineraryID,
-			},
-		});
-	}, [navigation, itineraryID]);
 
 	const onChangeSearchPlace: (e: NativeSyntheticEvent<TextInputChangeEventData>) => void = (e) => {
 		setPagePlan({ ...pagePlan!, title: e.nativeEvent.text });
