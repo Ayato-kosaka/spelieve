@@ -26,15 +26,15 @@ export const CCO004DurationPickerController = ({
 
 	// props の value: Date を string に変換する。但し、フォーカスの有無で表示形式を変更する
 	const textInputValue = useMemo(() => {
+		const hourString = String(time.hour).padStart(2, '0');
+		const minString = String(time.min).padStart(2, '0');
 		if (isFocused) {
-			const hourString = String(time.hour).padStart(2, '0');
-			const minString = String(time.min).padStart(2, '0');
-			if (time.hour === 0) {
-				return `${minString}Min`;
-			}
-			return `${hourString}Hrs${minString}`;
+			return `${hourString}:${minString}`;
 		}
-		return DateUtils.formatDateToTime(value);
+		if (time.hour === 0) {
+			return `${minString}Min`;
+		}
+		return `${hourString}Hrs${minString}`;
 	}, [value, isFocused, time]);
 
 	const onFocus = (): void => {
