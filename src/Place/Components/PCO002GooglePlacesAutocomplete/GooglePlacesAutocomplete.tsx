@@ -10,7 +10,6 @@ import { GooglePlacesAutocompletePropsInterface } from './GooglePlacesAutocomple
 import i18n from '@/Common/Hooks/i18n-js';
 
 export const PCO002GooglePlacesAutocomplete = ({
-	// TODO: 「'onAutoCompleteClicked' is missing in props validation」ESlintErrorが出る(onlySpot, fetchDetailsも)
 	onAutoCompleteClicked,
 	onlySpot,
 	fetchDetails,
