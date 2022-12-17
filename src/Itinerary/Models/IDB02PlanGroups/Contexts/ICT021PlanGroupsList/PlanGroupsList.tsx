@@ -19,6 +19,8 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 	const { itineraryDocSnap } = useContext(ICT011ItineraryOne);
 	const { plansCRef } = useContext(ICT031PlansMap);
 
+	const itinerary = useMemo(() => itineraryDocSnap?.data(), [itineraryDocSnap]);
+
 	const planGroupsCRef = useMemo(() => {
 		if (itineraryDocSnap) {
 			return collection(itineraryDocSnap.ref, PlanGroups.modelName).withConverter(
@@ -33,14 +35,14 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 	}, [itineraryDocSnap]);
 
 	const createPlanGroup = useCallback(async () => {
-		if (!plansCRef || !planGroupsCRef) {
+		if (!plansCRef || !planGroupsCRef || !itinerary) {
 			return;
 		}
 		const newPlan: Plans = {
 			title: '',
 			placeSpan: DateUtils.initialDate(),
-			placeStartTime: new Date(),
-			placeEndTime: new Date(),
+			placeStartTime: itinerary.startDate,
+			placeEndTime: itinerary.startDate,
 			tags: [],
 			transportationSpan: DateUtils.initialDate(),
 			avoid: [],
@@ -59,7 +61,7 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 			createdAt: new Date(),
 			updatedAt: new Date(),
 		});
-	}, [planGroupsCRef, plansCRef]);
+	}, [itinerary, planGroupsCRef, plansCRef]);
 
 	useEffect(() => {
 		if (planGroupsCRef && plansCRef) {
