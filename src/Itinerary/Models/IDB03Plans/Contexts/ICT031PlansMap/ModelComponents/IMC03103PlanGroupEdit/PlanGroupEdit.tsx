@@ -1,6 +1,7 @@
 import { QueryDocumentSnapshot } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
+import { Text } from 'react-native-paper';
 
 import { PlanGroupsListInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT021';
 
@@ -26,6 +27,7 @@ export const IMC03103PlanGroupsEdit = ({
 
 	return (
 		<View style={{ width: '100%' }}>
+			<Text>{planGroups.representativeStartDateTime.toString()}</Text>
 			{planGroups.plans.map((planID, index) => {
 				const beforeAfterRepresentativeType = (() => {
 					if (representativeFounded) {

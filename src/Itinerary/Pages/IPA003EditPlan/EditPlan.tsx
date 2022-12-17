@@ -88,7 +88,11 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 			</View>
 
 			{isRepresentativePlan ? (
-				<View>
+				<View
+					style={{
+						// @react-native-community/datetimepicker が隠れるため、z-index: 1 を設定する
+						zIndex: 1,
+					}}>
 					<Text>{i18n.t('代表プランの開始時間')}</Text>
 					<CCO003DateTimePicker
 						value={planGroup!.representativeStartDateTime}
