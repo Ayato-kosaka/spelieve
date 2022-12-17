@@ -33,8 +33,8 @@ export const PCO002GooglePlacesAutocompleteController = ({
 			.then((res) => {
 				setPlacesResult(res.data.predictions);
 			})
-			// eslint-disable-next-line no-console
 			.catch((e) => {
+				Logger('PCO002GooglePlacesAutocompleteController', 'onChangeInput.fetchPlaceAutocomplete.catch', e)
 				setPlacesResult([]);
 			});
 	};
