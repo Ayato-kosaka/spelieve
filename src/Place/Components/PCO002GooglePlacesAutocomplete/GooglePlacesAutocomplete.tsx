@@ -10,12 +10,12 @@ import { GooglePlacesAutocompletePropsInterface } from './GooglePlacesAutocomple
 import i18n from '@/Common/Hooks/i18n-js';
 
 export const PCO002GooglePlacesAutocomplete = ({
-	onAutoCompleteClicked,
+	onAutocompleteClicked,
 	onlySpot,
 	fetchDetails,
 }: GooglePlacesAutocompletePropsInterface) => {
 	const { searchInput, placesResult, onChangeInput, onPressAutocomplete } = PCO002GooglePlacesAutocompleteController({
-		onAutoCompleteClicked,
+		onAutocompleteClicked,
 		onlySpot,
 		fetchDetails,
 	});

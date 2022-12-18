@@ -54,7 +54,7 @@ export const PPA001PlacesController = ({
 		});
 	};
 
-	const onAutoCompleteClicked = (data: PlaceAutocompleteResult, details: MPlace | null) => {
+	const onAutocompleteClicked = (data: PlaceAutocompleteResult, details: MPlace | null) => {
 		const isIncludes = (arr: AddressType[], target: AddressType[]) => arr.some((el) => target.includes(el));
 		const addressType: AddressType[] = [AddressType.establishment, AddressType.geocode];
 		const sendedDataTypes: AddressType[] = data.types;
@@ -78,5 +78,5 @@ export const PPA001PlacesController = ({
 		}
 	};
 
-	return { onAutoCompleteClicked, onPlaceSelected, isLoading };
+	return { onAutocompleteClicked, onPlaceSelected, isLoading };
 };

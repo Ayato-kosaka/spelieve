@@ -17,7 +17,7 @@ import { PlaceHttpPost } from '@/Place/Endpoint/PlaceHttpPost';
 import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001GooglePlaceAPI';
 
 export const PCO002GooglePlacesAutocompleteController = ({
-	onAutoCompleteClicked,
+	onAutocompleteClicked,
 	onlySpot,
 	fetchDetails,
 }: GooglePlacesAutocompletePropsInterface) => {
@@ -49,7 +49,7 @@ export const PCO002GooglePlacesAutocompleteController = ({
 					language: GooglePlaceLanguageTagFromIETFLanguageTag[i18n.locale],
 				});
 			}
-			onAutoCompleteClicked(place, detail);
+			onAutocompleteClicked(place, detail);
 		};
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		fetchDetail();

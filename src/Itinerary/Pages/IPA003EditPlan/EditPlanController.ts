@@ -114,7 +114,7 @@ export const IPA003EditPlanController = ({
 		[pagePlan],
 	);
 
-	const onAutoCompleteClicked = useCallback(
+	const onAutocompleteClicked = useCallback(
 		(data: PlaceAutocompleteResult): void => {
 			if (!planDocSnap) {
 				return;
@@ -175,7 +175,7 @@ export const IPA003EditPlanController = ({
 		updateRepresentativeStartDateTime,
 		setPlanToRepresentativePlan,
 		onChangeSearchPlace,
-		onAutoCompleteClicked,
+		onAutocompleteClicked,
 		onChangeMemo,
 	};
 };
