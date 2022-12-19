@@ -37,4 +37,4 @@ jobs:
         run: npm ci
 
       - name: Build on EAS
-        run: npx eas-cli build --platform all --non-interactive --auto-submit --no-wait
+        run: npx eas-cli build --platform ios --non-interactive --no-wait
