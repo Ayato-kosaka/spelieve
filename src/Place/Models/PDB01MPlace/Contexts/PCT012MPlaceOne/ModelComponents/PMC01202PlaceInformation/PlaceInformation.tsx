@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { FlatList, Linking, View, Image } from 'react-native';
+import { Linking, View, Image } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Rating } from 'react-native-ratings';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -75,16 +75,11 @@ export const PMC01202PlaceInformation = () => {
 				</Text>
 			</View>
 			<View>
-				<FlatList
-					data={place.photoUrls}
-					renderItem={(itemData) => (
-						<View>
-							<Image source={{ uri: itemData.item }} style={styles.imagelist} />
-						</View>
-					)}
-					numColumns={3}
-					// keyExtractor={(place) => place.place_id}
-				/>
+				{place.photoUrls.map((photoUrl) => (
+					<View key={photoUrl}>
+						<Image source={{ uri: photoUrl }} style={styles.imagelist} />
+					</View>
+				))}
 				<Text
 					style={styles.urlLink}
 					onPress={() => {
