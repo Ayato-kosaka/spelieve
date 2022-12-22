@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { FlatList, Linking, View, Image } from 'react-native';
+import { Linking, View, Image } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Rating } from 'react-native-ratings';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -51,21 +51,13 @@ export const PMC01202PlaceInformation = () => {
 					<Text style={styles.infoText}>{i18n.t('Opening Hours')}</Text>
 				</MaterialCommunityIcons>
 				{Array.isArray(place.openingHours) ? (
-					// TODO: https://github.com/Ayato-kosaka/spelieve/issues/377 PMC01202PlaceInformationのFlatList をmapに変更する
-					<FlatList
-						data={place.openingHours}
-						renderItem={(itemData) => {
-							const [day, time] = itemData.item;
-							return (
-								<View>
-									<Text style={styles.infoText}>
-										{day} {time}
-									</Text>
-								</View>
-							);
-						}}
-						numColumns={1}
-					/>
+					place.openingHours.map(([day, time]) => (
+						<View key={`${day}${time}`}>
+							<Text style={styles.infoText}>
+								{day} {time}
+							</Text>
+						</View>
+					))
 				) : (
 					<Text style={styles.infoText}>{place.openingHours}</Text>
 				)}
@@ -83,16 +75,11 @@ export const PMC01202PlaceInformation = () => {
 				</Text>
 			</View>
 			<View>
-				<FlatList
-					data={place.photoUrls}
-					renderItem={(itemData) => (
-						<View>
-							<Image source={{ uri: itemData.item }} style={styles.imagelist} />
-						</View>
-					)}
-					numColumns={3}
-					// keyExtractor={(place) => place.place_id}
-				/>
+				{place.photoUrls.map((photoUrl) => (
+					<View key={photoUrl}>
+						<Image source={{ uri: photoUrl }} style={styles.imagelist} />
+					</View>
+				))}
 				<Text
 					style={styles.urlLink}
 					onPress={() => {

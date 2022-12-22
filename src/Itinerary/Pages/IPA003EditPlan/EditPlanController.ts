@@ -1,8 +1,8 @@
+import { PlaceAutocompleteResult } from '@googlemaps/google-maps-services-js';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { setDoc } from 'firebase/firestore';
 import { useContext, useEffect, useMemo, useCallback, useState } from 'react';
 import { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
-import { GooglePlaceData } from 'react-native-google-places-autocomplete';
 
 import { EditPlanControllerInterface } from 'spelieve-common/lib/Interfaces';
 import { PlansMapInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT031';
@@ -114,8 +114,8 @@ export const IPA003EditPlanController = ({
 		[pagePlan],
 	);
 
-	const onAutoCompleteClicked = useCallback(
-		(data: GooglePlaceData): void => {
+	const onAutocompleteClicked = useCallback(
+		(data: PlaceAutocompleteResult): void => {
 			if (!planDocSnap) {
 				return;
 			}
@@ -175,7 +175,7 @@ export const IPA003EditPlanController = ({
 		updateRepresentativeStartDateTime,
 		setPlanToRepresentativePlan,
 		onChangeSearchPlace,
-		onAutoCompleteClicked,
+		onAutocompleteClicked,
 		onChangeMemo,
 	};
 };

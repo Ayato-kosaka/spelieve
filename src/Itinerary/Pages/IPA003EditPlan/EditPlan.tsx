@@ -12,7 +12,7 @@ import { CCO004DurationPicker } from '@/Common/Components/CCO004DurationPicker';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ICT021PlanGroupsList } from '@/Itinerary/Models/IDB02PlanGroups/Contexts/ICT021PlanGroupsList';
 import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap';
-import { PCO001SearchPlace } from '@/Place/Components/PCO001SearchPlace/SearchPlace';
+import { PCO002GooglePlacesAutocomplete } from '@/Place/Components/PCO002GooglePlacesAutocomplete';
 import { PMC01202PlaceInformation } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/ModelComponents/PMC01202PlaceInformation/PlaceInformation';
 
 export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<BottomTabParamList, 'IPA003EditPlan'>) => {
@@ -39,7 +39,7 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 		updateRepresentativeStartDateTime,
 		setPlanToRepresentativePlan,
 		onChangeSearchPlace,
-		onAutoCompleteClicked,
+		onAutocompleteClicked,
 		onChangeMemo,
 	} = IPA003EditPlanController({ route, navigation });
 
@@ -61,13 +61,7 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 					width: 100,
 				}}
 			/>
-			<PCO001SearchPlace
-				onAutoCompleteClicked={onAutoCompleteClicked}
-				hideCities
-				fetchDetails={false}
-				value={pagePlan.title}
-				onChange={onChangeSearchPlace}
-			/>
+			<PCO002GooglePlacesAutocomplete onAutocompleteClicked={onAutocompleteClicked} onlySpot fetchDetails={false} />
 			<Divider style={{ marginVertical: 20 }} />
 			<TextInput label={i18n.t('メモ')} value={pagePlan.memo} onChange={onChangeMemo} onBlur={updatePlan} multiline />
 			<View style={{ flexDirection: 'row' }}>
