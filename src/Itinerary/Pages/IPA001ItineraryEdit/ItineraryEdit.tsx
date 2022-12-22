@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useContext } from 'react';
-import { ScrollView, ActivityIndicator, Button } from 'react-native';
+import { ScrollView, ActivityIndicator, Button, View } from 'react-native';
+import { Text } from 'react-native-paper';
 
 import { IPA001ItineraryEditController } from './ItineraryEditController';
 
@@ -34,11 +35,25 @@ export const IPA001ItineraryEdit = ({
 		return <ActivityIndicator animating />;
 	}
 
+	let prevDate: string | undefined;
+	let isAnotherDay = true;
+
 	return (
 		<ScrollView>
-			{planGroupsQSnap?.docs.map((planGroupsDoc) => (
-				<IMC03103PlanGroupsEdit key={planGroupsDoc.id} planGroupsDoc={planGroupsDoc} />
-			))}
+			{planGroupsQSnap?.docs.map((planGroupsDoc) => {
+				const plnaGroup = planGroupsDoc.data();
+				const formatDate = `${plnaGroup.representativeStartDateTime.getFullYear()}/${
+					plnaGroup.representativeStartDateTime.getMonth() + 1
+				}/${plnaGroup.representativeStartDateTime.getDate()}`;
+				isAnotherDay = prevDate !== formatDate;
+				prevDate = formatDate;
+				return (
+					<View key={planGroupsDoc.id}>
+						{isAnotherDay && <Text>{formatDate}</Text>}
+						<IMC03103PlanGroupsEdit planGroupsDoc={planGroupsDoc} />
+					</View>
+				);
+			})}
 			<Button
 				title={i18n.t('予定グループを追加')}
 				onPress={() => {
