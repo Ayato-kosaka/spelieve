@@ -24,13 +24,18 @@ export default ({ config }: ConfigContext) => {
 				supportsTablet: true,
 				bundleIdentifier: 'com.spelieve',
 				config: {
-					googleMapsApiKey: '',
+					googleMapsApiKey: process.env.GCP_API_KEY_IOS,
 				},
 			},
 			android: {
 				adaptiveIcon: {
 					foregroundImage: './assets/adaptive-icon.png',
 					backgroundColor: '#FFFFFF',
+				},
+				config: {
+					googleMaps: {
+						apiKey: process.env.GCP_API_KEY_ANDROID,
+					},
 				},
 			},
 			web: {
