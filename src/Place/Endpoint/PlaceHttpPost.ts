@@ -15,6 +15,7 @@ export const PlaceHttpPost = async <RequestBodyType, ResponseType>(
 		body: JSON.stringify(body),
 	}).then(async (res) => {
 		if (!res.ok) {
+			Logger('PlaceHttpPost', `!res.ok(${target})`, res);
 			return Promise.reject();
 		}
 		const resJSON = (await res.json()) as ResponseType;
