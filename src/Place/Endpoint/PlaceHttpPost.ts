@@ -1,10 +1,12 @@
+import { Logger } from '@/Common/Hooks/CHK001Utils';
 import { ENV } from '@/ENV';
 
 export const PlaceHttpPost = async <RequestBodyType, ResponseType>(
 	target: string,
 	body: RequestBodyType,
-): Promise<ResponseType> =>
-	fetch(ENV.BACKEND_PLACE_ENDPOINT + target, {
+): Promise<ResponseType> => {
+	Logger('PlaceHttpPost', `RequestBody(${target})`, body);
+	return fetch(ENV.BACKEND_PLACE_ENDPOINT + target, {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',
@@ -13,12 +15,11 @@ export const PlaceHttpPost = async <RequestBodyType, ResponseType>(
 		body: JSON.stringify(body),
 	}).then(async (res) => {
 		if (!res.ok) {
+			Logger('PlaceHttpPost', `!res.ok(${target})`, res);
 			return Promise.reject();
 		}
 		const resJSON = (await res.json()) as ResponseType;
-		if (ENV.HTTP_POST_LOG) {
-			// eslint-disable-next-line no-console
-			console.log('debug', 'PlaceHttpPost', target, resJSON);
-		}
+		Logger('PlaceHttpPost', `ResponseBody(${target})`, resJSON);
 		return Promise.resolve(resJSON);
 	});
+};

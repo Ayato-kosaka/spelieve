@@ -1,3 +1,5 @@
+import 'expo-dev-client';
+
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { NavigationContainer, NavigatorScreenParams } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';

@@ -11,7 +11,6 @@ import { MPlace } from 'spelieve-common/lib/Models/Place/PDB01/MPlace';
 
 import { GooglePlacesAutocompletePropsInterface } from './GooglePlacesAutocompletePropsInterface';
 
-import { Logger } from '@/Common/Hooks/CHK001Utils';
 import i18n from '@/Common/Hooks/i18n-js';
 import { PlaceHttpPost } from '@/Place/Endpoint/PlaceHttpPost';
 import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001GooglePlaceAPI';
@@ -35,7 +34,6 @@ export const PCO002GooglePlacesAutocompleteController = ({
 				setPlacesResult(res.data.predictions);
 			})
 			.catch((e) => {
-				Logger('PCO002GooglePlacesAutocompleteController', 'onChangeInput.fetchPlaceAutocomplete.catch', e);
 				setPlacesResult([]);
 			});
 	};
