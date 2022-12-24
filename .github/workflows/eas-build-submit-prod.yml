@@ -1,4 +1,4 @@
-name: EAS Build Sumit Prod
+name: EAS Build Submit Prod
 on:
   push:
     branches:
