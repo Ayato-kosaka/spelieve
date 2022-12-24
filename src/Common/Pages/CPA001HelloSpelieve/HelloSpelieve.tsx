@@ -2,6 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Button, View } from 'react-native';
 
 import { BottomTabParamList } from '@/App';
+import { CCO006ImagePicker } from '@/Common/Components/CCO006ImagePicker/ImagePicker';
 
 export const CPA001HelloSpelieve = ({
 	route,
@@ -10,6 +11,7 @@ export const CPA001HelloSpelieve = ({
 	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/156 LP作成計画検討
 	<View style={{ alignItems: 'center', justifyContent: 'center', height: '100%' }}>
 		<View>
+			<CCO006ImagePicker />
 			<Button
 				title="新しく始める"
 				onPress={() =>
