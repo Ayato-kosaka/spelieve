@@ -1,4 +1,3 @@
-import * as FileSystem from 'expo-file-system';
 import * as ImageManipulator from 'expo-image-manipulator';
 import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
@@ -18,15 +17,12 @@ export const CCO006ImagePicker = () => {
 			[
 				{
 					resize: {
-						width: 500,
+						width: 2000,
 					},
 				},
 			],
 			{ compress: 0, format: ImageManipulator.SaveFormat.PNG },
 		);
-
-		const fileInfo = await FileSystem.getInfoAsync(result.uri);
-		Logger('CCO006ImagePicker', 'fileInfo.size:', fileInfo.size);
 
 		return result.uri;
 	};
@@ -76,7 +72,7 @@ export const CCO006ImagePicker = () => {
 				setImage(uploadUrl);
 			}
 		} catch (e) {
-			Logger('CCO006ImagePicker', 'pickImage.uploadImageAsync.catch', e);
+			Logger('CCO006ImagePicker', 'pickImage.uploadImage.catch', e);
 			Alert.alert('Upload failed, sorry :(');
 		}
 	};
