@@ -2,8 +2,7 @@ import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useState } from 'react';
 import { Button, Image, View } from 'react-native';
-import 'react-native-get-random-values';
-import { v4 } from 'uuid';
+import uuid from 'react-native-uuid';
 
 import { Logger } from '@/Common/Hooks/CHK001Utils';
 import { storage } from '@/Itinerary/Endpoint/firebaseStorage';
@@ -28,8 +27,7 @@ export const CCO006ImagePicker = () => {
 			xhr.open('GET', uri, true);
 			xhr.send(null);
 		});
-
-		const fileRef = ref(storage, v4());
+		const fileRef = ref(storage, uuid.v4() as string);
 		await uploadBytes(fileRef, blob);
 
 		// Expo の公式ソースでは、以下が記載されていたが、`blob.close is not a function`とエラーが出るためコメントアウト
