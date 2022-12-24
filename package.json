@@ -24,6 +24,7 @@
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.1",
     "expo": "47.0.9",
+    "expo-image-picker": "~14.0.2",
     "expo-localization": "14.0.0",
     "expo-status-bar": "1.4.2",
     "firebase": "9.15.0",
@@ -44,7 +45,7 @@
     "react-native-web": "0.18.10",
     "react-spring-bottom-sheet": "^3.4.1",
     "spelieve-common": "^1.1.103",
-    "expo-image-picker": "~14.0.2"
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.20.7",
@@ -55,6 +56,7 @@
     "@types/react-native": "0.70.8",
     "@types/react-native-autocomplete-input": "^5.1.0",
     "@types/react-native-vector-icons": "^6.4.12",
+    "@types/uuid": "^9.0.0",
     "@typescript-eslint/eslint-plugin": "5.47.0",
     "@typescript-eslint/parser": "5.47.0",
     "babel-plugin-module-resolver": "4.1.0",
