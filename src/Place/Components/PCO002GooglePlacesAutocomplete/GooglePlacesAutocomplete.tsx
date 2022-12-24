@@ -1,7 +1,6 @@
 import { PlaceAutocompleteResult } from '@googlemaps/google-maps-services-js';
-import { ListRenderItemInfo } from 'react-native';
+import { ListRenderItemInfo, TouchableOpacity } from 'react-native';
 import { AutocompleteInput } from 'react-native-autocomplete-input';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Text } from 'react-native-paper';
 
 import { PCO002GooglePlacesAutocompleteController } from './GooglePlacesAutocompleteController';
