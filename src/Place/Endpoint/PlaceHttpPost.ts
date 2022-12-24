@@ -18,10 +18,7 @@ export const PlaceHttpPost = async <RequestBodyType, ResponseType>(
 			return Promise.reject();
 		}
 		const resJSON = (await res.json()) as ResponseType;
-		if (ENV.HTTP_POST_LOG) {
-			// eslint-disable-next-line no-console
-			console.log('debug', 'PlaceHttpPost', target, resJSON);
-		}
+		Logger('PlaceHttpPost', `ResponseBody(${target})`, resJSON);
 		return Promise.resolve(resJSON);
 	});
 };
