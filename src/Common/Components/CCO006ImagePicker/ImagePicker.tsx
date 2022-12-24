@@ -1,3 +1,5 @@
+import * as FileSystem from 'expo-file-system';
+import * as ImageManipulator from 'expo-image-manipulator';
 import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useState } from 'react';
@@ -8,8 +10,26 @@ import { Logger } from '@/Common/Hooks/CHK001Utils';
 import { storage } from '@/Itinerary/Endpoint/firebaseStorage';
 
 export const CCO006ImagePicker = () => {
-	// TODO: 画像の resize どうする？
 	const [image, setImage] = useState<string | null>(null);
+
+	const resizeImage = async (uri: string): Promise<string> => {
+		const result = await ImageManipulator.manipulateAsync(
+			uri,
+			[
+				{
+					resize: {
+						width: 500,
+					},
+				},
+			],
+			{ compress: 0, format: ImageManipulator.SaveFormat.PNG },
+		);
+
+		const fileInfo = await FileSystem.getInfoAsync(result.uri);
+		Logger('CCO006ImagePicker', 'fileInfo.size:', fileInfo.size);
+
+		return result.uri;
+	};
 
 	const uploadImageAsync = async (uri: string): Promise<string> => {
 		// Why are we using XMLHttpRequest? See:
@@ -51,7 +71,8 @@ export const CCO006ImagePicker = () => {
 
 		try {
 			if (!pickerResult.canceled) {
-				const uploadUrl = await uploadImageAsync(pickerResult.assets[0].uri);
+				const resizedUri = await resizeImage(pickerResult.assets[0].uri);
+				const uploadUrl = await uploadImageAsync(resizedUri);
 				setImage(uploadUrl);
 			}
 		} catch (e) {
