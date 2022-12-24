@@ -1,7 +1,7 @@
 import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useState } from 'react';
-import { Button, Image, View } from 'react-native';
+import { Alert, Button, Image, View } from 'react-native';
 import uuid from 'react-native-uuid';
 
 import { Logger } from '@/Common/Hooks/CHK001Utils';
@@ -56,9 +56,7 @@ export const CCO006ImagePicker = () => {
 			}
 		} catch (e) {
 			Logger('CCO006ImagePicker', 'pickImage.uploadImageAsync.catch', e);
-			// TODO: モーダルに変える
-			// eslint-disable-next-line no-alert
-			alert('Upload failed, sorry :(');
+			Alert.alert('Upload failed, sorry :(');
 		}
 	};
 
