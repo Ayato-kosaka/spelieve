@@ -2,6 +2,7 @@ import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useState } from 'react';
 import { Button, Image, View } from 'react-native';
+import 'react-native-get-random-values';
 import { v4 } from 'uuid';
 
 import { Logger } from '@/Common/Hooks/CHK001Utils';
@@ -47,7 +48,8 @@ export const CCO006ImagePicker = () => {
 			quality: 1,
 		});
 
-		Logger('CCO006ImagePicker', 'pickImage.pickerResult', pickerResult);
+		// iOS でエラーが出るためコメントアウト
+		// Logger('CCO006ImagePicker', 'pickImage.pickerResult', pickerResult);
 
 		try {
 			if (!pickerResult.canceled) {
