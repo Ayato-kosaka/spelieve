@@ -46,6 +46,13 @@ export const IPA002ItineraryCover = ({
 						aspect: [1, 1],
 						quality: 1,
 					}}
+					imageManipulatorActions={[
+						{
+							resize: {
+								width: 2000,
+							},
+						},
+					]}
 					storage={storage}>
 					<Card.Cover source={{ uri: pageItinerary.imageUrl }} />
 				</CCO006ImagePicker>
