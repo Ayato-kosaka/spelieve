@@ -9,7 +9,7 @@ import { AppProvider } from './AppProvider';
 import i18n from './Common/Hooks/i18n-js';
 import { ItineraryPageNavigator, ItineraryStackParamList } from './Itinerary/Pages/ItineraryPageNavigator';
 import { PlacePageNavigator, PlaceStackParamList } from './Place/Pages/PlacePageNavigator/PlacePageNavigator';
-import { theme } from './ThemeProvider';
+import { navigationTheme, paperTheme } from './ThemeProvider';
 
 export type BottomTabParamList = {
 	Itinerary: NavigatorScreenParams<ItineraryStackParamList>;
@@ -24,8 +24,9 @@ export const App = () => {
 		<NavigationContainer
 			linking={{
 				prefixes: ['spelieve.com'],
-			}}>
-			<PaperProvider theme={theme}>
+			}}
+			theme={navigationTheme}>
+			<PaperProvider theme={paperTheme}>
 				<AppProvider>
 					<BottomTab.Navigator initialRouteName="Itinerary">
 						<BottomTab.Screen
