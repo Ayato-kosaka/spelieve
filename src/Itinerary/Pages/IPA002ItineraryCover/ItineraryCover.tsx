@@ -87,7 +87,7 @@ export const IPA002ItineraryCover = ({
 						<Searchbar placeholder="Search" value="" />
 					</View>
 					<View style={{ zIndex: 1 }}>
-						<Text>{i18n.t('旅行の滞在開始日')}</Text>
+						<Text style={{ color: materialColors.grey[700] }}>{i18n.t('旅行の滞在開始日')}</Text>
 						<CCO003DateTimePicker
 							value={pageItinerary.startDate}
 							onChange={(event, date) => {
