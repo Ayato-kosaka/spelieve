@@ -35,6 +35,14 @@ export function IPA002ItineraryCoverController({
 		setDoc<ItineraryOneInterface>(itineraryDocSnap!.ref, { ...pageItinerary!, updatedAt: new Date() });
 	}, [itineraryDocSnap, pageItinerary]);
 
+	// pageItinerary.imageUrl, startDate を監視し、updateItinerary を実行する
+	useEffect(() => {
+		if (pageItinerary && itineraryDocSnap?.exists()) {
+			updateItinerary();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [pageItinerary?.imageUrl, pageItinerary?.startDate]);
+
 	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/345 ItineraryのDateを変えたらPlanGroupのDateも変える
 	const handleOnChange = useCallback(
 		(column: keyof ItineraryOneInterface) =>

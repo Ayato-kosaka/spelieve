@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MediaTypeOptions } from 'expo-image-picker';
-import { ActivityIndicator, Dimensions, Image, ScrollView, View } from 'react-native';
-import { Chip, TextInput, Searchbar, Text } from 'react-native-paper';
+import { ActivityIndicator, Dimensions, ScrollView, View } from 'react-native';
+import { Chip, TextInput, Searchbar, Text, Card } from 'react-native-paper';
 
 import { IPA002ItineraryCoverController } from './ItineraryCoverController';
 
@@ -33,68 +33,63 @@ export const IPA002ItineraryCover = ({
 
 	return (
 		<ScrollView>
-			<CCO006ImagePicker
-				onPickImage={(imageUrl) => setPageItinerary({ ...pageItinerary, imageUrl })}
-				imagePickerOptions={{
-					allowsEditing: true,
-					allowsMultipleSelection: false,
-					mediaTypes: MediaTypeOptions.Images,
-					aspect: [1, 1],
-					quality: 1,
-				}}
-				storage={storage}>
-				{pageItinerary.imageUrl ? (
-					/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/303 IPA002ItineraryCover の画像を修正可能にする */
-					<Image
-						source={{ uri: pageItinerary.imageUrl }}
-						style={{
-							height: WINDOW.width,
-							width: WINDOW.width,
-						}}
-					/>
-				) : (
-					<View />
-				)}
-			</CCO006ImagePicker>
-			<TextInput
-				label={i18n.t('旅行のタイトル')}
-				value={pageItinerary.title}
-				onChange={handleOnChange('title')}
-				onBlur={updateItinerary}
-			/>
-			<TextInput
-				label={i18n.t('旅行のサブタイトル')}
-				value={pageItinerary.subTitle}
-				onChange={handleOnChange('subTitle')}
-				onBlur={updateItinerary}
-			/>
-			<View style={{ flexDirection: 'row' }}>
-				{pageItinerary.tags.map((tag, index) => (
-					<Chip key={tag} closeIcon="close-circle" onClose={() => deleteTag(index)}>
-						{tag}
-					</Chip>
-				))}
-				{/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/298 Tagを取得するSearchBarを実装する */}
-				<Searchbar placeholder="Search" value="" />
-			</View>
-			<View>
-				<Text>{i18n.t('旅行の滞在開始日')}</Text>
-				<CCO003DateTimePicker
-					value={pageItinerary.startDate}
-					onChange={(event, date) => {
-						if (event.type === 'set') {
-							setPageItinerary({ ...pageItinerary, startDate: date! });
-						}
+			<Card>
+				<CCO006ImagePicker
+					onPickImage={(imageUrl) => {
+						setPageItinerary({ ...pageItinerary, imageUrl });
 					}}
-				/>
-			</View>
-			<TextInput
-				label={i18n.t('旅行のキャプション')}
-				value={pageItinerary.caption}
-				onChange={handleOnChange('caption')}
-				onBlur={updateItinerary}
-				multiline
-			/>
+					imagePickerOptions={{
+						allowsEditing: true,
+						allowsMultipleSelection: false,
+						mediaTypes: MediaTypeOptions.Images,
+						aspect: [1, 1],
+						quality: 1,
+					}}
+					storage={storage}>
+					<Card.Cover source={{ uri: pageItinerary.imageUrl }} />
+				</CCO006ImagePicker>
+				<Card.Content>
+					<TextInput
+						label={i18n.t('旅行のタイトル')}
+						value={pageItinerary.title}
+						onChange={handleOnChange('title')}
+						onBlur={updateItinerary}
+					/>
+					<TextInput
+						label={i18n.t('旅行のサブタイトル')}
+						value={pageItinerary.subTitle}
+						onChange={handleOnChange('subTitle')}
+						onBlur={updateItinerary}
+					/>
+					<View style={{ flexDirection: 'row' }}>
+						{pageItinerary.tags.map((tag, index) => (
+							<Chip key={tag} closeIcon="close-circle" onClose={() => deleteTag(index)}>
+								{tag}
+							</Chip>
+						))}
+						{/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/298 Tagを取得するSearchBarを実装する */}
+						<Searchbar placeholder="Search" value="" />
+					</View>
+					<View>
+						<Text>{i18n.t('旅行の滞在開始日')}</Text>
+						<CCO003DateTimePicker
+							value={pageItinerary.startDate}
+							onChange={(event, date) => {
+								if (event.type === 'set') {
+									setPageItinerary({ ...pageItinerary, startDate: date! });
+								}
+							}}
+						/>
+					</View>
+					<TextInput
+						label={i18n.t('旅行のキャプション')}
+						value={pageItinerary.caption}
+						onChange={handleOnChange('caption')}
+						onBlur={updateItinerary}
+						multiline
+					/>
+				</Card.Content>
+			</Card>
 		</ScrollView>
 	);
 };
