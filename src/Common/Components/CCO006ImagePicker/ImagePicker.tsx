@@ -1,16 +1,19 @@
 import * as ImageManipulator from 'expo-image-manipulator';
-import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
+import { launchImageLibraryAsync } from 'expo-image-picker';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { useState } from 'react';
-import { Alert, Button, Image, View } from 'react-native';
+import { Alert, Pressable } from 'react-native';
 import uuid from 'react-native-uuid';
 
+import { ImagePickerPropsInterface } from './ImagePickerPropsInterface';
+
 import { Logger } from '@/Common/Hooks/CHK001Utils';
-import { storage } from '@/Itinerary/Endpoint/firebaseStorage';
 
-export const CCO006ImagePicker = () => {
-	const [image, setImage] = useState<string | null>(null);
-
+export const CCO006ImagePicker = ({
+	children,
+	onPickImage,
+	imagePickerOptions,
+	storage,
+}: ImagePickerPropsInterface) => {
 	const resizeImage = async (uri: string): Promise<string> => {
 		const result = await ImageManipulator.manipulateAsync(
 			uri,
@@ -54,13 +57,7 @@ export const CCO006ImagePicker = () => {
 
 	const pickImage = async () => {
 		// No permissions request is necessary for launching the image library
-		const pickerResult = await launchImageLibraryAsync({
-			allowsEditing: false,
-			allowsMultipleSelection: false,
-			mediaTypes: MediaTypeOptions.Images,
-			aspect: [4, 3],
-			quality: 1,
-		});
+		const pickerResult = await launchImageLibraryAsync(imagePickerOptions);
 
 		// iOS でエラーが出るためコメントアウト
 		// Logger('CCO006ImagePicker', 'pickImage.pickerResult', pickerResult);
@@ -69,7 +66,7 @@ export const CCO006ImagePicker = () => {
 			if (!pickerResult.canceled) {
 				const resizedUri = await resizeImage(pickerResult.assets[0].uri);
 				const uploadUrl = await uploadImageAsync(resizedUri);
-				setImage(uploadUrl);
+				onPickImage(uploadUrl);
 			}
 		} catch (e) {
 			Logger('CCO006ImagePicker', 'pickImage.uploadImage.catch', e);
@@ -78,14 +75,7 @@ export const CCO006ImagePicker = () => {
 	};
 
 	return (
-		// TODO: onPress のみにする
-		<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-			<Button
-				title="Pick an image from camera roll"
-				// eslint-disable-next-line @typescript-eslint/no-misused-promises
-				onPress={pickImage}
-			/>
-			{image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-		</View>
+		// eslint-disable-next-line @typescript-eslint/no-misused-promises
+		<Pressable onPress={pickImage}>{children}</Pressable>
 	);
 };

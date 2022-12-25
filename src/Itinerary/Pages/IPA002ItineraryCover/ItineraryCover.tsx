@@ -1,4 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { MediaTypeOptions } from 'expo-image-picker';
 import { ActivityIndicator, Dimensions, Image, ScrollView, View } from 'react-native';
 import { Chip, TextInput, Searchbar, Text } from 'react-native-paper';
 
@@ -6,7 +7,9 @@ import { IPA002ItineraryCoverController } from './ItineraryCoverController';
 
 import { BottomTabParamList } from '@/App';
 import { CCO003DateTimePicker } from '@/Common/Components/CCO003DateTimePicker';
+import { CCO006ImagePicker } from '@/Common/Components/CCO006ImagePicker/ImagePicker';
 import i18n from '@/Common/Hooks/i18n-js';
+import { storage } from '@/Itinerary/Endpoint/firebaseStorage';
 
 export const IPA002ItineraryCover = ({
 	route,
@@ -30,24 +33,37 @@ export const IPA002ItineraryCover = ({
 
 	return (
 		<ScrollView>
-			{pageItinerary.imageUrl && (
-				/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/303 IPA002ItineraryCover の画像を修正可能にする */
-				<Image
-					source={{ uri: pageItinerary.imageUrl }}
-					style={{
-						height: WINDOW.width,
-						width: WINDOW.width,
-					}}
-				/>
-			)}
+			<CCO006ImagePicker
+				onPickImage={(imageUrl) => setPageItinerary({ ...pageItinerary, imageUrl })}
+				imagePickerOptions={{
+					allowsEditing: true,
+					allowsMultipleSelection: false,
+					mediaTypes: MediaTypeOptions.Images,
+					aspect: [1, 1],
+					quality: 1,
+				}}
+				storage={storage}>
+				{pageItinerary.imageUrl ? (
+					/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/303 IPA002ItineraryCover の画像を修正可能にする */
+					<Image
+						source={{ uri: pageItinerary.imageUrl }}
+						style={{
+							height: WINDOW.width,
+							width: WINDOW.width,
+						}}
+					/>
+				) : (
+					<View />
+				)}
+			</CCO006ImagePicker>
 			<TextInput
-				label={i18n.t('タイトル')}
+				label={i18n.t('旅行のタイトル')}
 				value={pageItinerary.title}
 				onChange={handleOnChange('title')}
 				onBlur={updateItinerary}
 			/>
 			<TextInput
-				label={i18n.t('サブタイトル')}
+				label={i18n.t('旅行のサブタイトル')}
 				value={pageItinerary.subTitle}
 				onChange={handleOnChange('subTitle')}
 				onBlur={updateItinerary}
@@ -62,7 +78,7 @@ export const IPA002ItineraryCover = ({
 				<Searchbar placeholder="Search" value="" />
 			</View>
 			<View>
-				<Text>{i18n.t('滞在開始日')}</Text>
+				<Text>{i18n.t('旅行の滞在開始日')}</Text>
 				<CCO003DateTimePicker
 					value={pageItinerary.startDate}
 					onChange={(event, date) => {
@@ -73,7 +89,7 @@ export const IPA002ItineraryCover = ({
 				/>
 			</View>
 			<TextInput
-				label={i18n.t('キャプション')}
+				label={i18n.t('旅行のキャプション')}
 				value={pageItinerary.caption}
 				onChange={handleOnChange('caption')}
 				onBlur={updateItinerary}

@@ -2,8 +2,8 @@ import { ImagePickerOptions } from 'expo-image-picker';
 import { FirebaseStorage } from 'firebase/storage';
 
 export interface ImagePickerPropsInterface {
-	image: string;
-	setImage: React.Dispatch<React.SetStateAction<string | null>>;
+	children: React.ReactNode;
+	onPickImage: (imageUrl: string) => void;
 	imagePickerOptions: ImagePickerOptions;
 	storage: FirebaseStorage;
 }
