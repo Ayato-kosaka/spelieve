@@ -5,6 +5,7 @@ import { ItineraryOneInterface, ItineraryOneValInterface } from 'spelieve-common
 import { Itineraries } from 'spelieve-common/lib/Models/Itinerary/IDB01/Itineraries';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
+import { Logger } from '@/Common/Hooks/CHK001Utils';
 import db from '@/Itinerary/Endpoint/firestore';
 
 export const ICT011ItineraryOne = createContext({} as ItineraryOneValInterface);
@@ -21,7 +22,10 @@ export const ICT011ItineraryOneProvider = ({ children }: { children: ReactNode }
 				FirestoreConverter<Itineraries, ItineraryOneInterface>(
 					Itineraries,
 					(data) => data,
-					(data) => data,
+					(data) => {
+						Logger('IDB01/Itineraries', 'write', data);
+						return data;
+					},
 				),
 			),
 		[],
@@ -30,6 +34,7 @@ export const ICT011ItineraryOneProvider = ({ children }: { children: ReactNode }
 	useEffect(() => {
 		if (itineraryID) {
 			const unsubscribe = onSnapshot(doc(itineraryCRef, itineraryID), (docSnap) => {
+				Logger('IDB01/Itineraries', 'read docSnap.id', docSnap.id);
 				setItineraryDocSnap(docSnap);
 			});
 			return () => unsubscribe();
