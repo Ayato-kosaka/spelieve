@@ -14,6 +14,7 @@ export function IPA002ItineraryCoverController({
 	itineraryID,
 }: ItineraryCoverPropsInterface): ItineraryCoverControllerInterface {
 	const [pageItinerary, setPageItinerary] = useState<ItineraryOneInterface | undefined>(undefined);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
 
 	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/347 Itineray ロック機能実装
@@ -27,6 +28,7 @@ export function IPA002ItineraryCoverController({
 	useEffect(() => {
 		if (itineraryDocSnap?.exists()) {
 			setPageItinerary(itineraryDocSnap.data());
+			setIsLoading(false);
 		}
 	}, [itineraryDocSnap]);
 
@@ -34,6 +36,20 @@ export function IPA002ItineraryCoverController({
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		setDoc<ItineraryOneInterface>(itineraryDocSnap!.ref, { ...pageItinerary!, updatedAt: new Date() });
 	}, [itineraryDocSnap, pageItinerary]);
+
+	// pageItinerary.imageUrl, startDate を監視し、updateItinerary を実行する
+	useEffect(() => {
+		const itinerary = itineraryDocSnap?.data();
+		if (
+			itinerary &&
+			pageItinerary &&
+			(itinerary.imageUrl !== pageItinerary.imageUrl ||
+				itinerary.startDate.getTime() !== pageItinerary.startDate.getTime())
+		) {
+			updateItinerary();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [pageItinerary?.imageUrl, pageItinerary?.startDate.getTime()]);
 
 	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/345 ItineraryのDateを変えたらPlanGroupのDateも変える
 	const handleOnChange = useCallback(
@@ -54,8 +70,6 @@ export function IPA002ItineraryCoverController({
 	);
 
 	const shouldNavigate: boolean = !itineraryID || (!!itineraryDocSnap && !itineraryDocSnap.exists());
-
-	const isLoading = !itineraryDocSnap;
 
 	return {
 		pageItinerary,

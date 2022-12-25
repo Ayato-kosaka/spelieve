@@ -1,12 +1,16 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ActivityIndicator, Dimensions, Image, ScrollView, View } from 'react-native';
-import { Chip, TextInput, Searchbar, Text } from 'react-native-paper';
+import { MediaTypeOptions } from 'expo-image-picker';
+import { ActivityIndicator, Image, ScrollView, View } from 'react-native';
+import { Chip, TextInput, Searchbar, Text, Card } from 'react-native-paper';
 
 import { IPA002ItineraryCoverController } from './ItineraryCoverController';
+import { styles } from './ItineraryCoverStyle';
 
 import { BottomTabParamList } from '@/App';
 import { CCO003DateTimePicker } from '@/Common/Components/CCO003DateTimePicker';
+import { CCO006ImagePicker } from '@/Common/Components/CCO006ImagePicker/ImagePicker';
 import i18n from '@/Common/Hooks/i18n-js';
+import { storage } from '@/Itinerary/Endpoint/firebaseStorage';
 
 export const IPA002ItineraryCover = ({
 	route,
@@ -24,61 +28,82 @@ export const IPA002ItineraryCover = ({
 		return <ActivityIndicator animating />;
 	}
 
-	// TODO: ↓Style に切り出す
-	const WINDOW = Dimensions.get('window');
-	/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/300 Itinerary の style を修正する */
-
 	return (
 		<ScrollView>
-			{pageItinerary.imageUrl && (
-				/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/303 IPA002ItineraryCover の画像を修正可能にする */
-				<Image
-					source={{ uri: pageItinerary.imageUrl }}
-					style={{
-						height: WINDOW.width,
-						width: WINDOW.width,
+			<Card>
+				<CCO006ImagePicker
+					onPickImage={(imageUrl) => {
+						setPageItinerary({ ...pageItinerary, imageUrl });
 					}}
-				/>
-			)}
-			<TextInput
-				label={i18n.t('タイトル')}
-				value={pageItinerary.title}
-				onChange={handleOnChange('title')}
-				onBlur={updateItinerary}
-			/>
-			<TextInput
-				label={i18n.t('サブタイトル')}
-				value={pageItinerary.subTitle}
-				onChange={handleOnChange('subTitle')}
-				onBlur={updateItinerary}
-			/>
-			<View style={{ flexDirection: 'row' }}>
-				{pageItinerary.tags.map((tag, index) => (
-					<Chip key={tag} closeIcon="close-circle" onClose={() => deleteTag(index)}>
-						{tag}
-					</Chip>
-				))}
-				{/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/298 Tagを取得するSearchBarを実装する */}
-				<Searchbar placeholder="Search" value="" />
-			</View>
-			<View>
-				<Text>{i18n.t('滞在開始日')}</Text>
-				<CCO003DateTimePicker
-					value={pageItinerary.startDate}
-					onChange={(event, date) => {
-						if (event.type === 'set') {
-							setPageItinerary({ ...pageItinerary, startDate: date! });
-						}
+					imagePickerOptions={{
+						allowsEditing: true,
+						allowsMultipleSelection: false,
+						mediaTypes: MediaTypeOptions.Images,
+						aspect: [1, 1],
+						quality: 1,
 					}}
-				/>
-			</View>
-			<TextInput
-				label={i18n.t('キャプション')}
-				value={pageItinerary.caption}
-				onChange={handleOnChange('caption')}
-				onBlur={updateItinerary}
-				multiline
-			/>
+					imageManipulatorActions={[
+						{
+							resize: {
+								width: 2000,
+							},
+						},
+					]}
+					storage={storage}>
+					<Image source={{ uri: pageItinerary.imageUrl }} resizeMode="cover" style={styles.image} />
+				</CCO006ImagePicker>
+				<Card.Content style={{ justifyContent: 'space-around', height: 700 }}>
+					<TextInput
+						label={i18n.t('旅行のタイトル')}
+						value={pageItinerary.title}
+						onChange={handleOnChange('title')}
+						onBlur={updateItinerary}
+						style={styles.titleTextInput}
+					/>
+					<TextInput
+						label={i18n.t('旅行のサブタイトル')}
+						value={pageItinerary.subTitle}
+						onChange={handleOnChange('subTitle')}
+						onBlur={updateItinerary}
+						style={styles.subTitleTextInput}
+					/>
+					<View style={styles.chipContainer}>
+						{pageItinerary.tags.map((tag, index) => (
+							<Chip
+								key={tag}
+								style={styles.tagsChip}
+								textStyle={styles.tagsChipText}
+								closeIcon="close-circle"
+								onClose={() => deleteTag(index)}>
+								{tag}
+							</Chip>
+						))}
+						{/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/298 Tagを取得するSearchBarを実装する */}
+						<Searchbar placeholder="Search" value="" />
+					</View>
+					<View style={{ zIndex: 1 }}>
+						<Text style={styles.startDateLabel}>{i18n.t('旅行の滞在開始日')}</Text>
+						<CCO003DateTimePicker
+							value={pageItinerary.startDate}
+							onChange={(event, date) => {
+								if (event.type === 'set') {
+									setPageItinerary({ ...pageItinerary, startDate: date! });
+								}
+							}}
+							style={styles.startDateTimePicker}
+						/>
+					</View>
+					<TextInput
+						mode="outlined"
+						label={i18n.t('旅行のキャプション')}
+						value={pageItinerary.caption}
+						onChange={handleOnChange('caption')}
+						onBlur={updateItinerary}
+						multiline
+						style={styles.captionTextInput}
+					/>
+				</Card.Content>
+			</Card>
 		</ScrollView>
 	);
 };

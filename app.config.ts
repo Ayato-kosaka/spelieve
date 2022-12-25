@@ -44,6 +44,15 @@ export default ({ config }: ConfigContext) => {
 				favicon: './assets/favicon.png',
 				lang: 'ja',
 			},
+			plugins: [
+				[
+					'expo-image-picker',
+					{
+						photosPermission: 'Allow $(PRODUCT_NAME) to access your photos',
+						cameraPermission: 'Allow $(PRODUCT_NAME) to access your camera',
+					},
+				],
+			],
 			extra: {
 				eas: {
 					projectId: 'fa9651c4-d3cd-4e16-8c54-34e4c4bc9f10',

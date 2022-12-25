@@ -1,4 +1,5 @@
-import { DefaultTheme } from 'react-native-paper';
+import { DefaultTheme as navigationDefaultTheme } from '@react-navigation/native';
+import { DefaultTheme as paperDefaultTheme } from 'react-native-paper';
 
 export const materialColors = {
 	red: {
@@ -297,11 +298,11 @@ export const materialColors = {
 
 export const primaryColorNm = 'orange';
 export const secondaryColorNm = 'blue';
-export const theme = {
-	...DefaultTheme,
-
+export const paperTheme = {
+	...paperDefaultTheme,
+	dark: false,
 	colors: {
-		...DefaultTheme.colors,
+		...paperDefaultTheme.colors,
 		primary: materialColors[primaryColorNm]['500'],
 		onPrimary: 'white',
 		primaryContainer: '#ffc947',
@@ -342,5 +343,25 @@ export const theme = {
 		// surfaceDisabled: 'rgba(31, 27, 22, 0.12)',
 		// onSurfaceDisabled: 'rgba(31, 27, 22, 0.38)',
 		// backdrop: 'rgba(56, 47, 36, 0.4)',
+	},
+};
+
+export const navigationTheme = {
+	...navigationDefaultTheme,
+	dark: false,
+	colors: {
+		...navigationDefaultTheme.colors,
+		// Bottom Tab background color
+		primary: 'white',
+		// Screen background color
+		background: 'white',
+		// Tob bar background color
+		card: 'white',
+		// Tob bar text color
+		text: 'black',
+		// Tob bar border color
+		border: materialColors.grey[100],
+		// 不明
+		notification: 'blue',
 	},
 };

@@ -61,19 +61,21 @@ export const IMC03102TrafficMovementEdit = ({
 					)}
 				</View>
 				<View style={{ flex: 14, flexDirection: 'row' }}>
-					<View style={{ flex: 1 }}>
+					<View style={{ flex: 3 }}>
 						{plan.place_id && nextPlan?.place_id && (
 							<View>
 								<Text>
-									{plan.transportationDepartureTime ? DateUtils.formatToHHMM(plan.transportationDepartureTime) : ''}
+									{plan.transportationDepartureTime
+										? `${DateUtils.formatToHHMM(plan.transportationDepartureTime)} ~`
+										: ''}
 								</Text>
 								<Text>
-									{plan.transportationArrivalTime ? `~${DateUtils.formatToHHMM(plan.transportationArrivalTime)}` : ''}
+									{plan.transportationArrivalTime ? `${DateUtils.formatToHHMM(plan.transportationArrivalTime)}` : ''}
 								</Text>
 							</View>
 						)}
 					</View>
-					<View style={{ flex: 13, flexDirection: 'row' }}>
+					<View style={{ flex: 11, flexDirection: 'row' }}>
 						<Button
 							mode="outlined"
 							icon="plus"

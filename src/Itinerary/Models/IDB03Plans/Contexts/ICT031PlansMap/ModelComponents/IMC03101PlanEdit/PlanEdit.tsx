@@ -10,7 +10,7 @@ import { ICT031PlansMap } from '../..';
 
 import { IMC03101PlanEditController } from './PlanEditController';
 
-import { theme } from '@/ThemeProvider';
+import { paperTheme } from '@/ThemeProvider';
 
 export const IMC03101PlanEdit = ({
 	planID,
@@ -42,7 +42,7 @@ export const IMC03101PlanEdit = ({
 					<MaterialCommunityIcons
 						name="map-marker"
 						size={20}
-						color={beforeAfterRepresentativeType === 'representative' ? theme.colors.primary : 'black'}
+						color={beforeAfterRepresentativeType === 'representative' ? paperTheme.colors.primary : 'black'}
 					/>
 				</View>
 				<Pressable onPress={onPlanPress} style={{ flex: 13 }}>

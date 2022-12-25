@@ -2,6 +2,7 @@ import { IOSNativeProps, AndroidNativeProps, WindowsNativeProps } from '@react-n
 import { useMemo } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { TextInput } from 'react-native-paper';
 
 export const CCO003DateTimePicker = ({ ...props }: IOSNativeProps & AndroidNativeProps & WindowsNativeProps) => {
 	const onChange = (date: Date) => {
@@ -31,6 +32,7 @@ export const CCO003DateTimePicker = ({ ...props }: IOSNativeProps & AndroidNativ
 
 	return (
 		<DatePicker
+			customInput={<TextInput style={props.style} />}
 			selected={props.value}
 			onChange={onChange}
 			showTimeSelect={showTimeSelect}
