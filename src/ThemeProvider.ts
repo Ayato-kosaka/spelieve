@@ -300,7 +300,7 @@ export const primaryColorNm = 'orange';
 export const secondaryColorNm = 'blue';
 export const paperTheme = {
 	...paperDefaultTheme,
-
+	dark: false,
 	colors: {
 		...paperDefaultTheme.colors,
 		primary: materialColors[primaryColorNm]['500'],
