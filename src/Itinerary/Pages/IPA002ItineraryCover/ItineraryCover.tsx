@@ -1,16 +1,16 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MediaTypeOptions } from 'expo-image-picker';
-import { ActivityIndicator, Dimensions, ScrollView, View } from 'react-native';
+import { ActivityIndicator, Image, ScrollView, View } from 'react-native';
 import { Chip, TextInput, Searchbar, Text, Card } from 'react-native-paper';
 
 import { IPA002ItineraryCoverController } from './ItineraryCoverController';
+import { styles } from './ItineraryCoverStyle';
 
 import { BottomTabParamList } from '@/App';
 import { CCO003DateTimePicker } from '@/Common/Components/CCO003DateTimePicker';
 import { CCO006ImagePicker } from '@/Common/Components/CCO006ImagePicker/ImagePicker';
 import i18n from '@/Common/Hooks/i18n-js';
 import { storage } from '@/Itinerary/Endpoint/firebaseStorage';
-import { materialColors, primaryColorNm } from '@/ThemeProvider';
 
 export const IPA002ItineraryCover = ({
 	route,
@@ -27,10 +27,6 @@ export const IPA002ItineraryCover = ({
 	if (isLoading || !pageItinerary) {
 		return <ActivityIndicator animating />;
 	}
-
-	// TODO: ↓Style に切り出す
-	const WINDOW = Dimensions.get('window');
-	/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/300 Itinerary の style を修正する */
 
 	return (
 		<ScrollView>
@@ -54,7 +50,7 @@ export const IPA002ItineraryCover = ({
 						},
 					]}
 					storage={storage}>
-					<Card.Cover source={{ uri: pageItinerary.imageUrl }} />
+					<Image source={{ uri: pageItinerary.imageUrl }} resizeMode="cover" style={styles.image} />
 				</CCO006ImagePicker>
 				<Card.Content style={{ justifyContent: 'space-around', height: 700 }}>
 					<TextInput
@@ -62,29 +58,21 @@ export const IPA002ItineraryCover = ({
 						value={pageItinerary.title}
 						onChange={handleOnChange('title')}
 						onBlur={updateItinerary}
-						style={{
-							backgroundColor: '#fff',
-						}}
+						style={styles.titleTextInput}
 					/>
 					<TextInput
 						label={i18n.t('旅行のサブタイトル')}
 						value={pageItinerary.subTitle}
 						onChange={handleOnChange('subTitle')}
 						onBlur={updateItinerary}
-						style={{
-							backgroundColor: '#fff',
-						}}
+						style={styles.subTitleTextInput}
 					/>
-					<View style={{ flexDirection: 'row' }}>
+					<View style={styles.chipContainer}>
 						{pageItinerary.tags.map((tag, index) => (
 							<Chip
 								key={tag}
-								style={{
-									backgroundColor: materialColors[primaryColorNm]['50'],
-								}}
-								textStyle={{
-									color: materialColors[primaryColorNm][400],
-								}}
+								style={styles.tagsChip}
+								textStyle={styles.tagsChipText}
 								closeIcon="close-circle"
 								onClose={() => deleteTag(index)}>
 								{tag}
@@ -94,7 +82,7 @@ export const IPA002ItineraryCover = ({
 						<Searchbar placeholder="Search" value="" />
 					</View>
 					<View style={{ zIndex: 1 }}>
-						<Text style={{ color: materialColors.grey[700] }}>{i18n.t('旅行の滞在開始日')}</Text>
+						<Text style={styles.startDateLabel}>{i18n.t('旅行の滞在開始日')}</Text>
 						<CCO003DateTimePicker
 							value={pageItinerary.startDate}
 							onChange={(event, date) => {
@@ -102,7 +90,7 @@ export const IPA002ItineraryCover = ({
 									setPageItinerary({ ...pageItinerary, startDate: date! });
 								}
 							}}
-							style={{ backgroundColor: '#fff' }}
+							style={styles.startDateTimePicker}
 						/>
 					</View>
 					<TextInput
@@ -112,10 +100,7 @@ export const IPA002ItineraryCover = ({
 						onChange={handleOnChange('caption')}
 						onBlur={updateItinerary}
 						multiline
-						style={{
-							height: 400,
-							backgroundColor: '#fff',
-						}}
+						style={styles.captionTextInput}
 					/>
 				</Card.Content>
 			</Card>
