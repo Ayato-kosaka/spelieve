@@ -1,10 +1,10 @@
 import { PlaceAutocompleteResult } from '@googlemaps/google-maps-services-js';
+import { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { setDoc } from 'firebase/firestore';
 import { useContext, useEffect, useMemo, useCallback, useState } from 'react';
 import { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
 
-import { EditPlanControllerInterface } from 'spelieve-common/lib/Interfaces';
 import { PlansMapInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT031';
 
 import { BottomTabParamList } from '@/App';
@@ -16,7 +16,7 @@ import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlac
 export const IPA003EditPlanController = ({
 	route,
 	navigation,
-}: NativeStackScreenProps<BottomTabParamList, 'IPA003EditPlan'>): EditPlanControllerInterface => {
+}: NativeStackScreenProps<BottomTabParamList, 'IPA003EditPlan'>) => {
 	const { itineraryID, PlanGroupsIndex, planID } = route.params;
 
 	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
@@ -105,11 +105,20 @@ export const IPA003EditPlanController = ({
 		setDoc(planDocSnap!.ref, { ...pagePlan });
 	}, [pagePlan, planDocSnap]);
 
+	const onChangeImage = useCallback(
+		(imageUrl: string) => {
+			setPagePlan({ ...pagePlan!, imageUrl });
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			setDoc(planDocSnap!.ref, { imageUrl }, { merge: true });
+		},
+		[pagePlan, planDocSnap],
+	);
+
 	const onChangeSearchPlace: (e: NativeSyntheticEvent<TextInputChangeEventData>) => void = (e) => {
 		setPagePlan({ ...pagePlan!, title: e.nativeEvent.text });
 	};
 
-	const onChangeMemo: EditPlanControllerInterface['onChangeMemo'] = useCallback(
+	const onChangeMemo: ({ nativeEvent }: { nativeEvent: TextInputChangeEventData }) => void = useCallback(
 		({ nativeEvent }) => {
 			setPagePlan({ ...pagePlan!, memo: nativeEvent.text });
 		},
@@ -149,22 +158,21 @@ export const IPA003EditPlanController = ({
 		);
 	}, [planGroupDocSnap, planDocSnap, plan?.placeStartTime]);
 
-	const updateRepresentativeStartDateTime: EditPlanControllerInterface['updateRepresentativeStartDateTime'] =
-		useCallback(
-			(event, date) => {
-				if (event.type === 'set' && planGroupDocSnap) {
-					// eslint-disable-next-line @typescript-eslint/no-floating-promises
-					setDoc(
-						planGroupDocSnap.ref,
-						{
-							representativeStartDateTime: date,
-						},
-						{ merge: true },
-					);
-				}
-			},
-			[planGroupDocSnap],
-		);
+	const updateRepresentativeStartDateTime: (event: DateTimePickerEvent, date?: Date | undefined) => void = useCallback(
+		(event, date) => {
+			if (event.type === 'set' && planGroupDocSnap) {
+				// eslint-disable-next-line @typescript-eslint/no-floating-promises
+				setDoc(
+					planGroupDocSnap.ref,
+					{
+						representativeStartDateTime: date,
+					},
+					{ merge: true },
+				);
+			}
+		},
+		[planGroupDocSnap],
+	);
 
 	return {
 		pagePlan: pagePlan!,
@@ -174,6 +182,7 @@ export const IPA003EditPlanController = ({
 		navigateToItineraryEdit,
 		updatePlan,
 		deleteTag,
+		onChangeImage,
 		updateRepresentativeStartDateTime,
 		setPlanToRepresentativePlan,
 		onChangeSearchPlace,

@@ -1,4 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { MediaTypeOptions } from 'expo-image-picker';
 import { setDoc } from 'firebase/firestore';
 import { useContext, useMemo } from 'react';
 import { ActivityIndicator, Button, Image, ScrollView, View } from 'react-native';
@@ -9,11 +10,14 @@ import { IPA003EditPlanController } from './EditPlanController';
 import { BottomTabParamList } from '@/App';
 import { CCO003DateTimePicker } from '@/Common/Components/CCO003DateTimePicker';
 import { CCO004DurationPicker } from '@/Common/Components/CCO004DurationPicker';
+import { CCO006ImagePicker } from '@/Common/Components/CCO006ImagePicker/ImagePicker';
 import i18n from '@/Common/Hooks/i18n-js';
+import { storage } from '@/Itinerary/Endpoint/firebaseStorage';
 import { ICT021PlanGroupsList } from '@/Itinerary/Models/IDB02PlanGroups/Contexts/ICT021PlanGroupsList';
 import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap';
 import { PCO002GooglePlacesAutocomplete } from '@/Place/Components/PCO002GooglePlacesAutocomplete';
 import { PMC01202PlaceInformation } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/ModelComponents/PMC01202PlaceInformation/PlaceInformation';
+import { materialColors } from '@/ThemeProvider';
 
 export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<BottomTabParamList, 'IPA003EditPlan'>) => {
 	const { PlanGroupsIndex, planID } = route.params;
@@ -36,6 +40,7 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 		navigateToItineraryEdit,
 		updatePlan,
 		deleteTag,
+		onChangeImage,
 		updateRepresentativeStartDateTime,
 		setPlanToRepresentativePlan,
 		onChangeSearchPlace,
@@ -54,13 +59,33 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 
 	return (
 		<ScrollView>
-			<Image
-				source={{ uri: pagePlan.imageUrl }}
-				style={{
-					height: 50,
-					width: 100,
+			<CCO006ImagePicker
+				onPickImage={onChangeImage}
+				imagePickerOptions={{
+					allowsEditing: true,
+					allowsMultipleSelection: false,
+					mediaTypes: MediaTypeOptions.Images,
+					aspect: [1, 1],
+					quality: 1,
 				}}
-			/>
+				imageManipulatorActions={[
+					{
+						resize: {
+							width: 2000,
+						},
+					},
+				]}
+				storage={storage}>
+				<Image
+					source={{ uri: pagePlan.imageUrl }}
+					resizeMode="cover"
+					style={{
+						paddingTop: '56.25%',
+						backgroundColor: materialColors.grey[300],
+						height: 150,
+					}}
+				/>
+			</CCO006ImagePicker>
 			<PCO002GooglePlacesAutocomplete onAutocompleteClicked={onAutocompleteClicked} onlySpot fetchDetails={false} />
 			<Divider style={{ marginVertical: 20 }} />
 			<TextInput label={i18n.t('メモ')} value={pagePlan.memo} onChange={onChangeMemo} onBlur={updatePlan} multiline />
