@@ -13,6 +13,7 @@ export const CCO006ImagePicker = ({
 	onPickImage,
 	imagePickerOptions,
 	storage,
+	style,
 }: ImagePickerPropsInterface) => {
 	const resizeImage = async (uri: string): Promise<string> => {
 		const result = await ImageManipulator.manipulateAsync(
@@ -76,6 +77,8 @@ export const CCO006ImagePicker = ({
 
 	return (
 		// eslint-disable-next-line @typescript-eslint/no-misused-promises
-		<Pressable onPress={pickImage}>{children}</Pressable>
+		<Pressable onPress={pickImage} style={style}>
+			{children}
+		</Pressable>
 	);
 };
