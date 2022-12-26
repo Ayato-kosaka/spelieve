@@ -1,11 +1,12 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { addDoc } from 'firebase/firestore';
-import React, { useCallback, useContext, useEffect } from 'react';
-import { ScrollView, ActivityIndicator } from 'react-native';
+import React, { useContext } from 'react';
+import { ScrollView, ActivityIndicator, Button, View } from 'react-native';
+import { Text } from 'react-native-paper';
 
-import { ItineraryOneInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT011';
+import { IPA001ItineraryEditController } from './ItineraryEditController';
 
 import { BottomTabParamList } from '@/App';
+import i18n from '@/Common/Hooks/i18n-js';
 import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
 import { ICT021PlanGroupsList } from '@/Itinerary/Models/IDB02PlanGroups/Contexts/ICT021PlanGroupsList';
 import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap';
@@ -15,51 +16,51 @@ export const IPA001ItineraryEdit = ({
 	route,
 	navigation,
 }: NativeStackScreenProps<BottomTabParamList, 'IPA001ItineraryEdit'>) => {
-	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
-	const { isPlansLoading, plansDocSnapMap } = useContext(ICT031PlansMap);
-	const { planGroupsQSnap, planGroupsCRef } = useContext(ICT021PlanGroupsList);
+	const { itineraryDocSnap } = useContext(ICT011ItineraryOne);
+	const { isPlansLoading } = useContext(ICT031PlansMap);
+	const { planGroupsQSnap, createPlanGroup } = useContext(ICT021PlanGroupsList);
 
-	// eslint-disable-next-line @typescript-eslint/naming-convention
-	const { itineraryID, place_id, placeName } = route.params;
-
-	// TODO: 課題解消後Conroller に移動する
-
-	useEffect(() => {
-		if (itineraryID) {
-			setItineraryID(itineraryID);
-		}
-	}, [itineraryID, setItineraryID]);
-
-	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/335 Itinerary 新規作成
-	const createItinerary = useCallback(async () => {
-		if (itineraryDocSnap) {
-			const itineray = await addDoc<ItineraryOneInterface>(itineraryDocSnap.ref.parent, {
-				title: '',
-				startDate: new Date(),
-				tags: [],
-				caption: '',
-				isUpdatable: true,
-				createdAt: new Date(),
-				updatedAt: new Date(),
-			});
-			setItineraryID(itineray.id);
-		}
-	}, [itineraryDocSnap, setItineraryID]);
+	const { createItinerary } = IPA001ItineraryEditController({
+		route,
+		navigation,
+	});
 
 	if (!itineraryDocSnap || isPlansLoading || !planGroupsQSnap) {
 		return <ActivityIndicator animating />;
 	}
 
 	if (!itineraryDocSnap.exists()) {
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		createItinerary();
 		return <ActivityIndicator animating />;
 	}
 
+	let prevDate: string | undefined;
+	let isAnotherDay = true;
+
 	return (
 		<ScrollView>
-			{planGroupsQSnap?.docs.map((planGroupsDoc) => (
-				<IMC03103PlanGroupsEdit key={planGroupsDoc.id} planGroupsDoc={planGroupsDoc} />
-			))}
+			{planGroupsQSnap?.docs.map((planGroupsDoc) => {
+				const plnaGroup = planGroupsDoc.data();
+				const formatDate = `${plnaGroup.representativeStartDateTime.getFullYear()}/${
+					plnaGroup.representativeStartDateTime.getMonth() + 1
+				}/${plnaGroup.representativeStartDateTime.getDate()}`;
+				isAnotherDay = prevDate !== formatDate;
+				prevDate = formatDate;
+				return (
+					<View key={planGroupsDoc.id}>
+						{isAnotherDay && <Text>{formatDate}</Text>}
+						<IMC03103PlanGroupsEdit planGroupsDoc={planGroupsDoc} />
+					</View>
+				);
+			})}
+			<Button
+				title={i18n.t('予定グループを追加')}
+				onPress={() => {
+					// eslint-disable-next-line @typescript-eslint/no-floating-promises
+					createPlanGroup();
+				}}
+			/>
 		</ScrollView>
 	);
 };

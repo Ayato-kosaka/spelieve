@@ -20,11 +20,9 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 	const { onCreateItineraryClicked } = PPA002PlaceController(route.params);
 
 	const headerRight = useCallback(
-		() => (
-			<MaterialCommunityIcons name="book-open-variant" size={30} onPress={() => onCreateItineraryClicked()} />
-		),
-		[onCreateItineraryClicked]
-	)
+		() => <MaterialCommunityIcons name="book-open-variant" size={30} onPress={() => onCreateItineraryClicked()} />,
+		[onCreateItineraryClicked],
+	);
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -42,14 +40,12 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 	}
 
 	return (
-		<>
-			<ScrollView>
+		<ScrollView>
 				<View style={styles.container}>
 					<PMC01201GoogleMapPlaceOne />
 					<Image source={{ uri: place.imageUrl }} style={styles.image} />
 					<PMC01202PlaceInformation />
 				</View>
 			</ScrollView>
-		</>
 	);
 };

@@ -8,7 +8,6 @@ import { PPA002Place } from '../PPA002Place/Place';
 
 import { BottomTabParamList } from '@/App';
 import { PCT011MPlacesListProvider } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
-import { theme } from '@/ThemeProvider';
 
 export type PlaceStackParamList = {
 	PPA001Places: PlacesPropsInterface;
@@ -20,7 +19,7 @@ const Stack = createNativeStackNavigator<PlaceStackParamList>();
 export const PlacePageNavigator = ({ navigation }: NativeStackScreenProps<BottomTabParamList, 'Place'>) => (
 	<PCT012MPlaceOneProvider>
 		<PCT011MPlacesListProvider>
-			<Stack.Navigator initialRouteName="PPA001Places" screenOptions={{ headerShown: false}}>
+			<Stack.Navigator initialRouteName="PPA001Places" screenOptions={{ headerShown: false }}>
 				<Stack.Screen name="PPA001Places" component={PPA001Places} initialParams={{}} />
 				<Stack.Screen name="PPA002Place" component={PPA002Place} initialParams={{}} />
 			</Stack.Navigator>

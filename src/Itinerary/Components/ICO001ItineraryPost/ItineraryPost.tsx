@@ -1,5 +1,4 @@
-import { Image, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { Image, View, ScrollView } from 'react-native';
 import { Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 

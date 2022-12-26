@@ -16,7 +16,7 @@ export const PMC01102PlacesList = ({ onPlaceSelected, style }: PlacesListPropsIn
 				data={placesList}
 				renderItem={(itemData) => (
 					<TouchableOpacity onPress={() => onPlaceSelected(itemData.item.place_id)} style={styles.item}>
-						<Image source={{ uri: itemData.item.imageUrl }} style={styles.image}/>
+						<Image source={{ uri: itemData.item.imageUrl }} style={styles.image} />
 						<Text style={styles.placeName}>{itemData.item.name}</Text>
 					</TouchableOpacity>
 				)}

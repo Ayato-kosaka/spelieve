@@ -1,6 +1,8 @@
 name: Deploy to Release Environment with Firebase Hosting 
 on:
-  pull_request:
+  push:
+    branches:
+      - develop
   workflow_dispatch:
 jobs:
   build_and_preview:

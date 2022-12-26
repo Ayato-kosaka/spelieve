@@ -5,6 +5,7 @@ import { ItineraryOneInterface, ItineraryOneValInterface } from 'spelieve-common
 import { Itineraries } from 'spelieve-common/lib/Models/Itinerary/IDB01/Itineraries';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
+import { Logger } from '@/Common/Hooks/CHK001Utils';
 import db from '@/Itinerary/Endpoint/firestore';
 
 export const ICT011ItineraryOne = createContext({} as ItineraryOneValInterface);
@@ -15,31 +16,39 @@ export const ICT011ItineraryOneProvider = ({ children }: { children: ReactNode }
 		undefined,
 	);
 
+	const itineraryCRef = useMemo(
+		() =>
+			collection(db, Itineraries.modelName).withConverter(
+				FirestoreConverter<Itineraries, ItineraryOneInterface>(
+					Itineraries,
+					(data) => data,
+					(data) => {
+						Logger('IDB01/Itineraries', 'write', data);
+						return data;
+					},
+				),
+			),
+		[],
+	);
+
 	useEffect(() => {
 		if (itineraryID) {
-			const unsubscribe = onSnapshot(
-				doc(collection(db, Itineraries.modelName), itineraryID).withConverter(
-					FirestoreConverter<Itineraries, ItineraryOneInterface>(
-						Itineraries,
-						(data) => data,
-						(data) => data,
-					),
-				),
-				(docSnap) => {
-					setItineraryDocSnap(docSnap);
-				},
-			);
+			const unsubscribe = onSnapshot(doc(itineraryCRef, itineraryID), (docSnap) => {
+				Logger('IDB01/Itineraries', 'read docSnap.id', docSnap.id);
+				setItineraryDocSnap(docSnap);
+			});
 			return () => unsubscribe();
 		}
 		return undefined;
-	}, [itineraryID]);
+	}, [itineraryCRef, itineraryID]);
 
 	const value: ItineraryOneValInterface = useMemo(
 		() => ({
 			itineraryDocSnap,
 			setItineraryID,
+			itineraryCRef,
 		}),
-		[itineraryDocSnap, setItineraryID],
+		[itineraryDocSnap, setItineraryID, itineraryCRef],
 	);
 	return <ICT011ItineraryOne.Provider value={value}>{children}</ICT011ItineraryOne.Provider>;
 };
