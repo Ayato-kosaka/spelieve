@@ -12,6 +12,7 @@ export const PCO002GooglePlacesAutocomplete = ({
 	onAutocompleteClicked,
 	onlySpot,
 	fetchDetails,
+	inputContainerStyle,
 }: GooglePlacesAutocompletePropsInterface) => {
 	const { searchInput, placesResult, onChangeInput, onPressAutocomplete } = PCO002GooglePlacesAutocompleteController({
 		onAutocompleteClicked,
@@ -33,6 +34,7 @@ export const PCO002GooglePlacesAutocomplete = ({
 			}}
 			placeholder={i18n.t('searchPlaceText')}
 			listContainerStyle={{ backgroundColor: '#fff' }}
+			inputContainerStyle={inputContainerStyle}
 		/>
 	);
 };

@@ -19,7 +19,7 @@ const Stack = createNativeStackNavigator<PlaceStackParamList>();
 export const PlacePageNavigator = ({ navigation }: NativeStackScreenProps<BottomTabParamList, 'Place'>) => (
 	<PCT012MPlaceOneProvider>
 		<PCT011MPlacesListProvider>
-			<Stack.Navigator initialRouteName="PPA001Places">
+			<Stack.Navigator initialRouteName="PPA001Places" screenOptions={{ headerShown: false }}>
 				<Stack.Screen name="PPA001Places" component={PPA001Places} initialParams={{}} />
 				<Stack.Screen name="PPA002Place" component={PPA002Place} initialParams={{}} />
 			</Stack.Navigator>
