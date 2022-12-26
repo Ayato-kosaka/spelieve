@@ -32,6 +32,7 @@ export default ({ config }: ConfigContext) => {
 					foregroundImage: './assets/adaptive-icon.png',
 					backgroundColor: '#FFFFFF',
 				},
+				package: 'com.spelieve',
 				config: {
 					googleMaps: {
 						apiKey: process.env.GCP_API_KEY_ANDROID,
