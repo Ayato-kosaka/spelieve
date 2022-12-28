@@ -1,6 +1,8 @@
 name: EAS Build Preview Release
 on:
-  workflow_dispatch:
+ schedule:
+  - cron: '0 19 * * *'
+ workflow_dispatch:
 
 jobs:
   build:
