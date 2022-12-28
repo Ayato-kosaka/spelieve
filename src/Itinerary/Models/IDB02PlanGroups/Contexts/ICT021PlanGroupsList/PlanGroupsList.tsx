@@ -28,11 +28,15 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 					PlanGroups,
 					(data) => ({
 						...data,
-						dayNumber:
-							data.representativeStartDateTime.getTime() -
-							Math.floor(itineraryDocSnap.data()!.startDate.getTime() / (1000 * 60 * 60 * 24)),
+						dayNumber: Math.floor(
+							(data.representativeStartDateTime.getTime() - (itineraryDocSnap.data()?.startDate?.getTime() || 0)) /
+								(1000 * 60 * 60 * 24),
+						),
 					}),
-					(data) => data,
+					(data) => ({
+						...data,
+						dayNumber: undefined,
+					}),
 				),
 			);
 		}

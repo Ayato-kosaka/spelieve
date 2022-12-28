@@ -1,7 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useContext } from 'react';
 import { ScrollView, ActivityIndicator, Button, View } from 'react-native';
-import { Text } from 'react-native-paper';
 
 import { IPA001ItineraryEditController } from './ItineraryEditController';
 
@@ -35,21 +34,18 @@ export const IPA001ItineraryEdit = ({
 		return <ActivityIndicator animating />;
 	}
 
-	let prevDate: string | undefined;
 	let isAnotherDay = true;
+	let prevDateNumber = 0;
 
 	return (
 		<ScrollView>
 			{planGroupsQSnap?.docs.map((planGroupsDoc) => {
 				const plnaGroup = planGroupsDoc.data();
-				const formatDate = `${plnaGroup.representativeStartDateTime.getFullYear()}/${
-					plnaGroup.representativeStartDateTime.getMonth() + 1
-				}/${plnaGroup.representativeStartDateTime.getDate()}`;
-				isAnotherDay = prevDate !== formatDate;
-				prevDate = formatDate;
+				isAnotherDay = prevDateNumber !== plnaGroup.dayNumber;
+				prevDateNumber = plnaGroup.dayNumber;
 				return (
 					<View key={planGroupsDoc.id}>
-						{isAnotherDay && <Text>{formatDate}</Text>}
+						{isAnotherDay && <h3>{plnaGroup.dayNumber}日目</h3>}
 						<IMC03103PlanGroupsEdit planGroupsDoc={planGroupsDoc} />
 					</View>
 				);
