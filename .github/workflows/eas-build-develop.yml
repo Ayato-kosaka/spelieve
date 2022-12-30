@@ -1,7 +1,10 @@
 name: EAS Build Develop
 on:
-  schedule:
-    - cron: '0 19 * * *'
+  push:
+    branches:
+      - develop
+    paths:
+      - 'app.config.ts'
   workflow_dispatch:
 
 jobs:
