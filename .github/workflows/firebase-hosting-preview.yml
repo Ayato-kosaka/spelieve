@@ -12,7 +12,9 @@ on:
           - production
           - release
           - development
-        default: "release"
+        required: true
+env:
+  TARGET: ${{ github.event.inputs.target || 'release' }}
 jobs:
   build_and_preview:
     runs-on: ubuntu-latest
@@ -24,7 +26,7 @@ jobs:
           repository: Ayato-kosaka/spelieve-secret
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           path: spelieve-secret
-      - run: 'mv ./spelieve-secret/spelieve-frontend/${{ github.event.inputs.target }}/ENV.ts ./src'
+      - run: 'mv ./spelieve-secret/spelieve-frontend/$TARGET/ENV.ts ./src'
       - run: 'rm -rf spelieve-secret/'
       - run: 'npm ci && npm i -g expo-cli && expo build:web'
       - uses: FirebaseExtended/action-hosting-deploy@v0
@@ -32,4 +34,4 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_ITINERARY_4AEE3 }}'
           projectId: itinerary-4aee3
-          channelID: ${{ github.event.inputs.target }}
+          channelID: $TARGET
