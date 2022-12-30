@@ -1,22 +1,17 @@
 import { setDoc } from 'firebase/firestore';
 import { useState, useContext, useEffect, useCallback } from 'react';
-import { TextInputChangeEventData } from 'react-native';
+import { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
 
-import {
-	ItineraryCoverPropsInterface,
-	ItineraryOneInterface,
-	ItineraryCoverControllerInterface,
-} from 'spelieve-common/lib/Interfaces';
+import { ItineraryCoverPropsInterface, ItineraryOneInterface } from 'spelieve-common/lib/Interfaces';
 import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 
 import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
 import { ICT021PlanGroupsList } from '@/Itinerary/Models/IDB02PlanGroups/Contexts/ICT021PlanGroupsList';
 
-export function IPA002ItineraryCoverController({
-	itineraryID,
-}: ItineraryCoverPropsInterface): ItineraryCoverControllerInterface {
+export function IPA002ItineraryCoverController({ itineraryID }: ItineraryCoverPropsInterface) {
 	const [pageItinerary, setPageItinerary] = useState<ItineraryOneInterface | undefined>(undefined);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [tagSearchText, setTagSearchText] = useState<string>('');
 	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
 	const { planGroupsQSnap } = useContext(ICT021PlanGroupsList);
 
@@ -84,11 +79,30 @@ export function IPA002ItineraryCoverController({
 		[pageItinerary],
 	);
 
+	const onTagSearchTextChanged = useCallback((e: NativeSyntheticEvent<TextInputChangeEventData>): void => {
+		setTagSearchText(e.nativeEvent.text);
+	}, []);
+
+	const onTagSearchTextBlur = useCallback(() => {
+		if (!itineraryDocSnap) {
+			return;
+		}
+		const newTags = [...pageItinerary!.tags];
+		newTags.push(tagSearchText);
+		setTagSearchText('');
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
+		setDoc(itineraryDocSnap.ref, { tags: newTags }, { merge: true });
+	}, [itineraryDocSnap, pageItinerary, tagSearchText]);
+
 	const deleteTag = useCallback(
 		(index: number): void => {
-			const newTags: string[] = pageItinerary!.tags.splice(index, 1);
+			if (!itineraryDocSnap || !pageItinerary) {
+				return;
+			}
+			const newTags: string[] = [...pageItinerary.tags];
+			newTags.splice(index, 1);
 			// eslint-disable-next-line @typescript-eslint/no-floating-promises
-			setDoc<ItineraryOneInterface>(itineraryDocSnap!.ref, { tags: newTags }, { merge: true });
+			setDoc<ItineraryOneInterface>(itineraryDocSnap.ref, { tags: newTags }, { merge: true });
 		},
 		[itineraryDocSnap, pageItinerary],
 	);
@@ -99,6 +113,9 @@ export function IPA002ItineraryCoverController({
 		pageItinerary,
 		updateItinerary,
 		handleOnChange,
+		tagSearchText,
+		onTagSearchTextChanged,
+		onTagSearchTextBlur,
 		deleteTag,
 		shouldNavigate,
 		isLoading,
