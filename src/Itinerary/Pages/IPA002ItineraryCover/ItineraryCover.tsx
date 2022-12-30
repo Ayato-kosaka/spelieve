@@ -80,7 +80,8 @@ export const IPA002ItineraryCover = ({
 					<ScrollView horizontal style={styles.chipContainer}>
 						{pageItinerary.tags.map((tag, index) => (
 							<Chip
-								key={tag}
+								key={`${tag}${index.toString()}`}
+								mode="outlined"
 								style={styles.tagsChip}
 								textStyle={styles.tagsChipText}
 								closeIcon="close-circle"

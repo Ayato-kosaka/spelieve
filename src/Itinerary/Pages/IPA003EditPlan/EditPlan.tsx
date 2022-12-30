@@ -39,6 +39,9 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 		isNeedToNavigateToItineraryEdit,
 		navigateToItineraryEdit,
 		updatePlan,
+		tagSearchText,
+		onTagSearchTextChanged,
+		onTagSearchTextBlur,
 		deleteTag,
 		onChangeImage,
 		updateRepresentativeStartDateTime,
@@ -89,15 +92,20 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 			<PCO002GooglePlacesAutocomplete onAutocompleteClicked={onAutocompleteClicked} onlySpot fetchDetails={false} />
 			<Divider style={{ marginVertical: 20 }} />
 			<TextInput label={i18n.t('メモ')} value={pagePlan.memo} onChange={onChangeMemo} onBlur={updatePlan} multiline />
-			<View style={{ flexDirection: 'row' }}>
+			<ScrollView horizontal style={{ flexDirection: 'row' }}>
 				{pagePlan.tags.map((tag, index) => (
-					<Chip key={tag} closeIcon="close-circle" onClose={() => deleteTag(index)}>
+					<Chip key={`${tag}${index.toString()}`} closeIcon="close-circle" onClose={() => deleteTag(index)}>
 						{tag}
 					</Chip>
 				))}
 				{/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/298 Tagを取得するSearchBarを実装する */}
-				<Searchbar placeholder="Search" value="" />
-			</View>
+				<Searchbar
+					placeholder={i18n.t('タグを追加する')}
+					value={tagSearchText}
+					onChange={onTagSearchTextChanged}
+					onBlur={onTagSearchTextBlur}
+				/>
+			</ScrollView>
 			<View>
 				<Text>{i18n.t('滞在時間')}</Text>
 				<CCO004DurationPicker

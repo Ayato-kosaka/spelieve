@@ -84,10 +84,10 @@ export function IPA002ItineraryCoverController({ itineraryID }: ItineraryCoverPr
 	}, []);
 
 	const onTagSearchTextBlur = useCallback(() => {
-		if (!itineraryDocSnap) {
+		if (!itineraryDocSnap || !pageItinerary) {
 			return;
 		}
-		const newTags = [...pageItinerary!.tags];
+		const newTags = [...pageItinerary.tags];
 		newTags.push(tagSearchText);
 		setTagSearchText('');
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises

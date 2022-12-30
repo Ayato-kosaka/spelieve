@@ -1,5 +1,6 @@
 import React, { useContext, useMemo } from 'react';
 import { Pressable, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { Card, Chip, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -9,6 +10,7 @@ import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 import { ICT031PlansMap } from '../..';
 
 import { IMC03101PlanEditController } from './PlanEditController';
+import { styles } from './PlanEditStyle';
 
 import { paperTheme } from '@/ThemeProvider';
 
@@ -47,16 +49,24 @@ export const IMC03101PlanEdit = ({
 				</View>
 				<Pressable onPress={onPlanPress} style={{ flex: 13 }}>
 					<Text>{plan.title || ' '}</Text>
-					<View>
+					<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 						<Text>
 							{DateUtils.formatToHHMM(plan.placeStartTime)}
 							{plan.placeStartTime.getTime() !== plan.placeEndTime.getTime()
 								? `~${DateUtils.formatToHHMM(plan.placeEndTime)}`
 								: ''}
 						</Text>
-						{plan.tags.map((tag) => (
-							<Chip key={tag}>{tag}</Chip>
-						))}
+						<ScrollView horizontal>
+							{plan.tags.map((tag, index) => (
+								<Chip
+									key={`${tag}${index.toString()}`}
+									mode="outlined"
+									style={styles.tagsChip}
+									textStyle={styles.tagsChipText}>
+									{tag}
+								</Chip>
+							))}
+						</ScrollView>
 					</View>
 				</Pressable>
 				<View style={{ flex: 1, alignItems: 'center' }}>
