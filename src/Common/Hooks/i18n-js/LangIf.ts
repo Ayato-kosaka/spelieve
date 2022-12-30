@@ -1,11 +1,66 @@
 export interface LangIf {
 	/** welcome */
 	welcome: string;
-	searchPlaceText: string;
 
-	// PPA002Place
-	'Opening Hours': string;
-	'Customer Reviews': string;
+	// App.tsx
+	Itinerary: string;
+	Place: string;
+
+	// ImagePickerCOntroller.ts
+	'Upload failed, sorry :(': string
+
+	// TrafficMovementEdit.tsx
+	'Add Plan': string;
+
+	// EditDirectionMode.tsx
+	'Route with fewest transfer': string;
+	'Route with shortest distance': string;
+	'Select': string;
+
+	//INV002ItineraryTopTabNavigator
+	Edit: string;
+	Preview: string;
+
+	// ItineraryPageNavigator
+	'Itinerary setting': string;
+	'Plan setting': string;
+
+	// IPA001ItineraryEdit
+	'Add Plan group': string;
+
+	// IPA002ItineraryCover
+	'Itinerary Title': string;
+	'Itinerary SubTitle': string;
+	'Start date': string;
+	'Description': string;
+
+	// IPA003EditPlan
+	'Memo': string;
+	'Stay time': string;
+	'Representative plan Start date': string;
+	'Set this Plan to Representative one': string
+
+	// PCO002GooglePlacesAUtocomplete.tsx
+	'Search Place': string;
+
+	// PHK001GooglePlaceAPI.ts
+	'Bicycling': string;
+	'Driving': string;
+	'Transit': string;
+	'Walking': string;
+	'Bus': string;
+	'Rail': string;
+	'Subway': string;
+	'Train': string;
+	'Tram': string;
+	'Avoid highways': string;
+	'Avoid tolls': string;
+	'Avoid ferries': string;
+	'Avoid Indoors': string;
+
+	// MPlaceOne.tsx
+	'No Opening Hours Infomation': string;
+	'Open 24hours': string;
 	Sunday: string;
 	Monday: string;
 	Tuesday: string;
@@ -13,10 +68,13 @@ export interface LangIf {
 	Thursday: string;
 	Friday: string;
 	Saturday: string;
-	'show more': string;
-	'show more info at Google Map': string;
 
-	// PlaceController.ts
-	'No Opening Hours Infomation': string;
-	'Open 24hours': string;
+	// PMC012202PlaceInformation.tsx
+	'Opening Hours': string;
+	'Customer Reviews': string;
+	'Show more': string;
+	'Show more Info at Google Map': string;
+
+	// PPA002Place
+	'Place Not Found': string;
 }

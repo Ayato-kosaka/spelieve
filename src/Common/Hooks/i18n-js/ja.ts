@@ -2,7 +2,6 @@ import { LangIf } from './LangIf';
 
 const ja: LangIf = {
 	welcome: 'こんにちは',
-	searchPlaceText: '住所を入力',
 
 	// PPA002Place
 	'Opening Hours': '営業時間',

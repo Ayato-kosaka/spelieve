@@ -71,7 +71,7 @@ export const PMC01202PlaceInformation = () => {
 						// eslint-disable-next-line
 						Linking.openURL(`${place.mapUrl}`);
 					}}>
-					{i18n.t('show more info at Google Map')}
+					{i18n.t('Show more Info at Google Map')}
 				</Text>
 			</View>
 			<View>
@@ -86,7 +86,7 @@ export const PMC01202PlaceInformation = () => {
 						// eslint-disable-next-line
 						Linking.openURL(`${place.mapUrl}`);
 					}}>
-					{i18n.t('show more')}
+					{i18n.t('Show more')}
 				</Text>
 			</View>
 		</View>

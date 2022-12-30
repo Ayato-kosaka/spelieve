@@ -32,7 +32,7 @@ export const PCO002GooglePlacesAutocomplete = ({
 					</TouchableOpacity>
 				),
 			}}
-			placeholder={i18n.t('searchPlaceText')}
+			placeholder={i18n.t('Search Place')}
 			listContainerStyle={{ backgroundColor: '#fff' }}
 			inputContainerStyle={inputContainerStyle}
 		/>

@@ -2,7 +2,6 @@ import { LangIf } from './LangIf';
 
 const en: LangIf = {
 	welcome: 'Hello',
-	searchPlaceText: 'Enter address',
 
 	// PPA002Place
 	'Opening Hours': 'Opening Hours',

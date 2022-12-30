@@ -60,13 +60,13 @@ export const INV002ItineraryTopTabNavigator = ({
 				name="IPA001ItineraryEdit"
 				component={IPA001ItineraryEdit}
 				initialParams={{}}
-				options={{ title: i18n.t('編集'), lazy: true }}
+				options={{ title: i18n.t('Edit'), lazy: true }}
 			/>
 			<Tab.Screen
 				name="IPA004ItineraryPreview"
 				component={IPA004ItineraryPreview}
 				initialParams={{}}
-				options={{ title: i18n.t('プレビュー'), lazy: true }}
+				options={{ title: i18n.t('Preview'), lazy: true }}
 			/>
 		</Tab.Navigator>
 	);

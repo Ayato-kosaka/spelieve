@@ -93,7 +93,7 @@ export const IMC03104EditDirectionsMode = ({
 								transitRoutingPreference: TransitRoutingPreference.fewer_transfers,
 							})
 						}>
-						<Text>{i18n.t('乗り換えが少ないルート')}</Text>
+						<Text>{i18n.t('Route with fewest transfer')}</Text>
 						<MaterialCommunityIcons
 							name={
 								directionsMode.transitRoutingPreference === TransitRoutingPreference.fewer_transfers
@@ -110,7 +110,7 @@ export const IMC03104EditDirectionsMode = ({
 								transitRoutingPreference: TransitRoutingPreference.less_walking,
 							})
 						}>
-						<Text>{i18n.t('歩きが少ないルート')}</Text>
+						<Text>{i18n.t('Route with shortest distance')}</Text>
 						<MaterialCommunityIcons
 							name={
 								directionsMode.transitRoutingPreference === TransitRoutingPreference.less_walking
@@ -142,7 +142,7 @@ export const IMC03104EditDirectionsMode = ({
 				))}
 			</View>
 			<Button
-				title={i18n.t('決定')}
+				title={i18n.t('Select')}
 				onPress={() => {
 					setBottomSheetVisible(false);
 					onClose();

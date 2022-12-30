@@ -2,7 +2,6 @@ import { LangIf } from './LangIf';
 
 const lang: LangIf = {
 	welcome: 'welcome',
-	searchPlaceText: 'searchPlaceText',
 	'Opening Hours': 'Opening Hours',
 	'Customer Reviews': 'Customer Reviews',
 	Sunday: 'Sunday',

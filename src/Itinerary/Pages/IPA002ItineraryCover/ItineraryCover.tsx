@@ -54,14 +54,14 @@ export const IPA002ItineraryCover = ({
 				</CCO006ImagePicker>
 				<Card.Content style={{ justifyContent: 'space-around', height: 700 }}>
 					<TextInput
-						label={i18n.t('旅行のタイトル')}
+						label={i18n.t('Itinerary Title')}
 						value={pageItinerary.title}
 						onChange={handleOnChange('title')}
 						onBlur={updateItinerary}
 						style={styles.titleTextInput}
 					/>
 					<TextInput
-						label={i18n.t('旅行のサブタイトル')}
+						label={i18n.t('Itinerary SubTitle')}
 						value={pageItinerary.subTitle}
 						onChange={handleOnChange('subTitle')}
 						onBlur={updateItinerary}
@@ -82,7 +82,7 @@ export const IPA002ItineraryCover = ({
 						<Searchbar placeholder="Search" value="" />
 					</View>
 					<View style={{ zIndex: 1 }}>
-						<Text style={styles.startDateLabel}>{i18n.t('旅行の滞在開始日')}</Text>
+						<Text style={styles.startDateLabel}>{i18n.t('Start date')}</Text>
 						<CCO003DateTimePicker
 							value={pageItinerary.startDate}
 							onChange={(event, date) => {
@@ -95,7 +95,7 @@ export const IPA002ItineraryCover = ({
 					</View>
 					<TextInput
 						mode="outlined"
-						label={i18n.t('旅行のキャプション')}
+						label={i18n.t('Description')}
 						value={pageItinerary.caption}
 						onChange={handleOnChange('caption')}
 						onBlur={updateItinerary}

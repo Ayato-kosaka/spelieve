@@ -85,7 +85,7 @@ export const IMC03102TrafficMovementEdit = ({
 							}}
 							color={materialColors.grey['500']}
 							style={{ backgroundColor: 'white' }}>
-							{i18n.t('予定を追加')}
+							{i18n.t('Add Plan')}
 						</Button>
 					</View>
 				</View>
