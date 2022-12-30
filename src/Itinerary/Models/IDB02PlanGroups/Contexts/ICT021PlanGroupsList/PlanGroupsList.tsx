@@ -26,8 +26,17 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 			return collection(itineraryDocSnap.ref, PlanGroups.modelName).withConverter(
 				FirestoreConverter<PlanGroups, PlanGroupsListInterface>(
 					PlanGroups,
-					(data) => data,
-					(data) => data,
+					(data) => ({
+						...data,
+						dayNumber: Math.floor(
+							(data.representativeStartDateTime.getTime() - (itineraryDocSnap.data()?.startDate?.getTime() || 0)) /
+								(1000 * 60 * 60 * 24),
+						),
+					}),
+					(data) => ({
+						...data,
+						dayNumber: undefined,
+					}),
 				),
 			);
 		}
@@ -56,7 +65,6 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 			plans: [planDocRef.id],
 			representativePlanID: planDocRef.id,
 			dayNumber: 0,
-			time: DateUtils.initialDate(),
 			representativeStartDateTime: newPlan.placeStartTime,
 			createdAt: new Date(),
 			updatedAt: new Date(),

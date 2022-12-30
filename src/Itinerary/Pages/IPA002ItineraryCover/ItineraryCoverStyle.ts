@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { materialColors, primaryColorNm } from '@/ThemeProvider';
+import { materialColors } from '@/ThemeProvider';
 
 export const styles = StyleSheet.create({
 	image: { paddingTop: '100%', backgroundColor: materialColors.grey[300] },
@@ -12,10 +12,10 @@ export const styles = StyleSheet.create({
 	},
 	chipContainer: { flexDirection: 'row' },
 	tagsChip: {
-		backgroundColor: materialColors[primaryColorNm]['50'],
+		backgroundColor: materialColors.grey['50'],
 	},
 	tagsChipText: {
-		color: materialColors[primaryColorNm][400],
+		color: materialColors.grey[800],
 	},
 	startDateLabel: { color: materialColors.grey[700] },
 	startDateTimePicker: { backgroundColor: '#fff' },

@@ -34,6 +34,7 @@ export const IPA003EditPlanController = ({
 	const { setPlaceID, place } = useContext(PCT012MPlaceOne);
 
 	const [pagePlan, setPagePlan] = useState<PlansMapInterface | undefined>(undefined);
+	const [tagSearchText, setTagSearchText] = useState<string>('');
 
 	const navigateToItineraryEdit = useCallback(() => {
 		navigation.navigate('Itinerary', {
@@ -140,11 +141,30 @@ export const IPA003EditPlanController = ({
 		[planDocSnap],
 	);
 
+	const onTagSearchTextChanged = useCallback((e: NativeSyntheticEvent<TextInputChangeEventData>): void => {
+		setTagSearchText(e.nativeEvent.text);
+	}, []);
+
+	const onTagSearchTextBlur = useCallback(() => {
+		if (!planDocSnap || !plan) {
+			return;
+		}
+		const newTags: string[] = [...plan.tags];
+		newTags.push(tagSearchText);
+		setTagSearchText('');
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
+		setDoc(planDocSnap.ref, { tags: newTags }, { merge: true });
+	}, [plan, planDocSnap, tagSearchText]);
+
 	const deleteTag = useCallback(
 		(index: number): void => {
-			const newTags: string[] = plan!.tags.splice(index, 1);
+			if (!planDocSnap || !plan) {
+				return;
+			}
+			const newTags: string[] = [...plan.tags];
+			newTags.splice(index, 1);
 			// eslint-disable-next-line @typescript-eslint/no-floating-promises
-			setDoc(planDocSnap!.ref, { tags: newTags }, { merge: true });
+			setDoc(planDocSnap.ref, { tags: newTags }, { merge: true });
 		},
 		[plan, planDocSnap],
 	);
@@ -181,6 +201,9 @@ export const IPA003EditPlanController = ({
 		isNeedToNavigateToItineraryEdit,
 		navigateToItineraryEdit,
 		updatePlan,
+		tagSearchText,
+		onTagSearchTextChanged,
+		onTagSearchTextBlur,
 		deleteTag,
 		onChangeImage,
 		updateRepresentativeStartDateTime,
