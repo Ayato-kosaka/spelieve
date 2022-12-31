@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-	container: { flexDirection: 'row', flexGrow: 1, justifyContent: 'space-around' },
-	travelModeContainer: {
+	travelModeContainer: { flexDirection: 'row', flexGrow: 1, justifyContent: 'space-around' },
+	travelModePressable: {
 		flexDirection: 'column',
 		alignItems: 'center',
 	},

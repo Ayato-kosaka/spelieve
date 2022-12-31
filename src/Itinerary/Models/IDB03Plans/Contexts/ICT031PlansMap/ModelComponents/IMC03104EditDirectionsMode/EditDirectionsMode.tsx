@@ -38,125 +38,127 @@ export const IMC03104EditDirectionsMode = ({
 			bottomSheetVisible={bottomSheetVisible}
 			setBottomSheetVisible={setBottomSheetVisible}
 			onClose={onClose}>
-			<View style={styles.container}>
-				{[TravelMode.walking, TravelMode.bicycling, TravelMode.driving].map((travelMode) => (
-					<Pressable
-						key={travelMode}
-						onPress={() => {
-							setDirectionsMode({
-								...directionsMode,
-								transportationMode: directionsMode.transportationMode === travelMode ? undefined : travelMode,
-							});
-						}}
-						style={styles.travelModeContainer}>
-						<MaterialCommunityIcons
-							name={travelModeConverter[travelMode].iconName}
-							color={travelMode === directionsMode.transportationMode ? paperTheme.colors.secondary : 'black'}
-						/>
-						<Text
-							style={{
-								color: travelMode === directionsMode.transportationMode ? paperTheme.colors.secondary : 'black',
+			<View style={{ justifyContent: 'flex-start' }}>
+				<View style={styles.travelModeContainer}>
+					{[TravelMode.walking, TravelMode.bicycling, TravelMode.driving].map((travelMode) => (
+						<Pressable
+							key={travelMode}
+							onPress={() => {
+								setDirectionsMode({
+									...directionsMode,
+									transportationMode: directionsMode.transportationMode === travelMode ? undefined : travelMode,
+								});
+							}}
+							style={styles.travelModePressable}>
+							<MaterialCommunityIcons
+								name={travelModeConverter[travelMode].iconName}
+								color={travelMode === directionsMode.transportationMode ? paperTheme.colors.secondary : 'black'}
+							/>
+							<Text
+								style={{
+									color: travelMode === directionsMode.transportationMode ? paperTheme.colors.secondary : 'black',
+								}}>
+								{travelModeConverter[travelMode].title}
+							</Text>
+						</Pressable>
+					))}
+				</View>
+				<Divider />
+				{directionsMode.transportationMode === TravelMode.transit && (
+					<>
+						<View style={{ flexDirection: 'row', flexGrow: 1, justifyContent: 'space-around' }}>
+							{[TransitMode.bus, TransitMode.rail, TransitMode.subway, TransitMode.train, TransitMode.tram].map(
+								(transitMode) => (
+									<Pressable
+										key={transitMode}
+										onPress={() => {
+											const transitModes = [...directionsMode.transitModes];
+											if (transitModes.includes(transitMode)) {
+												transitModes.splice(transitModes.indexOf(transitMode), 1);
+											} else {
+												transitModes.push(transitMode);
+											}
+											setDirectionsMode({ ...directionsMode, transitModes });
+										}}
+										style={{
+											flexDirection: 'column',
+											alignItems: 'center',
+											backgroundColor: directionsMode.transitModes.includes(transitMode) ? 'red' : 'white',
+										}}>
+										<MaterialCommunityIcons name={transitModeConverter[transitMode].iconName} />
+										<Text>{transitModeConverter[transitMode].title}</Text>
+									</Pressable>
+								),
+							)}
+						</View>
+						<Divider />
+						<Pressable
+							style={{ flexDirection: 'row', alignItems: 'center' }}
+							onPress={() =>
+								setDirectionsMode({
+									...directionsMode,
+									transitRoutingPreference: TransitRoutingPreference.fewer_transfers,
+								})
+							}>
+							<Text>{i18n.t('乗り換えが少ないルート')}</Text>
+							<MaterialCommunityIcons
+								name={
+									directionsMode.transitRoutingPreference === TransitRoutingPreference.fewer_transfers
+										? 'checkbox-blank-circle'
+										: ''
+								}
+							/>
+						</Pressable>
+						<Pressable
+							style={{ flexDirection: 'row', alignItems: 'center' }}
+							onPress={() =>
+								setDirectionsMode({
+									...directionsMode,
+									transitRoutingPreference: TransitRoutingPreference.less_walking,
+								})
+							}>
+							<Text>{i18n.t('歩きが少ないルート')}</Text>
+							<MaterialCommunityIcons
+								name={
+									directionsMode.transitRoutingPreference === TransitRoutingPreference.less_walking
+										? 'checkbox-blank-circle'
+										: ''
+								}
+							/>
+						</Pressable>
+						<Divider />
+					</>
+				)}
+				<View>
+					{[TravelRestriction.highways, TravelRestriction.tolls, TravelRestriction.ferries].map((travelRestriction) => (
+						<Pressable
+							key={travelRestriction}
+							style={styles.travelRestrictionContainer}
+							onPress={() => {
+								const travelRestrictions = [...directionsMode.avoid];
+								if (travelRestrictions.includes(travelRestriction)) {
+									travelRestrictions.splice(travelRestrictions.indexOf(travelRestriction), 1);
+								} else {
+									travelRestrictions.push(travelRestriction);
+								}
+								setDirectionsMode({ ...directionsMode, avoid: travelRestrictions });
 							}}>
-							{travelModeConverter[travelMode].title}
-						</Text>
-					</Pressable>
-				))}
+							<Text>{travelRestrictionConverter[travelRestriction].title}</Text>
+							<Checkbox.IOS
+								status={directionsMode.avoid.includes(travelRestriction) ? 'checked' : 'unchecked'}
+								color={paperTheme.colors.secondary}
+							/>
+						</Pressable>
+					))}
+				</View>
+				<Button
+					onPress={() => {
+						setBottomSheetVisible(false);
+						onClose();
+					}}>
+					{i18n.t('決定')}
+				</Button>
 			</View>
-			<Divider />
-			{directionsMode.transportationMode === TravelMode.transit && (
-				<>
-					<View style={{ flexDirection: 'row', flexGrow: 1, justifyContent: 'space-around' }}>
-						{[TransitMode.bus, TransitMode.rail, TransitMode.subway, TransitMode.train, TransitMode.tram].map(
-							(transitMode) => (
-								<Pressable
-									key={transitMode}
-									onPress={() => {
-										const transitModes = [...directionsMode.transitModes];
-										if (transitModes.includes(transitMode)) {
-											transitModes.splice(transitModes.indexOf(transitMode), 1);
-										} else {
-											transitModes.push(transitMode);
-										}
-										setDirectionsMode({ ...directionsMode, transitModes });
-									}}
-									style={{
-										flexDirection: 'column',
-										alignItems: 'center',
-										backgroundColor: directionsMode.transitModes.includes(transitMode) ? 'red' : 'white',
-									}}>
-									<MaterialCommunityIcons name={transitModeConverter[transitMode].iconName} />
-									<Text>{transitModeConverter[transitMode].title}</Text>
-								</Pressable>
-							),
-						)}
-					</View>
-					<Divider />
-					<Pressable
-						style={{ flexDirection: 'row', alignItems: 'center' }}
-						onPress={() =>
-							setDirectionsMode({
-								...directionsMode,
-								transitRoutingPreference: TransitRoutingPreference.fewer_transfers,
-							})
-						}>
-						<Text>{i18n.t('乗り換えが少ないルート')}</Text>
-						<MaterialCommunityIcons
-							name={
-								directionsMode.transitRoutingPreference === TransitRoutingPreference.fewer_transfers
-									? 'checkbox-blank-circle'
-									: ''
-							}
-						/>
-					</Pressable>
-					<Pressable
-						style={{ flexDirection: 'row', alignItems: 'center' }}
-						onPress={() =>
-							setDirectionsMode({
-								...directionsMode,
-								transitRoutingPreference: TransitRoutingPreference.less_walking,
-							})
-						}>
-						<Text>{i18n.t('歩きが少ないルート')}</Text>
-						<MaterialCommunityIcons
-							name={
-								directionsMode.transitRoutingPreference === TransitRoutingPreference.less_walking
-									? 'checkbox-blank-circle'
-									: ''
-							}
-						/>
-					</Pressable>
-					<Divider />
-				</>
-			)}
-			<View>
-				{[TravelRestriction.highways, TravelRestriction.tolls, TravelRestriction.ferries].map((travelRestriction) => (
-					<Pressable
-						key={travelRestriction}
-						style={styles.travelRestrictionContainer}
-						onPress={() => {
-							const travelRestrictions = [...directionsMode.avoid];
-							if (travelRestrictions.includes(travelRestriction)) {
-								travelRestrictions.splice(travelRestrictions.indexOf(travelRestriction), 1);
-							} else {
-								travelRestrictions.push(travelRestriction);
-							}
-							setDirectionsMode({ ...directionsMode, avoid: travelRestrictions });
-						}}>
-						<Text>{travelRestrictionConverter[travelRestriction].title}</Text>
-						<Checkbox.IOS
-							status={directionsMode.avoid.includes(travelRestriction) ? 'checked' : 'unchecked'}
-							color={paperTheme.colors.secondary}
-						/>
-					</Pressable>
-				))}
-			</View>
-			<Button
-				onPress={() => {
-					setBottomSheetVisible(false);
-					onClose();
-				}}>
-				{i18n.t('決定')}
-			</Button>
 		</CCO005BottomSheet>
 	);
 };
