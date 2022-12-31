@@ -65,10 +65,8 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 			<CCO006ImagePicker
 				onPickImage={onChangeImage}
 				imagePickerOptions={{
-					allowsEditing: true,
 					allowsMultipleSelection: false,
 					mediaTypes: MediaTypeOptions.Images,
-					aspect: [16, 9],
 					quality: 1,
 				}}
 				imageManipulatorActions={[
