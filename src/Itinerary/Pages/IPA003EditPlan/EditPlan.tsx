@@ -3,9 +3,10 @@ import { MediaTypeOptions } from 'expo-image-picker';
 import { setDoc } from 'firebase/firestore';
 import { useContext, useMemo } from 'react';
 import { ActivityIndicator, Button, Image, ScrollView, View } from 'react-native';
-import { Chip, Divider, Searchbar, Text, TextInput } from 'react-native-paper';
+import { Chip, Searchbar, Text, TextInput } from 'react-native-paper';
 
 import { IPA003EditPlanController } from './EditPlanController';
+import { styles } from './EditPlanStyle';
 
 import { BottomTabParamList } from '@/App';
 import { CCO003DateTimePicker } from '@/Common/Components/CCO003DateTimePicker';
@@ -17,7 +18,6 @@ import { ICT021PlanGroupsList } from '@/Itinerary/Models/IDB02PlanGroups/Context
 import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap';
 import { PCO002GooglePlacesAutocomplete } from '@/Place/Components/PCO002GooglePlacesAutocomplete';
 import { PMC01202PlaceInformation } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/ModelComponents/PMC01202PlaceInformation/PlaceInformation';
-import { materialColors } from '@/ThemeProvider';
 
 export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<BottomTabParamList, 'IPA003EditPlan'>) => {
 	const { PlanGroupsIndex, planID } = route.params;
@@ -79,15 +79,7 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 					},
 				]}
 				storage={storage}>
-				<Image
-					source={{ uri: pagePlan.imageUrl }}
-					resizeMode="cover"
-					style={{
-						paddingTop: '56.25%',
-						backgroundColor: materialColors.grey[300],
-						height: 150,
-					}}
-				/>
+				<Image source={{ uri: pagePlan.imageUrl }} resizeMode="cover" style={styles.image} />
 			</CCO006ImagePicker>
 			<PCO002GooglePlacesAutocomplete
 				onAutocompleteClicked={onAutocompleteClicked}
@@ -95,11 +87,22 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 				fetchDetails={false}
 				placeholder={i18n.t('場所を検索する')}
 			/>
-			<Divider style={{ marginVertical: 20 }} />
-			<TextInput label={i18n.t('メモ')} value={pagePlan.memo} onChange={onChangeMemo} onBlur={updatePlan} multiline />
-			<ScrollView horizontal style={{ flexDirection: 'row' }}>
+			<TextInput
+				label={i18n.t('メモ')}
+				value={pagePlan.memo}
+				onChange={onChangeMemo}
+				onBlur={updatePlan}
+				style={styles.memoTextInput}
+			/>
+			<ScrollView horizontal style={styles.chipContainer}>
 				{pagePlan.tags.map((tag, index) => (
-					<Chip key={`${tag}${index.toString()}`} closeIcon="close-circle" onClose={() => deleteTag(index)}>
+					<Chip
+						key={`${tag}${index.toString()}`}
+						mode="outlined"
+						style={styles.tagsChip}
+						textStyle={styles.tagsChipText}
+						closeIcon="close-circle"
+						onClose={() => deleteTag(index)}>
 						{tag}
 					</Chip>
 				))}
@@ -111,13 +114,12 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 					onBlur={onTagSearchTextBlur}
 				/>
 			</ScrollView>
-			<View>
-				<Text>{i18n.t('滞在時間')}</Text>
-				<CCO004DurationPicker
-					value={pagePlan.placeSpan}
-					onBlur={(newVal) => setDoc(planDocSnap!.ref, { placeSpan: newVal }, { merge: true })}
-				/>
-			</View>
+			<CCO004DurationPicker
+				value={pagePlan.placeSpan}
+				label={i18n.t('滞在時間')}
+				onBlur={(newVal) => setDoc(planDocSnap!.ref, { placeSpan: newVal }, { merge: true })}
+				style={styles.spanTextInput}
+			/>
 
 			{isRepresentativePlan ? (
 				<View
@@ -125,17 +127,21 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 						// @react-native-community/datetimepicker が隠れるため、z-index: 1 を設定する
 						zIndex: 1,
 					}}>
-					<Text>{i18n.t('代表プランの開始時間')}</Text>
-					<CCO003DateTimePicker
-						value={planGroup!.representativeStartDateTime}
-						onChange={updateRepresentativeStartDateTime}
-						mode="date"
-					/>
-					<CCO003DateTimePicker
-						value={planGroup!.representativeStartDateTime}
-						onChange={updateRepresentativeStartDateTime}
-						mode="time"
-					/>
+					<Text style={styles.representativeStartDateTimeLabel}>{i18n.t('代表プランの開始時間')}</Text>
+					<View style={{ flexDirection: 'row' }}>
+						<CCO003DateTimePicker
+							style={styles.representativeStartDateTimePicker}
+							value={planGroup!.representativeStartDateTime}
+							onChange={updateRepresentativeStartDateTime}
+							mode="date"
+						/>
+						<CCO003DateTimePicker
+							style={styles.representativeStartDateTimePicker}
+							value={planGroup!.representativeStartDateTime}
+							onChange={updateRepresentativeStartDateTime}
+							mode="time"
+						/>
+					</View>
 				</View>
 			) : (
 				<Button title={i18n.t('この予定を基準の予定にする')} onPress={setPlanToRepresentativePlan} />
