@@ -62,7 +62,7 @@ export const IPA002ItineraryCover = ({
 					storage={storage}>
 					<Image source={{ uri: pageItinerary.imageUrl }} resizeMode="cover" style={styles.image} />
 				</CCO006ImagePicker>
-				<Card.Content style={{ justifyContent: 'space-around', height: 700 }}>
+				<Card.Content>
 					<TextInput
 						label={i18n.t('旅行のタイトル')}
 						value={pageItinerary.title}
