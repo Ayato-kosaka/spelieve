@@ -4,8 +4,8 @@ import {
 	TransitRoutingPreference,
 	TravelRestriction,
 } from '@googlemaps/google-maps-services-js';
-import { Button, Pressable, View } from 'react-native';
-import { Divider, Text } from 'react-native-paper';
+import { Pressable, View } from 'react-native';
+import { Checkbox, Divider, Text, Button } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { EditDirectionsModePropsInterface } from 'spelieve-common/lib/Interfaces/Itinerary/IMC03104';
@@ -19,6 +19,7 @@ import {
 	travelModeConverter,
 	travelRestrictionConverter,
 } from '@/Place/Hooks/PHK001GooglePlaceAPI';
+import { paperTheme } from '@/ThemeProvider';
 
 export const IMC03104EditDirectionsMode = ({
 	planID,
@@ -37,7 +38,7 @@ export const IMC03104EditDirectionsMode = ({
 			setBottomSheetVisible={setBottomSheetVisible}
 			onClose={onClose}>
 			<View style={{ flexDirection: 'row', flexGrow: 1, justifyContent: 'space-around' }}>
-				{[TravelMode.walking, TravelMode.bicycling, TravelMode.driving, TravelMode.transit].map((travelMode) => (
+				{[TravelMode.walking, TravelMode.bicycling, TravelMode.driving].map((travelMode) => (
 					<Pressable
 						key={travelMode}
 						onPress={() => {
@@ -49,10 +50,17 @@ export const IMC03104EditDirectionsMode = ({
 						style={{
 							flexDirection: 'column',
 							alignItems: 'center',
-							backgroundColor: travelMode === directionsMode.transportationMode ? 'red' : 'white',
 						}}>
-						<MaterialCommunityIcons name={travelModeConverter[travelMode].iconName} />
-						<Text>{travelModeConverter[travelMode].title}</Text>
+						<MaterialCommunityIcons
+							name={travelModeConverter[travelMode].iconName}
+							color={travelMode === directionsMode.transportationMode ? paperTheme.colors.secondary : 'black'}
+						/>
+						<Text
+							style={{
+								color: travelMode === directionsMode.transportationMode ? paperTheme.colors.secondary : 'black',
+							}}>
+							{travelModeConverter[travelMode].title}
+						</Text>
 					</Pressable>
 				))}
 			</View>
@@ -137,17 +145,20 @@ export const IMC03104EditDirectionsMode = ({
 							setDirectionsMode({ ...directionsMode, avoid: travelRestrictions });
 						}}>
 						<Text>{travelRestrictionConverter[travelRestriction].title}</Text>
-						<MaterialCommunityIcons name={directionsMode.avoid.includes(travelRestriction) ? 'check' : ''} />
+						<Checkbox.IOS
+							status={directionsMode.avoid.includes(travelRestriction) ? 'checked' : 'unchecked'}
+							color={paperTheme.colors.secondary}
+						/>
 					</Pressable>
 				))}
 			</View>
 			<Button
-				title={i18n.t('決定')}
 				onPress={() => {
 					setBottomSheetVisible(false);
 					onClose();
-				}}
-			/>
+				}}>
+				{i18n.t('決定')}
+			</Button>
 		</CCO005BottomSheet>
 	);
 };
