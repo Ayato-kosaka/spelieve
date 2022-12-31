@@ -36,6 +36,7 @@ export const IPA003EditPlanController = ({
 	const [pagePlan, setPagePlan] = useState<PlansMapInterface | undefined>(undefined);
 	const [tagSearchText, setTagSearchText] = useState<string>('');
 
+	// アンマウント時に、PlaceID を undefined で初期化する
 	useEffect(
 		() => () => {
 			setPlaceID(undefined);
