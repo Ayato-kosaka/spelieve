@@ -97,7 +97,7 @@ export const IPA002ItineraryCover = ({
 							onBlur={onTagSearchTextBlur}
 						/>
 					</ScrollView>
-					<View style={{ zIndex: 1 }}>
+					<View style={styles.startDateComtainer}>
 						<Text style={styles.startDateLabel}>{i18n.t('旅行の滞在開始日')}</Text>
 						<CCO003DateTimePicker
 							value={pageItinerary.startDate}

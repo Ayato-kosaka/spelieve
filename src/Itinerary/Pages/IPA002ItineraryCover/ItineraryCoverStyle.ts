@@ -17,6 +17,7 @@ export const styles = StyleSheet.create({
 	tagsChipText: {
 		color: materialColors.grey[800],
 	},
+	startDateComtainer: { zIndex: 1, alignItems: 'flex-start' },
 	startDateLabel: { color: materialColors.grey[700] },
 	startDateTimePicker: { backgroundColor: '#fff' },
 	captionTextInput: {
