@@ -84,7 +84,7 @@ export function IPA002ItineraryCoverController({ itineraryID }: ItineraryCoverPr
 	}, []);
 
 	const onTagSearchTextBlur = useCallback(() => {
-		if (!itineraryDocSnap || !pageItinerary) {
+		if (!itineraryDocSnap || !pageItinerary || tagSearchText === '') {
 			return;
 		}
 		const newTags = [...pageItinerary.tags];

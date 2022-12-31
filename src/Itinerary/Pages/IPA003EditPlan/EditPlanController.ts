@@ -164,7 +164,7 @@ export const IPA003EditPlanController = ({
 	}, []);
 
 	const onTagSearchTextBlur = useCallback(() => {
-		if (!planDocSnap || !plan) {
+		if (!planDocSnap || !plan || tagSearchText === '') {
 			return;
 		}
 		const newTags: string[] = [...plan.tags];
