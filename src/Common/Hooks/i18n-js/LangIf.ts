@@ -7,7 +7,7 @@ export interface LangIf {
 	Place: string;
 
 	// ImagePickerCOntroller.ts
-	'Upload failed, sorry :(': string
+	'Upload failed, sorry :(': string;
 
 	// TrafficMovementEdit.tsx
 	'Add Plan': string;
@@ -15,9 +15,9 @@ export interface LangIf {
 	// EditDirectionMode.tsx
 	'Route with fewest transfer': string;
 	'Route with shortest distance': string;
-	'Select': string;
+	Select: string;
 
-	//INV002ItineraryTopTabNavigator
+	// INV002ItineraryTopTabNavigator
 	Edit: string;
 	Preview: string;
 
@@ -32,27 +32,27 @@ export interface LangIf {
 	'Itinerary Title': string;
 	'Itinerary SubTitle': string;
 	'Start date': string;
-	'Description': string;
+	Description: string;
 
 	// IPA003EditPlan
-	'Memo': string;
+	Memo: string;
 	'Stay time': string;
 	'Representative plan Start date': string;
-	'Set this Plan to Representative one': string
+	'Set this Plan to Representative one': string;
 
 	// PCO002GooglePlacesAUtocomplete.tsx
 	'Search Place': string;
 
 	// PHK001GooglePlaceAPI.ts
-	'Bicycling': string;
-	'Driving': string;
-	'Transit': string;
-	'Walking': string;
-	'Bus': string;
-	'Rail': string;
-	'Subway': string;
-	'Train': string;
-	'Tram': string;
+	Bicycling: string;
+	Driving: string;
+	Transit: string;
+	Walking: string;
+	Bus: string;
+	Rail: string;
+	Subway: string;
+	Train: string;
+	Tram: string;
 	'Avoid highways': string;
 	'Avoid tolls': string;
 	'Avoid ferries': string;
