@@ -36,6 +36,13 @@ export const IPA003EditPlanController = ({
 	const [pagePlan, setPagePlan] = useState<PlansMapInterface | undefined>(undefined);
 	const [tagSearchText, setTagSearchText] = useState<string>('');
 
+	useEffect(
+		() => () => {
+			setPlaceID(undefined);
+		},
+		[setPlaceID],
+	);
+
 	const navigateToItineraryEdit = useCallback(() => {
 		navigation.navigate('Itinerary', {
 			screen: 'IPA001ItineraryEdit',
