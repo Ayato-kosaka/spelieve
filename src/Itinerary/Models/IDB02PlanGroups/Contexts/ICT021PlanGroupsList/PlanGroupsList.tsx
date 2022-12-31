@@ -43,33 +43,37 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 		return undefined;
 	}, [itineraryDocSnap]);
 
-	const createPlanGroup = useCallback(async () => {
-		if (!plansCRef || !planGroupsCRef || !itinerary) {
-			return;
-		}
-		const newPlan: Plans = {
-			title: '',
-			placeSpan: DateUtils.initialDate(),
-			placeStartTime: itinerary.startDate,
-			placeEndTime: itinerary.startDate,
-			tags: [],
-			transportationSpan: DateUtils.initialDate(),
-			avoid: [],
-			transitModes: [TransitMode.bus, TransitMode.rail, TransitMode.subway, TransitMode.train, TransitMode.tram],
-			transitRoutingPreference: TransitRoutingPreference.fewer_transfers,
-			createdAt: new Date(),
-			updatedAt: new Date(),
-		};
-		const planDocRef = await addDoc(plansCRef, newPlan);
-		await addDoc(planGroupsCRef, {
-			plans: [planDocRef.id],
-			representativePlanID: planDocRef.id,
-			dayNumber: 0,
-			representativeStartDateTime: newPlan.placeStartTime,
-			createdAt: new Date(),
-			updatedAt: new Date(),
-		});
-	}, [itinerary, planGroupsCRef, plansCRef]);
+	const createPlanGroup = useCallback(
+		async (plan?: Partial<Plans>) => {
+			if (!plansCRef || !planGroupsCRef || !itinerary) {
+				return;
+			}
+			const newPlan: Plans = {
+				title: '',
+				placeSpan: DateUtils.initialDate(),
+				placeStartTime: itinerary.startDate,
+				placeEndTime: itinerary.startDate,
+				tags: [],
+				transportationSpan: DateUtils.initialDate(),
+				avoid: [],
+				transitModes: [TransitMode.bus, TransitMode.rail, TransitMode.subway, TransitMode.train, TransitMode.tram],
+				transitRoutingPreference: TransitRoutingPreference.fewer_transfers,
+				createdAt: new Date(),
+				updatedAt: new Date(),
+				...plan,
+			};
+			const planDocRef = await addDoc(plansCRef, newPlan);
+			await addDoc(planGroupsCRef, {
+				plans: [planDocRef.id],
+				representativePlanID: planDocRef.id,
+				dayNumber: 0,
+				representativeStartDateTime: newPlan.placeStartTime,
+				createdAt: new Date(),
+				updatedAt: new Date(),
+			});
+		},
+		[itinerary, planGroupsCRef, plansCRef],
+	);
 
 	useEffect(() => {
 		if (planGroupsCRef && plansCRef) {

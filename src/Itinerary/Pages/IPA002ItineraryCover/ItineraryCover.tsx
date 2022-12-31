@@ -62,7 +62,7 @@ export const IPA002ItineraryCover = ({
 					storage={storage}>
 					<Image source={{ uri: pageItinerary.imageUrl }} resizeMode="cover" style={styles.image} />
 				</CCO006ImagePicker>
-				<Card.Content style={{ justifyContent: 'space-around', height: 700 }}>
+				<Card.Content>
 					<TextInput
 						label={i18n.t('旅行のタイトル')}
 						value={pageItinerary.title}
@@ -97,7 +97,7 @@ export const IPA002ItineraryCover = ({
 							onBlur={onTagSearchTextBlur}
 						/>
 					</ScrollView>
-					<View style={{ zIndex: 1 }}>
+					<View style={styles.startDateComtainer}>
 						<Text style={styles.startDateLabel}>{i18n.t('旅行の滞在開始日')}</Text>
 						<CCO003DateTimePicker
 							value={pageItinerary.startDate}

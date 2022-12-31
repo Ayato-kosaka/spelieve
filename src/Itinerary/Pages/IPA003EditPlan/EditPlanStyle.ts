@@ -3,11 +3,12 @@ import { StyleSheet } from 'react-native';
 import { materialColors } from '@/ThemeProvider';
 
 export const styles = StyleSheet.create({
-	image: { paddingTop: '100%', backgroundColor: materialColors.grey[300] },
-	titleTextInput: {
-		backgroundColor: '#fff',
+	image: {
+		paddingTop: '56.25%',
+		backgroundColor: materialColors.grey[300],
+		height: 150,
 	},
-	subTitleTextInput: {
+	memoTextInput: {
 		backgroundColor: '#fff',
 	},
 	chipContainer: { flexDirection: 'row' },
@@ -17,9 +18,12 @@ export const styles = StyleSheet.create({
 	tagsChipText: {
 		color: materialColors.grey[800],
 	},
-	startDateComtainer: { zIndex: 1, alignItems: 'flex-start' },
-	startDateLabel: { color: materialColors.grey[700] },
-	startDateTimePicker: { backgroundColor: '#fff' },
+	spanLabel: { color: materialColors.grey[700] },
+	spanTextInput: {
+		backgroundColor: '#fff',
+	},
+	representativeStartDateTimeLabel: { color: materialColors.grey[700] },
+	representativeStartDateTimePicker: { backgroundColor: '#fff' },
 	captionTextInput: {
 		height: 400,
 		backgroundColor: '#fff',

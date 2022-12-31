@@ -35,50 +35,53 @@ export const IMC03101PlanEdit = ({
 
 	return (
 		<Card style={{}}>
-			<Card.Content
-				style={{
-					flexDirection: 'row',
-					alignItems: 'center',
-				}}>
-				<View style={{ flex: 1, alignItems: 'center' }}>
-					<MaterialCommunityIcons
-						name="map-marker"
-						size={20}
-						color={beforeAfterRepresentativeType === 'representative' ? paperTheme.colors.primary : 'black'}
-					/>
-				</View>
-				<Pressable onPress={onPlanPress} style={{ flex: 13 }}>
-					<Text>{plan.title || ' '}</Text>
-					<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-						<Text>
-							{DateUtils.formatToHHMM(plan.placeStartTime)}
-							{plan.placeStartTime.getTime() !== plan.placeEndTime.getTime()
-								? `~${DateUtils.formatToHHMM(plan.placeEndTime)}`
-								: ''}
-						</Text>
-						<ScrollView horizontal>
-							{plan.tags.map((tag, index) => (
-								<Chip
-									key={`${tag}${index.toString()}`}
-									mode="outlined"
-									style={styles.tagsChip}
-									textStyle={styles.tagsChipText}>
-									{tag}
-								</Chip>
-							))}
-						</ScrollView>
+			<Card.Content>
+				<Pressable
+					onPress={onPlanPress}
+					style={{
+						flexDirection: 'row',
+						alignItems: 'center',
+					}}>
+					<View style={{ flex: 1, alignItems: 'center' }}>
+						<MaterialCommunityIcons
+							name="map-marker"
+							size={20}
+							color={beforeAfterRepresentativeType === 'representative' ? paperTheme.colors.primary : 'black'}
+						/>
+					</View>
+					<View style={{ flex: 13 }}>
+						<Text>{plan.title || ' '}</Text>
+						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+							<Text>
+								{DateUtils.formatToHHMM(plan.placeStartTime)}
+								{plan.placeStartTime.getTime() !== plan.placeEndTime.getTime()
+									? `~${DateUtils.formatToHHMM(plan.placeEndTime)}`
+									: ''}
+							</Text>
+							<ScrollView horizontal>
+								{plan.tags.map((tag, index) => (
+									<Chip
+										key={`${tag}${index.toString()}`}
+										mode="outlined"
+										style={styles.tagsChip}
+										textStyle={styles.tagsChipText}>
+										{tag}
+									</Chip>
+								))}
+							</ScrollView>
+						</View>
+					</View>
+					<View style={{ flex: 1, alignItems: 'center' }}>
+						<MaterialCommunityIcons
+							name="delete"
+							size={20}
+							onPress={() => {
+								// eslint-disable-next-line @typescript-eslint/no-floating-promises
+								deletePlan();
+							}}
+						/>
 					</View>
 				</Pressable>
-				<View style={{ flex: 1, alignItems: 'center' }}>
-					<MaterialCommunityIcons
-						name="delete"
-						size={20}
-						onPress={() => {
-							// eslint-disable-next-line @typescript-eslint/no-floating-promises
-							deletePlan();
-						}}
-					/>
-				</View>
 			</Card.Content>
 		</Card>
 	);
