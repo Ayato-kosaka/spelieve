@@ -55,7 +55,7 @@ export const IPA002ItineraryCover = ({
 					imageManipulatorActions={[
 						{
 							resize: {
-								width: 2000,
+								width: 900,
 							},
 						},
 					]}

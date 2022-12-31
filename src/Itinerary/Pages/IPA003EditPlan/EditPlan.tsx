@@ -74,7 +74,7 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 				imageManipulatorActions={[
 					{
 						resize: {
-							width: 2000,
+							width: 900,
 						},
 					},
 				]}
