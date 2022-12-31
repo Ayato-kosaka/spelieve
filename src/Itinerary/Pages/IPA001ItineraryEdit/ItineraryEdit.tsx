@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useContext } from 'react';
 import { ScrollView, ActivityIndicator, Button, View } from 'react-native';
+import { Headline } from 'react-native-paper';
 
 import { IPA001ItineraryEditController } from './ItineraryEditController';
 
@@ -45,7 +46,7 @@ export const IPA001ItineraryEdit = ({
 				prevDateNumber = plnaGroup.dayNumber;
 				return (
 					<View key={planGroupsDoc.id}>
-						{isAnotherDay && <h3>{plnaGroup.dayNumber}日目</h3>}
+						{isAnotherDay && <Headline>{plnaGroup.dayNumber}日目</Headline>}
 						<IMC03103PlanGroupsEdit planGroupsDoc={planGroupsDoc} />
 					</View>
 				);
