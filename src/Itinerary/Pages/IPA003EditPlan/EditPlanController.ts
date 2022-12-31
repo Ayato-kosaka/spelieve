@@ -68,24 +68,6 @@ export const IPA003EditPlanController = ({
 		setPlaceID(plan?.place_id);
 	}, [plan?.place_id, setPlaceID]);
 
-	// place.name を監視し、plan.title を更新する
-	useEffect(() => {
-		if (!!place && place.name !== plan?.title && planDocSnap) {
-			// eslint-disable-next-line @typescript-eslint/no-floating-promises
-			setDoc(planDocSnap?.ref, { title: place.name }, { merge: true });
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [place?.name]);
-
-	// place.imageUrl を監視し、plan.imageUrl を更新する
-	useEffect(() => {
-		if (!!place && place.imageUrl !== plan?.imageUrl && planDocSnap) {
-			// eslint-disable-next-line @typescript-eslint/no-floating-promises
-			setDoc(planDocSnap?.ref, { imageUrl: place.imageUrl }, { merge: true });
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [place?.imageUrl]);
-
 	// Context の plan を監視し、 pagePlan にセットする
 	useEffect(() => {
 		if (plan) {
@@ -99,9 +81,34 @@ export const IPA003EditPlanController = ({
 	);
 
 	const isNeedToShowActivityIndicator = useMemo(
-		() => !itineraryDocSnap || isPlansLoading || !planGroupsQSnap || !planGroupDocSnap || !planGroup || !pagePlan,
-		[itineraryDocSnap, isPlansLoading, planGroupsQSnap, planGroupDocSnap, planGroup, pagePlan],
+		() =>
+			!itineraryDocSnap ||
+			isPlansLoading ||
+			!planGroupsQSnap ||
+			!planGroupDocSnap ||
+			!planGroup ||
+			!pagePlan ||
+			(plan?.place_id && !place),
+		[itineraryDocSnap, isPlansLoading, planGroupsQSnap, planGroupDocSnap, planGroup, pagePlan, plan?.place_id, place],
 	);
+
+	// place.name を監視し、plan.title を更新する
+	useEffect(() => {
+		if (!!place && place.name !== plan?.title && planDocSnap && isNeedToShowActivityIndicator) {
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			setDoc(planDocSnap.ref, { title: place.name }, { merge: true });
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [place?.name]);
+
+	// place.imageUrl を監視し、plan.imageUrl を更新する
+	useEffect(() => {
+		if (!!place && place.imageUrl !== plan?.imageUrl && planDocSnap && isNeedToShowActivityIndicator) {
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			setDoc(planDocSnap.ref, { imageUrl: place.imageUrl }, { merge: true });
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [place?.imageUrl]);
 
 	const isNeedToNavigateToItineraryEdit = useMemo(
 		() => !isNeedToShowActivityIndicator && !itineraryDocSnap!.exists(),
