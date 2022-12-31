@@ -89,7 +89,12 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 					}}
 				/>
 			</CCO006ImagePicker>
-			<PCO002GooglePlacesAutocomplete onAutocompleteClicked={onAutocompleteClicked} onlySpot fetchDetails={false} />
+			<PCO002GooglePlacesAutocomplete
+				onAutocompleteClicked={onAutocompleteClicked}
+				onlySpot
+				fetchDetails={false}
+				placeholder={i18n.t('場所を検索する')}
+			/>
 			<Divider style={{ marginVertical: 20 }} />
 			<TextInput label={i18n.t('メモ')} value={pagePlan.memo} onChange={onChangeMemo} onBlur={updatePlan} multiline />
 			<ScrollView horizontal style={{ flexDirection: 'row' }}>

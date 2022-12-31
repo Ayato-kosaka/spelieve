@@ -44,6 +44,12 @@ export const IPA003EditPlanController = ({
 		[setPlaceID],
 	);
 
+	useEffect(() => {
+		navigation.setOptions({
+			title: plan?.title,
+		});
+	}, [navigation, plan?.title]);
+
 	const navigateToItineraryEdit = useCallback(() => {
 		navigation.navigate('Itinerary', {
 			screen: 'IPA001ItineraryEdit',
