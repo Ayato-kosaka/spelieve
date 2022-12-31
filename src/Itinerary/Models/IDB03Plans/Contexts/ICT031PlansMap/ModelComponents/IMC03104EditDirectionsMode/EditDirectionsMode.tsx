@@ -11,6 +11,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { EditDirectionsModePropsInterface } from 'spelieve-common/lib/Interfaces/Itinerary/IMC03104';
 
 import { IMC03104EditDirectionsModeController } from './EditDirectionsModeController';
+import { styles } from './EditDirectionsModeStyle';
 
 import { CCO005BottomSheet } from '@/Common/Components/CCO005BottomSheet/BottomSheet';
 import i18n from '@/Common/Hooks/i18n-js';
@@ -37,7 +38,7 @@ export const IMC03104EditDirectionsMode = ({
 			bottomSheetVisible={bottomSheetVisible}
 			setBottomSheetVisible={setBottomSheetVisible}
 			onClose={onClose}>
-			<View style={{ flexDirection: 'row', flexGrow: 1, justifyContent: 'space-around' }}>
+			<View style={styles.container}>
 				{[TravelMode.walking, TravelMode.bicycling, TravelMode.driving].map((travelMode) => (
 					<Pressable
 						key={travelMode}
@@ -47,10 +48,7 @@ export const IMC03104EditDirectionsMode = ({
 								transportationMode: directionsMode.transportationMode === travelMode ? undefined : travelMode,
 							});
 						}}
-						style={{
-							flexDirection: 'column',
-							alignItems: 'center',
-						}}>
+						style={styles.travelModeContainer}>
 						<MaterialCommunityIcons
 							name={travelModeConverter[travelMode].iconName}
 							color={travelMode === directionsMode.transportationMode ? paperTheme.colors.secondary : 'black'}
@@ -134,7 +132,7 @@ export const IMC03104EditDirectionsMode = ({
 				{[TravelRestriction.highways, TravelRestriction.tolls, TravelRestriction.ferries].map((travelRestriction) => (
 					<Pressable
 						key={travelRestriction}
-						style={{ flexDirection: 'row', alignItems: 'center' }}
+						style={styles.travelRestrictionContainer}
 						onPress={() => {
 							const travelRestrictions = [...directionsMode.avoid];
 							if (travelRestrictions.includes(travelRestriction)) {
