@@ -68,7 +68,7 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 					allowsEditing: true,
 					allowsMultipleSelection: false,
 					mediaTypes: MediaTypeOptions.Images,
-					aspect: [1, 1],
+					aspect: [16, 9],
 					quality: 1,
 				}}
 				imageManipulatorActions={[
