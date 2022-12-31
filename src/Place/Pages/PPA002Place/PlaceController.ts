@@ -16,7 +16,6 @@ export const PPA002PlaceController = ({ place_id }: PlacePropsInterface): PlaceC
 	}, [place_id, setPlaceID]);
 
 	const onCreateItineraryClicked = () => {
-		// TODO: https://github.com/Ayato-kosaka/spelieve/issues/335 Itinerary 新規作成
 		navigation.navigate('Itinerary', {
 			screen: 'ItineraryTopTabNavigator',
 			params: {
