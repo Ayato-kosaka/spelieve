@@ -47,6 +47,8 @@ export const PCO002GooglePlacesAutocompleteController = ({
 					language: GooglePlaceLanguageTagFromIETFLanguageTag[i18n.locale],
 				});
 			}
+			setSearchInput('');
+			setPlacesResult([]);
 			onAutocompleteClicked(place, detail);
 		};
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises

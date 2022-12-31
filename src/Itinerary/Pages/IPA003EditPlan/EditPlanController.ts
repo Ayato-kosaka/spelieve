@@ -2,7 +2,7 @@ import { PlaceAutocompleteResult } from '@googlemaps/google-maps-services-js';
 import { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { setDoc } from 'firebase/firestore';
-import { useContext, useEffect, useMemo, useCallback, useState } from 'react';
+import { useContext, useEffect, useMemo, useCallback, useState, useRef } from 'react';
 import { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
 
 import { PlansMapInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT031';
@@ -32,6 +32,10 @@ export const IPA003EditPlanController = ({
 	const plan = useMemo(() => (planDocSnap ? planDocSnap.data() : undefined), [planDocSnap]);
 
 	const { setPlaceID, place } = useContext(PCT012MPlaceOne);
+	const prevPlacetRef = useRef<typeof place>(undefined);
+	useEffect(() => {
+		prevPlacetRef.current = place;
+	}, [place]);
 
 	const [pagePlan, setPagePlan] = useState<PlansMapInterface | undefined>(undefined);
 	const [tagSearchText, setTagSearchText] = useState<string>('');
@@ -88,20 +92,13 @@ export const IPA003EditPlanController = ({
 	);
 
 	const isNeedToShowActivityIndicator = useMemo(
-		() =>
-			!itineraryDocSnap ||
-			isPlansLoading ||
-			!planGroupsQSnap ||
-			!planGroupDocSnap ||
-			!planGroup ||
-			!pagePlan ||
-			(plan?.place_id && !place),
-		[itineraryDocSnap, isPlansLoading, planGroupsQSnap, planGroupDocSnap, planGroup, pagePlan, plan?.place_id, place],
+		() => !itineraryDocSnap || isPlansLoading || !planGroupsQSnap || !planGroupDocSnap || !planGroup || !pagePlan,
+		[itineraryDocSnap, isPlansLoading, planGroupsQSnap, planGroupDocSnap, planGroup, pagePlan],
 	);
 
 	// place.name を監視し、plan.title を更新する
 	useEffect(() => {
-		if (!!place && place.name !== plan?.title && planDocSnap && isNeedToShowActivityIndicator) {
+		if (!!place && place.name !== plan?.title && planDocSnap && prevPlacetRef.current) {
 			// eslint-disable-next-line @typescript-eslint/no-floating-promises
 			setDoc(planDocSnap.ref, { title: place.name }, { merge: true });
 		}
@@ -110,7 +107,7 @@ export const IPA003EditPlanController = ({
 
 	// place.imageUrl を監視し、plan.imageUrl を更新する
 	useEffect(() => {
-		if (!!place && place.imageUrl !== plan?.imageUrl && planDocSnap && isNeedToShowActivityIndicator) {
+		if (!!place && place.imageUrl !== plan?.imageUrl && planDocSnap && prevPlacetRef.current) {
 			// eslint-disable-next-line @typescript-eslint/no-floating-promises
 			setDoc(planDocSnap.ref, { imageUrl: place.imageUrl }, { merge: true });
 		}
