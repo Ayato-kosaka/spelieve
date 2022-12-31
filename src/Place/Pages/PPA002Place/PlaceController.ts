@@ -17,10 +17,17 @@ export const PPA002PlaceController = ({ place_id }: PlacePropsInterface): PlaceC
 
 	const onCreateItineraryClicked = () => {
 		// TODO: https://github.com/Ayato-kosaka/spelieve/issues/335 Itinerary 新規作成
-		// navigation.navigate('Itinerary', {
-		// 	screen: 'ItineraryTopTabNavigator',
-		// 	params: { place_id, placeName: place.name },
-		// });
+		navigation.navigate('Itinerary', {
+			screen: 'ItineraryTopTabNavigator',
+			params: {
+				screen: 'IPA001ItineraryEdit',
+				params: {
+					itineraryID: undefined,
+					place_id,
+					placeName: place?.name,
+				},
+			},
+		});
 	};
 
 	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/320 画像押したらモーダルで開くようにする

@@ -25,13 +25,13 @@ export const IPA001ItineraryEdit = ({
 		navigation,
 	});
 
-	if (!itineraryDocSnap || isPlansLoading || !planGroupsQSnap) {
-		return <ActivityIndicator animating />;
-	}
-
-	if (!itineraryDocSnap.exists()) {
-		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		createItinerary();
+	if (
+		!route.params.itineraryID ||
+		!itineraryDocSnap ||
+		!itineraryDocSnap.exists() ||
+		isPlansLoading ||
+		!planGroupsQSnap
+	) {
 		return <ActivityIndicator animating />;
 	}
 

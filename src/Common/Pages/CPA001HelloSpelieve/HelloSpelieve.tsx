@@ -17,7 +17,7 @@ export const CPA001HelloSpelieve = ({
 						screen: 'ItineraryTopTabNavigator',
 						params: {
 							screen: 'IPA001ItineraryEdit',
-							params: {},
+							params: { itineraryID: undefined },
 						},
 					})
 				}
