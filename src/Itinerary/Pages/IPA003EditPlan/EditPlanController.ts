@@ -33,9 +33,6 @@ export const IPA003EditPlanController = ({
 
 	const { setPlaceID, place } = useContext(PCT012MPlaceOne);
 	const prevPlacetRef = useRef<typeof place>(undefined);
-	useEffect(() => {
-		prevPlacetRef.current = place;
-	}, [place]);
 
 	const [pagePlan, setPagePlan] = useState<PlansMapInterface | undefined>(undefined);
 	const [tagSearchText, setTagSearchText] = useState<string>('');
@@ -48,6 +45,7 @@ export const IPA003EditPlanController = ({
 		[setPlaceID],
 	);
 
+	// Header にタイトルを設定する
 	useEffect(() => {
 		navigation.setOptions({
 			title: plan?.title,
@@ -211,6 +209,11 @@ export const IPA003EditPlanController = ({
 		},
 		[planGroupDocSnap],
 	);
+
+	// prevPlace を更新する
+	useEffect(() => {
+		prevPlacetRef.current = place;
+	}, [place]);
 
 	return {
 		pagePlan: pagePlan!,
