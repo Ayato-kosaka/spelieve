@@ -83,10 +83,10 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 				onAutocompleteClicked={onAutocompleteClicked}
 				onlySpot
 				fetchDetails={false}
-				placeholder={i18n.t('場所を検索する')}
+				placeholder={i18n.t('Search Place')}
 			/>
 			<TextInput
-				label={i18n.t('メモ')}
+				label={i18n.t('Memo')}
 				value={pagePlan.memo}
 				onChange={onChangeMemo}
 				onBlur={updatePlan}
@@ -106,7 +106,7 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 				))}
 				{/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/298 Tagを取得するSearchBarを実装する */}
 				<Searchbar
-					placeholder={i18n.t('タグを追加する')}
+					placeholder={i18n.t('Add Tag')}
 					value={tagSearchText}
 					onChange={onTagSearchTextChanged}
 					onBlur={onTagSearchTextBlur}
@@ -114,7 +114,7 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 			</ScrollView>
 			<CCO004DurationPicker
 				value={pagePlan.placeSpan}
-				label={i18n.t('滞在時間')}
+				label={i18n.t('Stay time')}
 				onBlur={(newVal) => setDoc(planDocSnap!.ref, { placeSpan: newVal }, { merge: true })}
 				style={styles.spanTextInput}
 			/>
@@ -125,7 +125,7 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 						// @react-native-community/datetimepicker が隠れるため、z-index: 1 を設定する
 						zIndex: 1,
 					}}>
-					<Text style={styles.representativeStartDateTimeLabel}>{i18n.t('代表プランの開始時間')}</Text>
+					<Text style={styles.representativeStartDateTimeLabel}>{i18n.t('Representative plan Start date')}</Text>
 					<View style={{ flexDirection: 'row' }}>
 						<CCO003DateTimePicker
 							style={styles.representativeStartDateTimePicker}
@@ -142,7 +142,7 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 					</View>
 				</View>
 			) : (
-				<Button title={i18n.t('この予定を基準の予定にする')} onPress={setPlanToRepresentativePlan} />
+				<Button title={i18n.t('Set this Plan to Representative one')} onPress={setPlanToRepresentativePlan} />
 			)}
 			<PMC01202PlaceInformation />
 		</ScrollView>

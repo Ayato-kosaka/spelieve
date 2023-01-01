@@ -22,7 +22,7 @@ export const PMC01101GoogleMapPlacesList = ({ style }: GoogleMapPlaceListPropsIn
 	};
 	return (
 		<View style={style}>
-			<GoogleMap mapContainerStyle={styles.containerStyle} center={centerPoint} zoom={10}>
+			<GoogleMap mapContainerStyle={styles.containerStyle} center={centerPoint} zoom={12}>
 				{placesList.map((place) => {
 					const coordinate = { lat: place.geometry.latitude, lng: place.geometry.longitude };
 					return <MarkerWeb position={coordinate} title={place.name} key={place.place_id} />;

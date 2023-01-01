@@ -26,14 +26,14 @@ export const PMC01101GoogleMapPlacesList = ({ style }: GoogleMapPlaceListPropsIn
 				initialRegion={{
 					latitude: centerLat,
 					longitude: centerLng,
-					latitudeDelta: 0.2522, // 地図表示範囲内の北端と南端の緯度の差 大→範囲広
-					longitudeDelta: 0.0521, // 地図表示範囲内の東端と西端の経度の差
+					latitudeDelta: 0.007, // 地図表示範囲内の北端と南端の緯度の差 大→範囲広
+					longitudeDelta: 0.005, // 地図表示範囲内の東端と西端の経度の差
 				}}
 				region={{
 					latitude: centerLat,
 					longitude: centerLng,
-					latitudeDelta: 0.2522, // 地図表示範囲内の北端と南端の緯度の差 大→範囲広
-					longitudeDelta: 0.0521, // 地図表示範囲内の東端と西端の経度の差
+					latitudeDelta: 0.007, // 地図表示範囲内の北端と南端の緯度の差 大→範囲広
+					longitudeDelta: 0.005, // 地図表示範囲内の東端と西端の経度の差
 				}}>
 				{placesList.map((place) => {
 					const coordinate = { latitude: place.geometry.latitude, longitude: place.geometry.longitude };

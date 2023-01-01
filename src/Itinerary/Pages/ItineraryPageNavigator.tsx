@@ -40,13 +40,13 @@ export const ItineraryPageNavigator = () => (
 							name="IPA002ItineraryCover"
 							component={IPA002ItineraryCover}
 							initialParams={{}}
-							options={{ title: i18n.t('しおり設定') }}
+							options={{ title: i18n.t('Itinerary setting') }}
 						/>
 						<Stack.Screen
 							name="IPA003EditPlan"
 							component={IPA003EditPlan}
 							initialParams={{}}
-							options={{ title: i18n.t('予定の設定') }}
+							options={{ title: i18n.t('Plan setting') }}
 						/>
 						<Stack.Screen
 							name="HelloSpelieve"

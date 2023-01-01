@@ -52,7 +52,7 @@ export const IPA001ItineraryEdit = ({
 				);
 			})}
 			<Button
-				title={i18n.t('予定グループを追加')}
+				title={i18n.t('Add Plan group')}
 				onPress={() => {
 					// eslint-disable-next-line @typescript-eslint/no-floating-promises
 					createPlanGroup();

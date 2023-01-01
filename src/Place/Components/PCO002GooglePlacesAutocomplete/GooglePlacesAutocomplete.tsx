@@ -13,7 +13,7 @@ export const PCO002GooglePlacesAutocomplete = ({
 	onAutocompleteClicked,
 	onlySpot,
 	fetchDetails,
-	placeholder = i18n.t('searchPlaceText'),
+	placeholder = i18n.t('Search Place'),
 	inputContainerStyle,
 }: GooglePlacesAutocompletePropsInterface) => {
 	const { searchInput, placesResult, onChangeInput, onPressAutocomplete } = PCO002GooglePlacesAutocompleteController({

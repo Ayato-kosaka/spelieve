@@ -64,14 +64,14 @@ export const IPA002ItineraryCover = ({
 				</CCO006ImagePicker>
 				<Card.Content>
 					<TextInput
-						label={i18n.t('旅行のタイトル')}
+						label={i18n.t('Itinerary Title')}
 						value={pageItinerary.title}
 						onChange={handleOnChange('title')}
 						onBlur={updateItinerary}
 						style={styles.titleTextInput}
 					/>
 					<TextInput
-						label={i18n.t('旅行のサブタイトル')}
+						label={i18n.t('Itinerary SubTitle')}
 						value={pageItinerary.subTitle}
 						onChange={handleOnChange('subTitle')}
 						onBlur={updateItinerary}
@@ -91,14 +91,14 @@ export const IPA002ItineraryCover = ({
 						))}
 						{/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/298 Tagを取得するSearchBarを実装する */}
 						<Searchbar
-							placeholder={i18n.t('タグを追加する')}
+							placeholder={i18n.t('Add Tag')}
 							value={tagSearchText}
 							onChange={onTagSearchTextChanged}
 							onBlur={onTagSearchTextBlur}
 						/>
 					</ScrollView>
 					<View style={styles.startDateComtainer}>
-						<Text style={styles.startDateLabel}>{i18n.t('旅行の滞在開始日')}</Text>
+						<Text style={styles.startDateLabel}>{i18n.t('Start date')}</Text>
 						<CCO003DateTimePicker
 							value={pageItinerary.startDate}
 							onChange={(event, date) => {
@@ -111,7 +111,7 @@ export const IPA002ItineraryCover = ({
 					</View>
 					<TextInput
 						mode="outlined"
-						label={i18n.t('旅行のキャプション')}
+						label={i18n.t('Description')}
 						value={pageItinerary.caption}
 						onChange={handleOnChange('caption')}
 						onBlur={updateItinerary}
