@@ -100,7 +100,7 @@ export const IMC03104EditDirectionsMode = ({
 									transitRoutingPreference: TransitRoutingPreference.fewer_transfers,
 								})
 							}>
-							<Text>{i18n.t('Route with fewest transfer')}</Text>
+							<Text>{i18n.t('Route with Fewest transfer')}</Text>
 							<MaterialCommunityIcons
 								name={
 									directionsMode.transitRoutingPreference === TransitRoutingPreference.fewer_transfers
@@ -117,7 +117,7 @@ export const IMC03104EditDirectionsMode = ({
 									transitRoutingPreference: TransitRoutingPreference.less_walking,
 								})
 							}>
-							<Text>{i18n.t('Route with shortest distance')}</Text>
+							<Text>{i18n.t('Route with Shortest walking distance')}</Text>
 							<MaterialCommunityIcons
 								name={
 									directionsMode.transitRoutingPreference === TransitRoutingPreference.less_walking

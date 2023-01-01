@@ -15,8 +15,8 @@ const ja: LangIf = {
 	'Add Plan': 'プラン追加',
 
 	// EditDirectionMode.tsx
-	'Route with fewest transfer': '乗り換えの少ないルート',
-	'Route with shortest distance': '最短ルート',
+	'Route with Fewest transfer': '乗り換えの少ないルート',
+	'Route with Shortest walking distance': '歩く距離の少ないルート',
 	Select: '決定',
 
 	// INV002ItineraryTopTabNavigator

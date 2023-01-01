@@ -15,8 +15,8 @@ const en: LangIf = {
 	'Add Plan': 'Add Plan',
 
 	// EditDirectionMode.tsx
-	'Route with fewest transfer': 'Route with fewest transfer',
-	'Route with shortest distance': 'Route with shortest distance',
+	'Route with Fewest transfer': 'Route with Fewest transfer',
+	'Route with Shortest walking distance': 'Route with Shortest walking distance',
 	Select: 'Select',
 
 	// INV002ItineraryTopTabNavigator

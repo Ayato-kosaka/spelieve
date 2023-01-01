@@ -13,8 +13,8 @@ export interface LangIf {
 	'Add Plan': string;
 
 	// EditDirectionMode.tsx
-	'Route with fewest transfer': string;
-	'Route with shortest distance': string;
+	'Route with Fewest transfer': string;
+	'Route with Shortest walking distance': string;
 	Select: string;
 
 	// INV002ItineraryTopTabNavigator
