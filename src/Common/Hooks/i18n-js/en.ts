@@ -33,6 +33,7 @@ const en: LangIf = {
 	// IPA002ItineraryCover
 	'Itinerary Title': 'Itinerary Title',
 	'Itinerary SubTitle': 'Itinerary SubTitle',
+	'Add Tag': 'Add Tag',
 	'Start date': 'Start date',
 	Description: 'Description',
 

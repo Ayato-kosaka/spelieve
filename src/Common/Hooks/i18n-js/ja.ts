@@ -12,7 +12,7 @@ const ja: LangIf = {
 	'Upload failed, sorry :(': 'アップロードに失敗しました',
 
 	// TrafficMovementEdit.tsx
-	'Add Plan': 'プランを追加',
+	'Add Plan': 'プラン追加',
 
 	// EditDirectionMode.tsx
 	'Route with fewest transfer': '乗り換えの少ないルート',
@@ -28,11 +28,12 @@ const ja: LangIf = {
 	'Plan setting': 'プラン設定',
 
 	// IPA001ItineraryEdit
-	'Add Plan group': 'プラングループの追加',
+	'Add Plan group': 'プラングループ追加',
 
 	// IPA002ItineraryCover
 	'Itinerary Title': 'しおりタイトル',
 	'Itinerary SubTitle': 'しおりサブタイトル',
+	'Add Tag': 'タグ追加',
 	'Start date': '開始日',
 	Description: '説明',
 
@@ -43,7 +44,7 @@ const ja: LangIf = {
 	'Set this Plan to Representative one': 'このプランを代表プランに設定',
 
 	// PCO002GooglePlacesAUtocomplete.tsx
-	'Search Place': '場所を探す',
+	'Search Place': '場所を検索',
 
 	// PHK001GooglePlaceAPI.ts
 	Bicycling: '自転車',

@@ -31,6 +31,7 @@ export interface LangIf {
 	// IPA002ItineraryCover
 	'Itinerary Title': string;
 	'Itinerary SubTitle': string;
+	'Add Tag': string;
 	'Start date': string;
 	Description: string;
 
