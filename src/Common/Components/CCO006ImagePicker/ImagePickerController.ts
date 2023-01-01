@@ -17,7 +17,7 @@ export const CCO006ImagePickerController = ({
 	style,
 }: ImagePickerPropsInterface) => {
 	const resizeImage = async (uri: string): Promise<string> => {
-		const result = await manipulateAsync(uri, imageManipulatorActions, { compress: 0, format: SaveFormat.PNG });
+		const result = await manipulateAsync(uri, imageManipulatorActions, { compress: 1, format: SaveFormat.PNG });
 		return result.uri;
 	};
 

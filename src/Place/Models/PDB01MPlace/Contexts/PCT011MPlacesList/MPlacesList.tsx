@@ -12,6 +12,7 @@ import {
 } from 'firebase/firestore';
 import { useState, createContext, useEffect, ReactNode, useMemo, useCallback } from 'react';
 
+import { DisplayNumberOfPlaces } from 'spelieve-common/lib/Consts/Place';
 import {
 	MPlacesListInterface,
 	MPlacesListValInterface,
@@ -53,7 +54,7 @@ export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode })
 		}
 
 		qc.push(orderBy(MPlace.Cols.rating, 'desc'));
-		qc.push(limit(10)); // TODO: https://github.com/Ayato-kosaka/spelieve/issues/310 表示枚数定数切り出し
+		qc.push(limit(DisplayNumberOfPlaces));
 		return qc;
 	}, [address]);
 

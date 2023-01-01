@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useContext } from 'react';
 import { ScrollView, ActivityIndicator, Button, View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Headline } from 'react-native-paper';
 
 import { IPA001ItineraryEditController } from './ItineraryEditController';
 
@@ -25,31 +25,28 @@ export const IPA001ItineraryEdit = ({
 		navigation,
 	});
 
-	if (!itineraryDocSnap || isPlansLoading || !planGroupsQSnap) {
+	if (
+		!route.params.itineraryID ||
+		!itineraryDocSnap ||
+		!itineraryDocSnap.exists() ||
+		isPlansLoading ||
+		!planGroupsQSnap
+	) {
 		return <ActivityIndicator animating />;
 	}
 
-	if (!itineraryDocSnap.exists()) {
-		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		createItinerary();
-		return <ActivityIndicator animating />;
-	}
-
-	let prevDate: string | undefined;
 	let isAnotherDay = true;
+	let prevDateNumber = 0;
 
 	return (
 		<ScrollView>
 			{planGroupsQSnap?.docs.map((planGroupsDoc) => {
 				const plnaGroup = planGroupsDoc.data();
-				const formatDate = `${plnaGroup.representativeStartDateTime.getFullYear()}/${
-					plnaGroup.representativeStartDateTime.getMonth() + 1
-				}/${plnaGroup.representativeStartDateTime.getDate()}`;
-				isAnotherDay = prevDate !== formatDate;
-				prevDate = formatDate;
+				isAnotherDay = prevDateNumber !== plnaGroup.dayNumber;
+				prevDateNumber = plnaGroup.dayNumber;
 				return (
 					<View key={planGroupsDoc.id}>
-						{isAnotherDay && <Text>{formatDate}</Text>}
+						{isAnotherDay && <Headline>{plnaGroup.dayNumber}日目</Headline>}
 						<IMC03103PlanGroupsEdit planGroupsDoc={planGroupsDoc} />
 					</View>
 				);

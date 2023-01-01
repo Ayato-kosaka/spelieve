@@ -1,9 +1,11 @@
 name: EAS Build Develop
 on:
- push:
-   branches:
-     - develop
- workflow_dispatch:
+  push:
+    branches:
+      - develop
+    paths:
+      - 'app.config.ts'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -16,7 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: '16'
 
       - name: Setup Expo
         uses: expo/expo-github-action@v7
@@ -24,16 +26,16 @@ jobs:
           expo-version: 4.x
           token: ${{ secrets.EXPO_TOKEN }}
           expo-cache: true
-          
+
       - name: Checkout spelieve-secret
         uses: actions/checkout@v3
         with:
           repository: Ayato-kosaka/spelieve-secret
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           path: spelieve-secret
-          
+
       - run: 'mv ./spelieve-secret/spelieve-frontend/release/ENV.ts ./src'
-      
+
       - run: 'rm -rf spelieve-secret/'
 
       - name: Install dependencies

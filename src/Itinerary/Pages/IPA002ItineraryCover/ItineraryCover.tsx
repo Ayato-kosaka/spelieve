@@ -17,8 +17,18 @@ export const IPA002ItineraryCover = ({
 	navigation,
 }: NativeStackScreenProps<BottomTabParamList, 'IPA002ItineraryCover'>) => {
 	const { itineraryID } = route.params;
-	const { pageItinerary, updateItinerary, handleOnChange, deleteTag, shouldNavigate, isLoading, setPageItinerary } =
-		IPA002ItineraryCoverController({ itineraryID });
+	const {
+		pageItinerary,
+		updateItinerary,
+		handleOnChange,
+		tagSearchText,
+		onTagSearchTextChanged,
+		onTagSearchTextBlur,
+		deleteTag,
+		shouldNavigate,
+		isLoading,
+		setPageItinerary,
+	} = IPA002ItineraryCoverController({ itineraryID });
 
 	if (shouldNavigate) {
 		navigation.navigate('Itinerary', { screen: 'IPA001ItineraryEdit', params: { itineraryID } });
@@ -45,14 +55,14 @@ export const IPA002ItineraryCover = ({
 					imageManipulatorActions={[
 						{
 							resize: {
-								width: 2000,
+								width: 900,
 							},
 						},
 					]}
 					storage={storage}>
 					<Image source={{ uri: pageItinerary.imageUrl }} resizeMode="cover" style={styles.image} />
 				</CCO006ImagePicker>
-				<Card.Content style={{ justifyContent: 'space-around', height: 700 }}>
+				<Card.Content>
 					<TextInput
 						label={i18n.t('Itinerary Title')}
 						value={pageItinerary.title}
@@ -67,10 +77,11 @@ export const IPA002ItineraryCover = ({
 						onBlur={updateItinerary}
 						style={styles.subTitleTextInput}
 					/>
-					<View style={styles.chipContainer}>
+					<ScrollView horizontal style={styles.chipContainer}>
 						{pageItinerary.tags.map((tag, index) => (
 							<Chip
-								key={tag}
+								key={`${tag}${index.toString()}`}
+								mode="outlined"
 								style={styles.tagsChip}
 								textStyle={styles.tagsChipText}
 								closeIcon="close-circle"
@@ -79,9 +90,14 @@ export const IPA002ItineraryCover = ({
 							</Chip>
 						))}
 						{/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/298 Tagを取得するSearchBarを実装する */}
-						<Searchbar placeholder="Search" value="" />
-					</View>
-					<View style={{ zIndex: 1 }}>
+						<Searchbar
+							placeholder={i18n.t('Add Tag')}
+							value={tagSearchText}
+							onChange={onTagSearchTextChanged}
+							onBlur={onTagSearchTextBlur}
+						/>
+					</ScrollView>
+					<View style={styles.startDateComtainer}>
 						<Text style={styles.startDateLabel}>{i18n.t('Start date')}</Text>
 						<CCO003DateTimePicker
 							value={pageItinerary.startDate}

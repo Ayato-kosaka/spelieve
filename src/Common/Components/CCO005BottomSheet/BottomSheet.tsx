@@ -15,7 +15,7 @@ export const CCO005BottomSheet = ({
 	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
 	// variables
-	const snapPoints = useMemo(() => ['25%', '50%'], []);
+	const snapPoints = useMemo(() => ['50%', '50%'], []);
 
 	useEffect(() => {
 		if (bottomSheetVisible) {

@@ -3,9 +3,10 @@ import { MediaTypeOptions } from 'expo-image-picker';
 import { setDoc } from 'firebase/firestore';
 import { useContext, useMemo } from 'react';
 import { ActivityIndicator, Button, Image, ScrollView, View } from 'react-native';
-import { Chip, Divider, Searchbar, Text, TextInput } from 'react-native-paper';
+import { Chip, Searchbar, Text, TextInput } from 'react-native-paper';
 
 import { IPA003EditPlanController } from './EditPlanController';
+import { styles } from './EditPlanStyle';
 
 import { BottomTabParamList } from '@/App';
 import { CCO003DateTimePicker } from '@/Common/Components/CCO003DateTimePicker';
@@ -17,7 +18,6 @@ import { ICT021PlanGroupsList } from '@/Itinerary/Models/IDB02PlanGroups/Context
 import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap';
 import { PCO002GooglePlacesAutocomplete } from '@/Place/Components/PCO002GooglePlacesAutocomplete';
 import { PMC01202PlaceInformation } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/ModelComponents/PMC01202PlaceInformation/PlaceInformation';
-import { materialColors } from '@/ThemeProvider';
 
 export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<BottomTabParamList, 'IPA003EditPlan'>) => {
 	const { PlanGroupsIndex, planID } = route.params;
@@ -39,6 +39,9 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 		isNeedToNavigateToItineraryEdit,
 		navigateToItineraryEdit,
 		updatePlan,
+		tagSearchText,
+		onTagSearchTextChanged,
+		onTagSearchTextBlur,
 		deleteTag,
 		onChangeImage,
 		updateRepresentativeStartDateTime,
@@ -62,49 +65,59 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 			<CCO006ImagePicker
 				onPickImage={onChangeImage}
 				imagePickerOptions={{
-					allowsEditing: true,
 					allowsMultipleSelection: false,
 					mediaTypes: MediaTypeOptions.Images,
-					aspect: [1, 1],
 					quality: 1,
 				}}
 				imageManipulatorActions={[
 					{
 						resize: {
-							width: 2000,
+							width: 900,
 						},
 					},
 				]}
 				storage={storage}>
-				<Image
-					source={{ uri: pagePlan.imageUrl }}
-					resizeMode="cover"
-					style={{
-						paddingTop: '56.25%',
-						backgroundColor: materialColors.grey[300],
-						height: 150,
-					}}
-				/>
+				<Image source={{ uri: pagePlan.imageUrl }} resizeMode="cover" style={styles.image} />
 			</CCO006ImagePicker>
-			<PCO002GooglePlacesAutocomplete onAutocompleteClicked={onAutocompleteClicked} onlySpot fetchDetails={false} />
-			<Divider style={{ marginVertical: 20 }} />
-			<TextInput label={i18n.t('Memo')} value={pagePlan.memo} onChange={onChangeMemo} onBlur={updatePlan} multiline />
-			<View style={{ flexDirection: 'row' }}>
+			<PCO002GooglePlacesAutocomplete
+				onAutocompleteClicked={onAutocompleteClicked}
+				onlySpot
+				fetchDetails={false}
+				placeholder={i18n.t('Search Place')}
+			/>
+			<TextInput
+				label={i18n.t('Memo')}
+				value={pagePlan.memo}
+				onChange={onChangeMemo}
+				onBlur={updatePlan}
+				style={styles.memoTextInput}
+			/>
+			<ScrollView horizontal style={styles.chipContainer}>
 				{pagePlan.tags.map((tag, index) => (
-					<Chip key={tag} closeIcon="close-circle" onClose={() => deleteTag(index)}>
+					<Chip
+						key={`${tag}${index.toString()}`}
+						mode="outlined"
+						style={styles.tagsChip}
+						textStyle={styles.tagsChipText}
+						closeIcon="close-circle"
+						onClose={() => deleteTag(index)}>
 						{tag}
 					</Chip>
 				))}
 				{/* TODO: https://github.com/Ayato-kosaka/spelieve/issues/298 Tagを取得するSearchBarを実装する */}
-				<Searchbar placeholder="Search" value="" />
-			</View>
-			<View>
-				<Text>{i18n.t('Stay time')}</Text>
-				<CCO004DurationPicker
-					value={pagePlan.placeSpan}
-					onBlur={(newVal) => setDoc(planDocSnap!.ref, { placeSpan: newVal }, { merge: true })}
+				<Searchbar
+					placeholder={i18n.t('Add Tag')}
+					value={tagSearchText}
+					onChange={onTagSearchTextChanged}
+					onBlur={onTagSearchTextBlur}
 				/>
-			</View>
+			</ScrollView>
+			<CCO004DurationPicker
+				value={pagePlan.placeSpan}
+				label={i18n.t('Stay time')}
+				onBlur={(newVal) => setDoc(planDocSnap!.ref, { placeSpan: newVal }, { merge: true })}
+				style={styles.spanTextInput}
+			/>
 
 			{isRepresentativePlan ? (
 				<View
@@ -112,17 +125,21 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 						// @react-native-community/datetimepicker が隠れるため、z-index: 1 を設定する
 						zIndex: 1,
 					}}>
-					<Text>{i18n.t('Representative plan Start date')}</Text>
-					<CCO003DateTimePicker
-						value={planGroup!.representativeStartDateTime}
-						onChange={updateRepresentativeStartDateTime}
-						mode="date"
-					/>
-					<CCO003DateTimePicker
-						value={planGroup!.representativeStartDateTime}
-						onChange={updateRepresentativeStartDateTime}
-						mode="time"
-					/>
+					<Text style={styles.representativeStartDateTimeLabel}>{i18n.t('Representative plan Start date')}</Text>
+					<View style={{ flexDirection: 'row' }}>
+						<CCO003DateTimePicker
+							style={styles.representativeStartDateTimePicker}
+							value={planGroup!.representativeStartDateTime}
+							onChange={updateRepresentativeStartDateTime}
+							mode="date"
+						/>
+						<CCO003DateTimePicker
+							style={styles.representativeStartDateTimePicker}
+							value={planGroup!.representativeStartDateTime}
+							onChange={updateRepresentativeStartDateTime}
+							mode="time"
+						/>
+					</View>
 				</View>
 			) : (
 				<Button title={i18n.t('Set this Plan to Representative one')} onPress={setPlanToRepresentativePlan} />

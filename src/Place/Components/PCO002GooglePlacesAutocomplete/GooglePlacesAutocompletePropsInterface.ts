@@ -7,5 +7,6 @@ export interface GooglePlacesAutocompletePropsInterface {
 	onAutocompleteClicked: (data: PlaceAutocompleteResult, detail: MPlace | null) => void;
 	onlySpot: boolean;
 	fetchDetails: boolean;
+	placeholder?: string;
 	inputContainerStyle?: StyleProp<ViewStyle>;
 }
