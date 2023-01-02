@@ -33,6 +33,7 @@ export const ICT011ItineraryOneProvider = ({ children }: { children: ReactNode }
 	);
 
 	useEffect(() => {
+		setItineraryDocSnap(undefined);
 		if (itineraryID) {
 			const unsubscribe = onSnapshot(doc(itineraryCRef, itineraryID), (docSnap) => {
 				Logger('IDB01/Itineraries', 'read docSnap.id', docSnap.id);

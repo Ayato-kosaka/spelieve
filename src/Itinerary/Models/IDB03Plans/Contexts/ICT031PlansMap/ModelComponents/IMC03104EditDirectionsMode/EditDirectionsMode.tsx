@@ -20,7 +20,7 @@ import {
 	travelModeConverter,
 	travelRestrictionConverter,
 } from '@/Place/Hooks/PHK001GooglePlaceAPI';
-import { paperTheme } from '@/ThemeProvider';
+import { materialColors, secondaryColorNm } from '@/ThemeProvider';
 
 export const IMC03104EditDirectionsMode = ({
 	planID,
@@ -52,11 +52,14 @@ export const IMC03104EditDirectionsMode = ({
 							style={styles.travelModePressable}>
 							<MaterialCommunityIcons
 								name={travelModeConverter[travelMode].iconName}
-								color={travelMode === directionsMode.transportationMode ? paperTheme.colors.secondary : 'black'}
+								color={
+									directionsMode.transportationMode === travelMode ? materialColors[secondaryColorNm].a400 : 'black'
+								}
 							/>
 							<Text
 								style={{
-									color: travelMode === directionsMode.transportationMode ? paperTheme.colors.secondary : 'black',
+									color:
+										directionsMode.transportationMode === travelMode ? materialColors[secondaryColorNm].a400 : 'black',
 								}}>
 								{travelModeConverter[travelMode].title}
 							</Text>
@@ -146,7 +149,7 @@ export const IMC03104EditDirectionsMode = ({
 							<Text>{travelRestrictionConverter[travelRestriction].title}</Text>
 							<Checkbox.IOS
 								status={directionsMode.avoid.includes(travelRestriction) ? 'checked' : 'unchecked'}
-								color={paperTheme.colors.secondary}
+								color={materialColors[secondaryColorNm].a400}
 							/>
 						</Pressable>
 					))}

@@ -55,6 +55,7 @@ export const ICT031PlansMapProvider = ({ children }: { children: ReactNode }) =>
 	}, [itineraryDocSnap]);
 
 	useEffect(() => {
+		setIsPlansLoading(true);
 		if (plansCRef) {
 			const unsubscribe = onSnapshot(query(plansCRef), (querySnapshot) => {
 				setDocumentSnapshots((_plansDocSnapMap) => {
