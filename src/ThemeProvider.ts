@@ -296,6 +296,10 @@ export const materialColors = {
 	},
 };
 
+export const customColors: { [key: string]: string } = {
+	midnight: '#1F2A37',
+};
+
 export const primaryColorNm = 'orange';
 export const secondaryColorNm = 'blue';
 export const paperTheme = {
