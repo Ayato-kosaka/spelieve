@@ -296,6 +296,21 @@ export const materialColors = {
 	},
 };
 
+export const hexToRGB = (hex: string, alpha: number) => {
+	const r = parseInt(hex.slice(1, 3), 16);
+	const g = parseInt(hex.slice(3, 5), 16);
+	const b = parseInt(hex.slice(5, 7), 16);
+
+	if (alpha) {
+		return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+	}
+	return `rgb(${r}, ${g}, ${b})`;
+};
+
+export const customColors: { [key: string]: string } = {
+	midnight: '#1F2A37',
+};
+
 export const primaryColorNm = 'orange';
 export const secondaryColorNm = 'blue';
 export const paperTheme = {
@@ -304,45 +319,16 @@ export const paperTheme = {
 	colors: {
 		...paperDefaultTheme.colors,
 		primary: materialColors[primaryColorNm]['500'],
-		onPrimary: 'white',
-		primaryContainer: '#ffc947',
-		onPrimaryContainer: 'rgb(42, 23, 0)',
-		secondary: materialColors[secondaryColorNm].a400,
-		onSecondary: 'white',
-		secondaryContainer: '#75a7ff',
-		onSecondaryContainer: 'rgb(40, 24, 5)',
-		tertiary: 'rgb(83, 100, 62)',
-		onTertiary: 'rgb(255, 255, 255)',
-		tertiaryContainer: 'rgb(214, 233, 185)',
-		onTertiaryContainer: 'rgb(18, 31, 3)',
-		error: 'rgb(186, 26, 26)',
-		onError: 'rgb(255, 255, 255)',
-		errorContainer: 'rgb(255, 218, 214)',
-		onErrorContainer: 'rgb(65, 0, 2)',
-		background: 'rgb(255, 251, 255)',
-		onBackground: 'rgb(31, 27, 22)',
+		accent: 'green',
+		background: 'white',
 		surface: 'white',
-		onSurface: 'rgb(31, 27, 22)',
-		surfaceVariant: 'rgb(240, 224, 208)',
-		onSurfaceVariant: 'rgb(80, 69, 57)',
-		outline: 'rgb(130, 117, 104)',
-		outlineVariant: 'rgb(212, 196, 181)',
-		shadow: 'rgb(0, 0, 0)',
-		scrim: 'rgb(0, 0, 0)',
-		inverseSurface: 'rgb(53, 47, 42)',
-		inverseOnSurface: 'rgb(249, 239, 231)',
-		inversePrimary: 'rgb(255, 185, 92)',
-		elevation: {
-			level0: 'transparent',
-			level1: 'rgb(249, 243, 242)',
-			level2: 'rgb(245, 238, 235)',
-			level3: 'rgb(242, 233, 227)',
-			level4: 'rgb(240, 231, 224)',
-			level5: 'rgb(238, 228, 219)',
-		},
-		surfaceDisabled: 'rgba(31, 27, 22, 0.12)',
-		onSurfaceDisabled: 'rgba(31, 27, 22, 0.38)',
-		backdrop: 'rgba(56, 47, 36, 0.4)',
+		error: 'green',
+		text: 'black',
+		onSurface: 'green',
+		disabled: materialColors.grey[300],
+		placeholder: materialColors.grey[600],
+		backdrop: 'green',
+		notification: 'blue',
 	},
 };
 

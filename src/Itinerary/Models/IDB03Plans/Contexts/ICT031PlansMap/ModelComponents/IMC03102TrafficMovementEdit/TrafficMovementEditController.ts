@@ -57,7 +57,7 @@ export const IMC03102TrafficMovementEditController = ({
 			}
 			return 'now';
 		}
-		return undefined;
+		return 'now';
 	}, [plan.transportationMode, beforeAfterRepresentativeType, plan.placeEndTime]);
 
 	/** **********************************************************************************************

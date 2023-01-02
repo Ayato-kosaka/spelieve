@@ -80,14 +80,16 @@ export const PMC01202PlaceInformation = () => {
 						<Image source={{ uri: photoUrl }} style={styles.imagelist} />
 					</View>
 				))}
-				<Text
-					style={styles.urlLink}
-					onPress={() => {
-						// eslint-disable-next-line
-						Linking.openURL(`${place.mapUrl}`);
-					}}>
-					{i18n.t('Show more')}
-				</Text>
+				{place.mapUrl && (
+					<Text
+						style={styles.urlLink}
+						onPress={() => {
+							// eslint-disable-next-line @typescript-eslint/no-floating-promises
+							Linking.openURL(`${place.mapUrl!}`);
+						}}>
+						{i18n.t('Show more')}
+					</Text>
+				)}
 			</View>
 		</View>
 	);

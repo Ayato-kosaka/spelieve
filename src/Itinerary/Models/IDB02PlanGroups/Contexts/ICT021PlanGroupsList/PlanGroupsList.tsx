@@ -76,17 +76,18 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 	);
 
 	useEffect(() => {
-		if (planGroupsCRef && plansCRef) {
-			const unsubscribe = onSnapshot(
-				query(planGroupsCRef, orderBy(PlanGroups.Cols.representativeStartDateTime)),
-				(querySnap) => {
-					setPlanGroupsQSnap(querySnap);
-				},
-			);
-			return () => unsubscribe();
+		if (!planGroupsCRef || !plansCRef || !itinerary) {
+			setPlanGroupsQSnap(undefined);
+			return () => undefined;
 		}
-		return () => undefined;
-	}, [planGroupsCRef, plansCRef, createPlanGroup]);
+		const unsubscribe = onSnapshot(
+			query(planGroupsCRef, orderBy(PlanGroups.Cols.representativeStartDateTime)),
+			(querySnap) => {
+				setPlanGroupsQSnap(querySnap);
+			},
+		);
+		return () => unsubscribe();
+	}, [planGroupsCRef, plansCRef, createPlanGroup, itinerary]);
 
 	const value: PlanGroupsListValInterface = useMemo(
 		() => ({
