@@ -7,6 +7,7 @@ import { MPlacesListAddressInterface, PlacesPropsInterface } from 'spelieve-comm
 import { MPlace } from 'spelieve-common/lib/Models/Place/PDB01/MPlace';
 
 import { BottomTabParamList } from '@/App';
+import { Logger } from '@/Common/Hooks/CHK001Utils';
 import i18n from '@/Common/Hooks/i18n-js';
 import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001GooglePlaceAPI';
 import { InitialPlaceParams } from '@/Place/Hooks/PHK002InitialPlaceParam';
@@ -66,8 +67,9 @@ export const PPA001PlacesController = ({
 
 	const onAutocompleteClicked = (data: PlaceAutocompleteResult, details: MPlace | null) => {
 		const isIncludes = (arr: AddressType[], target: AddressType[]) => arr.some((el) => target.includes(el));
-		const addressType: AddressType[] = [AddressType.establishment, AddressType.geocode];
+		const addressType: AddressType[] = [AddressType.establishment];
 		const sendedDataTypes: AddressType[] = data.types;
+		Logger('PPA001PlacesController', 'onAutocompleteClicked', { data, details });
 
 		if (isIncludes(sendedDataTypes, addressType)) {
 			// 地点
