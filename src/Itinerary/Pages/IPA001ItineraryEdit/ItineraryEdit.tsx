@@ -41,12 +41,12 @@ export const IPA001ItineraryEdit = ({
 	return (
 		<ScrollView>
 			{planGroupsQSnap?.docs.map((planGroupsDoc) => {
-				const plnaGroup = planGroupsDoc.data();
-				isAnotherDay = prevDateNumber !== plnaGroup.dayNumber;
-				prevDateNumber = plnaGroup.dayNumber;
+				const planGroup = planGroupsDoc.data();
+				isAnotherDay = prevDateNumber !== planGroup.dayNumber;
+				prevDateNumber = planGroup.dayNumber;
 				return (
 					<View key={planGroupsDoc.id}>
-						{isAnotherDay && <Headline>{plnaGroup.dayNumber}日目</Headline>}
+						{isAnotherDay && <Headline>{planGroup.dayNumber}日目</Headline>}
 						<IMC03103PlanGroupsEdit planGroupsDoc={planGroupsDoc} />
 					</View>
 				);
