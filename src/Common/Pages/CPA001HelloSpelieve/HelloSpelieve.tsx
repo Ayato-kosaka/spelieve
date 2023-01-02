@@ -60,40 +60,43 @@ export const CPA001HelloSpelieve = ({
 					{recentItineraries && recentItineraries.length > 0 && (
 						<View style={{ marginVertical: 64 }}>
 							<Headline style={{ textAlign: 'center' }}>{i18n.t('最近作成した旅行プラン')}</Headline>
-							{recentItineraries.map((recentItinerary) => (
-								<Pressable
-									key={recentItinerary.itineraryID}
-									onPress={() => {
-										navigation.navigate('Itinerary', {
-											screen: 'ItineraryTopTabNavigator',
-											params: {
-												screen: 'IPA001ItineraryEdit',
+							<ScrollView style={{ maxHeight: 700 }}>
+								{recentItineraries.map((recentItinerary) => (
+									<Pressable
+										key={recentItinerary.itineraryID}
+										onPress={() => {
+											navigation.navigate('Itinerary', {
+												screen: 'ItineraryTopTabNavigator',
 												params: {
-													itineraryID: recentItinerary.itineraryID,
+													screen: 'IPA001ItineraryEdit',
+													params: {
+														itineraryID: recentItinerary.itineraryID,
+													},
 												},
-											},
-										});
-									}}
-									style={{
-										borderWidth: 1,
-										borderColor: materialColors.grey[700],
-										marginVertical: 4,
-										paddingHorizontal: 4,
-										paddingVertical: 4,
-									}}>
-									<Subheading style={{ color: paperTheme.colors.primary }}>
-										{recentItinerary.title || i18n.t('no title')}
-									</Subheading>
-									<Text>{recentItinerary.subTitle || i18n.t('no sub title')}</Text>
-									<Text style={{ color: materialColors.grey[700] }}>
-										{recentItinerary.updatedAt.toLocaleString('en-US', {
-											year: 'numeric',
-											month: '2-digit',
-											day: '2-digit',
-										})}
-									</Text>
-								</Pressable>
-							))}
+											});
+										}}
+										style={{
+											borderWidth: 1,
+											borderColor: materialColors.grey[400],
+											borderRadius: 4,
+											marginVertical: 4,
+											paddingHorizontal: 4,
+											paddingVertical: 4,
+										}}>
+										<Subheading style={{ color: paperTheme.colors.primary }}>
+											{recentItinerary.title || i18n.t('no title')}
+										</Subheading>
+										<Text>{recentItinerary.subTitle || i18n.t('no sub title')}</Text>
+										<Text style={{ color: materialColors.grey[700] }}>
+											{recentItinerary.updatedAt.toLocaleString('en-US', {
+												year: 'numeric',
+												month: '2-digit',
+												day: '2-digit',
+											})}
+										</Text>
+									</Pressable>
+								))}
+							</ScrollView>
 						</View>
 					)}
 				</View>
