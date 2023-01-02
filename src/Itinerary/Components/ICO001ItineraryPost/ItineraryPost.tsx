@@ -28,7 +28,7 @@ export const ICO001ItineraryPost = ({ itinerary, planGroups, plans }: ItineraryP
 						isAnotherDay = prevDateNumber !== planGroup.dayNumber;
 						prevDateNumber = planGroup.dayNumber;
 						return (
-							<>
+							<View key={planGroup.representativePlanID}>
 								{isAnotherDay && <Subheading>{planGroup.dayNumber}日目</Subheading>}
 								{planGroup.plans.map((planId) => {
 									const plan = plans[planId];
@@ -62,7 +62,7 @@ export const ICO001ItineraryPost = ({ itinerary, planGroups, plans }: ItineraryP
 										</View>
 									);
 								})}
-							</>
+							</View>
 						);
 					})}
 				</Card.Content>
