@@ -6,6 +6,7 @@ import { Itineraries } from 'spelieve-common/lib/Models/Itinerary/IDB01/Itinerar
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
 import { Logger } from '@/Common/Hooks/CHK001Utils';
+import { storeRecentItinerary } from '@/Common/Pages/CPA001HelloSpelieve/HelloSpelieveRecentItineraryHook';
 import db from '@/Itinerary/Endpoint/firestore';
 
 export const ICT011ItineraryOne = createContext({} as ItineraryOneValInterface);
@@ -36,6 +37,8 @@ export const ICT011ItineraryOneProvider = ({ children }: { children: ReactNode }
 			const unsubscribe = onSnapshot(doc(itineraryCRef, itineraryID), (docSnap) => {
 				Logger('IDB01/Itineraries', 'read docSnap.id', docSnap.id);
 				setItineraryDocSnap(docSnap);
+				// eslint-disable-next-line @typescript-eslint/no-floating-promises
+				storeRecentItinerary({ ...docSnap.data()!, itineraryID: docSnap.id, updatedAt: new Date() });
 			});
 			return () => unsubscribe();
 		}
