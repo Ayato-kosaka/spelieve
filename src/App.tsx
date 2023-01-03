@@ -25,7 +25,10 @@ export const App = () => {
 			linking={{
 				prefixes: ['spelieve.com'],
 			}}
-			theme={navigationTheme}>
+			theme={navigationTheme}
+			documentTitle={{
+				formatter: (options, route) => 'Spelieve ~旅のしおり簡単作成アプリ~',
+			}}>
 			<PaperProvider theme={paperTheme}>
 				<AppProvider>
 					<BottomTab.Navigator initialRouteName="Itinerary">
