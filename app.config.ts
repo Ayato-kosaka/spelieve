@@ -6,7 +6,7 @@ export default ({ config }: ConfigContext) => {
 			name: 'Spelieve ~旅のしおり簡単作成アプリ~',
 			owner: 'spelieve',
 			slug: 'Spelieve',
-			version: '1.0.0',
+			version: '2.0.0',
 			orientation: 'portrait',
 			icon: './assets/square-icon.png',
 			userInterfaceStyle: 'light',

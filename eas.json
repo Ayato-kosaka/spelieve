@@ -24,7 +24,8 @@
         "ascAppId": "1660453134"
       },
       "android": {
-
+        "track": "production",
+        "releaseStatus": "completed"
       }
     }
   }
