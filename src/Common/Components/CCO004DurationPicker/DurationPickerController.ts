@@ -6,7 +6,6 @@ import {
 	DurationPickerPropsInterface,
 	DurationPickerTimeInterface,
 } from 'spelieve-common/lib/Interfaces';
-import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 
 import * as CHK004NumberUtils from '@/Common/Hooks/CHK004NumberUtils';
 
@@ -26,16 +25,16 @@ export const CCO004DurationPickerController = ({
 
 	// props の value: Date を string に変換する。但し、フォーカスの有無で表示形式を変更する
 	const textInputValue = useMemo(() => {
+		const hourString = String(time.hour);
+		const minString = String(time.min);
 		if (isFocused) {
-			const hourString = String(time.hour).padStart(2, '0');
-			const minString = String(time.min).padStart(2, '0');
-			if (time.hour === 0) {
-				return `${minString}Min`;
-			}
-			return `${hourString}Hrs${minString}`;
+			return `${hourString.padStart(2, '0')}:${minString.padStart(2, '0')}`;
 		}
-		return DateUtils.formatDateToTime(value);
-	}, [value, isFocused, time]);
+		if (time.hour === 0) {
+			return `${minString}Min`;
+		}
+		return `${hourString}Hrs${minString}`;
+	}, [isFocused, time]);
 
 	const onFocus = (): void => {
 		setIsFocused(true);

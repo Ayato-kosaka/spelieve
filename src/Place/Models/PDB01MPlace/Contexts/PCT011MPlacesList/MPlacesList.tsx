@@ -12,6 +12,7 @@ import {
 } from 'firebase/firestore';
 import { useState, createContext, useEffect, ReactNode, useMemo, useCallback } from 'react';
 
+import { DisplayNumberOfPlaces } from 'spelieve-common/lib/Consts/Place';
 import {
 	MPlacesListInterface,
 	MPlacesListValInterface,
@@ -20,6 +21,7 @@ import {
 import { MPlace } from 'spelieve-common/lib/Models/Place/PDB01/MPlace';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
+import { Logger } from '@/Common/Hooks/CHK001Utils';
 import i18n from '@/Common/Hooks/i18n-js';
 import db from '@/Place/Endpoint/firestore';
 import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001GooglePlaceAPI';
@@ -32,6 +34,7 @@ export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode })
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [address, setAddress] = useState<MPlacesListAddressInterface>({});
 	const [lastVisible, setLastVisible] = useState<DocumentSnapshot | null>(null);
+	const [isFetchedAllDocs, setIsFetchedAllDocs] = useState<boolean>(false);
 
 	const basicQueryConstraints = useMemo(() => {
 		const qc: QueryConstraint[] = [];
@@ -53,19 +56,24 @@ export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode })
 		}
 
 		qc.push(orderBy(MPlace.Cols.rating, 'desc'));
-		qc.push(limit(10)); // TODO: https://github.com/Ayato-kosaka/spelieve/issues/310 表示枚数定数切り出し
+		qc.push(limit(DisplayNumberOfPlaces));
 		return qc;
 	}, [address]);
 
 	const fetchSetPlaces = async (q: Query<MPlacesListInterface>, currentPlacesList: MPlacesListInterface[]) => {
 		await getDocs(q)
 			.then((querySnapshot) => {
+				Logger('PDB03/MPlacesList', 'read querySnapshot', querySnapshot);
 				setPlacesList([...currentPlacesList, ...querySnapshot.docs.map((doc) => doc.data())]);
-				setLastVisible(querySnapshot.docs[querySnapshot.docs.length - 1]);
+				if (querySnapshot.docs.length === DisplayNumberOfPlaces) {
+					setLastVisible(querySnapshot.docs[querySnapshot.docs.length - 1]);
+				} else {
+					setIsFetchedAllDocs(true);
+				}
 				setIsLoading(false);
 			})
 			.catch((e) => {
-				console.log(e); // eslint-disable-line no-console
+				Logger('PCT011MPlacesListProvider', 'fetchSetPlaces.getDocs.catch.e', e);
 			});
 	};
 
@@ -82,18 +90,23 @@ export const PCT011MPlacesListProvider = ({ children }: { children: ReactNode })
 	);
 
 	const retrieveMore = useCallback(() => {
+		if (isFetchedAllDocs) {
+			return;
+		}
 		setIsLoading(true);
 		const queryConstraints: QueryConstraint[] = [...basicQueryConstraints, startAfter(lastVisible)];
 		const q: Query<MPlacesListInterface> = toQuery(queryConstraints);
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		fetchSetPlaces(q, placesList);
-	}, [basicQueryConstraints, lastVisible, placesList, toQuery]);
+	}, [basicQueryConstraints, isFetchedAllDocs, lastVisible, placesList, toQuery]);
 
 	useEffect(() => {
 		if (!address.country) {
 			return;
 		}
+		setIsFetchedAllDocs(false);
 		setIsLoading(true);
+		setPlacesList([]);
 		const q: Query<MPlacesListInterface> = toQuery(basicQueryConstraints);
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		fetchSetPlaces(q, []);

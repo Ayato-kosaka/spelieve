@@ -1,6 +1,7 @@
 import React, { useContext, useMemo } from 'react';
-import { Button, Pressable } from 'react-native';
-import { Chip, Text } from 'react-native-paper';
+import { Pressable, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { Card, Chip, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { PlanEditPropsInterface } from 'spelieve-common/lib/Interfaces';
@@ -9,8 +10,9 @@ import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 import { ICT031PlansMap } from '../..';
 
 import { IMC03101PlanEditController } from './PlanEditController';
+import { styles } from './PlanEditStyle';
 
-import i18n from '@/Common/Hooks/i18n-js';
+import { paperTheme } from '@/ThemeProvider';
 
 export const IMC03101PlanEdit = ({
 	planID,
@@ -32,24 +34,55 @@ export const IMC03101PlanEdit = ({
 	});
 
 	return (
-		<Pressable
-			style={{ borderWidth: 1, borderColor: beforeAfterRepresentativeType === 'representative' ? 'red' : 'black' }}
-			onPress={onPlanPress}>
-			<MaterialCommunityIcons name="map-marker" />
-			<Text>{plan.title}</Text>
-			<Text>
-				{DateUtils.formatToHHMM(plan.placeStartTime)}~{DateUtils.formatToHHMM(plan.placeEndTime)}
-			</Text>
-			{plan.tags.map((tag) => (
-				<Chip key={tag}>{tag}</Chip>
-			))}
-			<Button
-				title={i18n.t('予定を削除')}
-				onPress={() => {
-					// eslint-disable-next-line @typescript-eslint/no-floating-promises
-					deletePlan();
-				}}
-			/>
-		</Pressable>
+		<Card style={{}}>
+			<Card.Content>
+				<Pressable
+					onPress={onPlanPress}
+					style={{
+						flexDirection: 'row',
+						alignItems: 'center',
+					}}>
+					<View style={{ flex: 1, alignItems: 'center' }}>
+						<MaterialCommunityIcons
+							name="map-marker"
+							size={20}
+							color={beforeAfterRepresentativeType === 'representative' ? paperTheme.colors.primary : 'black'}
+						/>
+					</View>
+					<View style={{ flex: 13 }}>
+						<Text>{plan.title || ' '}</Text>
+						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+							<Text>
+								{DateUtils.formatToHHMM(plan.placeStartTime)}
+								{plan.placeStartTime.getTime() !== plan.placeEndTime.getTime()
+									? `~${DateUtils.formatToHHMM(plan.placeEndTime)}`
+									: ''}
+							</Text>
+							<ScrollView horizontal>
+								{plan.tags.map((tag, index) => (
+									<Chip
+										key={`${tag}${index.toString()}`}
+										mode="outlined"
+										style={styles.tagsChip}
+										textStyle={styles.tagsChipText}>
+										{tag}
+									</Chip>
+								))}
+							</ScrollView>
+						</View>
+					</View>
+					<View style={{ flex: 1, alignItems: 'center' }}>
+						<MaterialCommunityIcons
+							name="delete"
+							size={20}
+							onPress={() => {
+								// eslint-disable-next-line @typescript-eslint/no-floating-promises
+								deletePlan();
+							}}
+						/>
+					</View>
+				</Pressable>
+			</Card.Content>
+		</Card>
 	);
 };

@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useContext } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import { View, Image, ScrollView } from 'react-native';
 import { Text, ActivityIndicator } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -19,6 +19,19 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 	const { place_id } = route.params;
 	const { onCreateItineraryClicked } = PPA002PlaceController(route.params);
 
+	const headerRight = useCallback(
+		() => <MaterialCommunityIcons name="book-open-variant" size={30} onPress={() => onCreateItineraryClicked()} />,
+		[onCreateItineraryClicked],
+	);
+
+	useEffect(() => {
+		navigation.setOptions({
+			headerShown: true,
+			headerTitle: place?.name || '',
+			headerRight,
+		});
+	}, [navigation, place, headerRight]);
+
 	if (isLoading) {
 		return <ActivityIndicator animating />;
 	}
@@ -31,8 +44,6 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 			<View style={styles.container}>
 				<PMC01201GoogleMapPlaceOne />
 				<Image source={{ uri: place.imageUrl }} style={styles.image} />
-				<Text style={styles.infoText}>{place.name}</Text>
-				<MaterialCommunityIcons name="book-open-variant" size={50} onPress={() => onCreateItineraryClicked()} />
 				<PMC01202PlaceInformation />
 			</View>
 		</ScrollView>

@@ -1,10 +1,10 @@
 import { PlaceAutocompleteResult } from '@googlemaps/google-maps-services-js';
+import { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { setDoc } from 'firebase/firestore';
-import { useContext, useEffect, useMemo, useCallback, useState } from 'react';
+import { useContext, useEffect, useMemo, useCallback, useState, useRef } from 'react';
 import { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
 
-import { EditPlanControllerInterface } from 'spelieve-common/lib/Interfaces';
 import { PlansMapInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT031';
 
 import { BottomTabParamList } from '@/App';
@@ -16,7 +16,7 @@ import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlac
 export const IPA003EditPlanController = ({
 	route,
 	navigation,
-}: NativeStackScreenProps<BottomTabParamList, 'IPA003EditPlan'>): EditPlanControllerInterface => {
+}: NativeStackScreenProps<BottomTabParamList, 'IPA003EditPlan'>) => {
 	const { itineraryID, PlanGroupsIndex, planID } = route.params;
 
 	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
@@ -32,40 +32,50 @@ export const IPA003EditPlanController = ({
 	const plan = useMemo(() => (planDocSnap ? planDocSnap.data() : undefined), [planDocSnap]);
 
 	const { setPlaceID, place } = useContext(PCT012MPlaceOne);
+	const prevPlacetRef = useRef<typeof place>(undefined);
 
 	const [pagePlan, setPagePlan] = useState<PlansMapInterface | undefined>(undefined);
+	const [tagSearchText, setTagSearchText] = useState<string>('');
 
-	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/342 IPA003PlanEdit コンソールエラー解消
+	// アンマウント時に、PlaceID を undefined で初期化する
+	useEffect(
+		() => () => {
+			setPlaceID(undefined);
+		},
+		[setPlaceID],
+	);
 
-	// パラメータの itineraryID を監視しし、 Itinerary Context にセットする
+	// Header にタイトルを設定する
 	useEffect(() => {
-		if (itineraryID) {
-			setItineraryID(itineraryID);
+		navigation.setOptions({
+			title: plan?.title,
+		});
+	}, [navigation, plan?.title]);
+
+	const navigateToItineraryEdit = useCallback(() => {
+		navigation.navigate('Itinerary', {
+			screen: 'IPA001ItineraryEdit',
+			params: {
+				itineraryID,
+			},
+		});
+	}, [navigation, itineraryID]);
+
+	// パラメータを監視し、不足があれば navigateToItineraryEdit する
+	useEffect(() => {
+		if (itineraryID === undefined || PlanGroupsIndex === undefined || planID === undefined) {
+			// TODO: https://github.com/Ayato-kosaka/spelieve/issues/397 HelloSpelieve に遷移できない
+			navigation.navigate('Itinerary', {
+				screen: 'HelloSpelieve',
+				params: {},
+			});
 		}
-	}, [itineraryID, setItineraryID]);
+	}, [PlanGroupsIndex, itineraryID, navigateToItineraryEdit, navigation, planID, setItineraryID]);
 
 	// plan.place_id を監視し、 Place Context にセットする
 	useEffect(() => {
 		setPlaceID(plan?.place_id);
 	}, [plan?.place_id, setPlaceID]);
-
-	// place.name を監視し、plan.title を更新する
-	useEffect(() => {
-		if (!!place && place.name !== plan?.title && planDocSnap) {
-			// eslint-disable-next-line @typescript-eslint/no-floating-promises
-			setDoc(planDocSnap?.ref, { title: place.name }, { merge: true });
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [place?.name]);
-
-	// place.imageUrl を監視し、plan.imageUrl を更新する
-	useEffect(() => {
-		if (!!place && place.imageUrl !== plan?.imageUrl && planDocSnap) {
-			// eslint-disable-next-line @typescript-eslint/no-floating-promises
-			setDoc(planDocSnap?.ref, { imageUrl: place.imageUrl }, { merge: true });
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [place?.imageUrl]);
 
 	// Context の plan を監視し、 pagePlan にセットする
 	useEffect(() => {
@@ -80,13 +90,31 @@ export const IPA003EditPlanController = ({
 	);
 
 	const isNeedToShowActivityIndicator = useMemo(
-		() => !itineraryDocSnap || isPlansLoading || !planGroupsQSnap || !planGroupDocSnap || !planGroup,
-		[itineraryDocSnap, isPlansLoading, planGroupsQSnap, planGroupDocSnap, planGroup],
+		() => !itineraryDocSnap || isPlansLoading || !planGroupsQSnap || !planGroupDocSnap || !planGroup || !pagePlan,
+		[itineraryDocSnap, isPlansLoading, planGroupsQSnap, planGroupDocSnap, planGroup, pagePlan],
 	);
 
+	// place.name を監視し、plan.title を更新する
+	useEffect(() => {
+		if (!!place && place.name !== plan?.title && planDocSnap && prevPlacetRef.current) {
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			setDoc(planDocSnap.ref, { title: place.name }, { merge: true });
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [place?.name]);
+
+	// place.imageUrl を監視し、plan.imageUrl を更新する
+	useEffect(() => {
+		if (!!place && place.imageUrl !== plan?.imageUrl && planDocSnap && prevPlacetRef.current) {
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			setDoc(planDocSnap.ref, { imageUrl: place.imageUrl }, { merge: true });
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [place?.imageUrl]);
+
 	const isNeedToNavigateToItineraryEdit = useMemo(
-		() => !isNeedToShowActivityIndicator && (!itineraryDocSnap!.exists() || !pagePlan),
-		[isNeedToShowActivityIndicator, itineraryDocSnap, pagePlan],
+		() => !isNeedToShowActivityIndicator && !itineraryDocSnap!.exists(),
+		[isNeedToShowActivityIndicator, itineraryDocSnap],
 	);
 
 	const updatePlan = useCallback(() => {
@@ -94,20 +122,20 @@ export const IPA003EditPlanController = ({
 		setDoc(planDocSnap!.ref, { ...pagePlan });
 	}, [pagePlan, planDocSnap]);
 
-	const navigateToItineraryEdit = useCallback(() => {
-		navigation.navigate('Itinerary', {
-			screen: 'IPA001ItineraryEdit',
-			params: {
-				itineraryID,
-			},
-		});
-	}, [navigation, itineraryID]);
+	const onChangeImage = useCallback(
+		(imageUrl: string) => {
+			setPagePlan({ ...pagePlan!, imageUrl });
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			setDoc(planDocSnap!.ref, { imageUrl }, { merge: true });
+		},
+		[pagePlan, planDocSnap],
+	);
 
 	const onChangeSearchPlace: (e: NativeSyntheticEvent<TextInputChangeEventData>) => void = (e) => {
 		setPagePlan({ ...pagePlan!, title: e.nativeEvent.text });
 	};
 
-	const onChangeMemo: EditPlanControllerInterface['onChangeMemo'] = useCallback(
+	const onChangeMemo: ({ nativeEvent }: { nativeEvent: TextInputChangeEventData }) => void = useCallback(
 		({ nativeEvent }) => {
 			setPagePlan({ ...pagePlan!, memo: nativeEvent.text });
 		},
@@ -129,11 +157,30 @@ export const IPA003EditPlanController = ({
 		[planDocSnap],
 	);
 
+	const onTagSearchTextChanged = useCallback((e: NativeSyntheticEvent<TextInputChangeEventData>): void => {
+		setTagSearchText(e.nativeEvent.text);
+	}, []);
+
+	const onTagSearchTextBlur = useCallback(() => {
+		if (!planDocSnap || !plan || tagSearchText === '') {
+			return;
+		}
+		const newTags: string[] = [...plan.tags];
+		newTags.push(tagSearchText);
+		setTagSearchText('');
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
+		setDoc(planDocSnap.ref, { tags: newTags }, { merge: true });
+	}, [plan, planDocSnap, tagSearchText]);
+
 	const deleteTag = useCallback(
 		(index: number): void => {
-			const newTags: string[] = plan!.tags.splice(index, 1);
+			if (!planDocSnap || !plan) {
+				return;
+			}
+			const newTags: string[] = [...plan.tags];
+			newTags.splice(index, 1);
 			// eslint-disable-next-line @typescript-eslint/no-floating-promises
-			setDoc(planDocSnap!.ref, { tags: newTags }, { merge: true });
+			setDoc(planDocSnap.ref, { tags: newTags }, { merge: true });
 		},
 		[plan, planDocSnap],
 	);
@@ -147,22 +194,26 @@ export const IPA003EditPlanController = ({
 		);
 	}, [planGroupDocSnap, planDocSnap, plan?.placeStartTime]);
 
-	const updateRepresentativeStartDateTime: EditPlanControllerInterface['updateRepresentativeStartDateTime'] =
-		useCallback(
-			(event, date) => {
-				if (event.type === 'set' && planGroupDocSnap) {
-					// eslint-disable-next-line @typescript-eslint/no-floating-promises
-					setDoc(
-						planGroupDocSnap.ref,
-						{
-							representativeStartDateTime: date,
-						},
-						{ merge: true },
-					);
-				}
-			},
-			[planGroupDocSnap],
-		);
+	const updateRepresentativeStartDateTime: (event: DateTimePickerEvent, date?: Date | undefined) => void = useCallback(
+		(event, date) => {
+			if (event.type === 'set' && planGroupDocSnap) {
+				// eslint-disable-next-line @typescript-eslint/no-floating-promises
+				setDoc(
+					planGroupDocSnap.ref,
+					{
+						representativeStartDateTime: date,
+					},
+					{ merge: true },
+				);
+			}
+		},
+		[planGroupDocSnap],
+	);
+
+	// prevPlace を更新する
+	useEffect(() => {
+		prevPlacetRef.current = place;
+	}, [place]);
 
 	return {
 		pagePlan: pagePlan!,
@@ -171,7 +222,11 @@ export const IPA003EditPlanController = ({
 		isNeedToNavigateToItineraryEdit,
 		navigateToItineraryEdit,
 		updatePlan,
+		tagSearchText,
+		onTagSearchTextChanged,
+		onTagSearchTextBlur,
 		deleteTag,
+		onChangeImage,
 		updateRepresentativeStartDateTime,
 		setPlanToRepresentativePlan,
 		onChangeSearchPlace,

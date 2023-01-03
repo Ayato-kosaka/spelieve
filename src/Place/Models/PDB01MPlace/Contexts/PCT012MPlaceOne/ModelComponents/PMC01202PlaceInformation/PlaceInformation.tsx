@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { FlatList, Linking, View, Image } from 'react-native';
+import { Linking, View, Image } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Rating } from 'react-native-ratings';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -71,28 +71,25 @@ export const PMC01202PlaceInformation = () => {
 						// eslint-disable-next-line
 						Linking.openURL(`${place.mapUrl}`);
 					}}>
-					{i18n.t('show more info at Google Map')}
+					{i18n.t('Show more Info at Google Map')}
 				</Text>
 			</View>
 			<View>
-				<FlatList
-					data={place.photoUrls}
-					renderItem={(itemData) => (
-						<View>
-							<Image source={{ uri: itemData.item }} style={styles.imagelist} />
-						</View>
-					)}
-					numColumns={3}
-					// keyExtractor={(place) => place.place_id}
-				/>
-				<Text
-					style={styles.urlLink}
-					onPress={() => {
-						// eslint-disable-next-line
-						Linking.openURL(`${place.mapUrl}`);
-					}}>
-					{i18n.t('show more')}
-				</Text>
+				{place.photoUrls.map((photoUrl) => (
+					<View key={photoUrl}>
+						<Image source={{ uri: photoUrl }} style={styles.imagelist} />
+					</View>
+				))}
+				{place.mapUrl && (
+					<Text
+						style={styles.urlLink}
+						onPress={() => {
+							// eslint-disable-next-line @typescript-eslint/no-floating-promises
+							Linking.openURL(`${place.mapUrl!}`);
+						}}>
+						{i18n.t('Show more')}
+					</Text>
+				)}
 			</View>
 		</View>
 	);
