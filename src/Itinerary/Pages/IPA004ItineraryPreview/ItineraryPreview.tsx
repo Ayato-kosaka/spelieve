@@ -9,7 +9,7 @@ import { ICO001ItineraryPost } from '@/Itinerary/Components/ICO001ItineraryPost'
 export const IPA004ItineraryPreview = ({
 	route,
 	navigation,
-}: NativeStackScreenProps<BottomTabParamList, 'IPA004ItineraryPreview'>) => {
+}: NativeStackScreenProps<BottomTabParamList, 'ItineraryPreview'>) => {
 	const { itinerary, planGroups, plans, needToShowActivityIndicator } = IPA004ItineraryPreviewController({
 		route,
 		navigation,
