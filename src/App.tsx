@@ -7,6 +7,7 @@ import { Provider as PaperProvider } from 'react-native-paper';
 
 import { AppProvider } from './AppProvider';
 import i18n from './Common/Hooks/i18n-js';
+import { ENV } from './ENV';
 import { ItineraryPageNavigator, ItineraryStackParamList } from './Itinerary/Pages/ItineraryPageNavigator';
 import { PlacePageNavigator, PlaceStackParamList } from './Place/Pages/PlacePageNavigator/PlacePageNavigator';
 import { navigationTheme, paperTheme } from './ThemeProvider';
@@ -23,7 +24,7 @@ export const App = () => {
 	return (
 		<NavigationContainer
 			linking={{
-				prefixes: ['spelieve.com'],
+				prefixes: [ENV.HOST_NAME_WEB],
 			}}
 			theme={navigationTheme}
 			documentTitle={{
