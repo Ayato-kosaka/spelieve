@@ -16,9 +16,7 @@ export const styles = StyleSheet.create({
 	// 	// alignContentnItems: "flex-start",
 	// },
 	item: {
-		flex: 1,
 		width: '50%',
-		zIndex: 0,
 	},
 	image: {
 		paddingTop: '100%',
@@ -29,7 +27,8 @@ export const styles = StyleSheet.create({
 		top: 0,
 		left: 0,
 		color: 'white',
-		backgroundColor: 'orange',
-		padding: 2,
+		backgroundColor: 'rgba(0,0,0,0.5)',
+		paddingHorizontal: 8,
+		paddingVertical: 4,
 	},
 });

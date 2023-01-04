@@ -11,7 +11,7 @@ import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031Pla
 export const IPA001ItineraryEditController = ({
 	route,
 	navigation,
-}: NativeStackScreenProps<BottomTabParamList, 'IPA001ItineraryEdit'>) => {
+}: NativeStackScreenProps<BottomTabParamList, 'ItineraryEdit'>) => {
 	const { setItineraryID, itineraryCRef } = useContext(ICT011ItineraryOne);
 	const { planGroupsQSnap, createPlanGroup, planGroupsCRef } = useContext(ICT021PlanGroupsList);
 	const { plansCRef } = useContext(ICT031PlansMap);

@@ -13,7 +13,7 @@ import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031Pla
 export const IPA004ItineraryPreviewController = ({
 	route,
 	navigation,
-}: NativeStackScreenProps<BottomTabParamList, 'IPA004ItineraryPreview'>): ItineraryPreviewControllerInterface => {
+}: NativeStackScreenProps<BottomTabParamList, 'ItineraryPreview'>): ItineraryPreviewControllerInterface => {
 	const { itineraryDocSnap } = useContext(ICT011ItineraryOne);
 	const itinerary: ItineraryOneInterface | undefined = useMemo(() => itineraryDocSnap?.data(), [itineraryDocSnap]);
 

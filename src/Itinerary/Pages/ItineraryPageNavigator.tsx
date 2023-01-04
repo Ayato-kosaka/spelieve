@@ -16,9 +16,9 @@ import { CPA001HelloSpelieve } from '@/Common/Pages/CPA001HelloSpelieve/HelloSpe
 import { PCT012MPlaceOneProvider } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne';
 
 export type ItineraryStackParamList = {
-	IPA002ItineraryCover: ItineraryCoverPropsInterface;
-	ItineraryTopTabNavigator: NavigatorScreenParams<TopTabParamList>;
-	IPA003EditPlan: EditPlanPropsInterface;
+	ItineraryCover: ItineraryCoverPropsInterface;
+	TopTab: NavigatorScreenParams<TopTabParamList>;
+	EditPlan: EditPlanPropsInterface;
 	HelloSpelieve: Record<string, never>;
 } & TopTabParamList;
 
@@ -31,19 +31,19 @@ export const ItineraryPageNavigator = () => (
 				<PCT012MPlaceOneProvider>
 					<Stack.Navigator initialRouteName="HelloSpelieve">
 						<Stack.Screen
-							name="ItineraryTopTabNavigator"
+							name="TopTab"
 							component={INV002ItineraryTopTabNavigator}
 							initialParams={{}}
-							options={{ title: 'TopTabNavigator' }}
+							options={{ title: '' }}
 						/>
 						<Stack.Screen
-							name="IPA002ItineraryCover"
+							name="ItineraryCover"
 							component={IPA002ItineraryCover}
 							initialParams={{}}
 							options={{ title: i18n.t('Itinerary setting') }}
 						/>
 						<Stack.Screen
-							name="IPA003EditPlan"
+							name="EditPlan"
 							component={IPA003EditPlan}
 							initialParams={{}}
 							options={{ title: i18n.t('Plan setting') }}

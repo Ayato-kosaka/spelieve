@@ -7,13 +7,13 @@ import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts
 export const INV002ItineraryTopTabNavigatorController = ({
 	route,
 	navigation,
-}: NativeStackScreenProps<BottomTabParamList, 'ItineraryTopTabNavigator'>) => {
+}: NativeStackScreenProps<BottomTabParamList, 'TopTab'>) => {
 	const { itineraryDocSnap } = useContext(ICT011ItineraryOne);
 	const itinerary = useMemo(() => itineraryDocSnap?.data(), [itineraryDocSnap]);
 
 	const onPressSetting = useCallback(() => {
 		navigation.navigate('Itinerary', {
-			screen: 'IPA002ItineraryCover',
+			screen: 'ItineraryCover',
 			params: {
 				itineraryID: itineraryDocSnap?.id,
 			},
