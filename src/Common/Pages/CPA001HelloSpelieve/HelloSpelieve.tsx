@@ -32,17 +32,6 @@ export const CPA001HelloSpelieve = ({
 			<ScrollView>
 				<Image source={require('@assets/adaptive-icon.png')} style={{ height: 300 }} resizeMode="contain" />
 				<View style={{ marginHorizontal: 16, marginVertical: 32 }}>
-					{/* <Headline>{i18n.t('headline 1')}</Headline>
-					<Paragraph>
-						{i18n.t(
-							'pragraph1\npragraph1\npragraph1\npragraph1\npragraph1\npragraph1\npragraph1\npragraph1\npragraph1',
-						)}
-					</Paragraph>
-					<Paragraph>
-						{i18n.t(
-							'pragraph2\npragraph2\npragraph2\npragraph2\npragraph2\npragraph2\npragraph2\npragraph2\npragraph2',
-						)}
-					</Paragraph> */}
 					<Text style={{ fontSize: 30, fontFamily: 'sans-serif-medium', marginHorizontal: 10 }}>
 						{i18n.t('あなたの旅行もっと「楽に」素晴らしい「思い出」に')}
 					</Text>
