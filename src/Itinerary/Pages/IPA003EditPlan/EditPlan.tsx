@@ -1,7 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MediaTypeOptions } from 'expo-image-picker';
 import { setDoc } from 'firebase/firestore';
-import { useContext, useMemo } from 'react';
 import { ActivityIndicator, Button, Image, ScrollView, View } from 'react-native';
 import { Chip, Searchbar, Text, TextInput } from 'react-native-paper';
 
@@ -14,25 +13,13 @@ import { CCO004DurationPicker } from '@/Common/Components/CCO004DurationPicker';
 import { CCO006ImagePicker } from '@/Common/Components/CCO006ImagePicker/ImagePicker';
 import i18n from '@/Common/Hooks/i18n-js';
 import { storage } from '@/Itinerary/Endpoint/firebaseStorage';
-import { ICT021PlanGroupsList } from '@/Itinerary/Models/IDB02PlanGroups/Contexts/ICT021PlanGroupsList';
-import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap';
 import { PCO002GooglePlacesAutocomplete } from '@/Place/Components/PCO002GooglePlacesAutocomplete';
 import { PMC01202PlaceInformation } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/ModelComponents/PMC01202PlaceInformation/PlaceInformation';
 
 export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<BottomTabParamList, 'EditPlan'>) => {
-	const { PlanGroupsIndex, planID } = route.params;
-
-	const { plansDocSnapMap } = useContext(ICT031PlansMap);
-	const { planGroupsQSnap } = useContext(ICT021PlanGroupsList);
-	const planGroupDocSnap = useMemo(
-		() => (PlanGroupsIndex != null ? planGroupsQSnap?.docs[PlanGroupsIndex] : undefined),
-		[PlanGroupsIndex, planGroupsQSnap],
-	);
-	const planGroup = useMemo(() => planGroupDocSnap?.data(), [planGroupDocSnap]);
-
-	const planDocSnap = useMemo(() => (planID ? plansDocSnapMap[planID] : undefined), [planID, plansDocSnapMap]);
-
 	const {
+		planGroup,
+		planDocSnap,
 		pagePlan,
 		isRepresentativePlan,
 		isNeedToShowActivityIndicator,

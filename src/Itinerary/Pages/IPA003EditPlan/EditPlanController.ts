@@ -17,14 +17,13 @@ export const IPA003EditPlanController = ({
 	route,
 	navigation,
 }: NativeStackScreenProps<BottomTabParamList, 'EditPlan'>) => {
-	const { itineraryID, PlanGroupsIndex, planID } = route.params;
-
+	const { itineraryID, planGroupID, planID } = route.params;
 	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
 	const { isPlansLoading, plansDocSnapMap } = useContext(ICT031PlansMap);
 	const { planGroupsQSnap } = useContext(ICT021PlanGroupsList);
 	const planGroupDocSnap = useMemo(
-		() => (PlanGroupsIndex != null ? planGroupsQSnap?.docs[PlanGroupsIndex] : undefined),
-		[PlanGroupsIndex, planGroupsQSnap],
+		() => planGroupsQSnap?.docs.find((doc) => doc.id === planGroupID),
+		[planGroupID, planGroupsQSnap],
 	);
 	const planGroup = useMemo(() => planGroupDocSnap?.data(), [planGroupDocSnap]);
 
@@ -63,14 +62,14 @@ export const IPA003EditPlanController = ({
 
 	// パラメータを監視し、不足があれば navigateToItineraryEdit する
 	useEffect(() => {
-		if (itineraryID === undefined || PlanGroupsIndex === undefined || planID === undefined) {
+		if (itineraryID === undefined || planGroupID === undefined || planID === undefined) {
 			// TODO: https://github.com/Ayato-kosaka/spelieve/issues/397 HelloSpelieve に遷移できない
 			navigation.navigate('Itinerary', {
 				screen: 'HelloSpelieve',
 				params: {},
 			});
 		}
-	}, [PlanGroupsIndex, itineraryID, navigateToItineraryEdit, navigation, planID, setItineraryID]);
+	}, [planGroupID, itineraryID, navigateToItineraryEdit, navigation, planID, setItineraryID]);
 
 	// plan.place_id を監視し、 Place Context にセットする
 	useEffect(() => {
@@ -216,6 +215,8 @@ export const IPA003EditPlanController = ({
 	}, [place]);
 
 	return {
+		planGroup,
+		planDocSnap,
 		pagePlan: pagePlan!,
 		isRepresentativePlan,
 		isNeedToShowActivityIndicator,
