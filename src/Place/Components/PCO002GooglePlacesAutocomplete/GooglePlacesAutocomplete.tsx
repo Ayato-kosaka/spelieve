@@ -1,6 +1,6 @@
 import { PlaceAutocompleteResult } from '@googlemaps/google-maps-services-js';
-import { ListRenderItemInfo, TouchableOpacity } from 'react-native';
-import { AutocompleteInput } from 'react-native-autocomplete-input';
+import { TouchableOpacity, View } from 'react-native';
+import { AutocompleteInput, AutocompleteProps } from 'react-native-autocomplete-input';
 import { Divider, Searchbar, Text } from 'react-native-paper';
 
 import { PCO002GooglePlacesAutocompleteController } from './GooglePlacesAutocompleteController';
@@ -27,16 +27,16 @@ export const PCO002GooglePlacesAutocomplete = ({
 			data={placesResult}
 			value={searchInput}
 			onChangeText={onChangeInput}
-			flatListProps={{
-				renderItem: ({ item }: ListRenderItemInfo<PlaceAutocompleteResult>) => (
-					<>
+			renderResultList={({ data }: AutocompleteProps<PlaceAutocompleteResult>) =>
+				data.map((item) => (
+					<View key={item.place_id}>
 						<TouchableOpacity onPress={() => onPressAutocomplete(item)}>
 							<Text style={styles.renderItemText}>{item.description}</Text>
 						</TouchableOpacity>
 						<Divider />
-					</>
-				),
-			}}
+					</View>
+				))
+			}
 			listContainerStyle={{ backgroundColor: '#fff' }}
 			inputContainerStyle={inputContainerStyle}
 			renderTextInput={(props) => (
