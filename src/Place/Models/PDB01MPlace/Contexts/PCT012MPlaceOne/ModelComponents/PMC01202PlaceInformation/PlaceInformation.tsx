@@ -114,7 +114,7 @@ export const PMC01202PlaceInformation = () => {
 					</View>
 				))}
 			</View>
-			{place.mapUrl && (
+			{place.mapUrl && place.photoUrls.length > 0 && (
 				<Text
 					style={styles.urlLink}
 					onPress={() => {
