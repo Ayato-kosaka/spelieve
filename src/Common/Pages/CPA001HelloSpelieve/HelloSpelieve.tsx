@@ -30,7 +30,12 @@ export const CPA001HelloSpelieve = ({
 		<>
 			<SafeAreaView />
 			<ScrollView>
-				<Image source={require('@assets/adaptive-icon.png')} style={{ width: '100%', height: 300 }} resizeMode='contain' />
+				<Image
+					// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
+					source={require('@assets/adaptive-icon.png')}
+					style={{ width: '100%', height: 300 }}
+					resizeMode="contain"
+				/>
 				<View style={{ marginHorizontal: 16, marginVertical: 32 }}>
 					{/* <Headline>{i18n.t('headline 1')}</Headline>
 					<Paragraph>
@@ -43,7 +48,7 @@ export const CPA001HelloSpelieve = ({
 							'pragraph2\npragraph2\npragraph2\npragraph2\npragraph2\npragraph2\npragraph2\npragraph2\npragraph2',
 						)}
 					</Paragraph> */}
-					<Text style={{ fontSize: 30, fontFamily: 'sans-serif-medium', marginHorizontal: 10}}>
+					<Text style={{ fontSize: 30, fontFamily: 'sans-serif-medium', marginHorizontal: 10 }}>
 						{i18n.t('あなたの旅行もっと「楽に」素晴らしい「思い出」に')}
 					</Text>
 					<Button
@@ -61,24 +66,65 @@ export const CPA001HelloSpelieve = ({
 						}>
 						{i18n.t('新しく始める')}
 					</Button>
-					<Image source={require('@assets/sol.png')} style={{ width: '100%', height: 200 }} resizeMode='contain' />
+					<Image
+						// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
+						source={require('@assets/sol.png')}
+						style={{ width: '100%', height: 200 }}
+						resizeMode="contain"
+					/>
 					<View style={{ flex: 1, width: '100%' }}>
 						<View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', marginVertical: 10 }}>
-							<View style={{ backgroundColor: '#dcdcdc', flex: 0.5, alignItems: 'center', justifyContent: 'center', height: 150, marginHorizontal: 12, borderRadius: 10 }}>
+							<View
+								style={{
+									backgroundColor: '#dcdcdc',
+									flex: 0.5,
+									alignItems: 'center',
+									justifyContent: 'center',
+									height: 150,
+									marginHorizontal: 12,
+									borderRadius: 10,
+								}}>
 								<Text>{i18n.t('特徴1')}</Text>
 								<Text style={{ fontSize: 24, fontFamily: 'sans-serif-medium' }}>{i18n.t('しおり簡単作成')}</Text>
 							</View>
-							<View style={{ backgroundColor: '#dcdcdc', flex: 0.5, alignItems: 'center', justifyContent: 'center', height: 150, marginHorizontal: 12, borderRadius: 10 }}>
+							<View
+								style={{
+									backgroundColor: '#dcdcdc',
+									flex: 0.5,
+									alignItems: 'center',
+									justifyContent: 'center',
+									height: 150,
+									marginHorizontal: 12,
+									borderRadius: 10,
+								}}>
 								<Text>{i18n.t('特徴2')}</Text>
 								<Text style={{ fontSize: 24, fontFamily: 'sans-serif-medium' }}>{i18n.t('移動時間自動計算')}</Text>
 							</View>
 						</View>
 						<View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', marginVertical: 10 }}>
-							<View style={{ backgroundColor: '#dcdcdc', flex: 0.5, alignItems: 'center', justifyContent: 'center', height: 150, marginHorizontal: 12, borderRadius: 10 }}>
+							<View
+								style={{
+									backgroundColor: '#dcdcdc',
+									flex: 0.5,
+									alignItems: 'center',
+									justifyContent: 'center',
+									height: 150,
+									marginHorizontal: 12,
+									borderRadius: 10,
+								}}>
 								<Text>{i18n.t('特徴3')}</Text>
 								<Text style={{ fontSize: 24, fontFamily: 'sans-serif-medium' }}>{i18n.t('マップ検索')}</Text>
 							</View>
-							<View style={{ backgroundColor: '#dcdcdc', flex: 0.5, alignItems: 'center', justifyContent: 'center', height: 150, marginHorizontal: 12, borderRadius: 10 }}>
+							<View
+								style={{
+									backgroundColor: '#dcdcdc',
+									flex: 0.5,
+									alignItems: 'center',
+									justifyContent: 'center',
+									height: 150,
+									marginHorizontal: 12,
+									borderRadius: 10,
+								}}>
 								<Text>{i18n.t('特徴4')}</Text>
 								<Text style={{ fontSize: 24, fontFamily: 'sans-serif-medium' }}>{i18n.t('思い出化')}</Text>
 							</View>
