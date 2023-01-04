@@ -44,7 +44,7 @@ export const CPA001HelloSpelieve = ({
 						)}
 					</Paragraph> */}
 					<Text style={{ fontSize: 30, fontFamily: 'sans-serif-medium', marginHorizontal: 10}}>
-						{i18n.t('あなたの旅行\n もっと「楽に」\n  素晴らしい「思い出」に')}
+						{i18n.t('あなたの旅行もっと「楽に」素晴らしい「思い出」に')}
 					</Text>
 					<Button
 						mode="contained"
@@ -69,7 +69,7 @@ export const CPA001HelloSpelieve = ({
 							</View>
 							<View style={{ backgroundColor: '#dcdcdc', flex: 0.5, alignItems: 'center', justifyContent: 'center', height: 150, marginHorizontal: 12, borderRadius: 10 }}>
 								<Text>{i18n.t('特徴2')}</Text>
-								<Text style={{ fontSize: 24, fontFamily: 'sans-serif-medium' }}>{i18n.t('移動時間\n自動計算')}</Text>
+								<Text style={{ fontSize: 24, fontFamily: 'sans-serif-medium' }}>{i18n.t('移動時間自動計算')}</Text>
 							</View>
 						</View>
 						<View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', marginVertical: 10 }}>
