@@ -28,7 +28,7 @@ export const CCO006ImagePicker = ({
 			<MaterialCommunityIcons
 				name="camera-outline"
 				size={100}
-				color="rgba(0,0,0,0.25)"
+				color="rgba(0,0,0,0.5)"
 				style={styles.materialCommunityIcons}
 			/>
 			{children}
