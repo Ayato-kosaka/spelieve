@@ -1,8 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
-import { Linking, Pressable, SafeAreaView, View } from 'react-native';
+import { Linking, Pressable, SafeAreaView, View, Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Headline, Subheading, Text, Button } from 'react-native-paper';
+import { Headline, Subheading, Text, Button, Title } from 'react-native-paper';
 
 import { RecentItinerariesInterface, getRecentItineraries } from './HelloSpelieveRecentItineraryHook';
 
@@ -30,18 +30,10 @@ export const CPA001HelloSpelieve = ({
 		<>
 			<SafeAreaView />
 			<ScrollView>
+				{/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require */}
+				<Image source={require('@assets/adaptive-icon.png')} style={{ paddingTop: '60%', width: '100%' }} resizeMode="contain" />
 				<View style={{ marginHorizontal: 16, marginVertical: 32 }}>
-					{/* <Headline>{i18n.t('headline 1')}</Headline>
-					<Paragraph>
-						{i18n.t(
-							'pragraph1\npragraph1\npragraph1\npragraph1\npragraph1\npragraph1\npragraph1\npragraph1\npragraph1',
-						)}
-					</Paragraph>
-					<Paragraph>
-						{i18n.t(
-							'pragraph2\npragraph2\npragraph2\npragraph2\npragraph2\npragraph2\npragraph2\npragraph2\npragraph2',
-						)}
-					</Paragraph> */}
+					<Headline>{i18n.t('あなたの旅行もっと「楽」に\n素晴らしい「思い出」に')}</Headline>
 					<Button
 						mode="contained"
 						labelStyle={{ color: 'white', fontSize: 16 }}
@@ -57,6 +49,70 @@ export const CPA001HelloSpelieve = ({
 						}>
 						{i18n.t('新しく始める')}
 					</Button>
+					<Image
+						// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
+						source={require('@assets/sol.png')}
+						style={{ width: '100%', height: 200 }}
+						resizeMode="contain"
+					/>
+					<View style={{ flex: 1, width: '100%' }}>
+						<View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', marginVertical: 10 }}>
+							<View
+								style={{
+									backgroundColor: materialColors.grey[200],
+									flex: 0.5,
+									alignItems: 'center',
+									justifyContent: 'center',
+									height: 150,
+									marginHorizontal: 12,
+									borderRadius: 10,
+								}}>
+								<Text>{i18n.t('特徴1')}</Text>
+								<Title>{i18n.t('しおり簡単作成')}</Title>
+							</View>
+							<View
+								style={{
+									backgroundColor: materialColors.grey[200],
+									flex: 0.5,
+									alignItems: 'center',
+									justifyContent: 'center',
+									height: 150,
+									marginHorizontal: 12,
+									borderRadius: 10,
+								}}>
+								<Text>{i18n.t('特徴2')}</Text>
+								<Title>{i18n.t('移動時間\n自動計算')}</Title>
+							</View>
+						</View>
+						<View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', marginVertical: 10 }}>
+							<View
+								style={{
+									backgroundColor: materialColors.grey[200],
+									flex: 0.5,
+									alignItems: 'center',
+									justifyContent: 'center',
+									height: 150,
+									marginHorizontal: 12,
+									borderRadius: 10,
+								}}>
+								<Text>{i18n.t('特徴3')}</Text>
+								<Title>{i18n.t('マップ検索')}</Title>
+							</View>
+							<View
+								style={{
+									backgroundColor: materialColors.grey[200],
+									flex: 0.5,
+									alignItems: 'center',
+									justifyContent: 'center',
+									height: 150,
+									marginHorizontal: 12,
+									borderRadius: 10,
+								}}>
+								<Text>{i18n.t('特徴4')}</Text>
+								<Title>{i18n.t('思い出化')}</Title>
+							</View>
+						</View>
+					</View>
 					{recentItineraries && recentItineraries.length > 0 && (
 						<View style={{ marginVertical: 64 }}>
 							<Headline style={{ textAlign: 'center' }}>{i18n.t('最近作成した旅行プラン')}</Headline>
