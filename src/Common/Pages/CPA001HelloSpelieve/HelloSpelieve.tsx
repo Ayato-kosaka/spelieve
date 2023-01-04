@@ -33,7 +33,7 @@ export const CPA001HelloSpelieve = ({
 				{/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require */}
 				<Image source={require('@assets/adaptive-icon.png')} style={{ paddingTop: '60%' }} resizeMode="contain" />
 				<View style={{ marginHorizontal: 16, marginVertical: 32 }}>
-					<Headline>{i18n.t('あなたの旅行もっと「楽に」素晴らしい「思い出」に')}</Headline>
+					<Headline>{i18n.t('あなたの旅行もっと「楽」に\n素晴らしい「思い出」に')}</Headline>
 					<Button
 						mode="contained"
 						labelStyle={{ color: 'white', fontSize: 16 }}
@@ -75,7 +75,7 @@ export const CPA001HelloSpelieve = ({
 									borderRadius: 10,
 								}}>
 								<Text>{i18n.t('特徴2')}</Text>
-								<Title>{i18n.t('移動時間自動計算')}</Title>
+								<Title>{i18n.t('移動時間\n自動計算')}</Title>
 							</View>
 						</View>
 						<View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', marginVertical: 10 }}>
