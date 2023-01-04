@@ -41,4 +41,4 @@ Add any other context about the problem here.
 ## How to fix (どのようにして解決したか)
 
 ## Roll Out
-多機能への影響範囲と対応計画を記載する
+他機能への影響範囲と対応計画を記載する
