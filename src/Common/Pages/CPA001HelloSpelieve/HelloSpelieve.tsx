@@ -52,7 +52,7 @@ export const CPA001HelloSpelieve = ({
 						<View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', marginVertical: 10 }}>
 							<View
 								style={{
-									backgroundColor: '#dcdcdc',
+									backgroundColor: materialColors.grey[200],
 									flex: 0.5,
 									alignItems: 'center',
 									justifyContent: 'center',
@@ -65,7 +65,7 @@ export const CPA001HelloSpelieve = ({
 							</View>
 							<View
 								style={{
-									backgroundColor: '#dcdcdc',
+									backgroundColor: materialColors.grey[200],
 									flex: 0.5,
 									alignItems: 'center',
 									justifyContent: 'center',
@@ -80,7 +80,7 @@ export const CPA001HelloSpelieve = ({
 						<View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', marginVertical: 10 }}>
 							<View
 								style={{
-									backgroundColor: '#dcdcdc',
+									backgroundColor: materialColors.grey[200],
 									flex: 0.5,
 									alignItems: 'center',
 									justifyContent: 'center',
@@ -93,7 +93,7 @@ export const CPA001HelloSpelieve = ({
 							</View>
 							<View
 								style={{
-									backgroundColor: '#dcdcdc',
+									backgroundColor: materialColors.grey[200],
 									flex: 0.5,
 									alignItems: 'center',
 									justifyContent: 'center',
