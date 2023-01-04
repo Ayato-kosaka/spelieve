@@ -16,7 +16,7 @@ import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlac
 export const IPA003EditPlanController = ({
 	route,
 	navigation,
-}: NativeStackScreenProps<BottomTabParamList, 'IPA003EditPlan'>) => {
+}: NativeStackScreenProps<BottomTabParamList, 'EditPlan'>) => {
 	const { itineraryID, PlanGroupsIndex, planID } = route.params;
 
 	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
@@ -54,7 +54,7 @@ export const IPA003EditPlanController = ({
 
 	const navigateToItineraryEdit = useCallback(() => {
 		navigation.navigate('Itinerary', {
-			screen: 'IPA001ItineraryEdit',
+			screen: 'ItineraryEdit',
 			params: {
 				itineraryID,
 			},

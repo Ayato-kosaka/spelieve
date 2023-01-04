@@ -48,9 +48,9 @@ export const CPA001HelloSpelieve = ({
 						style={{ marginVertical: 32, paddingVertical: 8 }}
 						onPress={() =>
 							navigation.navigate('Itinerary', {
-								screen: 'ItineraryTopTabNavigator',
+								screen: 'TopTab',
 								params: {
-									screen: 'IPA001ItineraryEdit',
+									screen: 'ItineraryEdit',
 									params: { itineraryID: undefined },
 								},
 							})
@@ -66,9 +66,9 @@ export const CPA001HelloSpelieve = ({
 										key={recentItinerary.itineraryID}
 										onPress={() => {
 											navigation.navigate('Itinerary', {
-												screen: 'ItineraryTopTabNavigator',
+												screen: 'TopTab',
 												params: {
-													screen: 'IPA001ItineraryEdit',
+													screen: 'ItineraryEdit',
 													params: {
 														itineraryID: recentItinerary.itineraryID,
 													},
@@ -130,9 +130,9 @@ export const CPA001HelloSpelieve = ({
 						mode="contained"
 						onPress={() =>
 							navigation.navigate('Itinerary', {
-								screen: 'ItineraryTopTabNavigator',
+								screen: 'TopTab',
 								params: {
-									screen: 'IPA001ItineraryEdit',
+									screen: 'ItineraryEdit',
 									params: {
 										itineraryID: 'uMFhF6OQph2UUuKEsKNa',
 									},

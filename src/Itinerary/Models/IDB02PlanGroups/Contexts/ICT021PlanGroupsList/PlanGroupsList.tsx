@@ -30,7 +30,8 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 						...data,
 						dayNumber: Math.floor(
 							(data.representativeStartDateTime.getTime() - (itineraryDocSnap.data()?.startDate?.getTime() || 0)) /
-								(1000 * 60 * 60 * 24),
+								(1000 * 60 * 60 * 24) +
+								1,
 						),
 					}),
 					(data) => ({

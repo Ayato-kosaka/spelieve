@@ -19,7 +19,7 @@ import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031Pla
 import { PCO002GooglePlacesAutocomplete } from '@/Place/Components/PCO002GooglePlacesAutocomplete';
 import { PMC01202PlaceInformation } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/ModelComponents/PMC01202PlaceInformation/PlaceInformation';
 
-export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<BottomTabParamList, 'IPA003EditPlan'>) => {
+export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<BottomTabParamList, 'EditPlan'>) => {
 	const { PlanGroupsIndex, planID } = route.params;
 
 	const { plansDocSnapMap } = useContext(ICT031PlansMap);
