@@ -30,6 +30,7 @@ export const CPA001HelloSpelieve = ({
 		<>
 			<SafeAreaView />
 			<ScrollView>
+				{/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require */}
 				<Image source={require('@assets/adaptive-icon.png')} style={{ height: 300 }} resizeMode="contain" />
 				<View style={{ marginHorizontal: 16, marginVertical: 32 }}>
 					<Headline>{i18n.t('あなたの旅行もっと「楽に」素晴らしい「思い出」に')}</Headline>
