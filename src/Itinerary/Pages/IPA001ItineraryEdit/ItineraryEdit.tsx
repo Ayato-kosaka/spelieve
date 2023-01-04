@@ -23,7 +23,7 @@ export const IPA001ItineraryEdit = ({
 	const { isPlansLoading } = useContext(ICT031PlansMap);
 	const { planGroupsQSnap, createPlanGroup } = useContext(ICT021PlanGroupsList);
 
-	const { createItinerary } = IPA001ItineraryEditController({
+	IPA001ItineraryEditController({
 		route,
 		navigation,
 	});

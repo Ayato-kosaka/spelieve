@@ -31,7 +31,7 @@ export const IPA003EditPlanController = ({
 	const plan = useMemo(() => (planDocSnap ? planDocSnap.data() : undefined), [planDocSnap]);
 
 	const { setPlaceID, place } = useContext(PCT012MPlaceOne);
-	const prevPlacetRef = useRef<typeof place>(undefined);
+	const prevPlaceRef = useRef<typeof place>(undefined);
 
 	const [pagePlan, setPagePlan] = useState<PlansMapInterface | undefined>(undefined);
 	const [tagSearchText, setTagSearchText] = useState<string>('');
@@ -95,7 +95,7 @@ export const IPA003EditPlanController = ({
 
 	// place.name を監視し、plan.title を更新する
 	useEffect(() => {
-		if (!!place && place.name !== plan?.title && planDocSnap && prevPlacetRef.current) {
+		if (!!place && place.name !== plan?.title && planDocSnap && (!plan?.title || prevPlaceRef.current)) {
 			// eslint-disable-next-line @typescript-eslint/no-floating-promises
 			setDoc(planDocSnap.ref, { title: place.name }, { merge: true });
 		}
@@ -104,7 +104,7 @@ export const IPA003EditPlanController = ({
 
 	// place.imageUrl を監視し、plan.imageUrl を更新する
 	useEffect(() => {
-		if (!!place && place.imageUrl !== plan?.imageUrl && planDocSnap && prevPlacetRef.current) {
+		if (!!place && place.imageUrl !== plan?.imageUrl && planDocSnap && (!plan?.imageUrl || prevPlaceRef.current)) {
 			// eslint-disable-next-line @typescript-eslint/no-floating-promises
 			setDoc(planDocSnap.ref, { imageUrl: place.imageUrl }, { merge: true });
 		}
@@ -211,7 +211,9 @@ export const IPA003EditPlanController = ({
 
 	// prevPlace を更新する
 	useEffect(() => {
-		prevPlacetRef.current = place;
+		if (place !== undefined) {
+			prevPlaceRef.current = place;
+		}
 	}, [place]);
 
 	return {

@@ -22,6 +22,7 @@ export const styles = StyleSheet.create({
 	startDateTimePicker: { backgroundColor: '#fff' },
 	captionTextInput: {
 		height: 400,
+		marginBottom: 400,
 		backgroundColor: '#fff',
 	},
 });

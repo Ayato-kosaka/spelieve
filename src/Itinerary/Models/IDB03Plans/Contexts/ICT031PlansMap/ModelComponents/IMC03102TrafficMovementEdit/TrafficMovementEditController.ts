@@ -149,7 +149,7 @@ export const IMC03102TrafficMovementEditController = ({
 		plan.transitRoutingPreference,
 	]);
 
-	const cleatTransportationTime = useCallback(() => {
+	const clearTransportationTime = useCallback(() => {
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		setDoc(planDocSnap.ref, {
 			...plan,
@@ -159,17 +159,17 @@ export const IMC03102TrafficMovementEditController = ({
 		});
 	}, [plan, planDocSnap.ref]);
 
-	// transportationMode を監視し、予定間の移動時間を再計算する
+	// transportationMode, transitModes, transitRoutingPreference, avoid を監視し、予定間の移動時間を再計算する
 	// transportationMode が undefined であれば、予定間の移動時間を初期化する
 	useEffect(() => {
 		if (isPlanGroupMounted && plan.transportationMode) {
 			// eslint-disable-next-line @typescript-eslint/no-floating-promises
 			calculateDirection();
 		} else if (isPlanGroupMounted && !plan.transportationMode) {
-			cleatTransportationTime();
+			clearTransportationTime();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [plan.transportationMode]);
+	}, [plan.transportationMode, plan.transitModes.toString(), plan.transitRoutingPreference, plan.avoid.toString()]);
 
 	// 自分の予定の place_id を監視し、予定間の移動時間を再計算する
 	// place_id が undefined であれば、予定間の移動時間を初期化する
@@ -178,7 +178,7 @@ export const IMC03102TrafficMovementEditController = ({
 			// eslint-disable-next-line @typescript-eslint/no-floating-promises
 			calculateDirection();
 		} else if (isPlanGroupMounted && !plan.place_id) {
-			cleatTransportationTime();
+			clearTransportationTime();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [plan.place_id]);
@@ -190,7 +190,7 @@ export const IMC03102TrafficMovementEditController = ({
 			// eslint-disable-next-line @typescript-eslint/no-floating-promises
 			calculateDirection();
 		} else if (isPlanGroupMounted && !nextPlan?.place_id) {
-			cleatTransportationTime();
+			clearTransportationTime();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [nextPlan?.place_id]);

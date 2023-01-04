@@ -24,6 +24,7 @@ export const PPA002PlaceController = ({ place_id }: PlacePropsInterface): PlaceC
 					itineraryID: undefined,
 					place_id,
 					placeName: place?.name,
+					placeImage: place?.imageUrl,
 				},
 			},
 		});

@@ -1,6 +1,6 @@
-import { useContext } from 'react';
+import { useContext, useState, useCallback } from 'react';
 import { Linking, View, Image } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Headline, List, Text } from 'react-native-paper';
 import { Rating } from 'react-native-ratings';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -9,9 +9,22 @@ import { PCT012MPlaceOne } from '../../MPlaceOne';
 import { styles } from './PlaceInformationStyle';
 
 import i18n from '@/Common/Hooks/i18n-js';
+import { materialColors, secondaryColorNm } from '@/ThemeProvider';
 
 export const PMC01202PlaceInformation = () => {
 	const { place } = useContext(PCT012MPlaceOne);
+	const [expanded, setExpanded] = useState<boolean>(false);
+	const openingHourLeft = useCallback(
+		() => (
+			<MaterialCommunityIcons
+				name="clock-time-three-outline"
+				size={22}
+				color={materialColors[secondaryColorNm].a400}
+				style={styles.materialCommunityIcons}
+			/>
+		),
+		[],
+	);
 
 	if (!place) {
 		return <View />;
@@ -19,23 +32,41 @@ export const PMC01202PlaceInformation = () => {
 
 	return (
 		<View>
-			<MaterialCommunityIcons name="google-maps" size={20}>
+			<View style={styles.infoContainer}>
+				<MaterialCommunityIcons
+					name="google-maps"
+					size={22}
+					color={materialColors[secondaryColorNm].a400}
+					style={styles.materialCommunityIcons}
+				/>
 				<Text style={styles.infoText}>{place.formatted_address}</Text>
-			</MaterialCommunityIcons>
+			</View>
 			{place.website && (
-				<MaterialCommunityIcons name="web" size={20}>
+				<View style={styles.infoContainer}>
+					<MaterialCommunityIcons
+						name="web"
+						size={22}
+						color={materialColors[secondaryColorNm].a400}
+						style={styles.materialCommunityIcons}
+					/>
 					<Text
-						style={styles.urlLink}
+						style={styles.infoText}
 						onPress={() => {
 							// eslint-disable-next-line @typescript-eslint/no-floating-promises
 							Linking.openURL(place.website!);
 						}}>
 						{place.website}
 					</Text>
-				</MaterialCommunityIcons>
+				</View>
 			)}
 			{place.formatted_phone_number && (
-				<MaterialCommunityIcons name="phone-in-talk" size={20}>
+				<View style={styles.infoContainer}>
+					<MaterialCommunityIcons
+						name="phone-in-talk"
+						size={22}
+						color={materialColors[secondaryColorNm].a400}
+						style={styles.materialCommunityIcons}
+					/>
 					<Text
 						style={styles.infoText}
 						onPress={() => {
@@ -44,26 +75,28 @@ export const PMC01202PlaceInformation = () => {
 						}}>
 						{place.formatted_phone_number}
 					</Text>
-				</MaterialCommunityIcons>
+				</View>
 			)}
-			<View>
-				<MaterialCommunityIcons name="clock-time-three-outline" size={20}>
-					<Text style={styles.infoText}>{i18n.t('Opening Hours')}</Text>
-				</MaterialCommunityIcons>
+
+			<List.Accordion
+				title={i18n.t('Opening Hours')}
+				style={styles.infoContainer}
+				titleStyle={{ color: 'black' }}
+				left={openingHourLeft}
+				expanded={expanded}
+				onPress={() => setExpanded(!expanded)}>
 				{Array.isArray(place.openingHours) ? (
 					place.openingHours.map(([day, time]) => (
-						<View key={`${day}${time}`}>
-							<Text style={styles.infoText}>
-								{day} {time}
-							</Text>
-						</View>
+						<Text key={`${day}${time}`} style={styles.openingHourText}>
+							{day} {time}
+						</Text>
 					))
 				) : (
-					<Text style={styles.infoText}>{place.openingHours}</Text>
+					<Text style={styles.openingHourText}>{place.openingHours}</Text>
 				)}
-			</View>
-			<View>
-				<Text style={styles.infoText}>{i18n.t('Customer Reviews')}</Text>
+			</List.Accordion>
+			<View style={styles.ratingContainer}>
+				<Headline>{i18n.t('Customer Reviews')}</Headline>
 				<Rating type="star" readonly jumpValue={0.1} startingValue={place.rating} />
 				<Text
 					style={styles.urlLink}
@@ -74,23 +107,23 @@ export const PMC01202PlaceInformation = () => {
 					{i18n.t('Show more Info at Google Map')}
 				</Text>
 			</View>
-			<View>
+			<View style={styles.imageListContainer}>
 				{place.photoUrls.map((photoUrl) => (
-					<View key={photoUrl}>
-						<Image source={{ uri: photoUrl }} style={styles.imagelist} />
+					<View key={photoUrl} style={styles.imageContainer}>
+						<Image source={{ uri: photoUrl }} style={styles.imageItem} />
 					</View>
 				))}
-				{place.mapUrl && (
-					<Text
-						style={styles.urlLink}
-						onPress={() => {
-							// eslint-disable-next-line @typescript-eslint/no-floating-promises
-							Linking.openURL(`${place.mapUrl!}`);
-						}}>
-						{i18n.t('Show more')}
-					</Text>
-				)}
 			</View>
+			{place.mapUrl && place.photoUrls.length > 0 && (
+				<Text
+					style={styles.urlLink}
+					onPress={() => {
+						// eslint-disable-next-line @typescript-eslint/no-floating-promises
+						Linking.openURL(`${place.mapUrl!}`);
+					}}>
+					{i18n.t('Show more Info at Google Map')}
+				</Text>
+			)}
 		</View>
 	);
 };

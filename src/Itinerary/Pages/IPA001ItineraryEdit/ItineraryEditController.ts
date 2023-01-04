@@ -17,7 +17,7 @@ export const IPA001ItineraryEditController = ({
 	const { plansCRef } = useContext(ICT031PlansMap);
 
 	// eslint-disable-next-line @typescript-eslint/naming-convention
-	const { itineraryID, place_id, placeName } = route.params;
+	const { itineraryID, place_id, placeName, placeImage } = route.params;
 
 	const createItinerary = useCallback(async () => {
 		if (itineraryCRef) {
@@ -50,9 +50,10 @@ export const IPA001ItineraryEditController = ({
 			createPlanGroup({
 				title: placeName || '',
 				place_id,
+				imageUrl: placeImage,
 			});
 		}
-	}, [createPlanGroup, placeName, place_id, planGroupsQSnap?.empty]);
+	}, [createPlanGroup, placeImage, placeName, place_id, planGroupsQSnap?.empty]);
 
 	return {
 		createItinerary,
