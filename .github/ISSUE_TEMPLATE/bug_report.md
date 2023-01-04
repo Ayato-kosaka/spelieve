@@ -31,3 +31,14 @@ If applicable, add screenshots to help explain your problem.
 
 ## Additional context
 Add any other context about the problem here.
+
+
+
+----------------------------------------------------------------------
+# Solution result
+## Cause (バグの原因)
+
+## How to fix (どのようにして解決したか)
+
+## Roll Out
+多機能への影響範囲と対応計画を記載する
