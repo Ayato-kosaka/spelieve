@@ -1,8 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MediaTypeOptions } from 'expo-image-picker';
 import { setDoc } from 'firebase/firestore';
-import { ActivityIndicator, Button, Image, ScrollView, View } from 'react-native';
-import { Chip, Searchbar, Text, TextInput } from 'react-native-paper';
+import { ActivityIndicator, Image, ScrollView, View } from 'react-native';
+import { Chip, Searchbar, Text, TextInput, Button } from 'react-native-paper';
 
 import { IPA003EditPlanController } from './EditPlanController';
 import { styles } from './EditPlanStyle';
@@ -129,7 +129,9 @@ export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<Bot
 					</View>
 				</View>
 			) : (
-				<Button title={i18n.t('Set this Plan to Representative one')} onPress={setPlanToRepresentativePlan} />
+				<Button mode="contained" onPress={setPlanToRepresentativePlan} labelStyle={styles.setRepresentativeButtonLabel}>
+					{i18n.t('Set this Plan to Representative one')}
+				</Button>
 			)}
 			<PMC01202PlaceInformation />
 		</ScrollView>

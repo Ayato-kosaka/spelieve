@@ -24,6 +24,7 @@ export const styles = StyleSheet.create({
 	},
 	representativeStartDateTimeLabel: { color: materialColors.grey[700] },
 	representativeStartDateTimePicker: { backgroundColor: '#fff' },
+	setRepresentativeButtonLabel: { color: 'white', fontSize: 16 },
 	captionTextInput: {
 		height: 400,
 		backgroundColor: '#fff',
