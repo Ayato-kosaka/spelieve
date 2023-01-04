@@ -30,7 +30,7 @@ export const CPA001HelloSpelieve = ({
 		<>
 			<SafeAreaView />
 			<ScrollView>
-				<Image source={require('@assets/adaptive-icon.png')} style={{ width: '100%', height: 300 }} />
+				<Image source={require('@assets/adaptive-icon.png')} style={{ width: '100%', height: 300 }} resizeMode='contain' />
 				<View style={{ marginHorizontal: 16, marginVertical: 32 }}>
 					{/* <Headline>{i18n.t('headline 1')}</Headline>
 					<Paragraph>
@@ -61,6 +61,7 @@ export const CPA001HelloSpelieve = ({
 						}>
 						{i18n.t('新しく始める')}
 					</Button>
+					<Image source={require('@assets/sol.png')} style={{ width: '100%', height: 200 }} resizeMode='contain' />
 					<View style={{ flex: 1, width: '100%' }}>
 						<View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', marginVertical: 10 }}>
 							<View style={{ backgroundColor: '#dcdcdc', flex: 0.5, alignItems: 'center', justifyContent: 'center', height: 150, marginHorizontal: 12, borderRadius: 10 }}>
