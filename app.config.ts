@@ -38,7 +38,7 @@ export default ({ config }: ConfigContext) => {
 						apiKey: process.env.GCP_API_KEY_ANDROID,
 					},
 				},
-				versionCode: 4,
+				versionCode: 4, // TODO: 毎submitで変更の必要あり
 				versionName: "2.0.0",
 				permissions: []
 			},
