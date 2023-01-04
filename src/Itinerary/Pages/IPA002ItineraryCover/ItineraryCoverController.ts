@@ -56,7 +56,7 @@ export function IPA002ItineraryCoverController({ itineraryID }: ItineraryCoverPr
 						planGroup.representativeStartDateTime,
 						['Hours', 'Minutes', 'Seconds'],
 					);
-					newRepresentativeStartDateTime.setDate(newRepresentativeStartDateTime.getDate() + planGroup.dayNumber);
+					newRepresentativeStartDateTime.setDate(newRepresentativeStartDateTime.getDate() + planGroup.dayNumber - 1);
 					await setDoc(
 						planGroupDoc.ref,
 						{ representativeStartDateTime: newRepresentativeStartDateTime },

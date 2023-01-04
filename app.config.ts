@@ -6,7 +6,7 @@ export default ({ config }: ConfigContext) => {
 			name: 'Spelieve ~旅のしおり簡単作成アプリ~',
 			owner: 'spelieve',
 			slug: 'Spelieve',
-			version: '1.0.0',
+			version: '2.0.0',
 			orientation: 'portrait',
 			icon: './assets/square-icon.png',
 			userInterfaceStyle: 'light',
@@ -38,6 +38,9 @@ export default ({ config }: ConfigContext) => {
 						apiKey: process.env.GCP_API_KEY_ANDROID,
 					},
 				},
+				versionCode: 4, // TODO: 毎submitで変更の必要あり
+				versionName: "2.0.0",
+				permissions: []
 			},
 			web: {
 				shortName: 'Spelieve',

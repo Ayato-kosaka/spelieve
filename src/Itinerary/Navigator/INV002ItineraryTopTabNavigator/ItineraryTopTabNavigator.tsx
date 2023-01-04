@@ -14,8 +14,8 @@ import { IPA001ItineraryEdit } from '@/Itinerary/Pages/IPA001ItineraryEdit';
 import { IPA004ItineraryPreview } from '@/Itinerary/Pages/IPA004ItineraryPreview';
 
 export type TopTabParamList = {
-	IPA001ItineraryEdit: ItineraryEditPropsInterface;
-	IPA004ItineraryPreview: ItineraryEditPropsInterface;
+	ItineraryEdit: ItineraryEditPropsInterface;
+	ItineraryPreview: ItineraryEditPropsInterface;
 };
 
 const Tab = createMaterialTopTabNavigator<TopTabParamList>();
@@ -23,7 +23,7 @@ const Tab = createMaterialTopTabNavigator<TopTabParamList>();
 export const INV002ItineraryTopTabNavigator = ({
 	route,
 	navigation,
-}: NativeStackScreenProps<BottomTabParamList, 'ItineraryTopTabNavigator'>) => {
+}: NativeStackScreenProps<BottomTabParamList, 'TopTab'>) => {
 	const { itinerary, onPressSetting } = INV002ItineraryTopTabNavigatorController({
 		route,
 		navigation,
@@ -49,15 +49,15 @@ export const INV002ItineraryTopTabNavigator = ({
 	}, [itinerary, headerRight, navigation]);
 
 	return (
-		<Tab.Navigator initialRouteName="IPA001ItineraryEdit">
+		<Tab.Navigator initialRouteName="ItineraryEdit">
 			<Tab.Screen
-				name="IPA001ItineraryEdit"
+				name="ItineraryEdit"
 				component={IPA001ItineraryEdit}
 				initialParams={{}}
 				options={{ title: i18n.t('Edit'), lazy: true }}
 			/>
 			<Tab.Screen
-				name="IPA004ItineraryPreview"
+				name="ItineraryPreview"
 				component={IPA004ItineraryPreview}
 				initialParams={{}}
 				options={{ title: i18n.t('Preview'), lazy: true }}

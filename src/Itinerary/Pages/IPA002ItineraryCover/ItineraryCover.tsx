@@ -15,7 +15,7 @@ import { storage } from '@/Itinerary/Endpoint/firebaseStorage';
 export const IPA002ItineraryCover = ({
 	route,
 	navigation,
-}: NativeStackScreenProps<BottomTabParamList, 'IPA002ItineraryCover'>) => {
+}: NativeStackScreenProps<BottomTabParamList, 'ItineraryCover'>) => {
 	const { itineraryID } = route.params;
 	const {
 		pageItinerary,
@@ -31,7 +31,7 @@ export const IPA002ItineraryCover = ({
 	} = IPA002ItineraryCoverController({ itineraryID });
 
 	if (shouldNavigate) {
-		navigation.navigate('Itinerary', { screen: 'IPA001ItineraryEdit', params: { itineraryID } });
+		navigation.navigate('Itinerary', { screen: 'ItineraryEdit', params: { itineraryID } });
 	}
 
 	if (isLoading || !pageItinerary) {

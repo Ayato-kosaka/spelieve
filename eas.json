@@ -10,15 +10,22 @@
     "preview": {
       "distribution": "internal"
     },
-    "production": {}
+    "production": {
+      "android": {
+        "credentialsSource": "remote"
+      }
+    }
   },
   "submit": {
     "production": {
       "ios": {
         "appleId": "taba.ayato@icloud.com",
-        "ascAppId": "1660453134",
-        "appleTeamId": "JC3HSJZJH5"
-        
+        "appleTeamId": "JC3HSJZJH5",
+        "ascAppId": "1660453134"
+      },
+      "android": {
+        "track": "production",
+        "releaseStatus": "completed"
       }
     }
   }

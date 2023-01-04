@@ -159,7 +159,7 @@ export const IMC03101PlanEditController = ({
 
 	const onPlanPress = useCallback(() => {
 		navigation.navigate('Itinerary', {
-			screen: 'IPA003EditPlan',
+			screen: 'EditPlan',
 			params: {
 				itineraryID: itineraryDocSnap?.id,
 				PlanGroupsIndex: planGroupsQSnap?.docs.findIndex((element) => element.id === planGroupsDoc.id),
