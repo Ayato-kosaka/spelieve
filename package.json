@@ -25,6 +25,7 @@
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.1",
     "expo": "47.0.9",
+    "expo-clipboard": "~4.0.1",
     "expo-dev-client": "~2.0.1",
     "expo-image-manipulator": "~11.0.0",
     "expo-image-picker": "~14.0.2",
@@ -51,8 +52,7 @@
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "0.18.10",
     "react-spring-bottom-sheet": "^3.4.1",
-    "spelieve-common": "^1.1.109",
-    "expo-clipboard": "~4.0.1"
+    "spelieve-common": "^1.1.112"
   },
   "devDependencies": {
     "@babel/core": "7.20.7",

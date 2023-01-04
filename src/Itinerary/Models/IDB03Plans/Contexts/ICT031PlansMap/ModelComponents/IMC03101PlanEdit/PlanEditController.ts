@@ -162,11 +162,11 @@ export const IMC03101PlanEditController = ({
 			screen: 'EditPlan',
 			params: {
 				itineraryID: itineraryDocSnap?.id,
-				PlanGroupsIndex: planGroupsQSnap?.docs.findIndex((element) => element.id === planGroupsDoc.id),
+				planGroupID: planGroupsDoc.id,
 				planID: planDocSnap.id,
 			},
 		});
-	}, [navigation, itineraryDocSnap?.id, planDocSnap.id, planGroupsDoc.id, planGroupsQSnap]);
+	}, [navigation, itineraryDocSnap?.id, planDocSnap.id, planGroupsDoc.id]);
 
 	return { deletePlan, onPlanPress };
 };
