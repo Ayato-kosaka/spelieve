@@ -3,7 +3,7 @@ import { I18n } from 'i18n-js';
 
 import en from './en';
 import ja from './ja';
-import Lang from './Lang';
+import Lang from './Lang.json';
 
 const i18n = new I18n({
 	ja,

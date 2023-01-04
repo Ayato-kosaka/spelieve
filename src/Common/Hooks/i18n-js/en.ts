@@ -1,9 +1,6 @@
-import { LangIf } from './LangIf';
+import Lang from './Lang.json';
 
-const en: LangIf = {
-	/** welcome */
-	welcome: 'welcome',
-
+const en: typeof Lang = {
 	// App.tsx
 	Itinerary: 'Itinerary',
 	Place: 'Place',
@@ -75,7 +72,6 @@ const en: LangIf = {
 	// PMC012202PlaceInformation.tsx
 	'Opening Hours': 'Opening Hours',
 	'Customer Reviews': 'Customer Reviews',
-	'Show more': 'Show more',
 	'Show more Info at Google Map': 'Show more Info at Google Map',
 
 	// PPA002Place
