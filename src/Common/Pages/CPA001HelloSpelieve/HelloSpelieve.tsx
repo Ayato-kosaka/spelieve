@@ -31,7 +31,7 @@ export const CPA001HelloSpelieve = ({
 			<SafeAreaView />
 			<ScrollView>
 				{/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require */}
-				<Image source={require('@assets/adaptive-icon.png')} style={{ paddingTop: '60%' }} resizeMode="contain" />
+				<Image source={require('@assets/adaptive-icon.png')} style={{ paddingTop: '60%', width: '100%' }} resizeMode="contain" />
 				<View style={{ marginHorizontal: 16, marginVertical: 32 }}>
 					<Headline>{i18n.t('あなたの旅行もっと「楽」に\n素晴らしい「思い出」に')}</Headline>
 					<Button
