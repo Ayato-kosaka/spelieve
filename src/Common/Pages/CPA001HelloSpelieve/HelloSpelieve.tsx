@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
 import { Linking, Pressable, SafeAreaView, View, Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Headline, Subheading, Text, Button } from 'react-native-paper';
+import { Headline, Subheading, Text, Button, Title } from 'react-native-paper';
 
 import { RecentItinerariesInterface, getRecentItineraries } from './HelloSpelieveRecentItineraryHook';
 
@@ -32,9 +32,7 @@ export const CPA001HelloSpelieve = ({
 			<ScrollView>
 				<Image source={require('@assets/adaptive-icon.png')} style={{ height: 300 }} resizeMode="contain" />
 				<View style={{ marginHorizontal: 16, marginVertical: 32 }}>
-					<Text style={{ fontSize: 30, fontFamily: 'sans-serif-medium', marginHorizontal: 10 }}>
-						{i18n.t('あなたの旅行もっと「楽に」素晴らしい「思い出」に')}
-					</Text>
+					<Headline>{i18n.t('あなたの旅行もっと「楽に」素晴らしい「思い出」に')}</Headline>
 					<Button
 						mode="contained"
 						labelStyle={{ color: 'white', fontSize: 16 }}
@@ -63,7 +61,7 @@ export const CPA001HelloSpelieve = ({
 									borderRadius: 10,
 								}}>
 								<Text>{i18n.t('特徴1')}</Text>
-								<Text style={{ fontSize: 24, fontFamily: 'sans-serif-medium' }}>{i18n.t('しおり簡単作成')}</Text>
+								<Title>{i18n.t('しおり簡単作成')}</Title>
 							</View>
 							<View
 								style={{
@@ -76,7 +74,7 @@ export const CPA001HelloSpelieve = ({
 									borderRadius: 10,
 								}}>
 								<Text>{i18n.t('特徴2')}</Text>
-								<Text style={{ fontSize: 24, fontFamily: 'sans-serif-medium' }}>{i18n.t('移動時間自動計算')}</Text>
+								<Title>{i18n.t('移動時間自動計算')}</Title>
 							</View>
 						</View>
 						<View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', marginVertical: 10 }}>
@@ -91,7 +89,7 @@ export const CPA001HelloSpelieve = ({
 									borderRadius: 10,
 								}}>
 								<Text>{i18n.t('特徴3')}</Text>
-								<Text style={{ fontSize: 24, fontFamily: 'sans-serif-medium' }}>{i18n.t('マップ検索')}</Text>
+								<Title>{i18n.t('マップ検索')}</Title>
 							</View>
 							<View
 								style={{
@@ -104,7 +102,7 @@ export const CPA001HelloSpelieve = ({
 									borderRadius: 10,
 								}}>
 								<Text>{i18n.t('特徴4')}</Text>
-								<Text style={{ fontSize: 24, fontFamily: 'sans-serif-medium' }}>{i18n.t('思い出化')}</Text>
+								<Title>{i18n.t('思い出化')}</Title>
 							</View>
 						</View>
 					</View>
