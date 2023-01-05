@@ -40,11 +40,11 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 	}
 
 	return (
-		<ScrollView>
+		<ScrollView style={{flex: 1}}>
+			<PMC01201GoogleMapPlaceOne style={styles.googleMap}/>
 			<View style={styles.container}>
-				<PMC01201GoogleMapPlaceOne />
 				<Image source={{ uri: place.imageUrl }} style={styles.image} />
-				<PMC01202PlaceInformation />
+				<PMC01202PlaceInformation style={styles.placeInfo}/>
 			</View>
 		</ScrollView>
 	);

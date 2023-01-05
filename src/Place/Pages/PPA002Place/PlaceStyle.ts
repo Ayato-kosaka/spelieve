@@ -1,12 +1,20 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-	container: {},
+	container: {
+		flex: 1,
+	},
+	googleMap: {
+		height: 240,
+	},
 	infoText: {
 		color: 'black',
 	},
 	image: {
-		height: 200,
 		width: '100%',
+		flex: 1
 	},
+	placeInfo: {
+		flex: 6
+	}
 });

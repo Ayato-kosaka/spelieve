@@ -11,7 +11,7 @@ import { styles } from './PlaceInformationStyle';
 import i18n from '@/Common/Hooks/i18n-js';
 import { materialColors, secondaryColorNm } from '@/ThemeProvider';
 
-export const PMC01202PlaceInformation = () => {
+export const PMC01202PlaceInformation = ( { style }) => {
 	const { place } = useContext(PCT012MPlaceOne);
 	const [expanded, setExpanded] = useState<boolean>(false);
 	const openingHourLeft = useCallback(
@@ -31,7 +31,7 @@ export const PMC01202PlaceInformation = () => {
 	}
 
 	return (
-		<View>
+		<View style={style}>
 			<View style={styles.infoContainer}>
 				<MaterialCommunityIcons
 					name="google-maps"
