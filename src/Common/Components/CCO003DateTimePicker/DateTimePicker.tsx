@@ -34,7 +34,7 @@ export const CCO003DateTimePicker = ({ ...props }: IOSNativeProps & AndroidNativ
 			onPress={onButtonPress}
 			style={{ textDecorationLine: 'underline', paddingHorizontal: 16, paddingVertical: 8 }}>
 			{props.mode === 'time'
-				? props.value.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', second:  })
+				? props.value.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
 				: props.value.toLocaleDateString(undefined, {
 						year: 'numeric',
 						month: '2-digit',
