@@ -62,7 +62,7 @@ export const IMC03102TrafficMovementEdit = ({
 				</View>
 				<View style={{ flex: 14, flexDirection: 'row' }}>
 					<View style={{ flex: 3 }}>
-						{plan.place_id && nextPlan?.place_id && (
+						{plan.place_id && nextPlan?.place_id && plan.transportationMode && (
 							<View>
 								<Text>
 									{plan.transportationDepartureTime
