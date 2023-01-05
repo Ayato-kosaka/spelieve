@@ -38,8 +38,8 @@ export default ({ config }: ConfigContext) => {
 						apiKey: process.env.GCP_API_KEY_ANDROID,
 					},
 				},
-				versionCode: 4, // TODO: 毎submitで変更の必要あり
-				permissions: []
+				versionCode: 5, // TODO: 毎submitで変更の必要あり
+				permissions: [],
 			},
 			web: {
 				shortName: 'Spelieve',

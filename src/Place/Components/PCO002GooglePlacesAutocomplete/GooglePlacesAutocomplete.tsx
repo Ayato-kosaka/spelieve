@@ -37,7 +37,7 @@ export const PCO002GooglePlacesAutocomplete = ({
 					</View>
 				))
 			}
-			listContainerStyle={{ backgroundColor: '#fff', zIndex: 10,elevation: Platform.OS === 'android' ? 10 : 0 }}
+			listContainerStyle={{ backgroundColor: '#fff', zIndex: 10, elevation: Platform.OS === 'android' ? 10 : 0 }}
 			inputContainerStyle={[inputContainerStyle, { zIndex: 10, elevation: Platform.OS === 'android' ? 10 : 0 }]}
 			renderTextInput={(props) => (
 				<Searchbar value={searchInput} onChangeText={onChangeInput} placeholder={placeholder} />
