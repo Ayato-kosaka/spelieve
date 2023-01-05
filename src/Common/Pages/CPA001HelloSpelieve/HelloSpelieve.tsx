@@ -149,7 +149,7 @@ export const CPA001HelloSpelieve = ({
 										</Subheading>
 										<Text>{recentItinerary.subTitle || i18n.t('no sub title')}</Text>
 										<Text style={{ color: materialColors.grey[700] }}>
-											{recentItinerary.updatedAt.toLocaleString('en-US', {
+											{recentItinerary.updatedAt.toLocaleDateString('en-US', {
 												year: 'numeric',
 												month: '2-digit',
 												day: '2-digit',

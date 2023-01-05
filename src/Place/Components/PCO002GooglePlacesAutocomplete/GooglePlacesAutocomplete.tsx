@@ -1,5 +1,5 @@
 import { PlaceAutocompleteResult } from '@googlemaps/google-maps-services-js';
-import { TouchableOpacity, View } from 'react-native';
+import { Platform, TouchableOpacity, View } from 'react-native';
 import { AutocompleteInput, AutocompleteProps } from 'react-native-autocomplete-input';
 import { Divider, Searchbar, Text } from 'react-native-paper';
 
@@ -37,8 +37,8 @@ export const PCO002GooglePlacesAutocomplete = ({
 					</View>
 				))
 			}
-			listContainerStyle={{ backgroundColor: '#fff' }}
-			inputContainerStyle={inputContainerStyle}
+			listContainerStyle={{ backgroundColor: '#fff', zIndex: 10,elevation: Platform.OS === 'android' ? 10 : 0 }}
+			inputContainerStyle={[inputContainerStyle, { zIndex: 10, elevation: Platform.OS === 'android' ? 10 : 0 }]}
 			renderTextInput={(props) => (
 				<Searchbar value={searchInput} onChangeText={onChangeInput} placeholder={placeholder} />
 			)}
