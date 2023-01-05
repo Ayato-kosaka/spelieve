@@ -9,8 +9,8 @@ import { RecentItinerariesInterface, getRecentItineraries } from './HelloSpeliev
 import { BottomTabParamList } from '@/App';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ENV } from '@/ENV';
-import { customColors, materialColors, paperTheme } from '@/ThemeProvider';
 import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001GooglePlaceAPI';
+import { customColors, materialColors, paperTheme } from '@/ThemeProvider';
 
 export const CPA001HelloSpelieve = ({
 	route,
@@ -55,8 +55,14 @@ export const CPA001HelloSpelieve = ({
 						{i18n.t('新しく始める')}
 					</Button>
 					<Image
-						// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
-						source={GooglePlaceLanguageTagFromIETFLanguageTag[i18n.locale] === 'ja' ? require('@assets/JP-sol.png') : require('@assets/EN-sol.png')}
+						source={
+							// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+							GooglePlaceLanguageTagFromIETFLanguageTag[i18n.locale] === 'ja'
+								? // eslint-disable-next-line global-require
+								  require('@assets/JP-sol.png')
+								: // eslint-disable-next-line global-require
+								  require('@assets/EN-sol.png')
+						}
 						style={{ width: '100%', height: 200 }}
 						resizeMode="contain"
 					/>
