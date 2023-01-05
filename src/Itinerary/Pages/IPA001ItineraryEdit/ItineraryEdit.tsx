@@ -49,7 +49,12 @@ export const IPA001ItineraryEdit = ({
 				prevDateNumber = planGroup.dayNumber;
 				return (
 					<View key={planGroupsDoc.id}>
-						{isAnotherDay && <Headline>{planGroup.dayNumber}日目</Headline>}
+						{isAnotherDay && (
+							<Headline>
+								{planGroup.dayNumber}
+								{i18n.t('日目')}
+							</Headline>
+						)}
 						<IMC03103PlanGroupsEdit planGroupsDoc={planGroupsDoc} />
 					</View>
 				);

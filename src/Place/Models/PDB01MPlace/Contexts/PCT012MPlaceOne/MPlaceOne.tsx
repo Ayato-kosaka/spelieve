@@ -53,13 +53,13 @@ export const PCT012MPlaceOneProvider = ({ children }: { children: ReactNode }) =
 							}
 
 							const days: { [key: number]: string } = {
-								0: 'Sunday',
-								1: 'Monday',
-								2: 'Tuesday',
-								3: 'Wednesday',
-								4: 'Thursday',
-								5: 'Friday',
-								6: 'Saturday',
+								0: i18n.t('Sunday'),
+								1: i18n.t('Monday'),
+								2: i18n.t('Tuesday'),
+								3: i18n.t('Wednesday'),
+								4: i18n.t('Thursday'),
+								5: i18n.t('Friday'),
+								6: i18n.t('Saturday'),
 							};
 							const changeTimeView = (time: string): string => {
 								// 1300->13:00

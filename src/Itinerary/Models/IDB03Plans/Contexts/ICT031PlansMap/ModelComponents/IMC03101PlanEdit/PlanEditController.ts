@@ -109,7 +109,6 @@ export const IMC03101PlanEditController = ({
 				},
 				{ merge: true },
 			);
-			// console.log("finish setDoc", planDocSnap)
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
@@ -119,24 +118,109 @@ export const IMC03101PlanEditController = ({
 	]);
 
 	/** **********************************************************************************************
-	 * representative, after の PlaceEndTime を設定する
+	 * representative, after の PlaceEndTime, transportationDepartureTime を設定する
 	 * 自分の予定の PlaceStartTime, Span を監視し、
-	 * PlaceEndTime = current.PlaceStartTime + current.Span で計算する
+	 * PlaceEndTime, transportationDepartureTime = current.PlaceStartTime + current.Span で計算する
 	 *********************************************************************************************** */
 	useEffect(() => {
 		if (isPlanGroupMounted && ['representative', 'after'].includes(beforeAfterRepresentativeType)) {
-			CHK001Utils.Logger('IMC03101PlanEdit', 'representative, after の placeEndTime を設定する', planID);
+			CHK001Utils.Logger(
+				'IMC03101PlanEdit',
+				'representative, after の PlaceEndTime, transportationDepartureTime を設定する',
+				planID,
+			);
 			// eslint-disable-next-line @typescript-eslint/no-floating-promises
 			setDoc(
 				planDocSnap.ref,
 				{
 					placeEndTime: DateUtils.addition(plan.placeStartTime, plan.placeSpan, ['Hours', 'Minutes', 'Seconds']),
+					transportationDepartureTime: DateUtils.addition(plan.placeStartTime, plan.placeSpan, [
+						'Hours',
+						'Minutes',
+						'Seconds',
+					]),
 				},
 				{ merge: true },
 			);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [plan.placeStartTime.getTime(), plan.placeSpan.getTime(), beforeAfterRepresentativeType]);
+
+	/** **********************************************************************************************
+	 * before の transportationDepartureTime を設定する
+	 * 自分の予定の transportationArrivalTime, transportationSpan を監視し、
+	 * transportationDepartureTime = current.transportationArrivalTime - current.transportationSpan を設定する
+	 *********************************************************************************************** */
+	useEffect(() => {
+		if (isPlanGroupMounted && beforeAfterRepresentativeType === 'before' && plan.transportationArrivalTime) {
+			CHK001Utils.Logger('IMC03101PlanEdit', 'before の transportationDepartureTime を設定する', planID);
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			setDoc(
+				planDocSnap.ref,
+				{
+					transportationDepartureTime: DateUtils.subtraction(plan.transportationArrivalTime, plan.transportationSpan, [
+						'Hours',
+						'Minutes',
+						'Seconds',
+					]),
+				},
+				{ merge: true },
+			);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [plan.transportationArrivalTime?.getTime(), plan.transportationSpan.getTime(), beforeAfterRepresentativeType]);
+
+	/** **********************************************************************************************
+	 * before の transportationArrivalTime を設定する
+	 * 次の予定の PlaceStartTime を監視し、
+	 * transportationArrivalTime = next.PlaceStartTime を設定する
+	 *********************************************************************************************** */
+	useEffect(() => {
+		if (isPlanGroupMounted && beforeAfterRepresentativeType === 'before') {
+			CHK001Utils.Logger('IMC03101PlanEdit', 'before の transportationArrivalTime を設定する', planID);
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			setDoc(
+				planDocSnap.ref,
+				{
+					transportationArrivalTime: dependentPlan.placeStartTime,
+				},
+				{ merge: true },
+			);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		dependentPlan.placeStartTime.getTime(),
+		beforeAfterRepresentativeType,
+	]);
+
+	/** **********************************************************************************************
+	 * representative, after の transportationArrivalTime を設定する
+	 * 自分の予定の transportationSpan を監視し、
+	 * transportationArrivalTime = current.transportationDepartureTime + current.transportationSpan で計算する
+	 *********************************************************************************************** */
+	useEffect(() => {
+		if (
+			isPlanGroupMounted &&
+			['representative', 'after'].includes(beforeAfterRepresentativeType) &&
+			plan.transportationDepartureTime
+		) {
+			CHK001Utils.Logger('IMC03101PlanEdit', 'representative, after の transportationArrivalTime を設定する', planID);
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			setDoc(
+				planDocSnap.ref,
+				{
+					transportationArrivalTime: DateUtils.addition(plan.transportationDepartureTime, plan.transportationSpan, [
+						'Hours',
+						'Minutes',
+						'Seconds',
+					]),
+				},
+				{ merge: true },
+			);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [plan.transportationSpan.getTime(), beforeAfterRepresentativeType]);
 
 	const deletePlan = useCallback(async () => {
 		const newPlanGroup = { ...planGroup };
