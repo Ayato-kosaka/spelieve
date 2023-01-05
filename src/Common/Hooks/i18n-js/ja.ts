@@ -5,6 +5,27 @@ const ja: typeof Lang = {
 	Itinerary: 'しおり',
 	Place: '場所',
 
+	// HelloSpelieve.tsx
+	'あなたの旅行もっと「楽」に': 'あなたの旅行もっと「楽」に',
+	'素晴らしい「思い出」に': '素晴らしい「思い出」に',
+	新しく始める: '新しく始める',
+	特徴1: '特徴1',
+	しおり簡単作成: 'しおり簡単作成',
+	特徴2: '特徴2',
+	移動時間: '移動時間',
+	自動計算: '自動計算',
+	特徴3: '特徴3',
+	マップ検索: 'マップ検索',
+	特徴4: '特徴4',
+	思い出化: '思い出化',
+	最近作成した旅行プラン: '最近作成した旅行プラン',
+	'no title': 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
+	'no sub title': 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
+	お問い合わせ: 'お問い合わせ',
+	フィードバック: 'フィードバック',
+	'Copyright © Spelieve ': 'Copyright © Spelieve ',
+	'開発者用 Itinerary で始める': '開発者用 Itinerary で始める',
+
 	// ImagePickerCOntroller.ts
 	'Upload failed, sorry :(': 'アップロードに失敗しました',
 
@@ -26,6 +47,8 @@ const ja: typeof Lang = {
 
 	// IPA001ItineraryEdit
 	'Add Plan group': 'プラングループ追加',
+	日目: '日目',
+	'copy Share URL': 'URL をコピー',
 
 	// IPA002ItineraryCover
 	'Itinerary Title': 'しおりタイトル',

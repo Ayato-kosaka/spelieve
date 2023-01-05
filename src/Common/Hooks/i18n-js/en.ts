@@ -5,6 +5,27 @@ const en: typeof Lang = {
 	Itinerary: 'Itinerary',
 	Place: 'Place',
 
+	// HelloSpelieve.tsx
+	'あなたの旅行もっと「楽」に': 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
+	'素晴らしい「思い出」に': 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
+	新しく始める: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
+	特徴1: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
+	しおり簡単作成: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
+	特徴2: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
+	移動時間: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
+	自動計算: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
+	特徴3: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
+	マップ検索: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
+	特徴4: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
+	思い出化: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
+	最近作成した旅行プラン: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
+	'no title': 'no title',
+	'no sub title': 'no sub title',
+	お問い合わせ: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
+	フィードバック: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
+	'Copyright © Spelieve ': 'Copyright © Spelieve ',
+	'開発者用 Itinerary で始める': '開発者用 Itinerary で始める',
+
 	// ImagePickerCOntroller.ts
 	'Upload failed, sorry :(': 'Upload failed, sorry :(',
 
@@ -26,6 +47,8 @@ const en: typeof Lang = {
 
 	// IPA001ItineraryEdit
 	'Add Plan group': 'Add Plan group',
+	日目: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
+	'copy Share URL': 'copy Share URL',
 
 	// IPA002ItineraryCover
 	'Itinerary Title': 'Itinerary Title',

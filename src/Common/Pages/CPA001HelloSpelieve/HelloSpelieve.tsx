@@ -30,10 +30,14 @@ export const CPA001HelloSpelieve = ({
 		<>
 			<SafeAreaView />
 			<ScrollView>
-				{/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require */}
-				<Image source={require('@assets/adaptive-icon.png')} style={{ paddingTop: '60%', width: '100%' }} resizeMode="contain" />
+				<Image
+					// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
+					source={require('@assets/adaptive-icon.png')}
+					style={{ paddingTop: '60%', width: '100%' }}
+					resizeMode="contain"
+				/>
 				<View style={{ marginHorizontal: 16, marginVertical: 32 }}>
-					<Headline>{i18n.t('あなたの旅行もっと「楽」に\n素晴らしい「思い出」に')}</Headline>
+					<Headline>{`${i18n.t('あなたの旅行もっと「楽」に')}\n${i18n.t('素晴らしい「思い出」に')}`}</Headline>
 					<Button
 						mode="contained"
 						labelStyle={{ color: 'white', fontSize: 16 }}
@@ -81,7 +85,7 @@ export const CPA001HelloSpelieve = ({
 									borderRadius: 10,
 								}}>
 								<Text>{i18n.t('特徴2')}</Text>
-								<Title>{i18n.t('移動時間\n自動計算')}</Title>
+								<Title>{`${i18n.t('移動時間')}\n${i18n.t('自動計算')}`}</Title>
 							</View>
 						</View>
 						<View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', marginVertical: 10 }}>
@@ -178,7 +182,7 @@ export const CPA001HelloSpelieve = ({
 						{i18n.t('フィードバック')}
 					</Button>
 					<Text style={{ color: 'white', textAlign: 'center', paddingVertical: 32 }}>
-						{i18n.t(`Copyright © Spelieve ${new Date().getFullYear()}`)}
+						{i18n.t('Copyright © Spelieve ') + new Date().getFullYear().toString()}
 					</Text>
 				</View>
 				{ENV.LOGGER && (
