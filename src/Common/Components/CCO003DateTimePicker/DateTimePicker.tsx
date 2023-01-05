@@ -6,9 +6,7 @@ import RNDateTimePicker, {
 } from '@react-native-community/datetimepicker';
 import { useCallback, useState } from 'react';
 import { Platform } from 'react-native';
-import { Button } from 'react-native-paper';
-
-import i18n from '@/Common/Hooks/i18n-js';
+import { Text } from 'react-native-paper';
 
 export const CCO003DateTimePicker = ({ ...props }: IOSNativeProps & AndroidNativeProps & WindowsNativeProps) => {
 	const [showPicker, setShowPicker] = useState<boolean>(Platform.OS !== 'android');
@@ -32,6 +30,16 @@ export const CCO003DateTimePicker = ({ ...props }: IOSNativeProps & AndroidNativ
 		return <RNDateTimePicker {...props} onChange={onChange} />;
 	}
 	return (
-		<Button onPress={onButtonPress}>{props.mode === 'time' ? i18n.t('select time') : i18n.t('select date')}</Button>
+		<Text
+			onPress={onButtonPress}
+			style={{ textDecorationLine: 'underline', paddingHorizontal: 16, paddingVertical: 8 }}>
+			{props.mode === 'time'
+				? props.value.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
+				: props.value.toLocaleDateString(undefined, {
+						year: 'numeric',
+						month: '2-digit',
+						day: '2-digit',
+				  })}
+		</Text>
 	);
 };
