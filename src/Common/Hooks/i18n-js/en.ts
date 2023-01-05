@@ -6,23 +6,23 @@ const en: typeof Lang = {
 	Place: 'Place',
 
 	// HelloSpelieve.tsx
-	'あなたの旅行もっと「楽」に': 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
-	'素晴らしい「思い出」に': 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
-	新しく始める: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
-	特徴1: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
-	しおり簡単作成: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
-	特徴2: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
-	移動時間: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
-	自動計算: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
-	特徴3: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
-	マップ検索: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
-	特徴4: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
-	思い出化: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
-	最近作成した旅行プラン: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
+	'あなたの旅行もっと「楽」に': 'Make your trip more Enjoynable',
+	'素晴らしい「思い出」に': 'more wonderful memory',
+	新しく始める: 'Create New Itinerary',
+	特徴1: 'Advantage1',
+	しおり簡単作成: 'Easy-to-Create Itinerary',
+	特徴2: 'Advantage2',
+	移動時間: 'Transfer time',
+	自動計算: 'Automatic Calculation',
+	特徴3: 'Advantage3',
+	マップ検索: 'Search Google Map',
+	特徴4: 'Advantage4',
+	思い出化: 'memorization',
+	最近作成した旅行プラン: 'Recently Itinerary',
 	'no title': 'no title',
 	'no sub title': 'no sub title',
-	お問い合わせ: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
-	フィードバック: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
+	お問い合わせ: 'Contact',
+	フィードバック: 'Feedback',
 	'Copyright © Spelieve ': 'Copyright © Spelieve ',
 	'開発者用 Itinerary で始める': '開発者用 Itinerary で始める',
 
@@ -47,7 +47,7 @@ const en: typeof Lang = {
 
 	// IPA001ItineraryEdit
 	'Add Plan group': 'Add Plan group',
-	日目: 'TODO', // ここを翻訳してください！！！！！！！！！！！！！！！！！！！！
+	日目: 'Day',
 	'copy Share URL': 'copy Share URL',
 
 	// IPA002ItineraryCover
