@@ -39,7 +39,6 @@ export default ({ config }: ConfigContext) => {
 					},
 				},
 				versionCode: 4, // TODO: 毎submitで変更の必要あり
-				versionName: "2.0.0",
 				permissions: []
 			},
 			web: {
