@@ -14,6 +14,6 @@ export const styles = StyleSheet.create({
 	},
 	placesList: {
 		flex: 6,
-		zIndex: 0,
+		// zIndex: 0,
 	},
 });
