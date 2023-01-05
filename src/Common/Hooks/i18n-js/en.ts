@@ -1,12 +1,30 @@
-import { LangIf } from './LangIf';
+import Lang from './Lang.json';
 
-const en: LangIf = {
-	/** welcome */
-	welcome: 'welcome',
-
+const en: typeof Lang = {
 	// App.tsx
 	Itinerary: 'Itinerary',
 	Place: 'Place',
+
+	// HelloSpelieve.tsx
+	'あなたの旅行もっと「楽」に': 'Make your trip more Enjoynable',
+	'素晴らしい「思い出」に': 'more wonderful memory',
+	新しく始める: 'Create New Itinerary',
+	特徴1: 'Advantage1',
+	しおり簡単作成: 'Easy-to-Create Itinerary',
+	特徴2: 'Advantage2',
+	移動時間: 'Transfer time',
+	自動計算: 'Automatic Calculation',
+	特徴3: 'Advantage3',
+	マップ検索: 'Search Google Map',
+	特徴4: 'Advantage4',
+	思い出化: 'memorization',
+	最近作成した旅行プラン: 'Recently Itinerary',
+	'no title': 'no title',
+	'no sub title': 'no sub title',
+	お問い合わせ: 'Contact',
+	フィードバック: 'Feedback',
+	'Copyright © Spelieve ': 'Copyright © Spelieve ',
+	'開発者用 Itinerary で始める': '開発者用 Itinerary で始める',
 
 	// ImagePickerCOntroller.ts
 	'Upload failed, sorry :(': 'Upload failed, sorry :(',
@@ -29,6 +47,8 @@ const en: LangIf = {
 
 	// IPA001ItineraryEdit
 	'Add Plan group': 'Add Plan group',
+	日目: 'Day',
+	'copy Share URL': 'copy Share URL',
 
 	// IPA002ItineraryCover
 	'Itinerary Title': 'Itinerary Title',
@@ -75,7 +95,6 @@ const en: LangIf = {
 	// PMC012202PlaceInformation.tsx
 	'Opening Hours': 'Opening Hours',
 	'Customer Reviews': 'Customer Reviews',
-	'Show more': 'Show more',
 	'Show more Info at Google Map': 'Show more Info at Google Map',
 
 	// PPA002Place
