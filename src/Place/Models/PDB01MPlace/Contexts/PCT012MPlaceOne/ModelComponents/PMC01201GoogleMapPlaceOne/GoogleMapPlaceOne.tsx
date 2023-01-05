@@ -2,11 +2,11 @@ import { useContext } from 'react';
 import { View } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
-import { styles } from './GoogleMapPlaceOneStyle';
+import { GoogleMapPlaceOnePropsInterface } from 'spelieve-common/lib/Interfaces';
 
 import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/MPlaceOne';
 
-export const PMC01201GoogleMapPlaceOne = () => {
+export const PMC01201GoogleMapPlaceOne = ({ style }: GoogleMapPlaceOnePropsInterface) => {
 	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/274 マップ範囲調整
 	const { place } = useContext(PCT012MPlaceOne);
 
@@ -17,7 +17,7 @@ export const PMC01201GoogleMapPlaceOne = () => {
 	const coordinate = { latitude: place.geometry.latitude, longitude: place.geometry.longitude };
 	return (
 		<MapView
-			style={styles.mapview}
+			style={style}
 			provider={PROVIDER_GOOGLE}
 			initialRegion={{
 				latitude: coordinate.latitude,

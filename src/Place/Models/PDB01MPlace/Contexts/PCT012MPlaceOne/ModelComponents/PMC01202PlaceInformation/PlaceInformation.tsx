@@ -4,6 +4,8 @@ import { Headline, List, Text } from 'react-native-paper';
 import { Rating } from 'react-native-ratings';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import { PlaceInformationPropsInterface } from 'spelieve-common/lib/Interfaces';
+
 import { PCT012MPlaceOne } from '../../MPlaceOne';
 
 import { styles } from './PlaceInformationStyle';
@@ -11,7 +13,7 @@ import { styles } from './PlaceInformationStyle';
 import i18n from '@/Common/Hooks/i18n-js';
 import { materialColors, secondaryColorNm } from '@/ThemeProvider';
 
-export const PMC01202PlaceInformation = ( { style }) => {
+export const PMC01202PlaceInformation = ({ style }: PlaceInformationPropsInterface) => {
 	const { place } = useContext(PCT012MPlaceOne);
 	const [expanded, setExpanded] = useState<boolean>(false);
 	const openingHourLeft = useCallback(
