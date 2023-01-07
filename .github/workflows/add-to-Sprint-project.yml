@@ -14,4 +14,4 @@ jobs:
         with:
           project-url: https://github.com/users/Ayato-kosaka/projects/1
           github-token: ${{ secrets.REPO_PROJECTS_ACCESS_TOKEN }}
-          labeled: '%3Apackage%3A+PBI'
+          labeled: ':package: PBI'
