@@ -2,10 +2,11 @@
 name: Product Plan
 about: Product Plan
 title: ''
-labels: ''
+labels: ":package: PBI"
 assignees: Ayato-kosaka, Takapy1
 
 ---
+
 # Product Plan
 
 ## Business Goal (why)
@@ -21,4 +22,4 @@ assignees: Ayato-kosaka, Takapy1
 ---
 **Labels の付け方**  
 * マーケティング => 「Promotion」  
-* 開発 => サービスに合わせて選択。どれにも属さない場合は、「Sysetem」を選択。  
+* 開発 => サービスに合わせて選択。どれにも属さない場合は、「Sysetem」を選択。
