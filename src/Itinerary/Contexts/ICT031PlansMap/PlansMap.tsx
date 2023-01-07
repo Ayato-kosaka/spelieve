@@ -11,7 +11,7 @@ import { PlansMapInterface, PlansMapValInterface } from 'spelieve-common/lib/Int
 import { Plans } from 'spelieve-common/lib/Models/Itinerary/IDB03/Plans';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
-import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
+import { ICT011ItineraryOne } from '@/Itinerary/Contexts/ICT011ItineraryOne';
 import {
 	transitModeConverter,
 	travelModeConverter,

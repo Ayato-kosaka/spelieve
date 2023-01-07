@@ -6,7 +6,7 @@ import {
 	EditDirectionsModePropsInterface,
 } from 'spelieve-common/lib/Interfaces/Itinerary/IMC03104';
 
-import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap';
+import { ICT031PlansMap } from '@/Itinerary/Contexts/ICT031PlansMap';
 
 export const IMC03104EditDirectionsModeController = ({
 	planID,

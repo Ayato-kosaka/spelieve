@@ -8,8 +8,8 @@ import { Plans } from 'spelieve-common/lib/Models/Itinerary/IDB03/Plans';
 import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
-import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
-import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap';
+import { ICT011ItineraryOne } from '@/Itinerary/Contexts/ICT011ItineraryOne';
+import { ICT031PlansMap } from '@/Itinerary/Contexts/ICT031PlansMap';
 
 export const ICT021PlanGroupsList = createContext({} as PlanGroupsListValInterface);
 

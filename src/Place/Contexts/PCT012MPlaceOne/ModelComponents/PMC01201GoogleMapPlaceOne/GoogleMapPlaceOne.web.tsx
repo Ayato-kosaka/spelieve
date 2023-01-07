@@ -4,7 +4,7 @@ import { View } from 'react-native';
 
 import { styles } from './GoogleMapPlaceOneStyle.web';
 
-import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/MPlaceOne';
+import { PCT012MPlaceOne } from '@/Place/Contexts/PCT012MPlaceOne/MPlaceOne';
 
 export const PMC01201GoogleMapPlaceOne = () => {
 	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/274 マップ範囲調整

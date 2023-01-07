@@ -14,7 +14,7 @@ import { CCO006ImagePicker } from '@/Common/Components/CCO006ImagePicker/ImagePi
 import i18n from '@/Common/Hooks/i18n-js';
 import { storage } from '@/Itinerary/Endpoint/firebaseStorage';
 import { PCO002GooglePlacesAutocomplete } from '@/Place/Components/PCO002GooglePlacesAutocomplete';
-import { PMC01202PlaceInformation } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/ModelComponents/PMC01202PlaceInformation/PlaceInformation';
+import { PMC01202PlaceInformation } from '@/Place/Contexts/PCT012MPlaceOne/ModelComponents/PMC01202PlaceInformation/PlaceInformation';
 
 export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<BottomTabParamList, 'EditPlan'>) => {
 	const {

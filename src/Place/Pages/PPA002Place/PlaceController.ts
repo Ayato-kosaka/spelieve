@@ -5,7 +5,7 @@ import { useContext, useEffect } from 'react';
 import { PlaceControllerInterface, PlacePropsInterface } from 'spelieve-common/lib/Interfaces';
 
 import { BottomTabParamList } from '@/App';
-import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne';
+import { PCT012MPlaceOne } from '@/Place/Contexts/PCT012MPlaceOne';
 
 export const PPA002PlaceController = ({ place_id }: PlacePropsInterface): PlaceControllerInterface => {
 	const navigation = useNavigation<NativeStackNavigationProp<BottomTabParamList>>();

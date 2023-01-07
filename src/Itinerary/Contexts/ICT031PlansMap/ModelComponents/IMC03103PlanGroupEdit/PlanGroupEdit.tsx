@@ -6,8 +6,8 @@ import { PlanGroupsListInterface } from 'spelieve-common/lib/Interfaces/Itinerar
 
 import { IMC03103PlanGroupsEditController } from './PlanGroupsEditController';
 
-import { IMC03101PlanEdit } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03101PlanEdit';
-import { IMC03102TrafficMovementEdit } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03102TrafficMovementEdit';
+import { IMC03101PlanEdit } from '@/Itinerary/Contexts/ICT031PlansMap/ModelComponents/IMC03101PlanEdit';
+import { IMC03102TrafficMovementEdit } from '@/Itinerary/Contexts/ICT031PlansMap/ModelComponents/IMC03102TrafficMovementEdit';
 import { materialColors, primaryColorNm } from '@/ThemeProvider';
 
 export const IMC03103PlanGroupsEdit = ({

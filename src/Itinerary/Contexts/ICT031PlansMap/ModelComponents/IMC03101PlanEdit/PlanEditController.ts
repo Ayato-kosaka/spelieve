@@ -10,8 +10,8 @@ import { ICT031PlansMap } from '../..';
 
 import { BottomTabParamList } from '@/App';
 import * as CHK001Utils from '@/Common/Hooks/CHK001Utils';
-import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
-import { ICT021PlanGroupsList } from '@/Itinerary/Models/IDB02PlanGroups/Contexts/ICT021PlanGroupsList';
+import { ICT011ItineraryOne } from '@/Itinerary/Contexts/ICT011ItineraryOne';
+import { ICT021PlanGroupsList } from '@/Itinerary/Contexts/ICT021PlanGroupsList';
 
 export const IMC03101PlanEditController = ({
 	planID,

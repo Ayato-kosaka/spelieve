@@ -9,9 +9,9 @@ import { MPlace } from 'spelieve-common/lib/Models/Place/PDB01/MPlace';
 import { BottomTabParamList } from '@/App';
 import { Logger } from '@/Common/Hooks/CHK001Utils';
 import i18n from '@/Common/Hooks/i18n-js';
+import { PCT011MPlacesList } from '@/Place/Contexts/PCT011MPlacesList';
 import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001GooglePlaceAPI';
 import { InitialPlaceParams } from '@/Place/Hooks/PHK002InitialPlaceParam';
-import { PCT011MPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
 
 export const PPA001PlacesController = ({
 	country,
