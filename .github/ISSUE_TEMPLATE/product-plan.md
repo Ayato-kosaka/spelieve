@@ -18,3 +18,8 @@ assignees: Ayato-kosaka, Takapy1
 ## Child Sprint backlog items
 === Make child issues on Sprint planning ===
 - [ ] #XXX
+
+---
+**Labels の付け方**  
+* マーケティング => 「Promotion」  
+* 開発 => サービスに合わせて選択。どれにも属さない場合は、「Sysetem」を選択。  
