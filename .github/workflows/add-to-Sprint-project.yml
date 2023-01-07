@@ -10,7 +10,7 @@ jobs:
     name: Add issue to project
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/add-to-project@RELEASE_VERSION
+      - uses: actions/add-to-project@v0.4.0
         with:
-          project-url: https://github.com/orgs/<orgName>/projects/<projectNumber>
+          project-url: https://github.com/users/Ayato-kosaka/projects/1
           github-token: ${{ secrets.REPO_ACCESS_TOKEN }}
