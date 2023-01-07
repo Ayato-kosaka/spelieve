@@ -1,11 +1,3 @@
----
-name: Product Plan
-about: Product Plan
-title: ''
-labels: ''
-assignees: Ayato-kosaka, Takapy1
-
----
 # Product Plan
 
 ## Business Goal (why)
