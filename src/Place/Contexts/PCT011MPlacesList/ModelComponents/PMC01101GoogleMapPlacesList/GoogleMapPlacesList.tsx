@@ -6,7 +6,7 @@ import { GoogleMapPlaceListPropsInterface } from 'spelieve-common/lib/Interfaces
 
 import { styles } from './GoogleMapPlacesListStyle';
 
-import { PCT011MPlacesList } from '@/Place/Models/PDB01MPlace/Contexts/PCT011MPlacesList';
+import { PCT011MPlacesList } from '@/Place/Contexts/PCT011MPlacesList';
 
 export const PMC01101GoogleMapPlacesList = ({ style }: GoogleMapPlaceListPropsInterface) => {
 	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/274 マップ範囲調整

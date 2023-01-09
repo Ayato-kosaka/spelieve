@@ -6,9 +6,9 @@ import { ItineraryOneInterface } from 'spelieve-common/lib/Interfaces/Itinerary/
 import { PlansMapInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT031';
 
 import { BottomTabParamList } from '@/App';
-import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
-import { ICT021PlanGroupsList } from '@/Itinerary/Models/IDB02PlanGroups/Contexts/ICT021PlanGroupsList';
-import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap';
+import { ICT011ItineraryOne } from '@/Itinerary/Contexts/ICT011ItineraryOne';
+import { ICT021PlanGroupsList } from '@/Itinerary/Contexts/ICT021PlanGroupsList';
+import { ICT031PlansMap } from '@/Itinerary/Contexts/ICT031PlansMap';
 
 export const IPA004ItineraryPreviewController = ({
 	route,

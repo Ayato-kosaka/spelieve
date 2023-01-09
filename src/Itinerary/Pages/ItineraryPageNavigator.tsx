@@ -3,9 +3,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { EditPlanPropsInterface, ItineraryCoverPropsInterface } from 'spelieve-common/lib/Interfaces';
 
-import { ICT011ItineraryOneProvider } from '../Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
-import { ICT021PlanGroupsListProvider } from '../Models/IDB02PlanGroups/Contexts/ICT021PlanGroupsList';
-import { ICT031PlansMapProvider } from '../Models/IDB03Plans/Contexts/ICT031PlansMap';
+import { ICT011ItineraryOneProvider } from '../Contexts/ICT011ItineraryOne';
+import { ICT021PlanGroupsListProvider } from '../Contexts/ICT021PlanGroupsList';
+import { ICT031PlansMapProvider } from '../Contexts/ICT031PlansMap';
 import { INV002ItineraryTopTabNavigator, TopTabParamList } from '../Navigator/INV002ItineraryTopTabNavigator';
 
 import { IPA002ItineraryCover } from './IPA002ItineraryCover';
@@ -13,7 +13,7 @@ import { IPA003EditPlan } from './IPA003EditPlan';
 
 import i18n from '@/Common/Hooks/i18n-js';
 import { CPA001HelloSpelieve } from '@/Common/Pages/CPA001HelloSpelieve/HelloSpelieve';
-import { PCT012MPlaceOneProvider } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne';
+import { PCT012MPlaceOneProvider } from '@/Place/Contexts/PCT012MPlaceOne';
 
 export type ItineraryStackParamList = {
 	ItineraryCover: ItineraryCoverPropsInterface;

@@ -8,10 +8,10 @@ import { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
 import { PlansMapInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT031';
 
 import { BottomTabParamList } from '@/App';
-import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
-import { ICT021PlanGroupsList } from '@/Itinerary/Models/IDB02PlanGroups/Contexts/ICT021PlanGroupsList';
-import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap';
-import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne';
+import { ICT011ItineraryOne } from '@/Itinerary/Contexts/ICT011ItineraryOne';
+import { ICT021PlanGroupsList } from '@/Itinerary/Contexts/ICT021PlanGroupsList';
+import { ICT031PlansMap } from '@/Itinerary/Contexts/ICT031PlansMap';
+import { PCT012MPlaceOne } from '@/Place/Contexts/PCT012MPlaceOne';
 
 export const IPA003EditPlanController = ({
 	route,

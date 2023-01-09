@@ -5,8 +5,8 @@ import { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
 import { ItineraryCoverPropsInterface, ItineraryOneInterface } from 'spelieve-common/lib/Interfaces';
 import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 
-import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
-import { ICT021PlanGroupsList } from '@/Itinerary/Models/IDB02PlanGroups/Contexts/ICT021PlanGroupsList';
+import { ICT011ItineraryOne } from '@/Itinerary/Contexts/ICT011ItineraryOne';
+import { ICT021PlanGroupsList } from '@/Itinerary/Contexts/ICT021PlanGroupsList';
 
 export function IPA002ItineraryCoverController({ itineraryID }: ItineraryCoverPropsInterface) {
 	const [pageItinerary, setPageItinerary] = useState<ItineraryOneInterface | undefined>(undefined);

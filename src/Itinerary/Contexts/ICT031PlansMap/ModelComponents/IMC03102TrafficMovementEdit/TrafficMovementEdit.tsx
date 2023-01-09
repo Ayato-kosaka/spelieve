@@ -11,7 +11,7 @@ import { ICT031PlansMap } from '../..';
 import { IMC03102TrafficMovementEditController } from './TrafficMovementEditController';
 
 import i18n from '@/Common/Hooks/i18n-js';
-import { IMC03104EditDirectionsMode } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03104EditDirectionsMode';
+import { IMC03104EditDirectionsMode } from '@/Itinerary/Contexts/ICT031PlansMap/ModelComponents/IMC03104EditDirectionsMode';
 import { travelModeConverter } from '@/Place/Hooks/PHK001GooglePlaceAPI';
 import { materialColors } from '@/ThemeProvider';
 
