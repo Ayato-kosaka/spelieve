@@ -26,6 +26,7 @@ export default ({ config }: ConfigContext) => {
 				config: {
 					googleMapsApiKey: process.env.GCP_API_KEY_IOS,
 				},
+				buildNumber: '2'
 			},
 			android: {
 				adaptiveIcon: {
