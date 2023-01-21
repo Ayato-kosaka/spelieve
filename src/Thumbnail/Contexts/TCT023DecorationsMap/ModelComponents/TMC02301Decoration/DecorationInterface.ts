@@ -1,5 +1,5 @@
-import { DecorationsMapValInteface } from '../../DecorationsMapInterface';
+import { DecorationsMapInteface } from '../../DecorationsMapInterface';
 
 export interface DecorationPropsInterface {
-	decoration: DecorationsMapValInteface['decorationsDocSnapMap'][''];
+	decoration: DecorationsMapInteface;
 }

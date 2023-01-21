@@ -7,11 +7,11 @@ import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/
 import { TMC02301Decoration } from '@/Thumbnail/Contexts/TCT023DecorationsMap/ModelComponents/TMC02301Decoration/Decoration';
 
 export const TMC01101ThumbnailBackground = ({ aspectRatio }: ThumbnailBackgroundPropsInterface) => {
-	const { decorationsDocSnapMap } = useContext(TCT023DecorationsMap);
+	const { decorationsMap } = useContext(TCT023DecorationsMap);
 	return (
 		<View style={{ width: '100%', aspectRatio, overflow: 'hidden', borderWidth: 1 }}>
-			{Object.keys(decorationsDocSnapMap).map((key) => (
-				<TMC02301Decoration key={key} decoration={decorationsDocSnapMap[key]} />
+			{Object.keys(decorationsMap).map((key) => (
+				<TMC02301Decoration key={key} decoration={decorationsMap[key]} />
 			))}
 		</View>
 	);

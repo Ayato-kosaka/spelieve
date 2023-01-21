@@ -1,9 +1,13 @@
-import React from 'react';
-import { SafeAreaView, View } from 'react-native';
+import React, { useCallback, useContext } from 'react';
+import { Pressable, SafeAreaView, View } from 'react-native';
 import { Text } from 'react-native-paper';
 
+import i18n from '@/Common/Hooks/i18n-js';
 import { TMC01101ThumbnailBackground } from '@/Thumbnail/Contexts/TCT011MThumbnailOne/ModelComponents/TMC01101ThumbnailBackground/ThumbnailBackground';
-import { TCT023DecorationsMapProvider } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
+import {
+	TCT023DecorationsMap,
+	TCT023DecorationsMapProvider,
+} from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
 
 const MThumbnail = {
 	baseItemType: 'Shape',
@@ -12,19 +16,129 @@ const MThumbnail = {
 export const TPA001ThumbnailEditor = () =>
 	// { navigation, route }: NativeStackScreenProps<BottomTabParamList, 'PPA001Places'>
 	{
-		const a = 1;
+		const { decorationsMap, setDecorationsMap, createDecolation } = useContext(TCT023DecorationsMap);
+		const activeDecorationID = 'XXX';
+		const initialDecolation = {
+			translateX: 200,
+			translateY: 200,
+			rotateZ: 0,
+			scale: 1,
+		}; // TODO: 要修正 translateX, translateY は 中央に
+
+		const duplicationDecoration = useCallback(() => {
+			createDecolation(decorationsMap[activeDecorationID]);
+		}, [createDecolation, decorationsMap]);
+
+		const bringToFront = useCallback(() => {
+			setDecorationsMap({
+				...decorationsMap,
+				[activeDecorationID]: {
+					...decorationsMap[activeDecorationID],
+					order:
+						Object.keys(decorationsMap).reduce(
+							(prev, key) => Math.max(prev, decorationsMap[key].order),
+							Number.MIN_SAFE_INTEGER,
+						) + 1,
+				},
+			});
+		}, [decorationsMap, setDecorationsMap]);
+
+		const bringForward = useCallback(() => {
+			const targetID =
+				Object.keys(decorationsMap)
+					.filter((key) => decorationsMap[key].order > decorationsMap[activeDecorationID].order)
+					.sort((keyA, keyB) => decorationsMap[keyA].order - decorationsMap[keyB].order)[0] || activeDecorationID;
+			setDecorationsMap({
+				...decorationsMap,
+				[activeDecorationID]: {
+					...decorationsMap[activeDecorationID],
+					order: decorationsMap[targetID].order,
+				},
+				[targetID]: {
+					...decorationsMap[targetID],
+					order: decorationsMap[activeDecorationID].order,
+				},
+			});
+		}, [decorationsMap, setDecorationsMap]);
+
+		const sendBackward = useCallback(() => {
+			const targetID =
+				Object.keys(decorationsMap)
+					.filter((key) => decorationsMap[key].order < decorationsMap[activeDecorationID].order)
+					.sort((keyA, keyB) => decorationsMap[keyB].order - decorationsMap[keyA].order)[0] || activeDecorationID;
+			setDecorationsMap({
+				...decorationsMap,
+				[activeDecorationID]: {
+					...decorationsMap[activeDecorationID],
+					order: decorationsMap[targetID].order,
+				},
+				[targetID]: {
+					...decorationsMap[targetID],
+					order: decorationsMap[activeDecorationID].order,
+				},
+			});
+		}, [decorationsMap, setDecorationsMap]);
+
+		const sendToBack = useCallback(() => {
+			setDecorationsMap({
+				...decorationsMap,
+				[activeDecorationID]: {
+					...decorationsMap[activeDecorationID],
+					order:
+						Object.keys(decorationsMap).reduce(
+							(prev, key) => Math.min(prev, decorationsMap[key].order),
+							Number.MAX_SAFE_INTEGER,
+						) - 1,
+				},
+			});
+		}, [decorationsMap, setDecorationsMap]);
 
 		return (
-			<TCT023DecorationsMapProvider>
+			<>
 				<SafeAreaView />
-				<View style={{ height: '100%', justifyContent: 'flex-end' }}>
+				<View style={{ height: '100%', justifyContent: 'space-between' }}>
+					<View>
+						<Pressable onPress={() => createDecolation({ ...initialDecolation })}>
+							<Text>New Figure</Text>
+						</Pressable>
+					</View>
 					<TMC01101ThumbnailBackground aspectRatio={4 / 3} />
-					<View style={{ width: '100%' }}>
+					<View>
 						<View>
-							<Text>Replace</Text>
+							<View>
+								<Text>Replace</Text>
+							</View>
+							<Pressable onPress={duplicationDecoration}>
+								<Text>Duplication</Text>
+							</Pressable>
+						</View>
+						{/* Order Selector */}
+						<View>
+							<View style={{ flexDirection: 'row' }}>
+								<Pressable onPress={bringToFront}>
+									<Text>{i18n.t('Bring to Front')}</Text>
+								</Pressable>
+								<Pressable onPress={bringForward}>
+									<Text>{i18n.t('Bring Forward')}</Text>
+								</Pressable>
+							</View>
+							<View style={{ flexDirection: 'row' }}>
+								<Pressable onPress={sendBackward}>
+									<Text>{i18n.t('Send Backward')}</Text>
+								</Pressable>
+								<Pressable onPress={sendToBack}>
+									<Text>{i18n.t('Send to Back')}</Text>
+								</Pressable>
+							</View>
 						</View>
 					</View>
 				</View>
-			</TCT023DecorationsMapProvider>
+			</>
 		);
 	};
+
+export const ThumbnailEditorEntory = () => (
+	<TCT023DecorationsMapProvider>
+		<TPA001ThumbnailEditor />
+	</TCT023DecorationsMapProvider>
+);

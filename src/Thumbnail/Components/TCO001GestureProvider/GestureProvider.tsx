@@ -5,6 +5,7 @@ import { useSharedValue } from 'react-native-reanimated';
 import { GesturePropsInterface } from './GestureProviderPropsInterface';
 
 export const TCO001GestureProvider = ({ translateX, translateY, scale, rotateZ, children }: GesturePropsInterface) => {
+	// TODO: 初期値に修正する
 	const savedTranslateX = useSharedValue(0);
 	const savedTranslateY = useSharedValue(0);
 	const savedScale = useSharedValue(1);

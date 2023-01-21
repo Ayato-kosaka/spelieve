@@ -16,9 +16,19 @@ export const TMC02301Decoration = ({ decoration }: DecorationPropsInterface) => 
 	useEffect(() => {
 		translateX.value = decoration.translateX;
 	}, [decoration.translateX, translateX]);
+	useEffect(() => {
+		translateY.value = decoration.translateY;
+	}, [decoration.translateY, translateY]);
+	useEffect(() => {
+		scale.value = decoration.scale;
+	}, [decoration.scale, scale]);
+	useEffect(() => {
+		rotateZ.value = decoration.rotateZ;
+	}, [decoration.rotateZ, rotateZ]);
 
 	// animatedStyle を設定する
 	const animatedStyle = useAnimatedStyle(() => ({
+		position: 'absolute',
 		transform: [
 			{
 				translateX: translateX.value,
@@ -31,7 +41,10 @@ export const TMC02301Decoration = ({ decoration }: DecorationPropsInterface) => 
 		],
 	}));
 
-	const style = [{ width: 100, height: 100, backgroundColor: 'red' }, animatedStyle];
+	const style = [
+		{ width: 100, height: 100, backgroundColor: decoration.color, zIndex: decoration.order },
+		animatedStyle,
+	];
 
 	return (
 		<TCO001GestureProvider translateX={translateX} translateY={translateY} scale={scale} rotateZ={rotateZ}>
