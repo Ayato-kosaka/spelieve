@@ -13,7 +13,7 @@ import { IPA003EditPlan } from './IPA003EditPlan';
 
 import i18n from '@/Common/Hooks/i18n-js';
 import { PCT012MPlaceOneProvider } from '@/Place/Contexts/PCT012MPlaceOne';
-import { TPA001Canvas } from '@/Thumbnail/Pages/TPA001Canvas/Canvas';
+import { TPA001ThumbnailEditor } from '@/Thumbnail/Pages/TPA001ThumbnailEditor/ThumbnailEditor';
 
 export type ItineraryStackParamList = {
 	ItineraryCover: ItineraryCoverPropsInterface;
@@ -50,7 +50,7 @@ export const ItineraryPageNavigator = () => (
 						/>
 						<Stack.Screen
 							name="HelloSpelieve"
-							component={TPA001Canvas}
+							component={TPA001ThumbnailEditor}
 							initialParams={{}}
 							options={{ headerShown: false }}
 						/>

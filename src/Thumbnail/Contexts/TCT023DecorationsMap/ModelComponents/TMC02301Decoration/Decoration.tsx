@@ -1,10 +1,11 @@
+import { useEffect } from 'react';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
 import { DecorationPropsInterface } from './DecorationInterface';
 
 import { TCO001GestureProvider } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProvider';
 
-export const TMC01101Decoration = (props: DecorationPropsInterface) => {
+export const TMC02301Decoration = ({ decoration }: DecorationPropsInterface) => {
 	// gesture 用の useSharedValue を定義
 	const translateX = useSharedValue(0);
 	const translateY = useSharedValue(0);
@@ -12,9 +13,9 @@ export const TMC01101Decoration = (props: DecorationPropsInterface) => {
 	const rotateZ = useSharedValue(0);
 
 	// Context に変化が合った場合は、gesture 用の useSharedValue を更新する
-	// useEffect(() => {
-	// 	translateX.value = props.translateX;
-	// }, [props.translateX, translateX]);
+	useEffect(() => {
+		translateX.value = decoration.translateX;
+	}, [decoration.translateX, translateX]);
 
 	// animatedStyle を設定する
 	const animatedStyle = useAnimatedStyle(() => ({
