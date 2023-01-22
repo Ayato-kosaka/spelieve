@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
@@ -20,20 +20,24 @@ export const TCO001GestureProvider = ({ initial, onEnd, children }: GestureProvi
 	const savedScale = useSharedValue(scale.value);
 	const savedRotateZ = useSharedValue(rotateZ.value);
 
+	// TODO: 上位層に移行する
 	const isActive = useSharedValue(false);
 	const singleTap = Gesture.Tap()
 		.maxDuration(250)
-		// web で onStart が動作しないため、onBegin を利用する。違いは不明
-		.onBegin(() => {
-			console.log('singleTap.onBegin', isActive.value);
-			isActive.value = !isActive.value;
+		// web で onStart が動作しなく、onBegin を利用すると !success の場合も反応するため、onFinalize で制御する
+		.onFinalize((e, success) => {
+			if (success) {
+				isActive.value = !isActive.value;
+			}
 		});
 
 	// 1本の指の移動処理
 	const panGesture = Gesture.Pan()
 		.onUpdate((e) => {
-			translateX.value = savedTranslateX.value + e.translationX;
-			translateY.value = savedTranslateY.value + e.translationY;
+			if (isActive.value) {
+				translateX.value = savedTranslateX.value + e.translationX;
+				translateY.value = savedTranslateY.value + e.translationY;
+			}
 		})
 		.onEnd(() => {
 			savedTranslateX.value = translateX.value;
@@ -44,7 +48,9 @@ export const TCO001GestureProvider = ({ initial, onEnd, children }: GestureProvi
 	// 2本の指の間隔を狭める・広げる処理
 	const pinchGesture = Gesture.Pinch()
 		.onUpdate((e) => {
-			scale.value = savedScale.value * e.scale;
+			if (isActive.value) {
+				scale.value = savedScale.value * e.scale;
+			}
 		})
 		.onEnd(() => {
 			savedScale.value = scale.value;
@@ -54,7 +60,9 @@ export const TCO001GestureProvider = ({ initial, onEnd, children }: GestureProvi
 	// 2本指でタッチして回転させる処理
 	const rotationGesture = Gesture.Rotation()
 		.onUpdate((e) => {
-			rotateZ.value = savedRotateZ.value + e.rotation;
+			if (isActive.value) {
+				rotateZ.value = savedRotateZ.value + e.rotation;
+			}
 		})
 		.onEnd(() => {
 			savedRotateZ.value = rotateZ.value;
@@ -77,11 +85,14 @@ export const TCO001GestureProvider = ({ initial, onEnd, children }: GestureProvi
 		],
 	}));
 
-	const composed = useMemo(() => panGesture, [panGesture]);
-
-	useEffect(() => {
-		console.log('onEnd');
-	}, [savedTranslateX.value, savedTranslateY.value, savedScale.value, savedRotateZ.value]);
+	const composed = useMemo(
+		() =>
+			Gesture.Simultaneous(
+				singleTap,
+				Gesture.Simultaneous(panGesture, Gesture.Simultaneous(pinchGesture, rotationGesture)),
+			),
+		[panGesture, pinchGesture, rotationGesture, singleTap],
+	);
 
 	return (
 		<GestureDetector gesture={composed}>
