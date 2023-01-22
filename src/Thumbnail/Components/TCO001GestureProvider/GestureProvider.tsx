@@ -1,11 +1,16 @@
 import React, { useMemo } from 'react';
-import { View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
 import { GestureProviderPropsInterface } from './GestureProviderPropsInterface';
 
-export const TCO001GestureProvider = ({ initial, onEnd, children }: GestureProviderPropsInterface) => {
+export const TCO001GestureProvider = ({
+	initial,
+	onEnd,
+	isActive,
+	onSingleTapFinalize,
+	children,
+}: GestureProviderPropsInterface) => {
 	/**
 	 * translateX -> style に反映される translateX
 	 * savedTranslateX ->  手を止めた状態の translateX
@@ -21,14 +26,12 @@ export const TCO001GestureProvider = ({ initial, onEnd, children }: GestureProvi
 	const savedScale = useSharedValue(scale.value);
 	const savedRotateZ = useSharedValue(rotateZ.value);
 
-	// TODO: 上位層に移行する
-	const isActive = useSharedValue(false);
 	const singleTap = Gesture.Tap()
 		.maxDuration(250)
 		// web で onStart が動作しなく、onBegin を利用すると !success の場合も反応するため、onFinalize で制御する
-		.onFinalize((e, success) => {
+		.onFinalize((event, success) => {
 			if (success) {
-				isActive.value = !isActive.value;
+				onSingleTapFinalize(event, success);
 			}
 		});
 

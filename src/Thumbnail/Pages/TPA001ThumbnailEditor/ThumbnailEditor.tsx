@@ -20,9 +20,9 @@ const MThumbnail = {
 export const TPA001ThumbnailEditor = () =>
 	// { navigation, route }: NativeStackScreenProps<BottomTabParamList, 'PPA001Places'>
 	{
-		const { decorationsMap, setDecorationsMap, createDecolation } = useContext(TCT023DecorationsMap);
-		const activeDecorationID = 'XXX';
-		const initialDecolation = useMemo(
+		const { decorationsMap, setDecorationsMap, createDecoration, activeDecorationID } =
+			useContext(TCT023DecorationsMap);
+		const initialDecoration = useMemo(
 			() => ({
 				translateX: 200,
 				translateY: 200,
@@ -34,9 +34,9 @@ export const TPA001ThumbnailEditor = () =>
 
 		const onPickImage: ImagePickerPropsInterface['onPickImage'] = useCallback(
 			(imageUrl) => {
-				createDecolation({ ...initialDecolation, decorationType: 'Image', imageUrl });
+				createDecoration({ ...initialDecoration, decorationType: 'Image', imageUrl });
 			},
-			[createDecolation, initialDecolation],
+			[createDecoration, initialDecoration],
 		);
 
 		const { pickImage } = CCO006ImagePickerController({
@@ -58,14 +58,14 @@ export const TPA001ThumbnailEditor = () =>
 		});
 
 		const duplicationDecoration = useCallback(() => {
-			createDecolation(decorationsMap[activeDecorationID]);
-		}, [createDecolation, decorationsMap]);
+			createDecoration(decorationsMap[activeDecorationID.value]);
+		}, [activeDecorationID.value, createDecoration, decorationsMap]);
 
 		const bringToFront = useCallback(() => {
 			setDecorationsMap({
 				...decorationsMap,
-				[activeDecorationID]: {
-					...decorationsMap[activeDecorationID],
+				[activeDecorationID.value]: {
+					...decorationsMap[activeDecorationID.value],
 					order:
 						Object.keys(decorationsMap).reduce(
 							(prev, key) => Math.max(prev, decorationsMap[key].order),
@@ -73,49 +73,49 @@ export const TPA001ThumbnailEditor = () =>
 						) + 1,
 				},
 			});
-		}, [decorationsMap, setDecorationsMap]);
+		}, [activeDecorationID.value, decorationsMap, setDecorationsMap]);
 
 		const bringForward = useCallback(() => {
 			const targetID =
 				Object.keys(decorationsMap)
-					.filter((key) => decorationsMap[key].order > decorationsMap[activeDecorationID].order)
-					.sort((keyA, keyB) => decorationsMap[keyA].order - decorationsMap[keyB].order)[0] || activeDecorationID;
+					.filter((key) => decorationsMap[key].order > decorationsMap[activeDecorationID.value].order)
+					.sort((keyA, keyB) => decorationsMap[keyA].order - decorationsMap[keyB].order)[0] || activeDecorationID.value;
 			setDecorationsMap({
 				...decorationsMap,
-				[activeDecorationID]: {
-					...decorationsMap[activeDecorationID],
+				[activeDecorationID.value]: {
+					...decorationsMap[activeDecorationID.value],
 					order: decorationsMap[targetID].order,
 				},
 				[targetID]: {
 					...decorationsMap[targetID],
-					order: decorationsMap[activeDecorationID].order,
+					order: decorationsMap[activeDecorationID.value].order,
 				},
 			});
-		}, [decorationsMap, setDecorationsMap]);
+		}, [activeDecorationID.value, decorationsMap, setDecorationsMap]);
 
 		const sendBackward = useCallback(() => {
 			const targetID =
 				Object.keys(decorationsMap)
-					.filter((key) => decorationsMap[key].order < decorationsMap[activeDecorationID].order)
-					.sort((keyA, keyB) => decorationsMap[keyB].order - decorationsMap[keyA].order)[0] || activeDecorationID;
+					.filter((key) => decorationsMap[key].order < decorationsMap[activeDecorationID.value].order)
+					.sort((keyA, keyB) => decorationsMap[keyB].order - decorationsMap[keyA].order)[0] || activeDecorationID.value;
 			setDecorationsMap({
 				...decorationsMap,
-				[activeDecorationID]: {
-					...decorationsMap[activeDecorationID],
+				[activeDecorationID.value]: {
+					...decorationsMap[activeDecorationID.value],
 					order: decorationsMap[targetID].order,
 				},
 				[targetID]: {
 					...decorationsMap[targetID],
-					order: decorationsMap[activeDecorationID].order,
+					order: decorationsMap[activeDecorationID.value].order,
 				},
 			});
-		}, [decorationsMap, setDecorationsMap]);
+		}, [activeDecorationID.value, decorationsMap, setDecorationsMap]);
 
 		const sendToBack = useCallback(() => {
 			setDecorationsMap({
 				...decorationsMap,
-				[activeDecorationID]: {
-					...decorationsMap[activeDecorationID],
+				[activeDecorationID.value]: {
+					...decorationsMap[activeDecorationID.value],
 					order:
 						Object.keys(decorationsMap).reduce(
 							(prev, key) => Math.min(prev, decorationsMap[key].order),
@@ -123,14 +123,14 @@ export const TPA001ThumbnailEditor = () =>
 						) - 1,
 				},
 			});
-		}, [decorationsMap, setDecorationsMap]);
+		}, [activeDecorationID.value, decorationsMap, setDecorationsMap]);
 
 		return (
 			<>
 				<SafeAreaView />
 				<View style={{ height: '100%', justifyContent: 'space-between' }}>
 					<View>
-						<Pressable onPress={() => createDecolation({ ...initialDecolation, decorationType: 'Figure' })}>
+						<Pressable onPress={() => createDecoration({ ...initialDecoration, decorationType: 'Figure' })}>
 							<Text>New Figure</Text>
 						</Pressable>
 						{/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
