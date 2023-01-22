@@ -1,53 +1,60 @@
-import { useEffect } from 'react';
-import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import { useCallback, useContext } from 'react';
+import Animated, { useSharedValue } from 'react-native-reanimated';
+
+import { TCT023DecorationsMap } from '../../DecorationsMap';
 
 import { DecorationPropsInterface } from './DecorationInterface';
 
 import { TCO001GestureProvider } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProvider';
+import { GestureProviderPropsInterface } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderPropsInterface';
 
-export const TMC02301Decoration = ({ decoration }: DecorationPropsInterface) => {
-	// gesture 用の useSharedValue を定義
-	const translateX = useSharedValue(0);
-	const translateY = useSharedValue(0);
-	const scale = useSharedValue(1);
-	const rotateZ = useSharedValue(0);
+export const TMC02301Decoration = ({ decorationID }: DecorationPropsInterface) => {
+	const isActive = true;
+	const a = useSharedValue(1);
+
+	const { decorationsMap, setDecorationsMap } = useContext(TCT023DecorationsMap);
+	const decoration = decorationsMap[decorationID];
+	console.log('decoration', decoration);
+
+	const onEndGesture: GestureProviderPropsInterface['onEnd'] = useCallback(
+		(val) => {
+			setDecorationsMap({
+				...decorationsMap,
+				[decorationID]: {
+					...decorationsMap[decorationID],
+					...val,
+				},
+			});
+		},
+		[decorationID, decorationsMap, setDecorationsMap],
+	);
 
 	// Context に変化が合った場合は、gesture 用の useSharedValue を更新する
-	useEffect(() => {
-		translateX.value = decoration.translateX;
-	}, [decoration.translateX, translateX]);
-	useEffect(() => {
-		translateY.value = decoration.translateY;
-	}, [decoration.translateY, translateY]);
-	useEffect(() => {
-		scale.value = decoration.scale;
-	}, [decoration.scale, scale]);
-	useEffect(() => {
-		rotateZ.value = decoration.rotateZ;
-	}, [decoration.rotateZ, rotateZ]);
+	// useEffect(() => {
+	// 	translateX.value = decoration.translateX;
+	// }, [decoration.translateX, savedTranslateX.value]);
+	// useEffect(() => {
+	// 	translateY.value = decoration.translateY;
+	// }, [decoration.translateY, translateY]);
+	// useEffect(() => {
+	// 	scale.value = decoration.scale;
+	// }, [decoration.scale, scale]);
+	// useEffect(() => {
+	// 	rotateZ.value = decoration.rotateZ;
+	// }, [decoration.rotateZ, rotateZ]);
 
-	// animatedStyle を設定する
-	const animatedStyle = useAnimatedStyle(() => ({
-		position: 'absolute',
-		transform: [
-			{
-				translateX: translateX.value,
-			},
-			{
-				translateY: translateY.value,
-			},
-			{ scale: scale.value },
-			{ rotateZ: `${(rotateZ.value / Math.PI) * 180}deg` },
-		],
-	}));
+	// const activeStyle: StyleProp<ViewStyle> = isActive ?{
+	// 	border
+	// }: {}
 
 	const style = [
 		{ width: 100, height: 100, backgroundColor: decoration.color, zIndex: decoration.order },
-		animatedStyle,
+		// animatedStyle,
+		// activeStyle,
 	];
 
 	return (
-		<TCO001GestureProvider translateX={translateX} translateY={translateY} scale={scale} rotateZ={rotateZ}>
+		<TCO001GestureProvider initial={decoration} onEnd={onEndGesture}>
 			<Animated.View style={style} />
 		</TCO001GestureProvider>
 	);

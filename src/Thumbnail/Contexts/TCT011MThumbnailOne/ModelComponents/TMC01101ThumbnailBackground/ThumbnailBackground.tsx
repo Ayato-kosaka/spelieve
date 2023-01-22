@@ -11,7 +11,7 @@ export const TMC01101ThumbnailBackground = ({ aspectRatio }: ThumbnailBackground
 	return (
 		<View style={{ width: '100%', aspectRatio, overflow: 'hidden', borderWidth: 1 }}>
 			{Object.keys(decorationsMap).map((key) => (
-				<TMC02301Decoration key={key} decoration={decorationsMap[key]} />
+				<TMC02301Decoration key={key} decorationID={key} />
 			))}
 		</View>
 	);
