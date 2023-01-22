@@ -9,13 +9,11 @@ import { ImagePickerPropsInterface } from './ImagePickerPropsInterface';
 import i18n from '@/Common/Hooks/i18n-js';
 
 export const CCO006ImagePickerController = ({
-	children,
 	onPickImage,
 	imagePickerOptions,
 	imageManipulatorActions,
 	storage,
-	style,
-}: ImagePickerPropsInterface) => {
+}: Omit<ImagePickerPropsInterface, 'children' | 'style'>) => {
 	const resizeImage = async (uri: string): Promise<string> => {
 		const result = await manipulateAsync(uri, imageManipulatorActions, { compress: 1, format: SaveFormat.PNG });
 		return result.uri;

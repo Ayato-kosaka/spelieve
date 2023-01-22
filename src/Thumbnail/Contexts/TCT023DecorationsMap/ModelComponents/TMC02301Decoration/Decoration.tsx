@@ -1,5 +1,5 @@
 import { useCallback, useContext } from 'react';
-import Animated, { useSharedValue } from 'react-native-reanimated';
+import { Image, View } from 'react-native';
 
 import { TCT023DecorationsMap } from '../../DecorationsMap';
 
@@ -9,12 +9,9 @@ import { TCO001GestureProvider } from '@/Thumbnail/Components/TCO001GestureProvi
 import { GestureProviderPropsInterface } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderPropsInterface';
 
 export const TMC02301Decoration = ({ decorationID }: DecorationPropsInterface) => {
-	const isActive = true;
-	const a = useSharedValue(1);
-
 	const { decorationsMap, setDecorationsMap } = useContext(TCT023DecorationsMap);
 	const decoration = decorationsMap[decorationID];
-	console.log('decoration', decoration);
+	console.log('decoration', decorationID, decoration);
 
 	const onEndGesture: GestureProviderPropsInterface['onEnd'] = useCallback(
 		(val) => {
@@ -43,19 +40,15 @@ export const TMC02301Decoration = ({ decorationID }: DecorationPropsInterface) =
 	// 	rotateZ.value = decoration.rotateZ;
 	// }, [decoration.rotateZ, rotateZ]);
 
-	// const activeStyle: StyleProp<ViewStyle> = isActive ?{
-	// 	border
-	// }: {}
-
 	const style = [
 		{ width: 100, height: 100, backgroundColor: decoration.color, zIndex: decoration.order },
 		// animatedStyle,
-		// activeStyle,
 	];
 
 	return (
 		<TCO001GestureProvider initial={decoration} onEnd={onEndGesture}>
-			<Animated.View style={style} />
+			{decoration.decorationType === 'Figure' && <View style={style} />}
+			{decoration.decorationType === 'Image' && <Image style={style} source={{ uri: decoration.imageUrl }} />}
 		</TCO001GestureProvider>
 	);
 };

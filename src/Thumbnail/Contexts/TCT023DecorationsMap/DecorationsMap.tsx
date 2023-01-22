@@ -12,6 +12,7 @@ export const TCT023DecorationsMapProvider = ({ children }: { children: ReactNode
 	useEffect(() => {
 		setDecorationsMap({
 			XXX: {
+				decorationType: 'Figure',
 				translateX: 200,
 				translateY: 0,
 				rotateZ: 0,

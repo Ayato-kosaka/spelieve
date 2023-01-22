@@ -1,8 +1,12 @@
-import React, { useCallback, useContext } from 'react';
+import { MediaTypeOptions } from 'expo-image-picker';
+import React, { useCallback, useContext, useMemo } from 'react';
 import { Pressable, SafeAreaView, View } from 'react-native';
 import { Text } from 'react-native-paper';
 
+import { CCO006ImagePickerController } from '@/Common/Components/CCO006ImagePicker/ImagePickerController';
+import { ImagePickerPropsInterface } from '@/Common/Components/CCO006ImagePicker/ImagePickerPropsInterface';
 import i18n from '@/Common/Hooks/i18n-js';
+import { storage } from '@/Itinerary/Endpoint/firebaseStorage';
 import { TMC01101ThumbnailBackground } from '@/Thumbnail/Contexts/TCT011MThumbnailOne/ModelComponents/TMC01101ThumbnailBackground/ThumbnailBackground';
 import {
 	TCT023DecorationsMap,
@@ -18,12 +22,40 @@ export const TPA001ThumbnailEditor = () =>
 	{
 		const { decorationsMap, setDecorationsMap, createDecolation } = useContext(TCT023DecorationsMap);
 		const activeDecorationID = 'XXX';
-		const initialDecolation = {
-			translateX: 200,
-			translateY: 200,
-			rotateZ: 0,
-			scale: 1,
-		}; // TODO: 要修正 translateX, translateY は 中央に
+		const initialDecolation = useMemo(
+			() => ({
+				translateX: 200,
+				translateY: 200,
+				rotateZ: 0,
+				scale: 1,
+			}),
+			[],
+		); // TODO: 要修正 translateX, translateY は 中央に
+
+		const onPickImage: ImagePickerPropsInterface['onPickImage'] = useCallback(
+			(imageUrl) => {
+				createDecolation({ ...initialDecolation, decorationType: 'Image', imageUrl });
+			},
+			[createDecolation, initialDecolation],
+		);
+
+		const { pickImage } = CCO006ImagePickerController({
+			onPickImage,
+			imagePickerOptions: {
+				allowsEditing: true,
+				allowsMultipleSelection: false,
+				mediaTypes: MediaTypeOptions.Images,
+				quality: 1,
+			},
+			imageManipulatorActions: [
+				{
+					resize: {
+						width: 900,
+					},
+				},
+			],
+			storage,
+		});
 
 		const duplicationDecoration = useCallback(() => {
 			createDecolation(decorationsMap[activeDecorationID]);
@@ -98,8 +130,12 @@ export const TPA001ThumbnailEditor = () =>
 				<SafeAreaView />
 				<View style={{ height: '100%', justifyContent: 'space-between' }}>
 					<View>
-						<Pressable onPress={() => createDecolation({ ...initialDecolation })}>
+						<Pressable onPress={() => createDecolation({ ...initialDecolation, decorationType: 'Figure' })}>
 							<Text>New Figure</Text>
+						</Pressable>
+						{/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+						<Pressable onPress={pickImage}>
+							<Text>New Image</Text>
 						</Pressable>
 					</View>
 					<TMC01101ThumbnailBackground aspectRatio={4 / 3} />
