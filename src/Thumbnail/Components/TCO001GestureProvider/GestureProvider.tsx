@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import Animated, { useAnimatedReaction, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
 import { GestureProviderPropsInterface } from './GestureProviderPropsInterface';
 
@@ -26,6 +26,19 @@ export const TCO001GestureProvider = ({
 	const savedTranslateY = useSharedValue(translateY.value);
 	const savedScale = useSharedValue(scale.value);
 	const savedRotateZ = useSharedValue(rotateZ.value);
+
+	useAnimatedReaction(
+		() => ({
+			translateX: savedTranslateX.value,
+			translateY: savedTranslateY.value,
+			scale: savedScale.value,
+			rotateZ: savedRotateZ.value,
+		}),
+		(data) => {
+			// TODO: 複数回走るので考え直し
+			// console.log(data);
+		},
+	);
 
 	const singleTap = Gesture.Tap()
 		.maxDuration(250)

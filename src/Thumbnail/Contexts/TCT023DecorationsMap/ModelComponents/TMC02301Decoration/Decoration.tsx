@@ -27,6 +27,7 @@ export const TMC02301Decoration = ({ decorationID }: DecorationPropsInterface) =
 		[decorationID, decorationsMap, setDecorationsMap],
 	);
 
+	// TODO: iOS で動かないので考え直し
 	const isActive = useDerivedValue(() => activeDecorationID.value === decorationID);
 	const onSingleTapFinalize: GestureProviderPropsInterface['onSingleTapFinalize'] = useCallback(
 		(event, success) => {
@@ -34,20 +35,6 @@ export const TMC02301Decoration = ({ decorationID }: DecorationPropsInterface) =
 		},
 		[activeDecorationID, decorationID],
 	);
-
-	// Context に変化が合った場合は、gesture 用の useSharedValue を更新する
-	// useEffect(() => {
-	// 	translateX.value = decoration.translateX;
-	// }, [decoration.translateX, savedTranslateX.value]);
-	// useEffect(() => {
-	// 	translateY.value = decoration.translateY;
-	// }, [decoration.translateY, translateY]);
-	// useEffect(() => {
-	// 	scale.value = decoration.scale;
-	// }, [decoration.scale, scale]);
-	// useEffect(() => {
-	// 	rotateZ.value = decoration.rotateZ;
-	// }, [decoration.rotateZ, rotateZ]);
 
 	const gestureStyle: StyleProp<ViewStyle> = useMemo(() => ({ zIndex: decoration.order }), [decoration.order]);
 
