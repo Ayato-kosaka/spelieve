@@ -1,6 +1,6 @@
-import { useCallback, useContext } from 'react';
-import { Image, View } from 'react-native';
-import { useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
+import { useCallback, useContext, useMemo } from 'react';
+import { Image, StyleProp, View, ViewStyle, StyleSheet } from 'react-native';
+import { useDerivedValue } from 'react-native-reanimated';
 
 import { TCT023DecorationsMap } from '../../DecorationsMap';
 
@@ -27,17 +27,7 @@ export const TMC02301Decoration = ({ decorationID }: DecorationPropsInterface) =
 		[decorationID, decorationsMap, setDecorationsMap],
 	);
 
-	const isActive = useSharedValue(false);
-	useAnimatedReaction(
-		() => activeDecorationID.value,
-		(result, previous) => {
-			if (result !== previous) {
-				console.log('useDerivedValue', activeDecorationID.value);
-				isActive.value = activeDecorationID.value === decorationID;
-			}
-		},
-		[],
-	);
+	const isActive = useDerivedValue(() => activeDecorationID.value === decorationID);
 	const onSingleTapFinalize: GestureProviderPropsInterface['onSingleTapFinalize'] = useCallback(
 		(event, success) => {
 			activeDecorationID.value = decorationID;
@@ -59,19 +49,23 @@ export const TMC02301Decoration = ({ decorationID }: DecorationPropsInterface) =
 	// 	rotateZ.value = decoration.rotateZ;
 	// }, [decoration.rotateZ, rotateZ]);
 
-	const style = [
-		{ width: 100, height: 100, backgroundColor: decoration.color, zIndex: decoration.order },
-		// animatedStyle,
-	];
+	const gestureStyle: StyleProp<ViewStyle> = useMemo(() => ({ zIndex: decoration.order }), [decoration.order]);
+
+	const styles = StyleSheet.create({ designItemStyle: { width: 100, height: 100 } });
 
 	return (
 		<TCO001GestureProvider
 			initial={decoration}
 			onEnd={onEndGesture}
 			isActive={isActive}
-			onSingleTapFinalize={onSingleTapFinalize}>
-			{decoration.decorationType === 'Figure' && <View style={style} />}
-			{decoration.decorationType === 'Image' && <Image style={style} source={{ uri: decoration.imageUrl }} />}
+			onSingleTapFinalize={onSingleTapFinalize}
+			viewStyle={gestureStyle}>
+			{decoration.decorationType === 'Figure' && (
+				<View style={[styles.designItemStyle, { backgroundColor: decoration.color }]} />
+			)}
+			{decoration.decorationType === 'Image' && (
+				<Image style={styles.designItemStyle} source={{ uri: decoration.imageUrl }} />
+			)}
 		</TCO001GestureProvider>
 	);
 };

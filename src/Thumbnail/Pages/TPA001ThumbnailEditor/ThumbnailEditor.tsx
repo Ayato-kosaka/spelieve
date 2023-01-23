@@ -62,6 +62,7 @@ export const TPA001ThumbnailEditor = () =>
 		}, [activeDecorationID.value, createDecoration, decorationsMap]);
 
 		const bringToFront = useCallback(() => {
+			console.log(activeDecorationID.value);
 			setDecorationsMap({
 				...decorationsMap,
 				[activeDecorationID.value]: {

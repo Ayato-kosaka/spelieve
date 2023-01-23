@@ -9,6 +9,7 @@ export const TCO001GestureProvider = ({
 	onEnd,
 	isActive,
 	onSingleTapFinalize,
+	viewStyle,
 	children,
 }: GestureProviderPropsInterface) => {
 	/**
@@ -100,7 +101,7 @@ export const TCO001GestureProvider = ({
 
 	return (
 		<GestureDetector gesture={composed}>
-			<Animated.View style={animatedStyle}>{children}</Animated.View>
+			<Animated.View style={[viewStyle, animatedStyle]}>{children}</Animated.View>
 		</GestureDetector>
 	);
 };
