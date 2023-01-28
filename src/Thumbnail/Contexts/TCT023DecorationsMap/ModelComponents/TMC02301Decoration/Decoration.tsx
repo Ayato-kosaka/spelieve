@@ -27,7 +27,6 @@ export const TMC02301Decoration = ({ decorationID }: DecorationPropsInterface) =
 		[decorationID, decorationsMap, setDecorationsMap],
 	);
 
-	// TODO: iOS で動かないので考え直し
 	const isActive = useDerivedValue(() => activeDecorationID.value === decorationID);
 	const onSingleTapFinalize: GestureProviderPropsInterface['onSingleTapFinalize'] = useCallback(
 		(event, success) => {

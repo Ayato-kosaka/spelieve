@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { useAnimatedReaction, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import Animated, { runOnJS, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
 import { GestureProviderPropsInterface } from './GestureProviderPropsInterface';
 
@@ -17,7 +17,6 @@ export const TCO001GestureProvider = ({
 	 * savedTranslateX ->  手を止めた状態の translateX
 	 */
 	console.log('TCO001GestureProvider.render');
-	// TODO: 初期値に修正する
 	const translateX = useSharedValue(initial.translateX);
 	const translateY = useSharedValue(initial.translateY);
 	const scale = useSharedValue(initial.scale);
@@ -27,25 +26,12 @@ export const TCO001GestureProvider = ({
 	const savedScale = useSharedValue(scale.value);
 	const savedRotateZ = useSharedValue(rotateZ.value);
 
-	useAnimatedReaction(
-		() => ({
-			translateX: savedTranslateX.value,
-			translateY: savedTranslateY.value,
-			scale: savedScale.value,
-			rotateZ: savedRotateZ.value,
-		}),
-		(data) => {
-			// TODO: 複数回走るので考え直し
-			// console.log(data);
-		},
-	);
-
 	const singleTap = Gesture.Tap()
 		.maxDuration(250)
 		// web で onStart が動作しなく、onBegin を利用すると !success の場合も反応するため、onFinalize で制御する
 		.onFinalize((event, success) => {
 			if (success) {
-				onSingleTapFinalize(event, success);
+				runOnJS(onSingleTapFinalize)(event, success);
 			}
 		});
 
@@ -60,7 +46,7 @@ export const TCO001GestureProvider = ({
 		.onEnd(() => {
 			savedTranslateX.value = translateX.value;
 			savedTranslateY.value = translateY.value;
-			// onEnd({ translateX: translateX.value, translateY: translateY.value });
+			console.log('panGesture.onEnd');
 		});
 
 	// 2本の指の間隔を狭める・広げる処理
@@ -72,7 +58,6 @@ export const TCO001GestureProvider = ({
 		})
 		.onEnd(() => {
 			savedScale.value = scale.value;
-			// onEnd({ scale: scale.value });
 		});
 
 	// 2本指でタッチして回転させる処理
@@ -84,7 +69,26 @@ export const TCO001GestureProvider = ({
 		})
 		.onEnd(() => {
 			savedRotateZ.value = rotateZ.value;
-			// onEnd({ rotateZ: rotateZ.value });
+		});
+
+	const gesture = Gesture.Manual()
+		.onTouchesDown((e, manager) => {
+			manager.activate();
+		})
+		.onTouchesUp((e, manager) => {
+			if (e.numberOfTouches === 0) {
+				manager.end();
+			}
+		})
+		.onEnd((event, success) => {
+			if (isActive.value) {
+				runOnJS(onEnd)({
+					translateX: translateX.value,
+					translateY: translateY.value,
+					scale: scale.value,
+					rotateZ: rotateZ.value,
+				});
+			}
 		});
 
 	// animatedStyle を設定する
@@ -104,12 +108,8 @@ export const TCO001GestureProvider = ({
 	}));
 
 	const composed = useMemo(
-		() =>
-			Gesture.Simultaneous(
-				singleTap,
-				Gesture.Simultaneous(panGesture, Gesture.Simultaneous(pinchGesture, rotationGesture)),
-			),
-		[panGesture, pinchGesture, rotationGesture, singleTap],
+		() => Gesture.Simultaneous(singleTap, panGesture, pinchGesture, rotationGesture, gesture),
+		[gesture, panGesture, pinchGesture, rotationGesture, singleTap],
 	);
 
 	return (
