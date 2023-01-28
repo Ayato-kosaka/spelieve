@@ -14,8 +14,9 @@ export const TMC02301Decoration = ({ decorationID }: DecorationPropsInterface) =
 	const decoration = decorationsMap[decorationID];
 	console.log('decoration', decorationID, decoration);
 
-	const onEndGesture: GestureProviderPropsInterface['onEnd'] = useCallback(
+	const onEndGesture: GestureProviderPropsInterface['onEndGesture'] = useCallback(
 		(val) => {
+			console.log('onEndGesture');
 			setDecorationsMap({
 				...decorationsMap,
 				[decorationID]: {
@@ -42,7 +43,7 @@ export const TMC02301Decoration = ({ decorationID }: DecorationPropsInterface) =
 	return (
 		<TCO001GestureProvider
 			initial={decoration}
-			onEnd={onEndGesture}
+			onEndGesture={onEndGesture}
 			isActive={isActive}
 			onSingleTapFinalize={onSingleTapFinalize}
 			viewStyle={gestureStyle}>

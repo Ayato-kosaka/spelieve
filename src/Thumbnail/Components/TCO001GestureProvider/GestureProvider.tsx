@@ -1,12 +1,14 @@
 import React, { useMemo } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { runOnJS, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import Animated, { runOnJS, useAnimatedReaction, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
 import { GestureProviderPropsInterface } from './GestureProviderPropsInterface';
 
+import { Logger } from '@/Common/Hooks/CHK001Utils';
+
 export const TCO001GestureProvider = ({
 	initial,
-	onEnd,
+	onEndGesture,
 	isActive,
 	onSingleTapFinalize,
 	viewStyle,
@@ -35,61 +37,90 @@ export const TCO001GestureProvider = ({
 			}
 		});
 
+	// TODO: enable をsharedValue じゃなくす
+
 	// 1本の指の移動処理
+	const isPanGesturing = useSharedValue(false);
 	const panGesture = Gesture.Pan()
+		.enabled(isActive.value)
+		.onBegin(() => {
+			isPanGesturing.value = true;
+		})
 		.onUpdate((e) => {
-			if (isActive.value) {
-				translateX.value = savedTranslateX.value + e.translationX;
-				translateY.value = savedTranslateY.value + e.translationY;
-			}
+			translateX.value = savedTranslateX.value + e.translationX;
+			translateY.value = savedTranslateY.value + e.translationY;
 		})
 		.onEnd(() => {
 			savedTranslateX.value = translateX.value;
 			savedTranslateY.value = translateY.value;
-			console.log('panGesture.onEnd');
+			isPanGesturing.value = false;
 		});
 
 	// 2本の指の間隔を狭める・広げる処理
+	const isPinchGesturing = useSharedValue(false);
 	const pinchGesture = Gesture.Pinch()
+		.enabled(isActive.value)
+		.onBegin(() => {
+			isPinchGesturing.value = true;
+		})
 		.onUpdate((e) => {
-			if (isActive.value) {
-				scale.value = savedScale.value * e.scale;
-			}
+			scale.value = savedScale.value * e.scale;
 		})
 		.onEnd(() => {
 			savedScale.value = scale.value;
+			isPinchGesturing.value = false;
 		});
 
 	// 2本指でタッチして回転させる処理
+	const isRotationGesturing = useSharedValue(false);
 	const rotationGesture = Gesture.Rotation()
+		.enabled(isActive.value)
+		.onBegin(() => {
+			isRotationGesturing.value = true;
+		})
 		.onUpdate((e) => {
-			if (isActive.value) {
-				rotateZ.value = savedRotateZ.value + e.rotation;
-			}
+			rotateZ.value = savedRotateZ.value + e.rotation;
 		})
 		.onEnd(() => {
 			savedRotateZ.value = rotateZ.value;
+			isRotationGesturing.value = false;
 		});
 
-	const gesture = Gesture.Manual()
-		.onTouchesDown((e, manager) => {
-			manager.activate();
-		})
-		.onTouchesUp((e, manager) => {
-			if (e.numberOfTouches === 0) {
-				manager.end();
-			}
-		})
-		.onEnd((event, success) => {
-			if (isActive.value) {
-				runOnJS(onEnd)({
+	useAnimatedReaction(
+		() => [isPanGesturing.value, isPinchGesturing.value, isRotationGesturing.value],
+		(prepareResult, preparePreviousResult) => {
+			if (preparePreviousResult && preparePreviousResult.some((x) => x) && prepareResult.every((x) => !x)) {
+				Logger('TCO001GestureProvider', 'useAnimatedReaction', 'onEndGesture');
+				runOnJS(onEndGesture)({
 					translateX: translateX.value,
 					translateY: translateY.value,
 					scale: scale.value,
 					rotateZ: rotateZ.value,
 				});
 			}
-		});
+		},
+		[],
+	);
+
+	// TODO: web で onEnd が使えない
+	// const gesture = Gesture.Exclusive(
+	// 	Gesture.Tap()
+	// 		.maxDuration(Number.MAX_SAFE_INTEGER)
+	// 		.onStart((event) => {
+	// 			console.log('gesture1.onStart', event.numberOfPointers);
+	// 		})
+	// 		.onEnd((event, success) => {
+	// 			console.log('gesture1.onFinalize', event.numberOfPointers, success);
+	// 		}),
+	// 	Gesture.Tap()
+	// 		.maxDuration(Number.MAX_SAFE_INTEGER)
+	// 		.onStart((event) => {
+	// 			console.log('gesture2.onStart', event.numberOfPointers);
+	// 		})
+	// 		.onFinalize((event, success) => {
+	// 			console.log('gesture2.onFinalize', event.numberOfPointers, success);
+	// 		}),
+	// );
 
 	// animatedStyle を設定する
 	const animatedStyle = useAnimatedStyle(() => ({
@@ -108,8 +139,8 @@ export const TCO001GestureProvider = ({
 	}));
 
 	const composed = useMemo(
-		() => Gesture.Simultaneous(singleTap, panGesture, pinchGesture, rotationGesture, gesture),
-		[gesture, panGesture, pinchGesture, rotationGesture, singleTap],
+		() => Gesture.Simultaneous(singleTap, panGesture, pinchGesture, rotationGesture),
+		[panGesture, pinchGesture, rotationGesture, singleTap],
 	);
 
 	return (

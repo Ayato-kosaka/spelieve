@@ -12,7 +12,7 @@ interface GestureProviderInterface {
 
 export interface GestureProviderPropsInterface {
 	initial: GestureProviderInterface;
-	onEnd: (val: Partial<GestureProviderInterface>) => void;
+	onEndGesture: (val: Partial<GestureProviderInterface>) => void;
 	isActive: SharedValue<boolean>;
 	onSingleTapFinalize: (event: GestureStateChangeEvent<TapGestureHandlerEventPayload>, success: boolean) => void;
 	viewStyle: StyleProp<ViewStyle>;
