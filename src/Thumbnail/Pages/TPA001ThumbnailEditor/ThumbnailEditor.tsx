@@ -58,15 +58,15 @@ export const TPA001ThumbnailEditor = () =>
 		});
 
 		const duplicationDecoration = useCallback(() => {
-			createDecoration(decorationsMap[activeDecorationID.value]);
-		}, [activeDecorationID.value, createDecoration, decorationsMap]);
+			createDecoration(decorationsMap[activeDecorationID]);
+		}, [activeDecorationID, createDecoration, decorationsMap]);
 
 		const bringToFront = useCallback(() => {
-			console.log(activeDecorationID.value);
+			console.log(activeDecorationID);
 			setDecorationsMap({
 				...decorationsMap,
-				[activeDecorationID.value]: {
-					...decorationsMap[activeDecorationID.value],
+				[activeDecorationID]: {
+					...decorationsMap[activeDecorationID],
 					order:
 						Object.keys(decorationsMap).reduce(
 							(prev, key) => Math.max(prev, decorationsMap[key].order),
@@ -74,49 +74,49 @@ export const TPA001ThumbnailEditor = () =>
 						) + 1,
 				},
 			});
-		}, [activeDecorationID.value, decorationsMap, setDecorationsMap]);
+		}, [activeDecorationID, decorationsMap, setDecorationsMap]);
 
 		const bringForward = useCallback(() => {
 			const targetID =
 				Object.keys(decorationsMap)
-					.filter((key) => decorationsMap[key].order > decorationsMap[activeDecorationID.value].order)
-					.sort((keyA, keyB) => decorationsMap[keyA].order - decorationsMap[keyB].order)[0] || activeDecorationID.value;
+					.filter((key) => decorationsMap[key].order > decorationsMap[activeDecorationID].order)
+					.sort((keyA, keyB) => decorationsMap[keyA].order - decorationsMap[keyB].order)[0] || activeDecorationID;
 			setDecorationsMap({
 				...decorationsMap,
-				[activeDecorationID.value]: {
-					...decorationsMap[activeDecorationID.value],
+				[activeDecorationID]: {
+					...decorationsMap[activeDecorationID],
 					order: decorationsMap[targetID].order,
 				},
 				[targetID]: {
 					...decorationsMap[targetID],
-					order: decorationsMap[activeDecorationID.value].order,
+					order: decorationsMap[activeDecorationID].order,
 				},
 			});
-		}, [activeDecorationID.value, decorationsMap, setDecorationsMap]);
+		}, [activeDecorationID, decorationsMap, setDecorationsMap]);
 
 		const sendBackward = useCallback(() => {
 			const targetID =
 				Object.keys(decorationsMap)
-					.filter((key) => decorationsMap[key].order < decorationsMap[activeDecorationID.value].order)
-					.sort((keyA, keyB) => decorationsMap[keyB].order - decorationsMap[keyA].order)[0] || activeDecorationID.value;
+					.filter((key) => decorationsMap[key].order < decorationsMap[activeDecorationID].order)
+					.sort((keyA, keyB) => decorationsMap[keyB].order - decorationsMap[keyA].order)[0] || activeDecorationID;
 			setDecorationsMap({
 				...decorationsMap,
-				[activeDecorationID.value]: {
-					...decorationsMap[activeDecorationID.value],
+				[activeDecorationID]: {
+					...decorationsMap[activeDecorationID],
 					order: decorationsMap[targetID].order,
 				},
 				[targetID]: {
 					...decorationsMap[targetID],
-					order: decorationsMap[activeDecorationID.value].order,
+					order: decorationsMap[activeDecorationID].order,
 				},
 			});
-		}, [activeDecorationID.value, decorationsMap, setDecorationsMap]);
+		}, [activeDecorationID, decorationsMap, setDecorationsMap]);
 
 		const sendToBack = useCallback(() => {
 			setDecorationsMap({
 				...decorationsMap,
-				[activeDecorationID.value]: {
-					...decorationsMap[activeDecorationID.value],
+				[activeDecorationID]: {
+					...decorationsMap[activeDecorationID],
 					order:
 						Object.keys(decorationsMap).reduce(
 							(prev, key) => Math.min(prev, decorationsMap[key].order),
@@ -124,7 +124,7 @@ export const TPA001ThumbnailEditor = () =>
 						) - 1,
 				},
 			});
-		}, [activeDecorationID.value, decorationsMap, setDecorationsMap]);
+		}, [activeDecorationID, decorationsMap, setDecorationsMap]);
 
 		return (
 			<>

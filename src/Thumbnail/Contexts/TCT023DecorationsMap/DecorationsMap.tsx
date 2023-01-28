@@ -1,5 +1,4 @@
 import { useState, createContext, useEffect, useMemo, ReactNode, useCallback } from 'react';
-import { useSharedValue } from 'react-native-reanimated';
 
 import { DecorationsMapValInteface } from './DecorationsMapInterface';
 
@@ -45,7 +44,7 @@ export const TCT023DecorationsMapProvider = ({ children }: { children: ReactNode
 		[decorationsMap],
 	);
 
-	const activeDecorationID = useSharedValue('');
+	const [activeDecorationID, setActiveDecorationID] = useState<string>('');
 
 	const value = useMemo(
 		() => ({
@@ -53,6 +52,7 @@ export const TCT023DecorationsMapProvider = ({ children }: { children: ReactNode
 			setDecorationsMap,
 			createDecoration,
 			activeDecorationID,
+			setActiveDecorationID,
 			// decorationsCRef,
 			// isDecorationsLoading,
 		}),

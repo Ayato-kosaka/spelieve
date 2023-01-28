@@ -1,5 +1,3 @@
-import { SharedValue } from 'react-native-reanimated';
-
 interface TDB02Decorations {
 	decorationType: 'Video' | 'Image' | 'Figure' | 'Line' | 'Text';
 	translateX: number;
@@ -22,5 +20,6 @@ export interface DecorationsMapValInteface {
 		}>
 	>;
 	createDecoration: (data: Omit<DecorationsMapInteface, 'color' | 'order'>) => void;
-	activeDecorationID: SharedValue<string>;
+	activeDecorationID: string;
+	setActiveDecorationID: React.Dispatch<React.SetStateAction<string>>;
 }

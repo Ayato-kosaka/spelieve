@@ -1,6 +1,5 @@
 import { useCallback, useContext, useMemo } from 'react';
 import { Image, StyleProp, View, ViewStyle, StyleSheet } from 'react-native';
-import { useDerivedValue } from 'react-native-reanimated';
 
 import { TCT023DecorationsMap } from '../../DecorationsMap';
 
@@ -10,9 +9,10 @@ import { TCO001GestureProvider } from '@/Thumbnail/Components/TCO001GestureProvi
 import { GestureProviderPropsInterface } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderPropsInterface';
 
 export const TMC02301Decoration = ({ decorationID }: DecorationPropsInterface) => {
-	const { decorationsMap, setDecorationsMap, activeDecorationID } = useContext(TCT023DecorationsMap);
+	const { decorationsMap, setDecorationsMap, activeDecorationID, setActiveDecorationID } =
+		useContext(TCT023DecorationsMap);
 	const decoration = decorationsMap[decorationID];
-	console.log('decoration', decorationID, decoration);
+	console.log('decoration', decorationID);
 
 	const onEndGesture: GestureProviderPropsInterface['onEndGesture'] = useCallback(
 		(val) => {
@@ -28,12 +28,12 @@ export const TMC02301Decoration = ({ decorationID }: DecorationPropsInterface) =
 		[decorationID, decorationsMap, setDecorationsMap],
 	);
 
-	const isActive = useDerivedValue(() => activeDecorationID.value === decorationID);
+	const isActive = useMemo(() => activeDecorationID === decorationID, [activeDecorationID, decorationID]);
 	const onSingleTapFinalize: GestureProviderPropsInterface['onSingleTapFinalize'] = useCallback(
 		(event, success) => {
-			activeDecorationID.value = decorationID;
+			setActiveDecorationID(decorationID);
 		},
-		[activeDecorationID, decorationID],
+		[decorationID, setActiveDecorationID],
 	);
 
 	const gestureStyle: StyleProp<ViewStyle> = useMemo(() => ({ zIndex: decoration.order }), [decoration.order]);
