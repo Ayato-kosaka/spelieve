@@ -13,6 +13,7 @@ import { RootStackParamList, RootTabParamList } from './NavigationInterface';
 import { ItineraryPageNavigator } from '@/Itinerary/Pages/ItineraryPageNavigator';
 import { PlacePageNavigator } from '@/Place/Pages/PlacePageNavigator/PlacePageNavigator';
 import { navigationTheme } from '@/ThemeProvider';
+import { ThumbnailPageNavigator } from '@/Thumbnail/Pages/ThumbnailPageNavigator';
 
 export const Navigation = () => (
 	<NavigationContainer
@@ -34,6 +35,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const RootNavigator = () => (
 	<Stack.Navigator>
 		<Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+		<Stack.Screen name="ThumbnailPageNavigator" component={ThumbnailPageNavigator} options={{ headerShown: false }} />
 		<Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
 		<Stack.Group screenOptions={{ presentation: 'modal' }}>
 			<Stack.Screen name="Modal" component={ModalScreen} />

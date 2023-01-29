@@ -15,6 +15,7 @@ import {
 	PlaceStackParamList,
 	RootStackParamList,
 	RootTabParamList,
+	ThumbnailStackParamList,
 } from './NavigationInterface';
 
 //  {
@@ -49,9 +50,16 @@ const RootTabScreens: Weaken<RootTabParamList, keyof RootTabParamList> = {
 	},
 };
 
+const ThumbnailStackScreens: Weaken<ThumbnailStackParamList, keyof ThumbnailStackParamList> = {
+	TPA001ThumbnailEditor: 'ThumbnailEditor',
+};
+
 const RootStackScreens: Weaken<RootStackParamList, keyof RootStackParamList> = {
 	Root: {
 		screens: RootTabScreens,
+	},
+	ThumbnailPageNavigator: {
+		screens: ThumbnailStackScreens,
 	},
 	Modal: 'modal',
 	NotFound: '*',

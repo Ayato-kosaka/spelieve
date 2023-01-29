@@ -16,6 +16,7 @@ import {
  */
 export type RootStackParamList = {
 	Root: NavigatorScreenParams<RootTabParamList> | undefined;
+	ThumbnailPageNavigator: NavigatorScreenParams<ThumbnailStackParamList>;
 	Modal: undefined;
 	NotFound: undefined;
 };
@@ -23,6 +24,18 @@ export type RootStackParamList = {
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
 	RootStackParamList,
 	Screen
+>;
+
+/**
+ * Thumbnail Stack の型定義
+ */
+export type ThumbnailStackParamList = {
+	TPA001ThumbnailEditor: Record<string, never>;
+};
+
+export type ThumbnailStackScreenProps<Screen extends keyof ThumbnailStackParamList> = CompositeScreenProps<
+	NativeStackScreenProps<ThumbnailStackParamList, Screen>,
+	NativeStackScreenProps<RootStackParamList>
 >;
 
 /**
