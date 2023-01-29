@@ -127,9 +127,9 @@ export const TPA001ThumbnailEditor = () =>
 		}, [activeDecorationID, decorationsMap, setDecorationsMap]);
 
 		const footerMenuList = [
-			{ title: 'Order', icon: '', onPress: () => {} },
-			{ title: 'Duplication', icon: '', onPress: duplicationDecoration },
-			{ title: 'Replace', icon: '', onPress: () => {} },
+			{ title: i18n.t('Order'), icon: '', onPress: () => {} },
+			{ title: i18n.t('Duplication'), icon: '', onPress: duplicationDecoration },
+			{ title: i18n.t('Replace'), icon: '', onPress: () => {} },
 		] as const;
 
 		return (
