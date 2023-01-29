@@ -1,6 +1,6 @@
 import { MediaTypeOptions } from 'expo-image-picker';
 import React, { useCallback, useContext, useMemo } from 'react';
-import { Pressable, SafeAreaView, View } from 'react-native';
+import { Pressable, SafeAreaView, ScrollView, View } from 'react-native';
 import { Text } from 'react-native-paper';
 
 import { CCO006ImagePickerController } from '@/Common/Components/CCO006ImagePicker/ImagePickerController';
@@ -126,6 +126,12 @@ export const TPA001ThumbnailEditor = () =>
 			});
 		}, [activeDecorationID, decorationsMap, setDecorationsMap]);
 
+		const footerMenuList = [
+			{ title: 'Order', icon: '', onPress: () => {} },
+			{ title: 'Duplication', icon: '', onPress: duplicationDecoration },
+			{ title: 'Replace', icon: '', onPress: () => {} },
+		] as const;
+
 		return (
 			<>
 				<SafeAreaView />
@@ -144,14 +150,13 @@ export const TPA001ThumbnailEditor = () =>
 					</View>
 					<TMC01101ThumbnailBackground aspectRatio={4 / 3} />
 					<View>
-						<View>
-							<View>
-								<Text>Replace</Text>
-							</View>
-							<Pressable onPress={duplicationDecoration}>
-								<Text>Duplication</Text>
-							</Pressable>
-						</View>
+						<ScrollView horizontal>
+							{footerMenuList.map((footerMenu, index) => (
+								<Pressable key={footerMenu.title} onPress={footerMenu.onPress}>
+									<Text>{footerMenu.title}</Text>
+								</Pressable>
+							))}
+						</ScrollView>
 						{/* Order Selector */}
 						<View>
 							<View style={{ flexDirection: 'row' }}>
