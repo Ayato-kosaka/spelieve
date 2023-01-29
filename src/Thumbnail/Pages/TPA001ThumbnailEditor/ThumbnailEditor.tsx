@@ -1,6 +1,6 @@
 import { MediaTypeOptions } from 'expo-image-picker';
-import React, { useCallback, useContext, useMemo } from 'react';
-import { Pressable, SafeAreaView, ScrollView, View } from 'react-native';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
+import { GestureResponderEvent, Pressable, PressableProps, SafeAreaView, ScrollView, View } from 'react-native';
 import { Text } from 'react-native-paper';
 
 import { CCO006ImagePickerController } from '@/Common/Components/CCO006ImagePicker/ImagePickerController';
@@ -127,10 +127,31 @@ export const TPA001ThumbnailEditor = () =>
 		}, [activeDecorationID, decorationsMap, setDecorationsMap]);
 
 		const footerMenuList = [
-			{ title: i18n.t('Order'), icon: '', onPress: () => {} },
-			{ title: i18n.t('Duplication'), icon: '', onPress: duplicationDecoration },
-			{ title: i18n.t('Replace'), icon: '', onPress: () => {} },
+			{
+				title: i18n.t('Order'),
+				icon: '',
+				onPress: () => {},
+				subMenuList: [
+					{ title: i18n.t('Bring to Front'), icon: '', onPress: bringToFront },
+					{ title: i18n.t('Bring Forward'), icon: '', onPress: bringForward },
+					{ title: i18n.t('Send Backward'), icon: '', onPress: sendBackward },
+					{ title: i18n.t('Send to Back'), icon: '', onPress: sendToBack },
+				],
+			},
+			{ title: i18n.t('Duplication'), icon: '', onPress: duplicationDecoration, subMenuList: [] },
+			{ title: i18n.t('Replace'), icon: '', onPress: () => {}, subMenuList: [] },
 		] as const;
+
+		const [footerMenuIndex, setFooterMenuList] = useState(0);
+		const footerMenuOnPress = useCallback(
+			(onPress: PressableProps['onPress'], index: number) => (event: GestureResponderEvent) => {
+				setFooterMenuList(index);
+				if (onPress) {
+					onPress(event);
+				}
+			},
+			[],
+		);
 
 		return (
 			<>
@@ -152,30 +173,17 @@ export const TPA001ThumbnailEditor = () =>
 					<View>
 						<ScrollView horizontal>
 							{footerMenuList.map((footerMenu, index) => (
-								<Pressable key={footerMenu.title} onPress={footerMenu.onPress}>
+								<Pressable key={footerMenu.title} onPress={footerMenuOnPress(footerMenu.onPress, index)}>
 									<Text>{footerMenu.title}</Text>
 								</Pressable>
 							))}
 						</ScrollView>
-						{/* Order Selector */}
-						<View>
-							<View style={{ flexDirection: 'row' }}>
-								<Pressable onPress={bringToFront}>
-									<Text>{i18n.t('Bring to Front')}</Text>
-								</Pressable>
-								<Pressable onPress={bringForward}>
-									<Text>{i18n.t('Bring Forward')}</Text>
-								</Pressable>
-							</View>
-							<View style={{ flexDirection: 'row' }}>
-								<Pressable onPress={sendBackward}>
-									<Text>{i18n.t('Send Backward')}</Text>
-								</Pressable>
-								<Pressable onPress={sendToBack}>
-									<Text>{i18n.t('Send to Back')}</Text>
-								</Pressable>
-							</View>
-						</View>
+						{footerMenuList[footerMenuIndex].subMenuList.map((subMenu) => (
+							<Pressable key={subMenu.title} onPress={subMenu.onPress}>
+								<Text>{subMenu.title}</Text>
+							</Pressable>
+						))}
+						<View />
 					</View>
 				</View>
 			</>
