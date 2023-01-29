@@ -131,12 +131,15 @@ export const TPA001ThumbnailEditor = () =>
 				<SafeAreaView />
 				<View style={{ height: '100%', justifyContent: 'space-between' }}>
 					<View>
-						<Pressable onPress={() => createDecoration({ ...initialDecoration, decorationType: 'Figure' })}>
-							<Text>New Figure</Text>
+						<Pressable onPress={() => createDecoration({ ...initialDecoration, decorationType: 'Text' })}>
+							<Text>New Text</Text>
 						</Pressable>
 						{/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
 						<Pressable onPress={pickImage}>
 							<Text>New Image</Text>
+						</Pressable>
+						<Pressable onPress={() => createDecoration({ ...initialDecoration, decorationType: 'Figure' })}>
+							<Text>New Figure</Text>
 						</Pressable>
 					</View>
 					<TMC01101ThumbnailBackground aspectRatio={4 / 3} />

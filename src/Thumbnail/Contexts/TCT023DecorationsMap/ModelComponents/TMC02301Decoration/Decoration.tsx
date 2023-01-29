@@ -1,10 +1,12 @@
 import { useCallback, useContext, useMemo } from 'react';
-import { Image, StyleProp, View, ViewStyle, StyleSheet } from 'react-native';
+import { Image, StyleProp, ViewStyle, StyleSheet, View } from 'react-native';
+import { Text } from 'react-native-paper';
 
 import { TCT023DecorationsMap } from '../../DecorationsMap';
 
 import { DecorationPropsInterface } from './DecorationInterface';
 
+import i18n from '@/Common/Hooks/i18n-js';
 import { TCO001GestureProvider } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProvider';
 import { GestureProviderPropsInterface } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderPropsInterface';
 
@@ -16,7 +18,7 @@ export const TMC02301Decoration = ({ decorationID }: DecorationPropsInterface) =
 
 	const onEndGesture: GestureProviderPropsInterface['onEndGesture'] = useCallback(
 		(val) => {
-			console.log('onEndGesture');
+			console.log('decorationsMap', decorationsMap);
 			setDecorationsMap({
 				...decorationsMap,
 				[decorationID]: {
@@ -53,6 +55,7 @@ export const TMC02301Decoration = ({ decorationID }: DecorationPropsInterface) =
 			{decoration.decorationType === 'Image' && (
 				<Image style={styles.designItemStyle} source={{ uri: decoration.imageUrl }} />
 			)}
+			{decoration.decorationType === 'Text' && <Text>{i18n.t('TODO: 後で変更する')}</Text>}
 		</TCO001GestureProvider>
 	);
 };

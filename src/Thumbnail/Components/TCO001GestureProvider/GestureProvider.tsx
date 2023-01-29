@@ -84,6 +84,7 @@ export const TCO001GestureProvider = ({
 			isRotationGesturing.value = false;
 		});
 
+	// onEndGesture を定義する
 	useAnimatedReaction(
 		() => [isPanGesturing.value, isPinchGesturing.value, isRotationGesturing.value],
 		(prepareResult, preparePreviousResult) => {
@@ -97,7 +98,7 @@ export const TCO001GestureProvider = ({
 				});
 			}
 		},
-		[],
+		[onEndGesture],
 	);
 
 	// animatedStyle を設定する
