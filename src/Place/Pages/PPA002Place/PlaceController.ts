@@ -1,14 +1,16 @@
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack/lib/typescript/src/types';
 import { useContext, useEffect } from 'react';
 
-import { PlaceControllerInterface, PlacePropsInterface } from 'spelieve-common/lib/Interfaces';
+import { PlaceControllerInterface } from 'spelieve-common/lib/Interfaces';
 
-import { BottomTabParamList } from '@/App';
+import { PlaceStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { PCT012MPlaceOne } from '@/Place/Contexts/PCT012MPlaceOne';
 
-export const PPA002PlaceController = ({ place_id }: PlacePropsInterface): PlaceControllerInterface => {
-	const navigation = useNavigation<NativeStackNavigationProp<BottomTabParamList>>();
+export const PPA002PlaceController = ({
+	route,
+	navigation,
+}: PlaceStackScreenProps<'PPA002Place'>): PlaceControllerInterface => {
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	const { place_id } = route.params;
 	const { place, setPlaceID } = useContext(PCT012MPlaceOne);
 
 	useEffect(() => {
@@ -17,7 +19,7 @@ export const PPA002PlaceController = ({ place_id }: PlacePropsInterface): PlaceC
 
 	const onCreateItineraryClicked = () => {
 		navigation.navigate('Itinerary', {
-			screen: 'TopTab',
+			screen: 'ItineraryTopTabNavigator',
 			params: {
 				screen: 'ItineraryEdit',
 				params: {

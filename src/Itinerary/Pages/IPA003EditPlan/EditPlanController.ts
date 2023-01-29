@@ -1,22 +1,18 @@
 import { PlaceAutocompleteResult } from '@googlemaps/google-maps-services-js';
 import { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { setDoc } from 'firebase/firestore';
 import { useContext, useEffect, useMemo, useCallback, useState, useRef } from 'react';
 import { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
 
 import { PlansMapInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT031';
 
-import { BottomTabParamList } from '@/App';
+import { ItineraryStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { ICT011ItineraryOne } from '@/Itinerary/Contexts/ICT011ItineraryOne';
 import { ICT021PlanGroupsList } from '@/Itinerary/Contexts/ICT021PlanGroupsList';
 import { ICT031PlansMap } from '@/Itinerary/Contexts/ICT031PlansMap';
 import { PCT012MPlaceOne } from '@/Place/Contexts/PCT012MPlaceOne';
 
-export const IPA003EditPlanController = ({
-	route,
-	navigation,
-}: NativeStackScreenProps<BottomTabParamList, 'EditPlan'>) => {
+export const IPA003EditPlanController = ({ route, navigation }: ItineraryStackScreenProps<'EditPlan'>) => {
 	const { itineraryID, planGroupID, planID } = route.params;
 	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
 	const { isPlansLoading, plansDocSnapMap } = useContext(ICT031PlansMap);
@@ -52,7 +48,7 @@ export const IPA003EditPlanController = ({
 	}, [navigation, plan?.title]);
 
 	const navigateToItineraryEdit = useCallback(() => {
-		navigation.navigate('Itinerary', {
+		navigation.navigate('ItineraryTopTabNavigator', {
 			screen: 'ItineraryEdit',
 			params: {
 				itineraryID,
@@ -64,10 +60,7 @@ export const IPA003EditPlanController = ({
 	useEffect(() => {
 		if (itineraryID === undefined || planGroupID === undefined || planID === undefined) {
 			// TODO: https://github.com/Ayato-kosaka/spelieve/issues/397 HelloSpelieve に遷移できない
-			navigation.navigate('Itinerary', {
-				screen: 'HelloSpelieve',
-				params: {},
-			});
+			navigation.navigate('HelloSpelieve', {});
 		}
 	}, [planGroupID, itineraryID, navigateToItineraryEdit, navigation, planID, setItineraryID]);
 

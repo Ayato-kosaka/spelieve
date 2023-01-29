@@ -1,20 +1,14 @@
-import { QueryDocumentSnapshot } from 'firebase/firestore';
 import { View } from 'react-native';
 import { Card } from 'react-native-paper';
 
-import { PlanGroupsListInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT021';
-
 import { IMC03103PlanGroupsEditController } from './PlanGroupsEditController';
+import { PlanGroupsEditPropsInterface } from './PlanGroupsEditPropsInterface';
 
 import { IMC03101PlanEdit } from '@/Itinerary/Contexts/ICT031PlansMap/ModelComponents/IMC03101PlanEdit';
 import { IMC03102TrafficMovementEdit } from '@/Itinerary/Contexts/ICT031PlansMap/ModelComponents/IMC03102TrafficMovementEdit';
 import { materialColors, primaryColorNm } from '@/ThemeProvider';
 
-export const IMC03103PlanGroupsEdit = ({
-	planGroupsDoc,
-}: {
-	planGroupsDoc: QueryDocumentSnapshot<PlanGroupsListInterface>;
-}) => {
+export const IMC03103PlanGroupsEdit = ({ planGroupsDoc, onPlanPress }: PlanGroupsEditPropsInterface) => {
 	const planGroups = planGroupsDoc.data();
 
 	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/343 itinerary Plan のドラッグアンドドロップ
@@ -33,6 +27,7 @@ export const IMC03103PlanGroupsEdit = ({
 							dependentPlanID={dependentPlanID}
 							planGroupsDoc={planGroupsDoc}
 							isPlanGroupMounted={isMounted}
+							onPlanPress={onPlanPress}
 						/>
 						<IMC03102TrafficMovementEdit
 							planID={planID}
