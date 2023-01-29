@@ -127,25 +127,17 @@ export const TPA001ThumbnailEditor = () =>
 		}, [activeDecorationID, decorationsMap, setDecorationsMap]);
 
 		const footerMenuList = [
-			{
-				title: i18n.t('Order'),
-				icon: '',
-				onPress: () => {},
-				subMenuList: [
-					{ title: i18n.t('Bring to Front'), icon: '', onPress: bringToFront },
-					{ title: i18n.t('Bring Forward'), icon: '', onPress: bringForward },
-					{ title: i18n.t('Send Backward'), icon: '', onPress: sendBackward },
-					{ title: i18n.t('Send to Back'), icon: '', onPress: sendToBack },
-				],
-			},
-			{ title: i18n.t('Duplication'), icon: '', onPress: duplicationDecoration, subMenuList: [] },
-			{ title: i18n.t('Replace'), icon: '', onPress: () => {}, subMenuList: [] },
+			{ key: 'Order', title: i18n.t('Order'), icon: '', onPress: () => {} },
+			{ key: 'Duplication', title: i18n.t('Duplication'), icon: '', onPress: duplicationDecoration },
+			{ key: 'Replace', title: i18n.t('Replace'), icon: '', onPress: () => {} },
 		] as const;
 
-		const [footerMenuIndex, setFooterMenuList] = useState(0);
+		const [selectedFooterMenu, setSelectedFooterMenu] = useState<(typeof footerMenuList)[number]['key']>(
+			footerMenuList[0].key,
+		);
 		const footerMenuOnPress = useCallback(
-			(onPress: PressableProps['onPress'], index: number) => (event: GestureResponderEvent) => {
-				setFooterMenuList(index);
+			(onPress: PressableProps['onPress'], selected: typeof selectedFooterMenu) => (event: GestureResponderEvent) => {
+				setSelectedFooterMenu(selected);
 				if (onPress) {
 					onPress(event);
 				}
@@ -173,17 +165,27 @@ export const TPA001ThumbnailEditor = () =>
 					<View>
 						<ScrollView horizontal>
 							{footerMenuList.map((footerMenu, index) => (
-								<Pressable key={footerMenu.title} onPress={footerMenuOnPress(footerMenu.onPress, index)}>
+								<Pressable key={footerMenu.key} onPress={footerMenuOnPress(footerMenu.onPress, footerMenu.key)}>
 									<Text>{footerMenu.title}</Text>
 								</Pressable>
 							))}
 						</ScrollView>
-						{footerMenuList[footerMenuIndex].subMenuList.map((subMenu) => (
-							<Pressable key={subMenu.title} onPress={subMenu.onPress}>
-								<Text>{subMenu.title}</Text>
-							</Pressable>
-						))}
-						<View />
+						{selectedFooterMenu === 'Order' && (
+							<View>
+								<Pressable onPress={bringToFront}>
+									<Text>{i18n.t('Bring to Front')}</Text>
+								</Pressable>
+								<Pressable onPress={bringForward}>
+									<Text>{i18n.t('Bring Forward')}</Text>
+								</Pressable>
+								<Pressable onPress={sendBackward}>
+									<Text>{i18n.t('Send Backward')}</Text>
+								</Pressable>
+								<Pressable onPress={sendToBack}>
+									<Text>{i18n.t('Send to Back')}</Text>
+								</Pressable>
+							</View>
+						)}
 					</View>
 				</View>
 			</>
