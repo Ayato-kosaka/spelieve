@@ -1,4 +1,3 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MediaTypeOptions } from 'expo-image-picker';
 import { ActivityIndicator, Image, ScrollView, View } from 'react-native';
 import { Chip, TextInput, Searchbar, Text, Card } from 'react-native-paper';
@@ -6,16 +5,13 @@ import { Chip, TextInput, Searchbar, Text, Card } from 'react-native-paper';
 import { IPA002ItineraryCoverController } from './ItineraryCoverController';
 import { styles } from './ItineraryCoverStyle';
 
-import { BottomTabParamList } from '@/App';
 import { CCO003DateTimePicker } from '@/Common/Components/CCO003DateTimePicker';
 import { CCO006ImagePicker } from '@/Common/Components/CCO006ImagePicker/ImagePicker';
 import i18n from '@/Common/Hooks/i18n-js';
+import { ItineraryStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { storage } from '@/Itinerary/Endpoint/firebaseStorage';
 
-export const IPA002ItineraryCover = ({
-	route,
-	navigation,
-}: NativeStackScreenProps<BottomTabParamList, 'ItineraryCover'>) => {
+export const IPA002ItineraryCover = ({ route, navigation }: ItineraryStackScreenProps<'ItineraryCover'>) => {
 	const { itineraryID } = route.params;
 	const {
 		pageItinerary,
@@ -31,7 +27,7 @@ export const IPA002ItineraryCover = ({
 	} = IPA002ItineraryCoverController({ itineraryID });
 
 	if (shouldNavigate) {
-		navigation.navigate('Itinerary', { screen: 'ItineraryEdit', params: { itineraryID } });
+		navigation.navigate('ItineraryTopTabNavigator', { screen: 'ItineraryEdit', params: { itineraryID } });
 	}
 
 	if (isLoading || !pageItinerary) {

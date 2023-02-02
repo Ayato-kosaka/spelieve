@@ -1,17 +1,13 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { addDoc } from 'firebase/firestore';
 import { useCallback, useContext, useEffect } from 'react';
 
-import { BottomTabParamList } from '@/App';
 import { Logger } from '@/Common/Hooks/CHK001Utils';
+import { ItineraryTopTabScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { ICT011ItineraryOne } from '@/Itinerary/Contexts/ICT011ItineraryOne';
 import { ICT021PlanGroupsList } from '@/Itinerary/Contexts/ICT021PlanGroupsList';
 import { ICT031PlansMap } from '@/Itinerary/Contexts/ICT031PlansMap';
 
-export const IPA001ItineraryEditController = ({
-	route,
-	navigation,
-}: NativeStackScreenProps<BottomTabParamList, 'ItineraryEdit'>) => {
+export const IPA001ItineraryEditController = ({ route, navigation }: ItineraryTopTabScreenProps<'ItineraryEdit'>) => {
 	const { setItineraryID, itineraryCRef } = useContext(ICT011ItineraryOne);
 	const { planGroupsQSnap, createPlanGroup, planGroupsCRef } = useContext(ICT021PlanGroupsList);
 	const { plansCRef } = useContext(ICT031PlansMap);
@@ -60,7 +56,18 @@ export const IPA001ItineraryEditController = ({
 		}
 	}, [createPlanGroup, placeImage, placeName, place_id, planGroupsQSnap?.empty]);
 
+	const onPlanPress = useCallback(
+		(planGroupID: string, planID: string) => {
+			navigation.navigate('EditPlan', {
+				itineraryID,
+				planGroupID,
+				planID,
+			});
+		},
+		[navigation, itineraryID],
+	);
+
 	return {
-		createItinerary,
+		onPlanPress,
 	};
 };

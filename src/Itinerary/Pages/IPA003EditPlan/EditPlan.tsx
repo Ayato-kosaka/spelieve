@@ -1,4 +1,3 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MediaTypeOptions } from 'expo-image-picker';
 import { setDoc } from 'firebase/firestore';
 import { ActivityIndicator, Image, ScrollView, View } from 'react-native';
@@ -7,16 +6,16 @@ import { Chip, Searchbar, Text, TextInput, Button } from 'react-native-paper';
 import { IPA003EditPlanController } from './EditPlanController';
 import { styles } from './EditPlanStyle';
 
-import { BottomTabParamList } from '@/App';
 import { CCO003DateTimePicker } from '@/Common/Components/CCO003DateTimePicker';
 import { CCO004DurationPicker } from '@/Common/Components/CCO004DurationPicker';
 import { CCO006ImagePicker } from '@/Common/Components/CCO006ImagePicker/ImagePicker';
 import i18n from '@/Common/Hooks/i18n-js';
+import { ItineraryStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { storage } from '@/Itinerary/Endpoint/firebaseStorage';
 import { PCO002GooglePlacesAutocomplete } from '@/Place/Components/PCO002GooglePlacesAutocomplete';
 import { PMC01202PlaceInformation } from '@/Place/Contexts/PCT012MPlaceOne/ModelComponents/PMC01202PlaceInformation/PlaceInformation';
 
-export const IPA003EditPlan = ({ route, navigation }: NativeStackScreenProps<BottomTabParamList, 'EditPlan'>) => {
+export const IPA003EditPlan = ({ route, navigation }: ItineraryStackScreenProps<'EditPlan'>) => {
 	const {
 		planGroup,
 		planDocSnap,

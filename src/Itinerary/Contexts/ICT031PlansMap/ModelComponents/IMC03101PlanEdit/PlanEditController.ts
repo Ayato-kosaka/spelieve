@@ -1,16 +1,12 @@
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { setDoc, doc, deleteDoc } from 'firebase/firestore';
 import { useCallback, useContext, useEffect, useMemo } from 'react';
 
-import { PlanEditControllerInterface, PlanEditPropsInterface } from 'spelieve-common/lib/Interfaces';
+import { PlanEditPropsInterface } from 'spelieve-common/lib/Interfaces';
 import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 
 import { ICT031PlansMap } from '../..';
 
-import { BottomTabParamList } from '@/App';
 import * as CHK001Utils from '@/Common/Hooks/CHK001Utils';
-import { ICT011ItineraryOne } from '@/Itinerary/Contexts/ICT011ItineraryOne';
 import { ICT021PlanGroupsList } from '@/Itinerary/Contexts/ICT021PlanGroupsList';
 
 export const IMC03101PlanEditController = ({
@@ -19,7 +15,7 @@ export const IMC03101PlanEditController = ({
 	dependentPlanID,
 	planGroupsDoc,
 	isPlanGroupMounted,
-}: PlanEditPropsInterface): PlanEditControllerInterface => {
+}: PlanEditPropsInterface) => {
 	const { planGroupsQSnap } = useContext(ICT021PlanGroupsList);
 	const { plansCRef, plansDocSnapMap } = useContext(ICT031PlansMap);
 	const planDocSnap = useMemo(() => plansDocSnapMap[planID], [planID, plansDocSnapMap]);
@@ -238,19 +234,5 @@ export const IMC03101PlanEditController = ({
 		await deleteDoc(doc(plansCRef!, planID));
 	}, [planGroup, plansIndex, plansCRef, planID, planGroupsDoc.ref, plansDocSnapMap]);
 
-	const navigation = useNavigation<NativeStackNavigationProp<BottomTabParamList>>();
-	const { itineraryDocSnap } = useContext(ICT011ItineraryOne);
-
-	const onPlanPress = useCallback(() => {
-		navigation.navigate('Itinerary', {
-			screen: 'EditPlan',
-			params: {
-				itineraryID: itineraryDocSnap?.id,
-				planGroupID: planGroupsDoc.id,
-				planID: planDocSnap.id,
-			},
-		});
-	}, [navigation, itineraryDocSnap?.id, planDocSnap.id, planGroupsDoc.id]);
-
-	return { deletePlan, onPlanPress };
+	return { deletePlan };
 };

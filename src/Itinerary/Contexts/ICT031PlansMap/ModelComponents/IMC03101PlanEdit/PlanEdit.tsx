@@ -4,12 +4,12 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { Card, Chip, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { PlanEditPropsInterface } from 'spelieve-common/lib/Interfaces';
 import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 
 import { ICT031PlansMap } from '../..';
 
 import { IMC03101PlanEditController } from './PlanEditController';
+import { PlanEditPropsInterface } from './PlanEditPropsInterface';
 import { styles } from './PlanEditStyle';
 
 import { paperTheme } from '@/ThemeProvider';
@@ -20,12 +20,13 @@ export const IMC03101PlanEdit = ({
 	planGroupsDoc,
 	dependentPlanID,
 	isPlanGroupMounted,
+	onPlanPress,
 }: PlanEditPropsInterface) => {
 	const { plansDocSnapMap } = useContext(ICT031PlansMap);
 	const planDocSnap = useMemo(() => plansDocSnapMap[planID], [planID, plansDocSnapMap]);
 	const plan = useMemo(() => planDocSnap.data(), [planDocSnap]);
 
-	const { deletePlan, onPlanPress } = IMC03101PlanEditController({
+	const { deletePlan } = IMC03101PlanEditController({
 		planID,
 		beforeAfterRepresentativeType,
 		dependentPlanID,
@@ -37,7 +38,7 @@ export const IMC03101PlanEdit = ({
 		<Card style={{}}>
 			<Card.Content>
 				<Pressable
-					onPress={onPlanPress}
+					onPress={() => onPlanPress(planGroupsDoc.id, planID)}
 					style={{
 						flexDirection: 'row',
 						alignItems: 'center',

@@ -1,26 +1,19 @@
 import { AddressType, PlaceAutocompleteResult } from '@googlemaps/google-maps-services-js';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useContext, useEffect, useMemo, useState } from 'react';
 
-import { MPlacesListAddressInterface, PlacesPropsInterface } from 'spelieve-common/lib/Interfaces';
+import { MPlacesListAddressInterface } from 'spelieve-common/lib/Interfaces';
 import { MPlace } from 'spelieve-common/lib/Models/Place/PDB01/MPlace';
 
-import { BottomTabParamList } from '@/App';
 import { Logger } from '@/Common/Hooks/CHK001Utils';
 import i18n from '@/Common/Hooks/i18n-js';
+import { PlaceStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { PCT011MPlacesList } from '@/Place/Contexts/PCT011MPlacesList';
 import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001GooglePlaceAPI';
 import { InitialPlaceParams } from '@/Place/Hooks/PHK002InitialPlaceParam';
 
-export const PPA001PlacesController = ({
-	country,
-	administrativeAreaLevel1,
-	administrativeAreaLevel2,
-	locality,
-}: PlacesPropsInterface) => {
+export const PPA001PlacesController = ({ navigation, route }: PlaceStackScreenProps<'PPA001Places'>) => {
+	const { country, administrativeAreaLevel1, administrativeAreaLevel2, locality } = route.params;
 	const { placesList, setAddress } = useContext(PCT011MPlacesList);
-	const navigation = useNavigation<NativeStackNavigationProp<BottomTabParamList>>();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const PCT011MPlacesListVal = useContext(PCT011MPlacesList);
 	const initialPlaceParams = useMemo(
@@ -41,10 +34,7 @@ export const PPA001PlacesController = ({
 			setAddress({ country, administrativeAreaLevel1, administrativeAreaLevel2, locality });
 		} else {
 			// TODO: https://github.com/Ayato-kosaka/spelieve/issues/305 現在地からGepoint取得
-			navigation.navigate('Place', {
-				screen: 'PPA001Places',
-				params: initialPlaceParams,
-			});
+			navigation.navigate('PPA001Places', initialPlaceParams);
 		}
 	}, [
 		country,
@@ -57,11 +47,8 @@ export const PPA001PlacesController = ({
 	]);
 
 	const onPlaceSelected = (place_id: string) => {
-		navigation.navigate('Place', {
-			screen: 'PPA002Place',
-			params: {
-				place_id,
-			},
+		navigation.navigate('PPA002Place', {
+			place_id,
 		});
 	};
 
@@ -83,10 +70,7 @@ export const PPA001PlacesController = ({
 				locality: details?.locality,
 			};
 
-			navigation.navigate('Place', {
-				screen: 'PPA001Places',
-				params: searchedAddress,
-			});
+			navigation.navigate('PPA001Places', searchedAddress);
 		}
 	};
 

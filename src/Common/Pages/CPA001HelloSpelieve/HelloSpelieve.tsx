@@ -1,4 +1,3 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
 import { Linking, Pressable, SafeAreaView, View, Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -6,16 +5,13 @@ import { Headline, Subheading, Text, Button, Title } from 'react-native-paper';
 
 import { RecentItinerariesInterface, getRecentItineraries } from './HelloSpelieveRecentItineraryHook';
 
-import { BottomTabParamList } from '@/App';
 import i18n from '@/Common/Hooks/i18n-js';
+import { ItineraryStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { ENV } from '@/ENV';
 import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001GooglePlaceAPI';
 import { customColors, materialColors, paperTheme } from '@/ThemeProvider';
 
-export const CPA001HelloSpelieve = ({
-	route,
-	navigation,
-}: NativeStackScreenProps<BottomTabParamList, 'HelloSpelieve'>) => {
+export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenProps<'HelloSpelieve'>) => {
 	const [recentItineraries, setRecentItineraries] = useState<RecentItinerariesInterface | undefined>(undefined);
 	useEffect(() => {
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -44,12 +40,9 @@ export const CPA001HelloSpelieve = ({
 						labelStyle={{ color: 'white', fontSize: 16 }}
 						style={{ marginVertical: 32, paddingVertical: 8 }}
 						onPress={() =>
-							navigation.navigate('Itinerary', {
-								screen: 'TopTab',
-								params: {
-									screen: 'ItineraryEdit',
-									params: { itineraryID: undefined },
-								},
+							navigation.navigate('ItineraryTopTabNavigator', {
+								screen: 'ItineraryEdit',
+								params: { itineraryID: undefined },
 							})
 						}>
 						{i18n.t('新しく始める')}
@@ -132,13 +125,10 @@ export const CPA001HelloSpelieve = ({
 									<Pressable
 										key={recentItinerary.itineraryID}
 										onPress={() => {
-											navigation.navigate('Itinerary', {
-												screen: 'TopTab',
+											navigation.navigate('ItineraryTopTabNavigator', {
+												screen: 'ItineraryEdit',
 												params: {
-													screen: 'ItineraryEdit',
-													params: {
-														itineraryID: recentItinerary.itineraryID,
-													},
+													itineraryID: recentItinerary.itineraryID,
 												},
 											});
 										}}
@@ -196,13 +186,10 @@ export const CPA001HelloSpelieve = ({
 					<Button
 						mode="contained"
 						onPress={() =>
-							navigation.navigate('Itinerary', {
-								screen: 'TopTab',
+							navigation.navigate('ItineraryTopTabNavigator', {
+								screen: 'ItineraryEdit',
 								params: {
-									screen: 'ItineraryEdit',
-									params: {
-										itineraryID: 'uMFhF6OQph2UUuKEsKNa',
-									},
+									itineraryID: 'uMFhF6OQph2UUuKEsKNa',
 								},
 							})
 						}>

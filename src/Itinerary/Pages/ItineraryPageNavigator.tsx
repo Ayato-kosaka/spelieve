@@ -1,26 +1,17 @@
-import { NavigatorScreenParams } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-import { EditPlanPropsInterface, ItineraryCoverPropsInterface } from 'spelieve-common/lib/Interfaces';
 
 import { ICT011ItineraryOneProvider } from '../Contexts/ICT011ItineraryOne';
 import { ICT021PlanGroupsListProvider } from '../Contexts/ICT021PlanGroupsList';
 import { ICT031PlansMapProvider } from '../Contexts/ICT031PlansMap';
-import { INV002ItineraryTopTabNavigator, TopTabParamList } from '../Navigator/INV002ItineraryTopTabNavigator';
+import { INV002ItineraryTopTabNavigator } from '../Navigator/INV002ItineraryTopTabNavigator';
 
 import { IPA002ItineraryCover } from './IPA002ItineraryCover';
 import { IPA003EditPlan } from './IPA003EditPlan';
 
 import i18n from '@/Common/Hooks/i18n-js';
+import { ItineraryStackParamList } from '@/Common/Navigation/NavigationInterface';
 import { CPA001HelloSpelieve } from '@/Common/Pages/CPA001HelloSpelieve/HelloSpelieve';
 import { PCT012MPlaceOneProvider } from '@/Place/Contexts/PCT012MPlaceOne';
-
-export type ItineraryStackParamList = {
-	ItineraryCover: ItineraryCoverPropsInterface;
-	TopTab: NavigatorScreenParams<TopTabParamList>;
-	EditPlan: EditPlanPropsInterface;
-	HelloSpelieve: Record<string, never>;
-} & TopTabParamList;
 
 const Stack = createNativeStackNavigator<ItineraryStackParamList>();
 
@@ -31,7 +22,7 @@ export const ItineraryPageNavigator = () => (
 				<PCT012MPlaceOneProvider>
 					<Stack.Navigator initialRouteName="HelloSpelieve">
 						<Stack.Screen
-							name="TopTab"
+							name="ItineraryTopTabNavigator"
 							component={INV002ItineraryTopTabNavigator}
 							initialParams={{}}
 							options={{ title: '' }}

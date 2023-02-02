@@ -1,4 +1,3 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { setStringAsync } from 'expo-clipboard';
 import React, { useContext } from 'react';
 import { ScrollView, ActivityIndicator, View } from 'react-native';
@@ -7,23 +6,20 @@ import { Headline, Button } from 'react-native-paper';
 import { IPA001ItineraryEditController } from './ItineraryEditController';
 import { styles } from './ItineraryEditStyle';
 
-import { BottomTabParamList } from '@/App';
 import i18n from '@/Common/Hooks/i18n-js';
+import { ItineraryTopTabScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { ENV } from '@/ENV';
 import { ICT011ItineraryOne } from '@/Itinerary/Contexts/ICT011ItineraryOne';
 import { ICT021PlanGroupsList } from '@/Itinerary/Contexts/ICT021PlanGroupsList';
 import { ICT031PlansMap } from '@/Itinerary/Contexts/ICT031PlansMap';
 import { IMC03103PlanGroupsEdit } from '@/Itinerary/Contexts/ICT031PlansMap/ModelComponents/IMC03103PlanGroupEdit';
 
-export const IPA001ItineraryEdit = ({
-	route,
-	navigation,
-}: NativeStackScreenProps<BottomTabParamList, 'ItineraryEdit'>) => {
+export const IPA001ItineraryEdit = ({ route, navigation }: ItineraryTopTabScreenProps<'ItineraryEdit'>) => {
 	const { itineraryDocSnap } = useContext(ICT011ItineraryOne);
 	const { isPlansLoading } = useContext(ICT031PlansMap);
 	const { planGroupsQSnap, createPlanGroup } = useContext(ICT021PlanGroupsList);
 
-	IPA001ItineraryEditController({
+	const { onPlanPress } = IPA001ItineraryEditController({
 		route,
 		navigation,
 	});
@@ -55,7 +51,7 @@ export const IPA001ItineraryEdit = ({
 								{i18n.t('日目')}
 							</Headline>
 						)}
-						<IMC03103PlanGroupsEdit planGroupsDoc={planGroupsDoc} />
+						<IMC03103PlanGroupsEdit planGroupsDoc={planGroupsDoc} onPlanPress={onPlanPress} />
 					</View>
 				);
 			})}
