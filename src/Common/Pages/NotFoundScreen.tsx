@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 export const NotFoundScreen = ({ navigation }: RootStackScreenProps<'NotFound'>) => (
 	<View style={styles.container}>
 		<Text style={styles.title}>{i18n.t("This screen doesn't exist.")}</Text>
-		<TouchableOpacity onPress={() => navigation.replace('Root')} style={styles.link}>
+		<TouchableOpacity onPress={() => navigation.replace('BottomTabNavigator')} style={styles.link}>
 			<Text style={styles.linkText}>{i18n.t('Go to home screen!')}</Text>
 		</TouchableOpacity>
 	</View>

@@ -186,10 +186,13 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 					<Button
 						mode="contained"
 						onPress={() =>
-							navigation.navigate('ItineraryTopTabNavigator', {
-								screen: 'ItineraryEdit',
+							navigation.navigate('ThumbnailPageNavigator', {
+								screen: 'TPA001ThumbnailEditor',
 								params: {
-									itineraryID: 'uMFhF6OQph2UUuKEsKNa',
+									textList: [
+										{ key: 'keyA', val: 'valA' },
+										{ key: 'keyB', val: 'valB' },
+									],
 								},
 							})
 						}>

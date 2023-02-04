@@ -36,8 +36,8 @@ export type ThumbnailStackParamList = {
 };
 
 export type ThumbnailStackScreenProps<Screen extends keyof ThumbnailStackParamList> = CompositeScreenProps<
-	NativeStackScreenProps<RootStackParamList>,
-	NativeStackScreenProps<ThumbnailStackParamList, Screen>
+	NativeStackScreenProps<ThumbnailStackParamList, Screen>,
+	NativeStackScreenProps<RootStackParamList>
 >;
 
 /**
@@ -49,8 +49,8 @@ export type BottomTabNavigatorParamList = {
 };
 
 export type BottomTabNavigatorScreenProps<Screen extends keyof BottomTabNavigatorParamList> = CompositeScreenProps<
-	NativeStackScreenProps<RootStackParamList>,
-	MaterialBottomTabScreenProps<BottomTabNavigatorParamList, Screen>
+	MaterialBottomTabScreenProps<BottomTabNavigatorParamList, Screen>,
+	NativeStackScreenProps<RootStackParamList>
 >;
 
 /**
@@ -64,8 +64,8 @@ export type ItineraryStackParamList = {
 };
 
 export type ItineraryStackScreenProps<Screen extends keyof ItineraryStackParamList> = CompositeScreenProps<
-	NativeStackScreenProps<BottomTabNavigatorParamList>,
-	NativeStackScreenProps<ItineraryStackParamList, Screen>
+	NativeStackScreenProps<ItineraryStackParamList, Screen>,
+	CompositeScreenProps<NativeStackScreenProps<BottomTabNavigatorParamList>, NativeStackScreenProps<RootStackParamList>>
 >;
 
 /**
@@ -77,8 +77,14 @@ export type ItineraryTopTabParamList = {
 };
 
 export type ItineraryTopTabScreenProps<Screen extends keyof ItineraryTopTabParamList> = CompositeScreenProps<
-	NativeStackScreenProps<ItineraryStackParamList>,
-	MaterialTopTabScreenProps<ItineraryTopTabParamList, Screen>
+	MaterialTopTabScreenProps<ItineraryTopTabParamList, Screen>,
+	CompositeScreenProps<
+		NativeStackScreenProps<ItineraryStackParamList>,
+		CompositeScreenProps<
+			NativeStackScreenProps<BottomTabNavigatorParamList>,
+			NativeStackScreenProps<RootStackParamList>
+		>
+	>
 >;
 
 /**
@@ -90,6 +96,6 @@ export type PlaceStackParamList = {
 };
 
 export type PlaceStackScreenProps<Screen extends keyof PlaceStackParamList> = CompositeScreenProps<
-	MaterialBottomTabScreenProps<BottomTabNavigatorParamList>,
-	NativeStackScreenProps<PlaceStackParamList, Screen>
+	NativeStackScreenProps<PlaceStackParamList, Screen>,
+	CompositeScreenProps<NativeStackScreenProps<BottomTabNavigatorParamList>, NativeStackScreenProps<RootStackParamList>>
 >;
