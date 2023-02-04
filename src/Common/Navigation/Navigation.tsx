@@ -8,7 +8,7 @@ import { ModalScreen } from '../Pages/ModalScreen';
 import { NotFoundScreen } from '../Pages/NotFoundScreen';
 
 import { LinkingConfiguration } from './LinkingConfiguration';
-import { RootStackParamList, RootTabParamList } from './NavigationInterface';
+import { RootStackParamList, BottomTabNavigatorParamList, RootStackScreenProps } from './NavigationInterface';
 
 import { ItineraryPageNavigator } from '@/Itinerary/Pages/ItineraryPageNavigator';
 import { PlacePageNavigator } from '@/Place/Pages/PlacePageNavigator/PlacePageNavigator';
@@ -34,7 +34,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => (
 	<Stack.Navigator>
-		<Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+		<Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} options={{ headerShown: false }} />
 		<Stack.Screen name="ThumbnailPageNavigator" component={ThumbnailPageNavigator} options={{ headerShown: false }} />
 		<Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
 		<Stack.Group screenOptions={{ presentation: 'modal' }}>
@@ -47,9 +47,9 @@ const RootNavigator = () => (
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
  * https://reactnavigation.org/docs/bottom-tab-navigator
  */
-const BottomTab = createMaterialBottomTabNavigator<RootTabParamList>();
+const BottomTab = createMaterialBottomTabNavigator<BottomTabNavigatorParamList>();
 
-const BottomTabNavigator = () => (
+const BottomTabNavigator = ({ navigation, route }: RootStackScreenProps<'BottomTabNavigator'>) => (
 	<BottomTab.Navigator initialRouteName="Itinerary">
 		<BottomTab.Screen
 			name="Itinerary"

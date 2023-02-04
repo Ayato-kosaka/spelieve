@@ -14,7 +14,7 @@ import {
 	ItineraryTopTabParamList,
 	PlaceStackParamList,
 	RootStackParamList,
-	RootTabParamList,
+	BottomTabNavigatorParamList,
 	ThumbnailStackParamList,
 } from './NavigationInterface';
 
@@ -41,7 +41,7 @@ const PlaceStackScreens: Weaken<PlaceStackParamList, keyof PlaceStackParamList> 
 	PPA002Place: 'PPA002Place',
 };
 
-const RootTabScreens: Weaken<RootTabParamList, keyof RootTabParamList> = {
+const BottomTabNavigatorScreens: Weaken<BottomTabNavigatorParamList, keyof BottomTabNavigatorParamList> = {
 	Itinerary: {
 		screens: ItineraryStackScreens,
 	},
@@ -55,8 +55,8 @@ const ThumbnailStackScreens: Weaken<ThumbnailStackParamList, keyof ThumbnailStac
 };
 
 const RootStackScreens: Weaken<RootStackParamList, keyof RootStackParamList> = {
-	Root: {
-		screens: RootTabScreens,
+	BottomTabNavigator: {
+		screens: BottomTabNavigatorScreens,
 	},
 	ThumbnailPageNavigator: {
 		screens: ThumbnailStackScreens,
