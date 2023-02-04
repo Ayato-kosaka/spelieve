@@ -19,6 +19,8 @@ const MThumbnail = {
 };
 
 export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScreenProps<'TPA001ThumbnailEditor'>) => {
+	const { textList } = route.params;
+
 	const { decorationsMap, setDecorationsMap, createDecoration, activeDecorationID } = useContext(TCT023DecorationsMap);
 	const initialDecoration = useMemo(
 		() => ({
@@ -142,7 +144,6 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		},
 		[],
 	);
-
 	const headerRightItems = useMemo(
 		() =>
 			[
@@ -150,27 +151,32 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 					key: 'Text',
 					icon: 'text-box-plus',
 					onPress: () => createDecoration({ ...initialDecoration, decorationType: 'Text' }),
+					show: () => textList !== undefined && textList.length > 0,
 				},
 				{
 					key: 'Image',
 					icon: 'image-plus',
 					onPress: pickImage,
+					show: () => true,
 				},
 				{
 					key: 'Figure',
 					icon: 'shape-rectangle-plus',
 					onPress: () => createDecoration({ ...initialDecoration, decorationType: 'Figure' }),
+					show: () => true,
 				},
 			] as const,
-		[createDecoration, initialDecoration, pickImage],
+		[createDecoration, initialDecoration, pickImage, textList],
 	);
 	const headerRight = useCallback(
 		() => (
 			<View style={{ flexDirection: 'row' }}>
-				{headerRightItems.map((item) => (
-					// eslint-disable-next-line @typescript-eslint/no-misused-promises
-					<MaterialCommunityIcons key={item.key} name={item.icon} size={30} onPress={item.onPress} />
-				))}
+				{headerRightItems
+					.filter((item) => item.show())
+					?.map((item) => (
+						// eslint-disable-next-line @typescript-eslint/no-misused-promises
+						<MaterialCommunityIcons key={item.key} name={item.icon} size={30} onPress={item.onPress} />
+					))}
 			</View>
 		),
 		[headerRightItems],

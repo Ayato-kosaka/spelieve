@@ -1,5 +1,5 @@
 interface TDB02Decorations {
-	decorationType: 'Video' | 'Image' | 'Figure' | 'Line' | 'Text';
+	decorationType: 'Video' | 'Image' | 'Figure' | 'Text';
 	translateX: number;
 	translateY: number;
 	rotateZ: number;
