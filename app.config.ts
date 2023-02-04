@@ -25,6 +25,7 @@ export default ({ config }: ConfigContext) => {
 				bundleIdentifier: 'com.spelieve',
 				config: {
 					googleMapsApiKey: process.env.GCP_API_KEY_IOS,
+					googleMobileAdsAppId: 'ca-app-pub-8992436220024710~3024441948',
 				},
 				buildNumber: '2'
 			},
@@ -38,6 +39,7 @@ export default ({ config }: ConfigContext) => {
 					googleMaps: {
 						apiKey: process.env.GCP_API_KEY_ANDROID,
 					},
+					googleMobileAdsAppId: 'ca-app-pub-8992436220024710~4145951922',
 				},
 				versionCode: 5, // TODO: 毎submitで変更の必要あり
 				permissions: [],
