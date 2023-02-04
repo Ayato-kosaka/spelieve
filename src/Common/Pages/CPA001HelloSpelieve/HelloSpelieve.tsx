@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Linking, Pressable, SafeAreaView, View, Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Headline, Subheading, Text, Button, Title } from 'react-native-paper';
 
 import { RecentItinerariesInterface, getRecentItineraries } from './HelloSpelieveRecentItineraryHook';
 
+import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ItineraryStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { ENV } from '@/ENV';
@@ -14,13 +15,17 @@ import { customColors, materialColors, paperTheme } from '@/ThemeProvider';
 export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenProps<'HelloSpelieve'>) => {
 	const [recentItineraries, setRecentItineraries] = useState<RecentItinerariesInterface | undefined>(undefined);
 	useEffect(() => {
+		console.log('setRecentItineraries'); // TODO: 再ソートされない。この画面に入ったらソートしたい。
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		(async () => {
 			setRecentItineraries(
 				(await getRecentItineraries()).sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime()),
 			);
 		})();
-	});
+	}, []);
+
+	const { setThumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
+	console.log('setThumbnailItemMapper');
 
 	return (
 		// TODO: https://github.com/Ayato-kosaka/spelieve/issues/156 LP作成計画検討
@@ -185,14 +190,27 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 				{ENV.LOGGER && (
 					<Button
 						mode="contained"
-						onPress={() =>
+						onPress={() => {
+							setThumbnailItemMapper({
+								textList: [
+									{
+										key: 'title',
+										name: i18n.t('title'),
+										val: 'サンプル横浜行くぞい！',
+									},
+								],
+								storeUrlMap: {
+									sampleImage:
+										'https://firebasestorage.googleapis.com/v0/b/spelieve-dev.appspot.com/o/12373bcd-013b-43d3-bbcf-f95c3d991edc?alt=media&token=91171ed7-7a92-439b-9c4b-a675cabe49bc',
+								},
+							});
 							navigation.navigate('ThumbnailPageNavigator', {
 								screen: 'TPA001ThumbnailEditor',
 								params: {
 									thumbnailEditorID: 'aaaaaa',
 								},
-							})
-						}>
+							});
+						}}>
 						{i18n.t('開発者用 Itinerary で始める')}
 					</Button>
 				)}

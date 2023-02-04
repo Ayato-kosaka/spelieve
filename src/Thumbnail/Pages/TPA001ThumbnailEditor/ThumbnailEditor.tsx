@@ -6,6 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import { styles } from './ThumbnailEditorStyle';
 
+import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
 import { CCO006ImagePickerController } from '@/Common/Components/CCO006ImagePicker/ImagePickerController';
 import { ImagePickerPropsInterface } from '@/Common/Components/CCO006ImagePicker/ImagePickerPropsInterface';
 import i18n from '@/Common/Hooks/i18n-js';
@@ -19,7 +20,9 @@ const MThumbnail = {
 };
 
 export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScreenProps<'TPA001ThumbnailEditor'>) => {
-	const { textList } = route.params;
+	const { thumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
+	const { textList, storeUrlMap } = thumbnailItemMapper;
+	console.log(textList && textList[0], storeUrlMap);
 
 	const { decorationsMap, setDecorationsMap, createDecoration, activeDecorationID } = useContext(TCT023DecorationsMap);
 	const initialDecoration = useMemo(

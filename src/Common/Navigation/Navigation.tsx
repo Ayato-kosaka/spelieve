@@ -3,6 +3,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import { CCO001GlobalContext } from '../Components/CCO001GlobalContext/GlobalContext';
 import i18n from '../Hooks/i18n-js';
 import { ModalScreen } from '../Pages/ModalScreen';
 import { NotFoundScreen } from '../Pages/NotFoundScreen';
@@ -33,14 +34,16 @@ export const Navigation = () => (
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => (
-	<Stack.Navigator>
-		<Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} options={{ headerShown: false }} />
-		<Stack.Screen name="ThumbnailPageNavigator" component={ThumbnailPageNavigator} options={{ headerShown: false }} />
-		<Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-		<Stack.Group screenOptions={{ presentation: 'modal' }}>
-			<Stack.Screen name="Modal" component={ModalScreen} />
-		</Stack.Group>
-	</Stack.Navigator>
+	<CCO001GlobalContext>
+		<Stack.Navigator>
+			<Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} options={{ headerShown: false }} />
+			<Stack.Screen name="ThumbnailPageNavigator" component={ThumbnailPageNavigator} options={{ headerShown: false }} />
+			<Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+			<Stack.Group screenOptions={{ presentation: 'modal' }}>
+				<Stack.Screen name="Modal" component={ModalScreen} />
+			</Stack.Group>
+		</Stack.Navigator>
+	</CCO001GlobalContext>
 );
 
 /**
