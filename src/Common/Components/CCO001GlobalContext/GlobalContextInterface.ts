@@ -4,6 +4,7 @@ export interface ThumbnailEditorValInterface {
 }
 
 export interface ThumbnailItemMapperInterface {
+	thumbnailID?: string;
 	textList?: {
 		key: string;
 		name: string;

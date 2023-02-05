@@ -1,4 +1,8 @@
+import { CollectionReference, DocumentReference } from 'firebase/firestore';
+
 import { Decorations } from 'spelieve-common/lib/Models/Thumbnail/TDB02/Decorations';
+
+import { MThumbnailOneInterface } from '../TCT011MThumbnailOne/MThumbnailOneInterface';
 
 import { Weaken } from '@/Common/Hooks/CHK003TypeScript';
 
@@ -14,6 +18,9 @@ export interface DecorationsMapValInterface {
 			[key: string]: DecorationsMapInterface;
 		}>
 	>;
+	getCollection: (
+		parentDocRef: DocumentReference<MThumbnailOneInterface>,
+	) => CollectionReference<DecorationsMapInterface>;
 	createDecoration: (data: Omit<DecorationsMapInterface, 'color' | 'order'>) => void;
 	activeDecorationID: string;
 	setActiveDecorationID: React.Dispatch<React.SetStateAction<string>>;

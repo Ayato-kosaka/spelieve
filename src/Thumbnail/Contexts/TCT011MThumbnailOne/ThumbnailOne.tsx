@@ -10,13 +10,17 @@ import db from '@/Place/Endpoint/firestore';
 
 export const TCT011MThumbnailOne = createContext({} as MThumbnailOneValInterface);
 
+const initialThumbnail: MThumbnailOneInterface = {
+	backgroundItemType: 'Figure',
+};
+
 export const TCT011MThumbnailOneProvider = ({ children }: { children: ReactNode }) => {
-	const [thumbnail, setThumbnail] = useState<MThumbnailOneInterface | undefined>();
+	const [thumbnail, setThumbnail] = useState<MThumbnailOneInterface>({} as MThumbnailOneInterface);
 	const [thumbnailDocRef, setThumbnailDocRef] = useState<DocumentReference<MThumbnailOneInterface> | undefined>();
 	const [thumbnailID, setThumbnailID] = useState<string | undefined>();
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
-	const collectionRef = useMemo(
+	const thumbnailCollectionRef = useMemo(
 		() =>
 			collection(db, MThumbnail.modelName).withConverter(
 				FirestoreConverter<MThumbnail, MThumbnailOneInterface>(
@@ -37,31 +41,34 @@ export const TCT011MThumbnailOneProvider = ({ children }: { children: ReactNode 
 	useEffect(() => {
 		if (!thumbnailID) {
 			setIsLoading(false);
-			setThumbnail(undefined); // TODO 要初期化
+			setThumbnail(initialThumbnail);
 			return;
 		}
 		setIsLoading(true);
 
 		const fetchData = async () => {
-			const docRef = doc(collectionRef, thumbnailID);
+			const docRef = doc(thumbnailCollectionRef, thumbnailID);
 			const documentSnapshot = await getDoc(docRef);
-			setThumbnailDocRef(docRef);
-			setThumbnail(documentSnapshot.data());
+			if (documentSnapshot.exists()) {
+				setThumbnailDocRef(docRef);
+				setThumbnail(documentSnapshot.data());
+			}
 			setIsLoading(false);
 		};
 
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		fetchData();
-	}, [collectionRef, thumbnailID]);
+	}, [thumbnailCollectionRef, thumbnailID]);
 
 	const value = useMemo(
 		() => ({
 			thumbnail,
+			thumbnailCollectionRef,
 			thumbnailDocRef,
 			setThumbnailID,
 			isLoading,
 		}),
-		[isLoading, thumbnail, thumbnailDocRef],
+		[isLoading, thumbnail, thumbnailCollectionRef, thumbnailDocRef],
 	);
 	return <TCT011MThumbnailOne.Provider value={value}>{children}</TCT011MThumbnailOne.Provider>;
 };

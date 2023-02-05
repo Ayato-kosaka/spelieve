@@ -1,10 +1,11 @@
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, DocumentReference, getDocs } from 'firebase/firestore';
 import { useState, createContext, useEffect, useMemo, ReactNode, useCallback, useContext } from 'react';
 import uuid from 'react-native-uuid';
 
 import { Decorations } from 'spelieve-common/lib/Models/Thumbnail/TDB02/Decorations';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
+import { MThumbnailOneInterface } from '../TCT011MThumbnailOne/MThumbnailOneInterface';
 import { TCT011MThumbnailOne } from '../TCT011MThumbnailOne/ThumbnailOne';
 
 import { DecorationsMapInterface, DecorationsMapValInterface } from './DecorationsMapInterface';
@@ -33,6 +34,12 @@ export const TCT023DecorationsMapProvider = ({ children }: { children: ReactNode
 		[],
 	);
 
+	const getCollection = useCallback(
+		(parentDocRef: DocumentReference<MThumbnailOneInterface>) =>
+			collection(parentDocRef, Decorations.modelName).withConverter(firestoreConverter),
+		[firestoreConverter],
+	);
+
 	useEffect(() => {
 		if (mThumbnailOneIsLoading || !thumbnailDocRef) {
 			setIsLoading(false);
@@ -42,7 +49,7 @@ export const TCT023DecorationsMapProvider = ({ children }: { children: ReactNode
 		setIsLoading(true);
 
 		const fetchData = async () => {
-			const collectionRef = collection(thumbnailDocRef, Decorations.modelName).withConverter(firestoreConverter);
+			const collectionRef = getCollection(thumbnailDocRef);
 			const querySnapshot = await getDocs(collectionRef);
 			setDecorationsMap(
 				querySnapshot.docs.reduce((prev, docSnap) => {
@@ -55,7 +62,7 @@ export const TCT023DecorationsMapProvider = ({ children }: { children: ReactNode
 
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		fetchData();
-	}, [firestoreConverter, mThumbnailOneIsLoading, thumbnailDocRef]);
+	}, [firestoreConverter, getCollection, mThumbnailOneIsLoading, thumbnailDocRef]);
 
 	const createDecoration: DecorationsMapValInterface['createDecoration'] = useCallback(
 		(data) => {
@@ -68,10 +75,12 @@ export const TCT023DecorationsMapProvider = ({ children }: { children: ReactNode
 						.toString(16)
 						.padStart(6, '0')}`,
 					order:
-						Object.keys(decorationsMap).reduce(
-							(prev, key) => Math.max(prev, decorationsMap[key].order),
-							Number.MIN_SAFE_INTEGER,
-						) + 1,
+						Object.keys(decorationsMap).length > 0
+							? Object.keys(decorationsMap).reduce(
+									(prev, key) => Math.max(prev, decorationsMap[key].order),
+									Number.MIN_SAFE_INTEGER,
+							  ) + 1
+							: 0,
 				},
 			});
 		},
@@ -84,12 +93,13 @@ export const TCT023DecorationsMapProvider = ({ children }: { children: ReactNode
 		() => ({
 			decorationsMap,
 			setDecorationsMap,
+			getCollection,
 			createDecoration,
 			activeDecorationID,
 			setActiveDecorationID,
 			isLoading,
 		}),
-		[activeDecorationID, createDecoration, decorationsMap, isLoading],
+		[activeDecorationID, createDecoration, decorationsMap, getCollection, isLoading],
 	);
 
 	return <TCT023DecorationsMap.Provider value={value}>{children}</TCT023DecorationsMap.Provider>;

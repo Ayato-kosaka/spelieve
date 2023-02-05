@@ -1,4 +1,5 @@
 import { MediaTypeOptions } from 'expo-image-picker';
+import { addDoc, doc, setDoc } from 'firebase/firestore';
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { GestureResponderEvent, Pressable, PressableProps, SafeAreaView, ScrollView, View } from 'react-native';
 import { ActivityIndicator, Text } from 'react-native-paper';
@@ -30,10 +31,10 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 	const { textList } = thumbnailItemMapper;
 
 	// コンテキスト取得
-	const { setThumbnailID } = useContext(TCT011MThumbnailOne);
-	const { isLoading } = useContext(TCT023DecorationsMap);
+	const { thumbnail, thumbnailCollectionRef, setThumbnailID } = useContext(TCT011MThumbnailOne);
+	const { decorationsMap, setDecorationsMap, getCollection, createDecoration, activeDecorationID, isLoading } =
+		useContext(TCT023DecorationsMap);
 
-	const { decorationsMap, setDecorationsMap, createDecoration, activeDecorationID } = useContext(TCT023DecorationsMap);
 	const initialDecoration = useMemo(
 		() => ({
 			translateX: 200,
@@ -51,6 +52,31 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 			// テンプレート選択に画面遷移
 		}
 	}, [fromThumbnailID, setThumbnailID]);
+
+	// This event is emitted when the user is leaving the screen
+	const createThumbnail = useCallback(async () => {
+		const tDocRef = await addDoc(thumbnailCollectionRef, thumbnail); // TODO: createdAt
+		await Promise.all(
+			Object.keys(decorationsMap).map(async (decorationID) => {
+				const dDocRef = doc(getCollection(tDocRef), decorationID);
+				await setDoc(dDocRef, decorationsMap[decorationID]);
+			}),
+		);
+		return tDocRef.id;
+	}, [decorationsMap, getCollection, thumbnail, thumbnailCollectionRef]);
+	useEffect(() => {
+		// eslint-disable-next-line @typescript-eslint/no-misused-promises
+		const unsubscribe = navigation.addListener('beforeRemove', async () => {
+			const thumbnailID = await createThumbnail();
+			setThumbnailItemMapper((v) => ({
+				...v,
+				thumbnailID,
+				// TODO: Itinerary に返す画像を作る
+			}));
+			console.log(thumbnailID);
+		});
+		return unsubscribe;
+	}, [createThumbnail, navigation, setThumbnailItemMapper, thumbnail]);
 
 	const onPickImage: ImagePickerPropsInterface['onPickImage'] = useCallback(
 		(imageUrl, key) => {
