@@ -30,7 +30,8 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 	const { textList } = thumbnailItemMapper;
 
 	// コンテキスト取得
-	const { thumbnail, setThumbnailID, isLoading } = useContext(TCT011MThumbnailOne);
+	const { setThumbnailID } = useContext(TCT011MThumbnailOne);
+	const { isLoading } = useContext(TCT023DecorationsMap);
 
 	const { decorationsMap, setDecorationsMap, createDecoration, activeDecorationID } = useContext(TCT023DecorationsMap);
 	const initialDecoration = useMemo(

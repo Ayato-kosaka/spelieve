@@ -1,31 +1,65 @@
-import { useState, createContext, useEffect, useMemo, ReactNode, useCallback } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
+import { useState, createContext, useEffect, useMemo, ReactNode, useCallback, useContext } from 'react';
+import uuid from 'react-native-uuid';
 
-import { DecorationsMapValInteface } from './DecorationsMapInterface';
+import { Decorations } from 'spelieve-common/lib/Models/Thumbnail/TDB02/Decorations';
+import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
-export const TCT023DecorationsMap = createContext({} as DecorationsMapValInteface);
+import { TCT011MThumbnailOne } from '../TCT011MThumbnailOne/ThumbnailOne';
+
+import { DecorationsMapInterface, DecorationsMapValInterface } from './DecorationsMapInterface';
+
+export const TCT023DecorationsMap = createContext({} as DecorationsMapValInterface);
 
 export const TCT023DecorationsMapProvider = ({ children }: { children: ReactNode }) => {
-	const [decorationsMap, setDecorationsMap] = useState<DecorationsMapValInteface['decorationsMap']>({});
+	const [decorationsMap, setDecorationsMap] = useState<DecorationsMapValInterface['decorationsMap']>({});
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
-	const decorationsCRef = 'decorationsCRef';
+	const { thumbnailDocRef, isLoading: mThumbnailOneIsLoading } = useContext(TCT011MThumbnailOne);
+
+	const firestoreConverter = useMemo(
+		() =>
+			FirestoreConverter<Decorations, DecorationsMapInterface>(
+				Decorations,
+				(model) => {
+					const decorationType = model.decorationType as DecorationsMapInterface['decorationType'];
+					return {
+						...model,
+						decorationType,
+					};
+				},
+				(data) => data,
+			),
+		[],
+	);
 
 	useEffect(() => {
-		setDecorationsMap({
-			XXX: {
-				decorationType: 'Figure',
-				translateX: 200,
-				translateY: 0,
-				rotateZ: 0,
-				scale: 1,
-				order: 0,
-				color: 'red',
-			},
-		});
-	}, []);
+		if (mThumbnailOneIsLoading || !thumbnailDocRef) {
+			setIsLoading(false);
+			setDecorationsMap({});
+			return;
+		}
+		setIsLoading(true);
 
-	const createDecoration: DecorationsMapValInteface['createDecoration'] = useCallback(
+		const fetchData = async () => {
+			const collectionRef = collection(thumbnailDocRef, Decorations.modelName).withConverter(firestoreConverter);
+			const querySnapshot = await getDocs(collectionRef);
+			setDecorationsMap(
+				querySnapshot.docs.reduce((prev, docSnap) => {
+					prev[docSnap.id] = docSnap.data();
+					return prev;
+				}, {} as DecorationsMapValInterface['decorationsMap']),
+			);
+			setIsLoading(false);
+		};
+
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
+		fetchData();
+	}, [firestoreConverter, mThumbnailOneIsLoading, thumbnailDocRef]);
+
+	const createDecoration: DecorationsMapValInterface['createDecoration'] = useCallback(
 		(data) => {
-			const id = new Date().getTime().toString(); // TODO: addDoc に変更する
+			const id = uuid.v4() as unknown as string;
 			setDecorationsMap({
 				...decorationsMap,
 				[id]: {
@@ -53,10 +87,9 @@ export const TCT023DecorationsMapProvider = ({ children }: { children: ReactNode
 			createDecoration,
 			activeDecorationID,
 			setActiveDecorationID,
-			// decorationsCRef,
-			// isDecorationsLoading,
+			isLoading,
 		}),
-		[activeDecorationID, createDecoration, decorationsMap],
+		[activeDecorationID, createDecoration, decorationsMap, isLoading],
 	);
 
 	return <TCT023DecorationsMap.Provider value={value}>{children}</TCT023DecorationsMap.Provider>;
