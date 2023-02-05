@@ -21,7 +21,7 @@ export interface DecorationsMapValInterface {
 	getCollection: (
 		parentDocRef: DocumentReference<MThumbnailOneInterface>,
 	) => CollectionReference<DecorationsMapInterface>;
-	createDecoration: (data: Omit<DecorationsMapInterface, 'color' | 'order'>) => void;
+	createDecoration: (data: Omit<DecorationsMapInterface, 'color' | 'order' | 'createdAt' | 'updatedAt'>) => void;
 	activeDecorationID: string;
 	setActiveDecorationID: React.Dispatch<React.SetStateAction<string>>;
 	isLoading: boolean;

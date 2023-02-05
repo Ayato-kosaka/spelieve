@@ -81,6 +81,8 @@ export const TCT023DecorationsMapProvider = ({ children }: { children: ReactNode
 									Number.MIN_SAFE_INTEGER,
 							  ) + 1
 							: 0,
+					createdAt: new Date(),
+					updatedAt: new Date(),
 				},
 			});
 		},

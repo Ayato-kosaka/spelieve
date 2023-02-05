@@ -63,7 +63,11 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 
 	// This event is emitted when the user is leaving the screen
 	const createThumbnail = useCallback(async () => {
-		const tDocRef = await addDoc(thumbnailCollectionRef, thumbnail); // TODO: createdAt
+		const tDocRef = await addDoc(thumbnailCollectionRef, {
+			...thumbnail,
+			imageUrl: 'TODO: 要修正',
+			createdAt: new Date(),
+		});
 		await Promise.all(
 			Object.keys(decorationsMap).map(async (decorationID) => {
 				const dDocRef = doc(getCollection(tDocRef), decorationID);

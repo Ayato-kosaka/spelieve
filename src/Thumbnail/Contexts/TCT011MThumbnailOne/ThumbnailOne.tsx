@@ -12,6 +12,10 @@ export const TCT011MThumbnailOne = createContext({} as MThumbnailOneValInterface
 
 const initialThumbnail: MThumbnailOneInterface = {
 	backgroundItemType: 'Figure',
+	copied_count: 0,
+	imageUrl: '',
+	createdAt: new Date(),
+	updatedAt: new Date(),
 };
 
 export const TCT011MThumbnailOneProvider = ({ children }: { children: ReactNode }) => {
@@ -32,7 +36,13 @@ export const TCT011MThumbnailOneProvider = ({ children }: { children: ReactNode 
 							backgroundItemType,
 						};
 					},
-					(data) => data,
+					(data) => {
+						const copiedCount = 0;
+						return {
+							...data,
+							copied_count: copiedCount,
+						};
+					},
 				),
 			),
 		[],

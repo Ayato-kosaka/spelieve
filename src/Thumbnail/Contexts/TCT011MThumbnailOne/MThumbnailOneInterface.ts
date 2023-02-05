@@ -6,6 +6,7 @@ import { Weaken } from '@/Common/Hooks/CHK003TypeScript';
 
 export interface MThumbnailOneInterface extends Weaken<MThumbnail, 'backgroundItemType'> {
 	backgroundItemType: 'Video' | 'Image' | 'Figure';
+	readonly copied_count: MThumbnail['copied_count'];
 }
 
 export interface MThumbnailOneValInterface {
