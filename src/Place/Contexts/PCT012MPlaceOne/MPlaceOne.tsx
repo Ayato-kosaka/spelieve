@@ -106,11 +106,13 @@ export const PCT012MPlaceOneProvider = ({ children }: { children: ReactNode }) =
 		fetchData();
 	}, [collectionRef, placeID, language]);
 
-	// eslint-disable-next-line react/jsx-no-constructed-context-values
-	const value: MPlaceOneValInterface = {
-		place,
-		setPlaceID,
-		isLoading,
-	};
+	const value = useMemo(
+		() => ({
+			place,
+			setPlaceID,
+			isLoading,
+		}),
+		[isLoading, place],
+	);
 	return <PCT012MPlaceOne.Provider value={value}>{children}</PCT012MPlaceOne.Provider>;
 };

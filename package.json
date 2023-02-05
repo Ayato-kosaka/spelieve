@@ -30,6 +30,7 @@
     "expo-dev-client": "~2.0.1",
     "expo-image-manipulator": "~11.0.0",
     "expo-image-picker": "~14.0.2",
+    "expo-linking": "~3.3.0",
     "expo-localization": "14.0.0",
     "expo-status-bar": "1.4.2",
     "firebase": "9.15.0",
@@ -53,8 +54,7 @@
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "0.18.10",
     "react-spring-bottom-sheet": "^3.4.1",
-    "spelieve-common": "^1.1.113",
-    "expo-linking": "~3.3.0"
+    "spelieve-common": "^1.1.124"
   },
   "devDependencies": {
     "@babel/core": "7.20.12",
