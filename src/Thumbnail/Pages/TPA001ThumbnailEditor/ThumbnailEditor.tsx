@@ -22,8 +22,7 @@ const MThumbnail = {
 
 export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScreenProps<'TPA001ThumbnailEditor'>) => {
 	const { thumbnailItemMapper, setThumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
-	const { textList, storeUrlMap } = thumbnailItemMapper;
-	console.log(textList && textList[0], storeUrlMap);
+	const { textList } = thumbnailItemMapper;
 
 	const { decorationsMap, setDecorationsMap, createDecoration, activeDecorationID } = useContext(TCT023DecorationsMap);
 	const initialDecoration = useMemo(
