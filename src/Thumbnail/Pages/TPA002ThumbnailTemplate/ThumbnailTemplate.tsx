@@ -30,9 +30,9 @@ export const TPA002ThumbnailTemplate = ({
 
 	return (
 		<View>
-			{thumbnailList.map((thumbnailDoc) => (
+			{thumbnailList.map((thumbnailDoc, index) => (
 				<Pressable key={thumbnailDoc.id} onPress={() => onThumbnailSelected(thumbnailDoc.id)}>
-					<Text>{thumbnailDoc.data().backgroundItemType}</Text>
+					<Text>Template{index}</Text>
 				</Pressable>
 			))}
 		</View>

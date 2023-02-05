@@ -24,7 +24,7 @@ const en: typeof Lang = {
 	お問い合わせ: 'Contact',
 	フィードバック: 'Feedback',
 	'Copyright © Spelieve ': 'Copyright © Spelieve ',
-	'開発者用 Itinerary で始める': '開発者用 Itinerary で始める',
+	開発者用: '開発者用',
 
 	// ImagePickerCOntroller.ts
 	'Upload failed, sorry :(': 'Upload failed, sorry :(',

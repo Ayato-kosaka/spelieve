@@ -211,7 +211,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 								},
 							});
 						}}>
-						{i18n.t('開発者用 Itinerary で始める')}
+						{i18n.t('開発者用')}
 					</Button>
 				)}
 			</ScrollView>
