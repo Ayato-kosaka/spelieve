@@ -1,8 +1,16 @@
 import { MediaTypeOptions } from 'expo-image-picker';
 import { addDoc, doc, setDoc } from 'firebase/firestore';
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { GestureResponderEvent, Pressable, PressableProps, SafeAreaView, ScrollView, View } from 'react-native';
-import { ActivityIndicator, Text } from 'react-native-paper';
+import {
+	ActivityIndicator,
+	GestureResponderEvent,
+	Pressable,
+	PressableProps,
+	SafeAreaView,
+	ScrollView,
+	View,
+} from 'react-native';
+import { Button, Text } from 'react-native-paper';
 import uuid from 'react-native-uuid';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -253,6 +261,12 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		<>
 			<SafeAreaView />
 			<View style={{ height: '100%', justifyContent: 'space-between' }}>
+				<Button
+					onPress={() => {
+						navigation.navigate('TPA002ThumbnailTemplate', {});
+					}}>
+					go to template
+				</Button>
 				<TMC01101ThumbnailBackground aspectRatio={4 / 3} />
 				<View>
 					<ScrollView horizontal>

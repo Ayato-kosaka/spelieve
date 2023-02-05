@@ -6,7 +6,7 @@ import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter
 
 import { MThumbnailOneInterface, MThumbnailOneValInterface } from './MThumbnailOneInterface';
 
-import db from '@/Place/Endpoint/firestore';
+import db from '@/Thumbnail/Endpoint/firestore';
 
 export const TCT011MThumbnailOne = createContext({} as MThumbnailOneValInterface);
 

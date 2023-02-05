@@ -12,6 +12,7 @@ import {
 } from 'spelieve-common/lib/Interfaces';
 
 import { ThumbnailEditorPropsInterface } from '@/Thumbnail/Pages/TPA001ThumbnailEditor/ThumbnailEditorInterface';
+import { ThumbnailTemplatePropsInterface } from '@/Thumbnail/Pages/TPA002ThumbnailTemplate/ThumbnailTemplateInterface';
 
 /**
  * Root Stack の型定義
@@ -33,6 +34,7 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> = Nati
  */
 export type ThumbnailStackParamList = {
 	TPA001ThumbnailEditor: ThumbnailEditorPropsInterface;
+	TPA002ThumbnailTemplate: ThumbnailTemplatePropsInterface;
 };
 
 export type ThumbnailStackScreenProps<Screen extends keyof ThumbnailStackParamList> = CompositeScreenProps<

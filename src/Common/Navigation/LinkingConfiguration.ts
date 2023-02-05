@@ -52,6 +52,7 @@ const BottomTabNavigatorScreens: Weaken<BottomTabNavigatorParamList, keyof Botto
 
 const ThumbnailStackScreens: Weaken<ThumbnailStackParamList, keyof ThumbnailStackParamList> = {
 	TPA001ThumbnailEditor: 'ThumbnailEditor',
+	TPA002ThumbnailTemplate: 'ThumbnailTemplate',
 };
 
 const RootStackScreens: Weaken<RootStackParamList, keyof RootStackParamList> = {
