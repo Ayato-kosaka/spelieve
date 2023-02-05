@@ -2,6 +2,7 @@ import { MediaTypeOptions } from 'expo-image-picker';
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { GestureResponderEvent, Pressable, PressableProps, SafeAreaView, ScrollView, View } from 'react-native';
 import { Text } from 'react-native-paper';
+import uuid from 'react-native-uuid';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { styles } from './ThumbnailEditorStyle';
@@ -16,11 +17,11 @@ import { TMC01101ThumbnailBackground } from '@/Thumbnail/Contexts/TCT011MThumbna
 import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
 
 const MThumbnail = {
-	baseItemType: 'Shape',
+	backgroundItemType: 'Shape',
 };
 
 export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScreenProps<'TPA001ThumbnailEditor'>) => {
-	const { thumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
+	const { thumbnailItemMapper, setThumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
 	const { textList, storeUrlMap } = thumbnailItemMapper;
 	console.log(textList && textList[0], storeUrlMap);
 
@@ -36,10 +37,21 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 	); // TODO: 要修正 translateX, translateY は 中央に
 
 	const onPickImage: ImagePickerPropsInterface['onPickImage'] = useCallback(
-		(imageUrl) => {
-			createDecoration({ ...initialDecoration, decorationType: 'Image', imageUrl });
+		(imageUrl, key) => {
+			setThumbnailItemMapper((v) => {
+				if (!key) {
+					key = uuid.v4() as string;
+				}
+				if (v.storeUrlMap) {
+					v.storeUrlMap[key] = imageUrl;
+				} else {
+					v.storeUrlMap = { [key]: imageUrl };
+				}
+				return v;
+			});
+			createDecoration({ ...initialDecoration, decorationType: 'Image', key });
 		},
-		[createDecoration, initialDecoration],
+		[createDecoration, initialDecoration, setThumbnailItemMapper],
 	);
 
 	const { pickImage } = CCO006ImagePickerController({

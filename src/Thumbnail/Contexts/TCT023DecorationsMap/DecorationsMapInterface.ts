@@ -6,7 +6,7 @@ interface TDB02Decorations {
 	scale: number;
 	order: number;
 	color: string;
-	imageUrl?: string; // Image の時必須
+	key?: string; // 'Video' | 'Image' | 'Text' で時必須
 }
 
 export type DecorationsMapInteface = TDB02Decorations;
