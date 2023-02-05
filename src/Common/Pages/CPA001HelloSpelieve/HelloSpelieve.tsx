@@ -207,7 +207,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 							navigation.navigate('ThumbnailPageNavigator', {
 								screen: 'TPA001ThumbnailEditor',
 								params: {
-									thumbnailEditorID: 'aaaaaa',
+									fromThumbnailID: 'aaaaaa',
 								},
 							});
 						}}>

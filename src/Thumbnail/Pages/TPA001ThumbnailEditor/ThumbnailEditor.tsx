@@ -1,7 +1,7 @@
 import { MediaTypeOptions } from 'expo-image-picker';
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { GestureResponderEvent, Pressable, PressableProps, SafeAreaView, ScrollView, View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { ActivityIndicator, Text } from 'react-native-paper';
 import uuid from 'react-native-uuid';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -14,6 +14,7 @@ import i18n from '@/Common/Hooks/i18n-js';
 import { ThumbnailStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { storage } from '@/Itinerary/Endpoint/firebaseStorage';
 import { TMC01101ThumbnailBackground } from '@/Thumbnail/Contexts/TCT011MThumbnailOne/ModelComponents/TMC01101ThumbnailBackground/ThumbnailBackground';
+import { TCT011MThumbnailOne } from '@/Thumbnail/Contexts/TCT011MThumbnailOne/ThumbnailOne';
 import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
 
 const MThumbnail = {
@@ -21,8 +22,15 @@ const MThumbnail = {
 };
 
 export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScreenProps<'TPA001ThumbnailEditor'>) => {
+	// パラメータ取得
+	const { fromThumbnailID } = route.params;
+
+	// グローバルコンテキスト取得
 	const { thumbnailItemMapper, setThumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
 	const { textList } = thumbnailItemMapper;
+
+	// コンテキスト取得
+	const { thumbnail, setThumbnailID, isLoading } = useContext(TCT011MThumbnailOne);
 
 	const { decorationsMap, setDecorationsMap, createDecoration, activeDecorationID } = useContext(TCT023DecorationsMap);
 	const initialDecoration = useMemo(
@@ -34,6 +42,14 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		}),
 		[],
 	); // TODO: 要修正 translateX, translateY は 中央に
+
+	// route.params.fromThumbnailID を監視し、context に渡す
+	useEffect(() => {
+		setThumbnailID(fromThumbnailID);
+		if (!fromThumbnailID) {
+			// テンプレート選択に画面遷移
+		}
+	}, [fromThumbnailID, setThumbnailID]);
 
 	const onPickImage: ImagePickerPropsInterface['onPickImage'] = useCallback(
 		(imageUrl, key) => {
@@ -201,6 +217,10 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 			headerRight,
 		});
 	}, [headerRight, navigation]);
+
+	if (isLoading) {
+		return <ActivityIndicator animating />;
+	}
 
 	return (
 		<>
