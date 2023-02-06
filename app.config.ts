@@ -63,9 +63,5 @@ export default ({ config }: ConfigContext) => {
 				},
 			},
 		},
-		"react-native-google-mobile-ads": {
-			"android_app_id": "ca-app-pub-8992436220024710~3024441948",
-			"ios_app_id": "ca-app-pub-8992436220024710~4145951922"
-		}
 	};
 };
