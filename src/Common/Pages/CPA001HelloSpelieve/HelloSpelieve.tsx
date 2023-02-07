@@ -10,7 +10,7 @@ import { ItineraryStackScreenProps } from '@/Common/Navigation/NavigationInterfa
 import { ENV } from '@/ENV';
 import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001GooglePlaceAPI';
 import { customColors, materialColors, paperTheme } from '@/ThemeProvider';
-import { AppOpenAd, InterstitialAd, RewardedAd, BannerAd, TestIds, BannerAdSize } from 'react-native-google-mobile-ads';
+import { GoogleBannerAd } from '@/Common/Components/CCO007GoogleBannerAd/GoogleBannerAd';
 
 export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenProps<'HelloSpelieve'>) => {
 	const [recentItineraries, setRecentItineraries] = useState<RecentItinerariesInterface | undefined>(undefined);
@@ -28,13 +28,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 		<>
 			<SafeAreaView />
 			<ScrollView>
-				<BannerAd 
-					unitId={TestIds.BANNER}
-					size={BannerAdSize.FULL_BANNER}
-					requestOptions={{
-						requestNonPersonalizedAdsOnly: true,
-					}}
-				/>
+				<GoogleBannerAd />
 				<Image
 					// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
 					source={require('@assets/adaptive-icon.png')}
