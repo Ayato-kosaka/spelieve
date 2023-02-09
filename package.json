@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
+    "@ctrl/react-adsense": "^1.6.1",
     "@googlemaps/google-maps-services-js": "^3.3.16",
     "@gorhom/bottom-sheet": "^4.4.5",
     "@react-google-maps/api": "^2.13.1",
