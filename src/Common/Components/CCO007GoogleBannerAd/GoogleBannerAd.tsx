@@ -11,11 +11,11 @@ const ProductionAdUnitID: string = Platform.select<string>({
 const adUnitID = __DEV__ ? TestIds.BANNER : ProductionAdUnitID;
 
 export const GoogleBannerAd = () => (
-		<BannerAd
-			unitId={adUnitID}
-			size={BannerAdSize.FULL_BANNER}
-			requestOptions={{
-				requestNonPersonalizedAdsOnly: true,
-			}}
-		/>
-	);
+	<BannerAd
+		unitId={adUnitID}
+		size={BannerAdSize.FULL_BANNER}
+		requestOptions={{
+			requestNonPersonalizedAdsOnly: true,
+		}}
+	/>
+);
