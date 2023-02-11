@@ -60,7 +60,7 @@ export const TCT011MThumbnailOneProvider = ({ children }: { children: ReactNode 
 			const documentSnapshot = await getDoc(docRef);
 			if (documentSnapshot.exists()) {
 				setThumbnailDocRef(docRef);
-				setThumbnail(documentSnapshot.data());
+				setThumbnail({ ...documentSnapshot.data(), prevThumbnailID: thumbnailID });
 			}
 			setIsLoading(false);
 		};
