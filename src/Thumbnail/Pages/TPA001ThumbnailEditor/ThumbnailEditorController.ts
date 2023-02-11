@@ -8,11 +8,12 @@ import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/G
 import { CCO006ImagePickerController } from '@/Common/Components/CCO006ImagePicker/ImagePickerController';
 import { ImagePickerPropsInterface } from '@/Common/Components/CCO006ImagePicker/ImagePickerPropsInterface';
 import { CCO008ViewShot } from '@/Common/Components/CCO008ViewShot/ViewShot';
+import { CHK005StorageUtils } from '@/Common/Hooks/CHK005StorageUtils';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ThumbnailStackScreenProps } from '@/Common/Navigation/NavigationInterface';
-import { storage } from '@/Itinerary/Endpoint/firebaseStorage';
 import { TCT011MThumbnailOne } from '@/Thumbnail/Contexts/TCT011MThumbnailOne/ThumbnailOne';
 import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
+import { storage } from '@/Thumbnail/Endpoint/firebaseStorage';
 
 export const TPA001ThumbnailEditorController = ({
 	navigation,
@@ -81,7 +82,8 @@ export const TPA001ThumbnailEditorController = ({
 		hideDialog();
 		// const thumbnailID = await createThumbnail();
 		const uri = await viewShotRef?.current?.capture?.();
-		thumbnailItemMapper.onBack?.('thumbnailID', uri);
+		const downloadURL = uri && (await CHK005StorageUtils.uploadImageAsync(storage, uri));
+		thumbnailItemMapper.onBack?.('thumbnailID', downloadURL);
 		if (dialog.action) {
 			navigation.dispatch(dialog.action);
 		}
@@ -95,8 +97,8 @@ export const TPA001ThumbnailEditorController = ({
 
 	// This event is emitted when the user is leaving the screen
 	useEffect(() => {
-		// eslint-disable-next-line @typescript-eslint/no-misused-promises
 		const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+			// TODO: change を検知し、ダイアログの表示を制御する
 			// if (!hasUnsavedChanges) {
 			//   // If we don't have unsaved changes, then we don't need to do anything
 			//   return;

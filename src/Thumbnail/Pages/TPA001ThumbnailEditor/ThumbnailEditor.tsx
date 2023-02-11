@@ -95,7 +95,9 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 					}}>
 					go to template
 				</Button>
-				<CCO008ViewShot ref={viewShotRef}>
+				<CCO008ViewShot
+					// resize する
+					ref={viewShotRef}>
 					<TMC01101ThumbnailBackground aspectRatio={4 / 3} />
 				</CCO008ViewShot>
 				<View>
