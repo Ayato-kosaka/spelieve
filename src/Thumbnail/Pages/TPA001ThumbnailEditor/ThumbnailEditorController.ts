@@ -3,11 +3,11 @@ import { addDoc, doc, setDoc } from 'firebase/firestore';
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { GestureResponderEvent, PressableProps } from 'react-native';
 import uuid from 'react-native-uuid';
+import ViewShot from 'react-native-view-shot';
 
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
 import { CCO006ImagePickerController } from '@/Common/Components/CCO006ImagePicker/ImagePickerController';
 import { ImagePickerPropsInterface } from '@/Common/Components/CCO006ImagePicker/ImagePickerPropsInterface';
-import { CCO008ViewShot } from '@/Common/Components/CCO008ViewShot/ViewShot';
 import { CHK005StorageUtils } from '@/Common/Hooks/CHK005StorageUtils';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ThumbnailStackScreenProps } from '@/Common/Navigation/NavigationInterface';
@@ -31,7 +31,7 @@ export const TPA001ThumbnailEditorController = ({
 	const { decorationsMap, setDecorationsMap, getCollection, createDecoration, activeDecorationID, isLoading } =
 		useContext(TCT023DecorationsMap);
 
-	const viewShotRef = useRef<CCO008ViewShot>(null);
+	const viewShotRef = useRef<ViewShot>(null);
 
 	const initialDecoration = useMemo(
 		() => ({

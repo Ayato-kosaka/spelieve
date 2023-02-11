@@ -2,12 +2,12 @@ import React, { useCallback, useContext, useEffect } from 'react';
 import { ActivityIndicator, Pressable, SafeAreaView, ScrollView, View } from 'react-native';
 import { Button, Dialog, Portal, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import ViewShot from 'react-native-view-shot';
 
 import { TPA001ThumbnailEditorController } from './ThumbnailEditorController';
 import { styles } from './ThumbnailEditorStyle';
 
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
-import { CCO008ViewShot } from '@/Common/Components/CCO008ViewShot/ViewShot';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ThumbnailStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { TMC01101ThumbnailBackground } from '@/Thumbnail/Contexts/TCT011MThumbnailOne/ModelComponents/TMC01101ThumbnailBackground/ThumbnailBackground';
@@ -95,11 +95,11 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 					}}>
 					go to template
 				</Button>
-				<CCO008ViewShot
+				<ViewShot
 					// resize する
 					ref={viewShotRef}>
 					<TMC01101ThumbnailBackground aspectRatio={4 / 3} />
-				</CCO008ViewShot>
+				</ViewShot>
 				<View>
 					<ScrollView horizontal>
 						{footerMenuList.map((footerMenu, index) => (

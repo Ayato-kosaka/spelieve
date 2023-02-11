@@ -51,8 +51,7 @@
 		"react-native-tab-view": "^3.3.4",
 		"react-native-uuid": "^2.0.1",
 		"react-native-vector-icons": "^9.2.0",
-		"react-native-view-shot": "3.4.0",
-		"react-native-view-shot-with-web-support": "^3.1.2",
+		"react-native-view-shot": "github:Ayato-kosaka/react-native-view-shot-with-web-support",
 		"react-native-web": "0.18.10",
 		"react-spring-bottom-sheet": "^3.4.1",
 		"spelieve-common": "^1.1.113"
@@ -85,13 +84,6 @@
 		"lint-staged": "13.1.0",
 		"prettier": "2.8.2",
 		"typescript": "4.9.4"
-	},
-	"expo": {
-		"autolinking": {
-			"exclude": [
-				"react-native-view-shot-with-web-support"
-			]
-		}
 	},
 	"eslintIgnore": [
 		"node_modules",
