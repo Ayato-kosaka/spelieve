@@ -13,10 +13,6 @@ import { ThumbnailStackScreenProps } from '@/Common/Navigation/NavigationInterfa
 import { TMC01101ThumbnailBackground } from '@/Thumbnail/Contexts/TCT011MThumbnailOne/ModelComponents/TMC01101ThumbnailBackground/ThumbnailBackground';
 import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
 
-const MThumbnail = {
-	backgroundItemType: 'Shape',
-};
-
 export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScreenProps<'TPA001ThumbnailEditor'>) => {
 	// グローバルコンテキスト取得
 	const { thumbnailItemMapper, setThumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
@@ -39,6 +35,13 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		route,
 	});
 
+	const ref = useRef<CCO008ViewShot>(null);
+
+	const capture = useCallback(async () => {
+		const uri = await ref?.current?.capture?.();
+		console.log('do something with ', uri);
+	}, []);
+
 	const headerRight = useCallback(
 		() => (
 			<View style={{ flexDirection: 'row' }}>
@@ -57,13 +60,6 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 			headerRight,
 		});
 	}, [headerRight, navigation]);
-
-	const ref = useRef<CCO008ViewShot>(null);
-
-	const capture = useCallback(async () => {
-		const uri = await ref?.current?.capture?.();
-		console.log('do something with ', uri);
-	}, []);
 
 	if (isLoading) {
 		return <ActivityIndicator animating />;
