@@ -8,7 +8,7 @@ const ProductionAdUnitID: string = Platform.select<string>({
 	ios: ENV.ADMOB_IOS_Banner_UNIT_ID,
 	android: ENV.ADMOB_ANDROID_Banner_UNIT_ID,
 })!;
-const adUnitID = __DEV__ ? TestIds.BANNER : ProductionAdUnitID;
+const adUnitID = ENV.LOGGER ? TestIds.BANNER : ProductionAdUnitID;
 
 export const CCO007GoogleBannerAd = () => (
 	<BannerAd
