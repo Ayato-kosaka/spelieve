@@ -10,7 +10,7 @@ const ProductionAdUnitID: string = Platform.select<string>({
 })!;
 const adUnitID = __DEV__ ? TestIds.BANNER : ProductionAdUnitID;
 
-export const GoogleBannerAd = () => (
+export const CCO007GoogleBannerAd = () => (
 	<BannerAd
 		unitId={adUnitID}
 		size={BannerAdSize.FULL_BANNER}
