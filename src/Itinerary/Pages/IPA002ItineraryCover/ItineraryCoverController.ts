@@ -2,13 +2,17 @@ import { setDoc } from 'firebase/firestore';
 import { useState, useContext, useEffect, useCallback } from 'react';
 import { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
 
-import { ItineraryCoverPropsInterface, ItineraryOneInterface } from 'spelieve-common/lib/Interfaces';
+import { ItineraryOneInterface } from 'spelieve-common/lib/Interfaces';
 import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 
+import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
+import i18n from '@/Common/Hooks/i18n-js';
+import { ItineraryStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { ICT011ItineraryOne } from '@/Itinerary/Contexts/ICT011ItineraryOne';
 import { ICT021PlanGroupsList } from '@/Itinerary/Contexts/ICT021PlanGroupsList';
 
-export function IPA002ItineraryCoverController({ itineraryID }: ItineraryCoverPropsInterface) {
+export function IPA002ItineraryCoverController({ route, navigation }: ItineraryStackScreenProps<'ItineraryCover'>) {
+	const { itineraryID } = route.params;
 	const [pageItinerary, setPageItinerary] = useState<ItineraryOneInterface | undefined>(undefined);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [tagSearchText, setTagSearchText] = useState<string>('');
@@ -109,6 +113,35 @@ export function IPA002ItineraryCoverController({ itineraryID }: ItineraryCoverPr
 
 	const shouldNavigate: boolean = !itineraryID || (!!itineraryDocSnap && !itineraryDocSnap.exists());
 
+	const { setThumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
+	const onPressThumbnail = useCallback(() => {
+		setThumbnailItemMapper({
+			textList: [
+				{
+					key: 'title',
+					name: i18n.t('title'),
+					val: 'サンプル横浜行くぞい！',
+				},
+			],
+			storeUrlMap: {
+				sampleImage:
+					'https://firebasestorage.googleapis.com/v0/b/spelieve-dev.appspot.com/o/12373bcd-013b-43d3-bbcf-f95c3d991edc?alt=media&token=91171ed7-7a92-439b-9c4b-a675cabe49bc',
+			},
+			onBack(thumbnailID, imageUrl) {
+				if (itineraryDocSnap) {
+					// eslint-disable-next-line @typescript-eslint/no-floating-promises
+					setDoc<ItineraryOneInterface>(itineraryDocSnap.ref, { thumbnailID, imageUrl }, { merge: true });
+				}
+			},
+		});
+		navigation.navigate('ThumbnailPageNavigator', {
+			screen: 'TPA001ThumbnailEditor',
+			params: {
+				fromThumbnailID: pageItinerary?.thumbnailID,
+			},
+		});
+	}, [itineraryDocSnap, navigation, pageItinerary?.thumbnailID, setThumbnailItemMapper]);
+
 	return {
 		pageItinerary,
 		updateItinerary,
@@ -120,5 +153,6 @@ export function IPA002ItineraryCoverController({ itineraryID }: ItineraryCoverPr
 		shouldNavigate,
 		isLoading,
 		setPageItinerary,
+		onPressThumbnail,
 	};
 }

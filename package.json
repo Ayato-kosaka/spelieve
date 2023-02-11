@@ -54,7 +54,7 @@
 		"react-native-view-shot": "github:Ayato-kosaka/react-native-view-shot-with-web-support",
 		"react-native-web": "0.18.10",
 		"react-spring-bottom-sheet": "^3.4.1",
-		"spelieve-common": "^1.1.127"
+		"spelieve-common": "^1.1.128"
 	},
 	"devDependencies": {
 		"@babel/core": "7.20.12",

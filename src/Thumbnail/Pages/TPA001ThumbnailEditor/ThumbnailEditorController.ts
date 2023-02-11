@@ -80,14 +80,14 @@ export const TPA001ThumbnailEditorController = ({
 	const hideDialog = useCallback(() => setDialog({ visible: false, action: undefined }), []);
 	const onSaveClicked = useCallback(async () => {
 		hideDialog();
-		// const thumbnailID = await createThumbnail();
+		const thumbnailID = await createThumbnail();
 		const uri = await viewShotRef?.current?.capture?.();
 		const downloadURL = uri && (await CHK005StorageUtils.uploadImageAsync(storage, uri));
-		thumbnailItemMapper.onBack?.('thumbnailID', downloadURL);
+		thumbnailItemMapper.onBack?.(thumbnailID, downloadURL);
 		if (dialog.action) {
 			navigation.dispatch(dialog.action);
 		}
-	}, [dialog.action, hideDialog, navigation, thumbnailItemMapper]);
+	}, [createThumbnail, dialog.action, hideDialog, navigation, thumbnailItemMapper]);
 	const onDiscardClicked = useCallback(() => {
 		hideDialog();
 		if (dialog.action) {

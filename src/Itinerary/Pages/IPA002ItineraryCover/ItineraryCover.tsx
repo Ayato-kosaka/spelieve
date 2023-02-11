@@ -1,15 +1,12 @@
-import { MediaTypeOptions } from 'expo-image-picker';
-import { ActivityIndicator, Image, ScrollView, View } from 'react-native';
+import { ActivityIndicator, Image, Pressable, ScrollView, View } from 'react-native';
 import { Chip, TextInput, Searchbar, Text, Card } from 'react-native-paper';
 
 import { IPA002ItineraryCoverController } from './ItineraryCoverController';
 import { styles } from './ItineraryCoverStyle';
 
 import { CCO003DateTimePicker } from '@/Common/Components/CCO003DateTimePicker';
-import { CCO006ImagePicker } from '@/Common/Components/CCO006ImagePicker/ImagePicker';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ItineraryStackScreenProps } from '@/Common/Navigation/NavigationInterface';
-import { storage } from '@/Itinerary/Endpoint/firebaseStorage';
 
 export const IPA002ItineraryCover = ({ route, navigation }: ItineraryStackScreenProps<'ItineraryCover'>) => {
 	const { itineraryID } = route.params;
@@ -24,7 +21,8 @@ export const IPA002ItineraryCover = ({ route, navigation }: ItineraryStackScreen
 		shouldNavigate,
 		isLoading,
 		setPageItinerary,
-	} = IPA002ItineraryCoverController({ itineraryID });
+		onPressThumbnail,
+	} = IPA002ItineraryCoverController({ route, navigation });
 
 	if (shouldNavigate) {
 		navigation.navigate('ItineraryTopTabNavigator', { screen: 'ItineraryEdit', params: { itineraryID } });
@@ -37,27 +35,9 @@ export const IPA002ItineraryCover = ({ route, navigation }: ItineraryStackScreen
 	return (
 		<ScrollView>
 			<Card>
-				<CCO006ImagePicker
-					onPickImage={(imageUrl) => {
-						setPageItinerary({ ...pageItinerary, imageUrl });
-					}}
-					imagePickerOptions={{
-						allowsEditing: true,
-						allowsMultipleSelection: false,
-						mediaTypes: MediaTypeOptions.Images,
-						aspect: [1, 1],
-						quality: 1,
-					}}
-					imageManipulatorActions={[
-						{
-							resize: {
-								width: 900,
-							},
-						},
-					]}
-					storage={storage}>
+				<Pressable onPress={onPressThumbnail}>
 					<Image source={{ uri: pageItinerary.imageUrl }} resizeMode="cover" style={styles.image} />
-				</CCO006ImagePicker>
+				</Pressable>
 				<Card.Content>
 					<TextInput
 						label={i18n.t('Itinerary Title')}
