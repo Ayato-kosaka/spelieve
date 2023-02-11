@@ -5,7 +5,7 @@ import { View } from 'react-native';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ENV } from '@/ENV';
 
-export const GoogleBannerAd = () =>
+export const CCO007GoogleBannerAd = () =>
 	ENV.LOGGER ? (
 		<View>{i18n.t('Advertisement Area')}</View>
 	) : (
