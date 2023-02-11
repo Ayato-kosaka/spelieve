@@ -337,8 +337,8 @@ export const navigationTheme = {
 	dark: false,
 	colors: {
 		...navigationDefaultTheme.colors,
-		// Bottom Tab background color
-		primary: 'white',
+		// primary color for each Navigators
+		primary: materialColors[secondaryColorNm].a400,
 		// Screen background color
 		background: 'white',
 		// Tob bar background color

@@ -53,7 +53,7 @@ const RootNavigator = () => (
 const BottomTab = createMaterialBottomTabNavigator<BottomTabNavigatorParamList>();
 
 const BottomTabNavigator = ({ navigation, route }: RootStackScreenProps<'BottomTabNavigator'>) => (
-	<BottomTab.Navigator initialRouteName="Itinerary">
+	<BottomTab.Navigator initialRouteName="Itinerary" barStyle={{ backgroundColor: 'white' }}>
 		<BottomTab.Screen
 			name="Itinerary"
 			component={ItineraryPageNavigator}
