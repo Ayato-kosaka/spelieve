@@ -1,6 +1,6 @@
-import React, { useCallback, useContext, useEffect, useRef } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import { ActivityIndicator, Pressable, SafeAreaView, ScrollView, View } from 'react-native';
-import { Button, Text } from 'react-native-paper';
+import { Button, Dialog, Portal, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { TPA001ThumbnailEditorController } from './ThumbnailEditorController';
@@ -22,6 +22,11 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 	const { isLoading } = useContext(TCT023DecorationsMap);
 
 	const {
+		viewShotRef,
+		dialog,
+		hideDialog,
+		onSaveClicked,
+		onDiscardClicked,
 		footerMenuList,
 		selectedFooterMenu,
 		footerMenuOnPress,
@@ -34,13 +39,6 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		navigation,
 		route,
 	});
-
-	const ref = useRef<CCO008ViewShot>(null);
-
-	const capture = useCallback(async () => {
-		const uri = await ref?.current?.capture?.();
-		console.log('do something with ', uri);
-	}, []);
 
 	const headerRight = useCallback(
 		() => (
@@ -68,20 +66,36 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 	return (
 		<>
 			<SafeAreaView />
+			<Portal>
+				<Dialog visible={dialog.visible} onDismiss={hideDialog}>
+					<Dialog.Title>{i18n.t('Discard Thumbnail?')}</Dialog.Title>
+					<Dialog.Content>
+						<Text>{i18n.t('変更を保存せずに戻りますか？')}</Text>
+					</Dialog.Content>
+					<Dialog.Actions>
+						<Button onPress={hideDialog} color="black">
+							{i18n.t('Cancel')}
+						</Button>
+						<Button
+							// eslint-disable-next-line @typescript-eslint/no-misused-promises
+							onPress={onSaveClicked}
+							color="black">
+							{i18n.t('Save')}
+						</Button>
+						<Button onPress={onDiscardClicked} color="red">
+							{i18n.t('Discard')}
+						</Button>
+					</Dialog.Actions>
+				</Dialog>
+			</Portal>
 			<View style={{ height: '100%', justifyContent: 'space-between' }}>
-				<Button
-					// eslint-disable-next-line @typescript-eslint/no-misused-promises
-					onPress={capture}>
-					cature
-				</Button>
-
 				<Button
 					onPress={() => {
 						navigation.navigate('TPA002ThumbnailTemplate', {});
 					}}>
 					go to template
 				</Button>
-				<CCO008ViewShot ref={ref}>
+				<CCO008ViewShot ref={viewShotRef}>
 					<TMC01101ThumbnailBackground aspectRatio={4 / 3} />
 				</CCO008ViewShot>
 				<View>

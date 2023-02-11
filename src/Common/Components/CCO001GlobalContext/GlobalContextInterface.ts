@@ -4,7 +4,7 @@ export interface ThumbnailEditorValInterface {
 }
 
 export interface ThumbnailItemMapperInterface {
-	thumbnailID?: string;
+	thumbnailID?: string; // TODO: 消す
 	textList?: {
 		key: string;
 		name: string;
@@ -13,4 +13,5 @@ export interface ThumbnailItemMapperInterface {
 	storeUrlMap?: {
 		[key: string]: string;
 	};
+	onBack?: (thumbnailID: string, uri?: string) => void;
 }

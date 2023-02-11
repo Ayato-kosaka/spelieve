@@ -327,7 +327,7 @@ export const paperTheme = {
 		onSurface: 'green',
 		disabled: materialColors.grey[300],
 		placeholder: materialColors.grey[600],
-		backdrop: 'green',
+		backdrop: hexToRGB(materialColors.grey[900], 0.5),
 		notification: 'blue',
 	},
 };

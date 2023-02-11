@@ -1,12 +1,13 @@
 import { MediaTypeOptions } from 'expo-image-picker';
 import { addDoc, doc, setDoc } from 'firebase/firestore';
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { GestureResponderEvent, PressableProps } from 'react-native';
 import uuid from 'react-native-uuid';
 
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
 import { CCO006ImagePickerController } from '@/Common/Components/CCO006ImagePicker/ImagePickerController';
 import { ImagePickerPropsInterface } from '@/Common/Components/CCO006ImagePicker/ImagePickerPropsInterface';
+import { CCO008ViewShot } from '@/Common/Components/CCO008ViewShot/ViewShot';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ThumbnailStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { storage } from '@/Itinerary/Endpoint/firebaseStorage';
@@ -29,6 +30,8 @@ export const TPA001ThumbnailEditorController = ({
 	const { decorationsMap, setDecorationsMap, getCollection, createDecoration, activeDecorationID, isLoading } =
 		useContext(TCT023DecorationsMap);
 
+	const viewShotRef = useRef<CCO008ViewShot>(null);
+
 	const initialDecoration = useMemo(
 		() => ({
 			translateX: 200,
@@ -47,7 +50,6 @@ export const TPA001ThumbnailEditorController = ({
 		}
 	}, [fromThumbnailID, setThumbnailID]);
 
-	// This event is emitted when the user is leaving the screen
 	const createThumbnail = useCallback(async () => {
 		const tDocRef = await addDoc(thumbnailCollectionRef, {
 			...thumbnail,
@@ -62,19 +64,50 @@ export const TPA001ThumbnailEditorController = ({
 		);
 		return tDocRef.id;
 	}, [decorationsMap, getCollection, thumbnail, thumbnailCollectionRef]);
+
+	const [dialog, setDialog] = useState<{
+		visible: boolean;
+		action:
+			| Readonly<{
+					type: string;
+					payload?: object | undefined;
+					source?: string | undefined;
+					target?: string | undefined;
+			  }>
+			| undefined;
+	}>({ visible: false, action: undefined });
+	const hideDialog = useCallback(() => setDialog({ visible: false, action: undefined }), []);
+	const onSaveClicked = useCallback(async () => {
+		hideDialog();
+		// const thumbnailID = await createThumbnail();
+		const uri = await viewShotRef?.current?.capture?.();
+		thumbnailItemMapper.onBack?.('thumbnailID', uri);
+		if (dialog.action) {
+			navigation.dispatch(dialog.action);
+		}
+	}, [dialog.action, hideDialog, navigation, thumbnailItemMapper]);
+	const onDiscardClicked = useCallback(() => {
+		hideDialog();
+		if (dialog.action) {
+			navigation.dispatch(dialog.action);
+		}
+	}, [dialog.action, hideDialog, navigation]);
+
+	// This event is emitted when the user is leaving the screen
 	useEffect(() => {
 		// eslint-disable-next-line @typescript-eslint/no-misused-promises
-		const unsubscribe = navigation.addListener('beforeRemove', async () => {
-			const thumbnailID = await createThumbnail();
-			setThumbnailItemMapper((v) => ({
-				...v,
-				thumbnailID,
-				// TODO: Itinerary に返す画像を作る
-			}));
-			console.log(thumbnailID);
+		const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+			// if (!hasUnsavedChanges) {
+			//   // If we don't have unsaved changes, then we don't need to do anything
+			//   return;
+			// }
+
+			// Prevent default behavior of leaving the screen
+			e.preventDefault();
+			setDialog({ visible: true, action: e.data.action });
 		});
 		return unsubscribe;
-	}, [createThumbnail, navigation, setThumbnailItemMapper, thumbnail]);
+	}, [navigation, setThumbnailItemMapper, thumbnail, thumbnailItemMapper]);
 
 	const onPickImage: ImagePickerPropsInterface['onPickImage'] = useCallback(
 		(imageUrl, key) => {
@@ -225,6 +258,11 @@ export const TPA001ThumbnailEditorController = ({
 	);
 
 	return {
+		viewShotRef,
+		dialog,
+		hideDialog,
+		onSaveClicked,
+		onDiscardClicked,
 		footerMenuList,
 		selectedFooterMenu,
 		footerMenuOnPress,
