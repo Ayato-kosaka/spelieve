@@ -5,6 +5,7 @@ import { Headline, Subheading, Text, Button, Title } from 'react-native-paper';
 
 import { RecentItinerariesInterface, getRecentItineraries } from './HelloSpelieveRecentItineraryHook';
 
+import { GoogleBannerAd } from '@/Common/Components/CCO007GoogleBannerAd/GoogleBannerAd';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ItineraryStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { ENV } from '@/ENV';
@@ -27,6 +28,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 		<>
 			<SafeAreaView />
 			<ScrollView>
+				<GoogleBannerAd />
 				<Image
 					// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
 					source={require('@assets/adaptive-icon.png')}
