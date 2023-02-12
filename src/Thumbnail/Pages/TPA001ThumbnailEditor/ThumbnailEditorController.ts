@@ -1,7 +1,7 @@
 import { MediaTypeOptions } from 'expo-image-picker';
 import { addDoc, doc, setDoc } from 'firebase/firestore';
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { GestureResponderEvent, NativeSyntheticEvent, PressableProps, TextInputChangeEventData } from 'react-native';
+import { GestureResponderEvent, PressableProps } from 'react-native';
 import uuid from 'react-native-uuid';
 import ViewShot from 'react-native-view-shot';
 
@@ -169,10 +169,10 @@ export const TPA001ThumbnailEditorController = ({
 		textEditDialog.key,
 		textEditDialog.text,
 	]);
-	const onTextChange = useCallback((e: NativeSyntheticEvent<TextInputChangeEventData>) => {
+	const onTextChange = useCallback((text: string) => {
 		setTextEditDialog((value) => ({
 			...value,
-			text: e.nativeEvent.text,
+			text,
 		}));
 	}, []);
 	const onEditTextClicked = useCallback(() => {
@@ -182,7 +182,7 @@ export const TPA001ThumbnailEditorController = ({
 		setTextEditDialog({
 			visible: true,
 			key: decorationsMap[activeDecorationID].key,
-			text: thumbnailItemMapper.textMap[decorationsMap[activeDecorationID].key!],
+			text: thumbnailItemMapper.textMap[decorationsMap[activeDecorationID].key!] || '',
 		});
 	}, [activeDecorationID, decorationsMap, thumbnailItemMapper.textMap]);
 

@@ -109,7 +109,7 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 							mode="outlined"
 							placeholder={i18n.t('テキストを入力してください')}
 							value={textEditDialog.text}
-							onChange={onTextChange}
+							onChangeText={onTextChange}
 						/>
 					</Dialog.Content>
 					<Dialog.Actions>
