@@ -4,8 +4,8 @@ import { Itineraries } from 'spelieve-common/lib/Models/Itinerary/IDB01/Itinerar
 
 export interface RecentItineraryInterface {
 	itineraryID: string;
-	title: Itineraries['title'];
-	subTitle?: Itineraries['subTitle'];
+	imageUrl?: Itineraries['imageUrl'];
+	textList0?: string;
 	updatedAt: Date;
 }
 
@@ -16,8 +16,8 @@ const storageKey = 'recentItineraries';
 const fromJSON = (json: string): RecentItinerariesInterface =>
 	(JSON.parse(json) as { [key: string]: string }[]).map((data) => ({
 		itineraryID: data.itineraryID,
-		title: data.title,
-		subTitle: data.subTitle,
+		imageUrl: data.imageUrl,
+		textList0: data.textList0,
 		// Date.time で store されているため、Date 型に変換する
 		updatedAt: new Date(parseInt(data.updatedAt, 10)),
 	}));
@@ -26,8 +26,8 @@ const toJSON = (recentItineraries: RecentItinerariesInterface): string =>
 	JSON.stringify(
 		recentItineraries.map((recentItinerary) => ({
 			itineraryID: recentItinerary.itineraryID,
-			title: recentItinerary.title,
-			subTitle: recentItinerary.subTitle,
+			imageUrl: recentItinerary.imageUrl,
+			textList0: recentItinerary.textList0,
 			updatedAt: recentItinerary.updatedAt.getTime(),
 		})),
 	);

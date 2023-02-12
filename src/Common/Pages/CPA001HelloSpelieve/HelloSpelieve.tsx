@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
-import { Linking, Pressable, SafeAreaView, View, Image } from 'react-native';
+import { Linking, Pressable, SafeAreaView, View, Image, TextStyle, StyleProp } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Headline, Subheading, Text, Button, Title } from 'react-native-paper';
+import { Headline, Text, Button, Title } from 'react-native-paper';
 
 import { RecentItinerariesInterface, getRecentItineraries } from './HelloSpelieveRecentItineraryHook';
 
@@ -10,7 +10,7 @@ import i18n from '@/Common/Hooks/i18n-js';
 import { ItineraryStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { ENV } from '@/ENV';
 import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001GooglePlaceAPI';
-import { customColors, materialColors, paperTheme } from '@/ThemeProvider';
+import { customColors, materialColors } from '@/ThemeProvider';
 
 export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenProps<'HelloSpelieve'>) => {
 	const [recentItineraries, setRecentItineraries] = useState<RecentItinerariesInterface | undefined>(undefined);
@@ -125,7 +125,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 					{recentItineraries && recentItineraries.length > 0 && (
 						<View style={{ marginVertical: 64 }}>
 							<Headline style={{ textAlign: 'center' }}>{i18n.t('最近作成した旅行プラン')}</Headline>
-							<ScrollView style={{ maxHeight: 700 }}>
+							<ScrollView style={{ maxHeight: 700 }} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}>
 								{recentItineraries.map((recentItinerary) => (
 									<Pressable
 										key={recentItinerary.itineraryID}
@@ -138,24 +138,47 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 											});
 										}}
 										style={{
-											borderWidth: 1,
-											borderColor: materialColors.grey[400],
-											borderRadius: 4,
-											marginVertical: 4,
-											paddingHorizontal: 4,
-											paddingVertical: 4,
+											width: '50%',
 										}}>
-										<Subheading style={{ color: paperTheme.colors.primary }}>
-											{recentItinerary.title || i18n.t('no title')}
-										</Subheading>
-										<Text>{recentItinerary.subTitle || i18n.t('no sub title')}</Text>
-										<Text style={{ color: materialColors.grey[700] }}>
-											{recentItinerary.updatedAt.toLocaleDateString('en-US', {
-												year: 'numeric',
-												month: '2-digit',
-												day: '2-digit',
-											})}
-										</Text>
+										<View
+											style={{
+												borderWidth: 1,
+												borderColor: materialColors.grey[400],
+												borderRadius: 4,
+												margin: 8,
+											}}>
+											{recentItinerary.imageUrl ? (
+												<Image
+													source={{ uri: recentItinerary.imageUrl }}
+													style={{
+														paddingTop: '100%',
+														width: '100%',
+													}}
+												/>
+											) : (
+												<View
+													style={{
+														paddingTop: '100%',
+														width: '100%',
+														position: 'relative',
+														overflow: 'hidden',
+													}}>
+													<Text
+														style={
+															{
+																position: 'absolute',
+																margin: '10',
+																top: '50%',
+																left: '50%',
+																transform: 'translate(-50%,-50%)',
+																flexWrap: 'wrap',
+															} as unknown as StyleProp<TextStyle>
+														}>
+														{recentItinerary.textList0 || i18n.t('タイトルなし')}
+													</Text>
+												</View>
+											)}
+										</View>
 									</Pressable>
 								))}
 							</ScrollView>

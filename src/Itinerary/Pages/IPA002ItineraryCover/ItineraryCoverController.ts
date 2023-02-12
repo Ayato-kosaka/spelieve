@@ -1,6 +1,6 @@
 import { setDoc } from 'firebase/firestore';
 import { useState, useContext, useEffect, useCallback } from 'react';
-import { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
+import { TextInputChangeEventData } from 'react-native';
 
 import { ItineraryOneInterface } from 'spelieve-common/lib/Interfaces';
 import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
@@ -83,34 +83,6 @@ export function IPA002ItineraryCoverController({ route, navigation }: ItineraryS
 		[pageItinerary],
 	);
 
-	const onTagSearchTextChanged = useCallback((e: NativeSyntheticEvent<TextInputChangeEventData>): void => {
-		setTagSearchText(e.nativeEvent.text);
-	}, []);
-
-	const onTagSearchTextBlur = useCallback(() => {
-		if (!itineraryDocSnap || !pageItinerary || tagSearchText === '') {
-			return;
-		}
-		const newTags = [...pageItinerary.tags];
-		newTags.push(tagSearchText);
-		setTagSearchText('');
-		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		setDoc(itineraryDocSnap.ref, { tags: newTags }, { merge: true });
-	}, [itineraryDocSnap, pageItinerary, tagSearchText]);
-
-	const deleteTag = useCallback(
-		(index: number): void => {
-			if (!itineraryDocSnap || !pageItinerary) {
-				return;
-			}
-			const newTags: string[] = [...pageItinerary.tags];
-			newTags.splice(index, 1);
-			// eslint-disable-next-line @typescript-eslint/no-floating-promises
-			setDoc<ItineraryOneInterface>(itineraryDocSnap.ref, { tags: newTags }, { merge: true });
-		},
-		[itineraryDocSnap, pageItinerary],
-	);
-
 	const shouldNavigate: boolean = !itineraryID || (!!itineraryDocSnap && !itineraryDocSnap.exists());
 
 	const { setThumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
@@ -146,10 +118,6 @@ export function IPA002ItineraryCoverController({ route, navigation }: ItineraryS
 		pageItinerary,
 		updateItinerary,
 		handleOnChange,
-		tagSearchText,
-		onTagSearchTextChanged,
-		onTagSearchTextBlur,
-		deleteTag,
 		shouldNavigate,
 		isLoading,
 		setPageItinerary,

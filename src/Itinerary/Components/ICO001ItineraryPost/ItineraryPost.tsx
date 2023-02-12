@@ -22,7 +22,6 @@ export const ICO001ItineraryPost = ({ itinerary, planGroups, plans }: ItineraryP
 			<Card>
 				<Image source={{ uri: itinerary.imageUrl }} resizeMode="cover" style={styles.itinerayImage} />
 				<Card.Content>
-					<Subheading style={styles.itinerarySubTitle}>{itinerary.subTitle}</Subheading>
 					<Text style={styles.itineraryCaption}>{itinerary.caption}</Text>
 					{planGroups.map((planGroup) => {
 						isAnotherDay = prevDateNumber !== planGroup.dayNumber;

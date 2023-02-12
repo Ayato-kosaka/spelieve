@@ -19,14 +19,13 @@ export const IPA001ItineraryEditController = ({ route, navigation }: ItineraryTo
 		if (itineraryCRef) {
 			Logger('IPA001ItineraryEditController', 'createItinerary', { itineraryCRef, plansCRef, planGroupsCRef });
 			const itinerayDocRef = await addDoc(itineraryCRef, {
-				title: '',
 				startDate: ((d) => {
 					d.setHours(0);
 					d.setMinutes(0);
 					d.setSeconds(0);
 					return d;
 				})(new Date()),
-				tags: [],
+				textList: [],
 				caption: '',
 				isUpdatable: true,
 				createdAt: new Date(),

@@ -38,8 +38,9 @@ export const ICT011ItineraryOneProvider = ({ children }: { children: ReactNode }
 			const unsubscribe = onSnapshot(doc(itineraryCRef, itineraryID), (docSnap) => {
 				Logger('IDB01/Itineraries', 'read docSnap.id', docSnap.id);
 				setItineraryDocSnap(docSnap);
+				const data = docSnap.data()!;
 				// eslint-disable-next-line @typescript-eslint/no-floating-promises
-				storeRecentItinerary({ ...docSnap.data()!, itineraryID: docSnap.id, updatedAt: new Date() });
+				storeRecentItinerary({ ...data, itineraryID: docSnap.id, textList0: data.textList[0], updatedAt: new Date() });
 			});
 			return () => unsubscribe();
 		}

@@ -34,7 +34,7 @@ export const INV002ItineraryTopTabNavigator = ({
 	useEffect(() => {
 		if (itinerary) {
 			navigation.setOptions({
-				title: itinerary?.title || '',
+				title: '',
 				headerRight,
 			});
 		}
