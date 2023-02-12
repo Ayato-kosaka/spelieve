@@ -5,7 +5,6 @@ import { Itineraries } from 'spelieve-common/lib/Models/Itinerary/IDB01/Itinerar
 export interface RecentItineraryInterface {
 	itineraryID: string;
 	imageUrl?: Itineraries['imageUrl'];
-	textList0?: string;
 	updatedAt: Date;
 }
 
@@ -27,7 +26,6 @@ const toJSON = (recentItineraries: RecentItinerariesInterface): string =>
 		recentItineraries.map((recentItinerary) => ({
 			itineraryID: recentItinerary.itineraryID,
 			imageUrl: recentItinerary.imageUrl,
-			textList0: recentItinerary.textList0,
 			updatedAt: recentItinerary.updatedAt.getTime(),
 		})),
 	);

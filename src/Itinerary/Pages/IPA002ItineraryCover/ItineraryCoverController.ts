@@ -6,7 +6,6 @@ import { ItineraryOneInterface } from 'spelieve-common/lib/Interfaces';
 import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
-import i18n from '@/Common/Hooks/i18n-js';
 import { ItineraryStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { ICT011ItineraryOne } from '@/Itinerary/Contexts/ICT011ItineraryOne';
 import { ICT021PlanGroupsList } from '@/Itinerary/Contexts/ICT021PlanGroupsList';
@@ -88,13 +87,7 @@ export function IPA002ItineraryCoverController({ route, navigation }: ItineraryS
 	const { setThumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
 	const onPressThumbnail = useCallback(() => {
 		setThumbnailItemMapper({
-			textList: [
-				{
-					key: 'title',
-					name: i18n.t('title'),
-					val: 'サンプル横浜行くぞい！',
-				},
-			],
+			textMap: pageItinerary?.textMap,
 			storeUrlMap: {
 				sampleImage:
 					'https://firebasestorage.googleapis.com/v0/b/spelieve-dev.appspot.com/o/12373bcd-013b-43d3-bbcf-f95c3d991edc?alt=media&token=91171ed7-7a92-439b-9c4b-a675cabe49bc',
@@ -112,7 +105,7 @@ export function IPA002ItineraryCoverController({ route, navigation }: ItineraryS
 				fromThumbnailID: pageItinerary?.thumbnailID,
 			},
 		});
-	}, [itineraryDocSnap, navigation, pageItinerary?.thumbnailID, setThumbnailItemMapper]);
+	}, [itineraryDocSnap, navigation, pageItinerary?.textMap, pageItinerary?.thumbnailID, setThumbnailItemMapper]);
 
 	return {
 		pageItinerary,

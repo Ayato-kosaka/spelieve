@@ -174,7 +174,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 																flexWrap: 'wrap',
 															} as unknown as StyleProp<TextStyle>
 														}>
-														{recentItinerary.textList0 || i18n.t('タイトルなし')}
+														{i18n.t('サムネイルなし')}
 													</Text>
 												</View>
 											)}
@@ -215,13 +215,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 						mode="contained"
 						onPress={() => {
 							setThumbnailItemMapper({
-								textList: [
-									{
-										key: 'title',
-										name: i18n.t('title'),
-										val: 'サンプル横浜行くぞい！',
-									},
-								],
+								textMap: { xxx: 'サンプル横浜行くぞい！' },
 								storeUrlMap: {
 									sampleImage:
 										'https://firebasestorage.googleapis.com/v0/b/spelieve-dev.appspot.com/o/12373bcd-013b-43d3-bbcf-f95c3d991edc?alt=media&token=91171ed7-7a92-439b-9c4b-a675cabe49bc',

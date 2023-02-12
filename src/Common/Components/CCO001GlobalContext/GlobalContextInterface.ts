@@ -5,11 +5,9 @@ export interface ThumbnailEditorValInterface {
 
 export interface ThumbnailItemMapperInterface {
 	thumbnailID?: string; // TODO: 消す
-	textList?: {
-		key: string;
-		name: string;
-		val: string;
-	}[];
+	textMap?: {
+		[key: string]: string;
+	};
 	storeUrlMap?: {
 		[key: string]: string;
 	};

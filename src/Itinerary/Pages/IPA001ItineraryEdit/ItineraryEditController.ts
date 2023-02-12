@@ -25,7 +25,8 @@ export const IPA001ItineraryEditController = ({ route, navigation }: ItineraryTo
 					d.setSeconds(0);
 					return d;
 				})(new Date()),
-				textList: [],
+				textMap: {},
+				storeUrlMap: {},
 				caption: '',
 				isUpdatable: true,
 				createdAt: new Date(),

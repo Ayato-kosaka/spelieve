@@ -24,7 +24,6 @@ export const TPA001ThumbnailEditorController = ({
 
 	// グローバルコンテキスト取得
 	const { thumbnailItemMapper, setThumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
-	const { textList } = thumbnailItemMapper;
 
 	// コンテキスト取得
 	const { thumbnail, thumbnailCollectionRef, setThumbnailID } = useContext(TCT011MThumbnailOne);
@@ -216,29 +215,20 @@ export const TPA001ThumbnailEditorController = ({
 		},
 		[],
 	);
-	const headerRightItems = useMemo(
-		() =>
-			[
-				{
-					key: 'Text',
-					icon: 'text-box-plus',
-					onPress: () => createDecoration({ ...initialDecoration, decorationType: 'Text' }),
-					show: () => textList !== undefined && textList.length > 0,
-				},
-				{
-					key: 'Image',
-					icon: 'image-plus',
-					onPress: pickImage,
-					show: () => true,
-				},
-				{
-					key: 'Figure',
-					icon: 'shape-rectangle-plus',
-					onPress: () => createDecoration({ ...initialDecoration, decorationType: 'Figure' }),
-					show: () => true,
-				},
-			] as const,
-		[createDecoration, initialDecoration, pickImage, textList],
+	const onTextPlusClicked = useCallback(() => {
+		const key = uuid.v4() as string;
+		setThumbnailItemMapper((value) => ({
+			...value,
+			textMap: {
+				...value.textMap,
+				[key]: i18n.t('テキスト入力'),
+			},
+		}));
+		createDecoration({ ...initialDecoration, decorationType: 'Text', key });
+	}, [createDecoration, initialDecoration, setThumbnailItemMapper]);
+	const onFigurePlusClicked = useCallback(
+		() => createDecoration({ ...initialDecoration, decorationType: 'Figure' }),
+		[createDecoration, initialDecoration],
 	);
 
 	return {
@@ -251,10 +241,12 @@ export const TPA001ThumbnailEditorController = ({
 		footerMenuList,
 		selectedFooterMenu,
 		footerMenuOnPress,
-		headerRightItems,
 		bringToFront,
 		bringForward,
 		sendBackward,
 		sendToBack,
+		onTextPlusClicked,
+		pickImage,
+		onFigurePlusClicked,
 	};
 };

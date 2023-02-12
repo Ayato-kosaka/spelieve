@@ -40,7 +40,7 @@ export const ICT011ItineraryOneProvider = ({ children }: { children: ReactNode }
 				setItineraryDocSnap(docSnap);
 				const data = docSnap.data()!;
 				// eslint-disable-next-line @typescript-eslint/no-floating-promises
-				storeRecentItinerary({ ...data, itineraryID: docSnap.id, textList0: data.textList[0], updatedAt: new Date() });
+				storeRecentItinerary({ ...data, itineraryID: docSnap.id, updatedAt: new Date() });
 			});
 			return () => unsubscribe();
 		}

@@ -16,7 +16,6 @@ import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/
 export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScreenProps<'TPA001ThumbnailEditor'>) => {
 	// グローバルコンテキスト取得
 	const { thumbnailItemMapper, setThumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
-	const { textList } = thumbnailItemMapper;
 
 	// コンテキスト取得
 	const { isLoading } = useContext(TCT023DecorationsMap);
@@ -31,11 +30,13 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		footerMenuList,
 		selectedFooterMenu,
 		footerMenuOnPress,
-		headerRightItems,
 		bringToFront,
 		bringForward,
 		sendBackward,
 		sendToBack,
+		onTextPlusClicked,
+		pickImage,
+		onFigurePlusClicked,
 	} = TPA001ThumbnailEditorController({
 		navigation,
 		route,
@@ -44,15 +45,13 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 	const headerRight = useCallback(
 		() => (
 			<View style={{ flexDirection: 'row' }}>
-				{headerRightItems
-					.filter((item) => item.show())
-					?.map((item) => (
-						// eslint-disable-next-line @typescript-eslint/no-misused-promises
-						<MaterialCommunityIcons key={item.key} name={item.icon} size={30} onPress={item.onPress} />
-					))}
+				<MaterialCommunityIcons name="text-box-plus" size={30} onPress={onTextPlusClicked} />
+				{/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+				<MaterialCommunityIcons name="image-plus" size={30} onPress={pickImage} />
+				<MaterialCommunityIcons name="shape-rectangle-plus" size={30} onPress={onFigurePlusClicked} />
 			</View>
 		),
-		[headerRightItems],
+		[onFigurePlusClicked, onTextPlusClicked, pickImage],
 	);
 	const headerLeft = useCallback(
 		() => (
