@@ -86,9 +86,12 @@ export function IPA002ItineraryCoverController({ route, navigation }: ItineraryS
 
 	const { setThumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
 	const onPressThumbnail = useCallback(() => {
+		if (!pageItinerary) {
+			return;
+		}
 		setThumbnailItemMapper({
-			textMap: pageItinerary?.textMap,
-			storeUrlMap: pageItinerary?.storeUrlMap,
+			textMap: pageItinerary.textMap,
+			storeUrlMap: pageItinerary.storeUrlMap,
 			onBack(thumbnailID, thumbnailItemMapper, imageUrl) {
 				if (itineraryDocSnap) {
 					// eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -111,14 +114,7 @@ export function IPA002ItineraryCoverController({ route, navigation }: ItineraryS
 				fromThumbnailID: pageItinerary?.thumbnailID,
 			},
 		});
-	}, [
-		itineraryDocSnap,
-		navigation,
-		pageItinerary?.storeUrlMap,
-		pageItinerary?.textMap,
-		pageItinerary?.thumbnailID,
-		setThumbnailItemMapper,
-	]);
+	}, [itineraryDocSnap, navigation, pageItinerary, setThumbnailItemMapper]);
 
 	return {
 		pageItinerary,

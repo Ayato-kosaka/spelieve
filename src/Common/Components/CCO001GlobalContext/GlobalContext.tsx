@@ -5,7 +5,10 @@ import { ThumbnailEditorValInterface, ThumbnailItemMapperInterface } from './Glo
 export const CCO001ThumbnailEditor = createContext({} as ThumbnailEditorValInterface);
 
 const CCO001ThumbnailEditorProvider = ({ children }: { children: ReactNode }) => {
-	const [thumbnailItemMapper, setThumbnailItemMapper] = useState<ThumbnailItemMapperInterface>({});
+	const [thumbnailItemMapper, setThumbnailItemMapper] = useState<ThumbnailItemMapperInterface>({
+		textMap: {},
+		storeUrlMap: {},
+	});
 	const value = useMemo(
 		() => ({
 			thumbnailItemMapper,

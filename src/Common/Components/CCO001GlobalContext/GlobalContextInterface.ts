@@ -4,11 +4,10 @@ export interface ThumbnailEditorValInterface {
 }
 
 export interface ThumbnailItemMapperInterface {
-	thumbnailID?: string; // TODO: 消す
-	textMap?: {
+	textMap: {
 		[key: string]: string;
 	};
-	storeUrlMap?: {
+	storeUrlMap: {
 		[key: string]: string;
 	};
 	onBack?: (thumbnailID: string, thumbnailItemMapper: ThumbnailItemMapperInterface, downloadURL?: string) => void;

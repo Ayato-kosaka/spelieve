@@ -101,7 +101,7 @@ export const TPA001ThumbnailEditorController = ({
 			});
 			if (decoration.decorationType === 'Text') {
 				setThumbnailItemMapper((value) => {
-					if (!value.textMap || !decoration.key) {
+					if (!decoration.key) {
 						return value;
 					}
 					delete value.textMap[decoration.key];
@@ -110,7 +110,7 @@ export const TPA001ThumbnailEditorController = ({
 			}
 			if (decoration.decorationType === 'Image' || decoration.decorationType === 'Video') {
 				setThumbnailItemMapper((value) => {
-					if (!value.storeUrlMap || !decoration.key) {
+					if (!decoration.key) {
 						return value;
 					}
 					delete value.storeUrlMap[decoration.key];
@@ -163,7 +163,7 @@ export const TPA001ThumbnailEditorController = ({
 		}));
 	}, []);
 	const onEditTextClicked = useCallback(() => {
-		if (!decorationsMap[activeDecorationID].key || !thumbnailItemMapper.textMap) {
+		if (!decorationsMap[activeDecorationID].key) {
 			return;
 		}
 		setTextEditDialog({
@@ -179,11 +179,7 @@ export const TPA001ThumbnailEditorController = ({
 				if (!key) {
 					key = uuid.v4() as string;
 				}
-				if (v.storeUrlMap) {
-					v.storeUrlMap[key] = imageUrl;
-				} else {
-					v.storeUrlMap = { [key]: imageUrl };
-				}
+				v.storeUrlMap[key] = imageUrl;
 				return v;
 			});
 			createDecoration({ ...initialDecoration, decorationType: 'Image', key });
