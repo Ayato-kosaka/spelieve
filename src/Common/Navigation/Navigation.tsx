@@ -37,7 +37,11 @@ const RootNavigator = () => (
 	<CCO001GlobalContext>
 		<Stack.Navigator>
 			<Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} options={{ headerShown: false }} />
-			<Stack.Screen name="ThumbnailPageNavigator" component={ThumbnailPageNavigator} options={{ headerShown: false }} />
+			<Stack.Screen
+				name="ThumbnailPageNavigator"
+				component={ThumbnailPageNavigator}
+				options={{ headerShown: false, gestureEnabled: false }}
+			/>
 			<Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
 			<Stack.Group screenOptions={{ presentation: 'modal' }}>
 				<Stack.Screen name="Modal" component={ModalScreen} />
