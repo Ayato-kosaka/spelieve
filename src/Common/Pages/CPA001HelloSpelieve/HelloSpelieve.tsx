@@ -174,7 +174,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 																flexWrap: 'wrap',
 															} as unknown as StyleProp<TextStyle>
 														}>
-														{i18n.t('サムネイルなし')}
+														{i18n.t('No Thumbnail')}
 													</Text>
 												</View>
 											)}

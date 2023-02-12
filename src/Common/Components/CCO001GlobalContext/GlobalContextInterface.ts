@@ -11,5 +11,5 @@ export interface ThumbnailItemMapperInterface {
 	storeUrlMap?: {
 		[key: string]: string;
 	};
-	onBack?: (thumbnailID: string, downloadURL?: string) => void;
+	onBack?: (thumbnailID: string, thumbnailItemMapper: ThumbnailItemMapperInterface, downloadURL?: string) => void;
 }

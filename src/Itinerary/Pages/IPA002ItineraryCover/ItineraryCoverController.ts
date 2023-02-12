@@ -88,14 +88,20 @@ export function IPA002ItineraryCoverController({ route, navigation }: ItineraryS
 	const onPressThumbnail = useCallback(() => {
 		setThumbnailItemMapper({
 			textMap: pageItinerary?.textMap,
-			storeUrlMap: {
-				sampleImage:
-					'https://firebasestorage.googleapis.com/v0/b/spelieve-dev.appspot.com/o/12373bcd-013b-43d3-bbcf-f95c3d991edc?alt=media&token=91171ed7-7a92-439b-9c4b-a675cabe49bc',
-			},
-			onBack(thumbnailID, imageUrl) {
+			storeUrlMap: pageItinerary?.storeUrlMap,
+			onBack(thumbnailID, thumbnailItemMapper, imageUrl) {
 				if (itineraryDocSnap) {
 					// eslint-disable-next-line @typescript-eslint/no-floating-promises
-					setDoc<ItineraryOneInterface>(itineraryDocSnap.ref, { thumbnailID, imageUrl }, { merge: true });
+					setDoc<ItineraryOneInterface>(
+						itineraryDocSnap.ref,
+						{
+							thumbnailID,
+							imageUrl,
+							textMap: thumbnailItemMapper.textMap,
+							storeUrlMap: thumbnailItemMapper.storeUrlMap,
+						},
+						{ merge: true },
+					);
 				}
 			},
 		});
@@ -105,7 +111,14 @@ export function IPA002ItineraryCoverController({ route, navigation }: ItineraryS
 				fromThumbnailID: pageItinerary?.thumbnailID,
 			},
 		});
-	}, [itineraryDocSnap, navigation, pageItinerary?.textMap, pageItinerary?.thumbnailID, setThumbnailItemMapper]);
+	}, [
+		itineraryDocSnap,
+		navigation,
+		pageItinerary?.storeUrlMap,
+		pageItinerary?.textMap,
+		pageItinerary?.thumbnailID,
+		setThumbnailItemMapper,
+	]);
 
 	return {
 		pageItinerary,

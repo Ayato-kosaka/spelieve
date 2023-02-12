@@ -74,7 +74,7 @@ export const TPA001ThumbnailEditorController = ({
 		const thumbnailID = await createThumbnail();
 		const uri = await viewShotRef?.current?.capture?.();
 		const downloadURL = uri && (await CHK005StorageUtils.uploadImageAsync(storage, uri));
-		thumbnailItemMapper.onBack?.(thumbnailID, downloadURL);
+		thumbnailItemMapper.onBack?.(thumbnailID, thumbnailItemMapper, downloadURL);
 		navigation.goBack();
 	}, [createThumbnail, hideDialog, navigation, thumbnailItemMapper]);
 	const onDiscardClicked = useCallback(() => {
