@@ -58,7 +58,7 @@ export const TMC02301Decoration = ({ decorationID }: DecorationPropsInterface) =
 				<Image style={styles.designItemStyle} source={{ uri: storeUrlMap[decoration.key] }} />
 			)}
 			{decoration.decorationType === 'Text' && textMap && decoration.key && textMap[decoration.key] && (
-				<Text>{textMap[decoration.key]}</Text>
+				<Text>{textMap[decoration.key] || 'Dummy Text'}</Text>
 			)}
 		</TCO001GestureProvider>
 	);

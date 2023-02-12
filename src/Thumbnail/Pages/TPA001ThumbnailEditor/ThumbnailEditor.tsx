@@ -80,6 +80,7 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		<>
 			<SafeAreaView />
 			<Portal>
+				{/* 閉じるボタン押下時に出現するダイアログ */}
 				<Dialog visible={beforeLeaveDialog.visible} onDismiss={hideBeforeLeaveDialog}>
 					<Dialog.Title>{i18n.t('Discard Thumbnail?')}</Dialog.Title>
 					<Dialog.Content>
@@ -100,6 +101,8 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 						</Button>
 					</Dialog.Actions>
 				</Dialog>
+
+				{/* テキスト編集のためのダイアログ */}
 				<Dialog visible={textEditDialog.visible} onDismiss={onSaveTextEditing}>
 					<Dialog.Content>
 						<TextInput
@@ -129,6 +132,8 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 					}}>
 					go to template
 				</Button>
+
+				{/* キャバス */}
 				<ViewShot
 					// TODO: resize する
 					ref={viewShotRef}
@@ -138,7 +143,10 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 				>
 					<TMC01101ThumbnailBackground aspectRatio={4 / 3} />
 				</ViewShot>
+
+				{/* フッター */}
 				<View>
+					{/* フッター大分類 */}
 					<ScrollView horizontal>
 						{footerMenuList.map((footerMenu, index) => (
 							<Pressable
@@ -150,6 +158,8 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 							</Pressable>
 						))}
 					</ScrollView>
+
+					{/* Order 選択時のフッターメニュー */}
 					{selectedFooterMenu === 'Order' && (
 						<View>
 							<Pressable onPress={bringToFront} style={styles.orderPressable}>
