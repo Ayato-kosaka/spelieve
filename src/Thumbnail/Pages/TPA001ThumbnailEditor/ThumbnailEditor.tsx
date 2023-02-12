@@ -25,6 +25,7 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		viewShotRef,
 		dialog,
 		hideDialog,
+		onLeaveScreen,
 		onSaveClicked,
 		onDiscardClicked,
 		footerMenuList,
@@ -53,11 +54,20 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		),
 		[headerRightItems],
 	);
+	const headerLeft = useCallback(
+		() => (
+			<View style={{ flexDirection: 'row' }}>
+				<MaterialCommunityIcons name="close" size={30} onPress={onLeaveScreen} />
+			</View>
+		),
+		[onLeaveScreen],
+	);
 	useEffect(() => {
 		navigation.setOptions({
 			headerRight,
+			headerLeft,
 		});
-	}, [headerRight, navigation]);
+	}, [headerLeft, headerRight, navigation]);
 
 	if (isLoading) {
 		return <ActivityIndicator animating />;

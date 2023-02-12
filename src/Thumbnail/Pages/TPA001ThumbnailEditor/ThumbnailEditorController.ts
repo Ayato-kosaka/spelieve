@@ -68,48 +68,30 @@ export const TPA001ThumbnailEditorController = ({
 
 	const [dialog, setDialog] = useState<{
 		visible: boolean;
-		action:
-			| Readonly<{
-					type: string;
-					payload?: object | undefined;
-					source?: string | undefined;
-					target?: string | undefined;
-			  }>
-			| undefined;
-	}>({ visible: false, action: undefined });
-	const hideDialog = useCallback(() => setDialog({ visible: false, action: undefined }), []);
+	}>({ visible: false });
+	const hideDialog = useCallback(() => setDialog({ visible: false }), []);
 	const onSaveClicked = useCallback(async () => {
 		hideDialog();
 		const thumbnailID = await createThumbnail();
 		const uri = await viewShotRef?.current?.capture?.();
 		const downloadURL = uri && (await CHK005StorageUtils.uploadImageAsync(storage, uri));
 		thumbnailItemMapper.onBack?.(thumbnailID, downloadURL);
-		if (dialog.action) {
-			navigation.dispatch(dialog.action);
-		}
-	}, [createThumbnail, dialog.action, hideDialog, navigation, thumbnailItemMapper]);
+		navigation.goBack();
+	}, [createThumbnail, hideDialog, navigation, thumbnailItemMapper]);
 	const onDiscardClicked = useCallback(() => {
 		hideDialog();
-		if (dialog.action) {
-			navigation.dispatch(dialog.action);
-		}
-	}, [dialog.action, hideDialog, navigation]);
+		navigation.goBack();
+	}, [hideDialog, navigation]);
 
-	// This event is emitted when the user is leaving the screen
-	useEffect(() => {
-		const unsubscribe = navigation.addListener('beforeRemove', (e) => {
-			// TODO: change を検知し、ダイアログの表示を制御する
-			// if (!hasUnsavedChanges) {
-			//   // If we don't have unsaved changes, then we don't need to do anything
-			//   return;
-			// }
+	const onLeaveScreen = useCallback(() => {
+		// TODO: change を検知し、ダイアログの表示を制御する
+		// if (!hasUnsavedChanges) {
+		//   // If we don't have unsaved changes, then we don't need to do anything
+		//   return;
+		// }
 
-			// Prevent default behavior of leaving the screen
-			e.preventDefault();
-			setDialog({ visible: true, action: e.data.action });
-		});
-		return unsubscribe;
-	}, [navigation, setThumbnailItemMapper, thumbnail, thumbnailItemMapper]);
+		setDialog({ visible: true });
+	}, []);
 
 	const onPickImage: ImagePickerPropsInterface['onPickImage'] = useCallback(
 		(imageUrl, key) => {
@@ -263,6 +245,7 @@ export const TPA001ThumbnailEditorController = ({
 		viewShotRef,
 		dialog,
 		hideDialog,
+		onLeaveScreen,
 		onSaveClicked,
 		onDiscardClicked,
 		footerMenuList,
