@@ -8,6 +8,7 @@ import { TMC02301Decoration } from '@/Thumbnail/Contexts/TCT023DecorationsMap/Mo
 
 export const TMC01101ThumbnailBackground = ({ aspectRatio }: ThumbnailBackgroundPropsInterface) => {
 	const { decorationsMap } = useContext(TCT023DecorationsMap);
+	console.log('TMC01101ThumbnailBackground.rerender');
 	return (
 		<View style={{ width: '100%', aspectRatio, overflow: 'hidden', borderWidth: 1 }}>
 			{Object.keys(decorationsMap).map((key) => (

@@ -25,7 +25,6 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 	}, []);
 
 	const { setThumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
-	console.log('setThumbnailItemMapper');
 
 	return (
 		// TODO: https://github.com/Ayato-kosaka/spelieve/issues/156 LP作成計画検討
@@ -220,8 +219,8 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 									sampleImage:
 										'https://firebasestorage.googleapis.com/v0/b/spelieve-dev.appspot.com/o/12373bcd-013b-43d3-bbcf-f95c3d991edc?alt=media&token=91171ed7-7a92-439b-9c4b-a675cabe49bc',
 								},
-								onBack(thumbnailID, uri) {
-									console.log('onBack', { thumbnailID, uri });
+								onBack(thumbnailID, thumbnailItemMapper, uri) {
+									console.log('onBack', { thumbnailID, thumbnailItemMapper, uri });
 								},
 							});
 							navigation.navigate('ThumbnailPageNavigator', {

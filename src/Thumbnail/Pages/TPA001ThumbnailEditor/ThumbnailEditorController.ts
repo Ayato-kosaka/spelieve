@@ -50,20 +50,23 @@ export const TPA001ThumbnailEditorController = ({
 		}
 	}, [fromThumbnailID, setThumbnailID]);
 
-	const createThumbnail = useCallback(async () => {
-		const tDocRef = await addDoc(thumbnailCollectionRef, {
-			...thumbnail,
-			imageUrl: 'TODO: 要修正',
-			createdAt: new Date(),
-		});
-		await Promise.all(
-			Object.keys(decorationsMap).map(async (decorationID) => {
-				const dDocRef = doc(getCollection(tDocRef), decorationID);
-				await setDoc(dDocRef, decorationsMap[decorationID]);
-			}),
-		);
-		return tDocRef.id;
-	}, [decorationsMap, getCollection, thumbnail, thumbnailCollectionRef]);
+	const createThumbnail = useCallback(
+		async (imageUrl: string) => {
+			const tDocRef = await addDoc(thumbnailCollectionRef, {
+				...thumbnail,
+				imageUrl,
+				createdAt: new Date(),
+			});
+			await Promise.all(
+				Object.keys(decorationsMap).map(async (decorationID) => {
+					const dDocRef = doc(getCollection(tDocRef), decorationID);
+					await setDoc(dDocRef, decorationsMap[decorationID]);
+				}),
+			);
+			return tDocRef.id;
+		},
+		[decorationsMap, getCollection, thumbnail, thumbnailCollectionRef],
+	);
 
 	const [beforeLeaveDialog, setBeforeLeaveDialog] = useState<{
 		visible: boolean;
@@ -71,12 +74,22 @@ export const TPA001ThumbnailEditorController = ({
 	const hideBeforeLeaveDialog = useCallback(() => setBeforeLeaveDialog({ visible: false }), []);
 	const onSaveClicked = useCallback(async () => {
 		hideBeforeLeaveDialog();
-		const thumbnailID = await createThumbnail();
-		const uri = await viewShotRef?.current?.capture?.();
-		const downloadURL = uri && (await CHK005StorageUtils.uploadImageAsync(storage, uri));
-		thumbnailItemMapper.onBack?.(thumbnailID, thumbnailItemMapper, downloadURL);
+		const captureURI = await viewShotRef?.current?.capture?.();
+		const downloadURL = captureURI && (await CHK005StorageUtils.uploadImageAsync(storage, captureURI));
+		setThumbnailItemMapper((value) => ({
+			...value,
+			textMap: {},
+		}));
+		const dummyCaptureURI = await viewShotRef?.current?.capture?.();
+		const dummyDownloadURL = dummyCaptureURI && (await CHK005StorageUtils.uploadImageAsync(storage, dummyCaptureURI));
+		if (dummyDownloadURL) {
+			const thumbnailID = await createThumbnail(dummyDownloadURL);
+			if (downloadURL) {
+				thumbnailItemMapper.onBack?.(thumbnailID, thumbnailItemMapper, downloadURL);
+			}
+		}
 		navigation.goBack();
-	}, [createThumbnail, hideBeforeLeaveDialog, navigation, thumbnailItemMapper]);
+	}, [createThumbnail, hideBeforeLeaveDialog, navigation, setThumbnailItemMapper, thumbnailItemMapper]);
 	const onDiscardClicked = useCallback(() => {
 		hideBeforeLeaveDialog();
 		navigation.goBack();

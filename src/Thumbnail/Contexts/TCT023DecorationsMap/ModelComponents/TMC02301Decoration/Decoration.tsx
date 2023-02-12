@@ -54,12 +54,10 @@ export const TMC02301Decoration = ({ decorationID }: DecorationPropsInterface) =
 			{decoration.decorationType === 'Figure' && (
 				<View style={[styles.designItemStyle, { backgroundColor: decoration.color }]} />
 			)}
-			{decoration.decorationType === 'Image' && decoration.key && storeUrlMap[decoration.key] && (
+			{decoration.decorationType === 'Image' && decoration.key && (
 				<Image style={styles.designItemStyle} source={{ uri: storeUrlMap[decoration.key] }} />
 			)}
-			{decoration.decorationType === 'Text' && decoration.key && textMap[decoration.key] && (
-				<Text>{textMap[decoration.key] || 'Dummy Text'}</Text>
-			)}
+			{decoration.decorationType === 'Text' && decoration.key && <Text>{textMap[decoration.key] || 'Dummy Text'}</Text>}
 		</TCO001GestureProvider>
 	);
 };

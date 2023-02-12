@@ -1,6 +1,5 @@
 import { useCallback, useContext } from 'react';
-import { ActivityIndicator, Pressable, View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { ActivityIndicator, Image, Pressable, View } from 'react-native';
 
 import { ThumbnailStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { TCT012MThumbnailList } from '@/Thumbnail/Contexts/TCT012MThumbnailList/MThumbnailList';
@@ -29,12 +28,31 @@ export const TPA002ThumbnailTemplate = ({
 	}
 
 	return (
-		<View>
-			{thumbnailList.map((thumbnailDoc, index) => (
-				<Pressable key={thumbnailDoc.id} onPress={() => onThumbnailSelected(thumbnailDoc.id)}>
-					<Text>Template{index}</Text>
-				</Pressable>
-			))}
+		<View
+			style={{
+				flexDirection: 'row',
+				flexWrap: 'wrap',
+			}}>
+			{thumbnailList.map((thumbnailDoc, index) => {
+				const thumbnail = thumbnailDoc.data();
+				return (
+					<Pressable
+						key={thumbnailDoc.id}
+						onPress={() => onThumbnailSelected(thumbnailDoc.id)}
+						style={{
+							width: '50%',
+							padding: 8,
+						}}>
+						<Image
+							source={{ uri: thumbnail.imageUrl }}
+							style={{
+								width: '100%',
+								paddingTop: '100%',
+							}}
+						/>
+					</Pressable>
+				);
+			})}
 		</View>
 	);
 };
