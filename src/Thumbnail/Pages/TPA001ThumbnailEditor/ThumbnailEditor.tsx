@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect } from 'react';
 import { ActivityIndicator, Pressable, SafeAreaView, ScrollView, View } from 'react-native';
-import { Button, Dialog, Portal, Text } from 'react-native-paper';
+import { Button, Dialog, Portal, Text, TextInput } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ViewShot from 'react-native-view-shot';
 
@@ -22,11 +22,15 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 
 	const {
 		viewShotRef,
-		dialog,
-		hideDialog,
+		beforeLeaveDialog,
+		hideBeforeLeaveDialog,
 		onLeaveScreen,
 		onSaveClicked,
 		onDiscardClicked,
+		textEditDialog,
+		hideTextEditDialog,
+		onSaveTextEditing,
+		onTextChange,
 		footerMenuList,
 		selectedFooterMenu,
 		footerMenuOnPress,
@@ -76,13 +80,13 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		<>
 			<SafeAreaView />
 			<Portal>
-				<Dialog visible={dialog.visible} onDismiss={hideDialog}>
+				<Dialog visible={beforeLeaveDialog.visible} onDismiss={hideBeforeLeaveDialog}>
 					<Dialog.Title>{i18n.t('Discard Thumbnail?')}</Dialog.Title>
 					<Dialog.Content>
 						<Text>{i18n.t('変更を保存せずに戻りますか？')}</Text>
 					</Dialog.Content>
 					<Dialog.Actions>
-						<Button onPress={hideDialog} color="black">
+						<Button onPress={hideBeforeLeaveDialog} color="black">
 							{i18n.t('Cancel')}
 						</Button>
 						<Button
@@ -96,6 +100,27 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 						</Button>
 					</Dialog.Actions>
 				</Dialog>
+				<Dialog visible={textEditDialog.visible} onDismiss={onSaveTextEditing}>
+					<Dialog.Content>
+						<TextInput
+							mode="outlined"
+							placeholder={i18n.t('テキストを入力してください')}
+							value={textEditDialog.text}
+							onChange={onTextChange}
+						/>
+					</Dialog.Content>
+					<Dialog.Actions>
+						<Button onPress={hideTextEditDialog} color="black">
+							{i18n.t('Cancel')}
+						</Button>
+						<Button
+							// eslint-disable-next-line @typescript-eslint/no-misused-promises
+							onPress={onSaveTextEditing}
+							color="black">
+							{i18n.t('Save')}
+						</Button>
+					</Dialog.Actions>
+				</Dialog>
 			</Portal>
 			<View style={{ height: '100%', justifyContent: 'space-between' }}>
 				<Button
@@ -105,8 +130,12 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 					go to template
 				</Button>
 				<ViewShot
-					// resize する
-					ref={viewShotRef}>
+					// TODO: resize する
+					ref={viewShotRef}
+					// options={{
+					// 	result: 'base64',
+					// }}
+				>
 					<TMC01101ThumbnailBackground aspectRatio={4 / 3} />
 				</ViewShot>
 				<View>

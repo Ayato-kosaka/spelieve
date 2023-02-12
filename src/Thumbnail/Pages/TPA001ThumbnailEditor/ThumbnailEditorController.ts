@@ -1,7 +1,7 @@
 import { MediaTypeOptions } from 'expo-image-picker';
 import { addDoc, doc, setDoc } from 'firebase/firestore';
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { GestureResponderEvent, PressableProps } from 'react-native';
+import { GestureResponderEvent, NativeSyntheticEvent, PressableProps, TextInputChangeEventData } from 'react-native';
 import uuid from 'react-native-uuid';
 import ViewShot from 'react-native-view-shot';
 
@@ -65,22 +65,22 @@ export const TPA001ThumbnailEditorController = ({
 		return tDocRef.id;
 	}, [decorationsMap, getCollection, thumbnail, thumbnailCollectionRef]);
 
-	const [dialog, setDialog] = useState<{
+	const [beforeLeaveDialog, setBeforeLeaveDialog] = useState<{
 		visible: boolean;
 	}>({ visible: false });
-	const hideDialog = useCallback(() => setDialog({ visible: false }), []);
+	const hideBeforeLeaveDialog = useCallback(() => setBeforeLeaveDialog({ visible: false }), []);
 	const onSaveClicked = useCallback(async () => {
-		hideDialog();
+		hideBeforeLeaveDialog();
 		const thumbnailID = await createThumbnail();
 		const uri = await viewShotRef?.current?.capture?.();
 		const downloadURL = uri && (await CHK005StorageUtils.uploadImageAsync(storage, uri));
 		thumbnailItemMapper.onBack?.(thumbnailID, thumbnailItemMapper, downloadURL);
 		navigation.goBack();
-	}, [createThumbnail, hideDialog, navigation, thumbnailItemMapper]);
+	}, [createThumbnail, hideBeforeLeaveDialog, navigation, thumbnailItemMapper]);
 	const onDiscardClicked = useCallback(() => {
-		hideDialog();
+		hideBeforeLeaveDialog();
 		navigation.goBack();
-	}, [hideDialog, navigation]);
+	}, [hideBeforeLeaveDialog, navigation]);
 
 	const onLeaveScreen = useCallback(() => {
 		// TODO: change を検知し、ダイアログの表示を制御する
@@ -89,8 +89,42 @@ export const TPA001ThumbnailEditorController = ({
 		//   return;
 		// }
 
-		setDialog({ visible: true });
+		setBeforeLeaveDialog({ visible: true });
 	}, []);
+
+	const [textEditDialog, setTextEditDialog] = useState<{
+		visible: boolean;
+		key: string | undefined;
+		text: string;
+	}>({ visible: false, key: undefined, text: '' });
+	const hideTextEditDialog = useCallback(() => setTextEditDialog({ visible: false, key: undefined, text: '' }), []);
+	const onSaveTextEditing = useCallback(() => {
+		// TODO: クリアされたら削除する
+		setThumbnailItemMapper((value) => ({
+			...value,
+			textMap: {
+				...value.textMap,
+				[textEditDialog.key!]: textEditDialog.text,
+			},
+		}));
+		hideTextEditDialog();
+	}, [hideTextEditDialog, setThumbnailItemMapper, textEditDialog.key, textEditDialog.text]);
+	const onTextChange = useCallback((e: NativeSyntheticEvent<TextInputChangeEventData>) => {
+		setTextEditDialog((value) => ({
+			...value,
+			text: e.nativeEvent.text,
+		}));
+	}, []);
+	const onEditTextClicked = useCallback(() => {
+		if (!decorationsMap[activeDecorationID].key || !thumbnailItemMapper.textMap) {
+			return;
+		}
+		setTextEditDialog({
+			visible: true,
+			key: decorationsMap[activeDecorationID].key,
+			text: thumbnailItemMapper.textMap[decorationsMap[activeDecorationID].key!],
+		});
+	}, [activeDecorationID, decorationsMap, thumbnailItemMapper.textMap]);
 
 	const onPickImage: ImagePickerPropsInterface['onPickImage'] = useCallback(
 		(imageUrl, key) => {
@@ -197,11 +231,20 @@ export const TPA001ThumbnailEditorController = ({
 		});
 	}, [activeDecorationID, decorationsMap, setDecorationsMap]);
 
-	const footerMenuList = [
-		{ key: 'Order', title: i18n.t('Order'), icon: 'sort', onPress: () => {} },
-		{ key: 'Duplication', title: i18n.t('Duplication'), icon: 'content-copy', onPress: duplicationDecoration },
-		{ key: 'Replace', title: i18n.t('Replace'), icon: 'file-replace-outline', onPress: () => {} },
-	] as const;
+	const footerMenuList = useMemo(
+		() => [
+			{
+				key: 'EditText',
+				title: i18n.t('EditText'),
+				icon: 'sort',
+				onPress: onEditTextClicked,
+			},
+			{ key: 'Order', title: i18n.t('Order'), icon: 'sort', onPress: () => {} },
+			{ key: 'Duplication', title: i18n.t('Duplication'), icon: 'content-copy', onPress: duplicationDecoration },
+			{ key: 'Replace', title: i18n.t('Replace'), icon: 'file-replace-outline', onPress: () => {} },
+		],
+		[duplicationDecoration, onEditTextClicked],
+	);
 
 	const [selectedFooterMenu, setSelectedFooterMenu] = useState<(typeof footerMenuList)[number]['key']>(
 		footerMenuList[0].key,
@@ -233,11 +276,15 @@ export const TPA001ThumbnailEditorController = ({
 
 	return {
 		viewShotRef,
-		dialog,
-		hideDialog,
+		beforeLeaveDialog,
+		hideBeforeLeaveDialog,
 		onLeaveScreen,
 		onSaveClicked,
 		onDiscardClicked,
+		textEditDialog,
+		hideTextEditDialog,
+		onSaveTextEditing,
+		onTextChange,
 		footerMenuList,
 		selectedFooterMenu,
 		footerMenuOnPress,
