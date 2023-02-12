@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { Linking, Pressable, SafeAreaView, View, Image, TextStyle, StyleProp } from 'react-native';
+import { Linking, Pressable, SafeAreaView, View, Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Headline, Text, Button, Title } from 'react-native-paper';
 
@@ -162,19 +162,22 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 														position: 'relative',
 														overflow: 'hidden',
 													}}>
-													<Text
-														style={
-															{
-																position: 'absolute',
-																margin: '10',
-																top: '50%',
-																left: '50%',
-																transform: 'translate(-50%,-50%)',
+													<View
+														style={{
+															position: 'absolute',
+															width: '100%',
+															top: 0,
+															bottom: 0,
+															justifyContent: 'center',
+														}}>
+														<Text
+															style={{
+																textAlign: 'center',
 																flexWrap: 'wrap',
-															} as unknown as StyleProp<TextStyle>
-														}>
-														{i18n.t('No Thumbnail')}
-													</Text>
+															}}>
+															{i18n.t('No Thumbnail')}
+														</Text>
+													</View>
 												</View>
 											)}
 										</View>
