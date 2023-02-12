@@ -57,7 +57,19 @@ export default ({ config }: ConfigContext) => {
 						photosPermission: 'Allow $(PRODUCT_NAME) to access your photos',
 						cameraPermission: 'Allow $(PRODUCT_NAME) to access your camera',
 					},
+					
 				],
+				[
+					'expo-build-properties',
+					{
+						'ios': {
+							'useFrameworks': 'static'
+						}
+					}
+				],
+				'@react-native-firebase/app',
+				'@react-native-firebase/perf',
+				'@react-native-firebase/crashlytics'
 			],
 			extra: {
 				eas: {
