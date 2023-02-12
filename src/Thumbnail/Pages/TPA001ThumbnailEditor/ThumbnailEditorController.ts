@@ -92,6 +92,35 @@ export const TPA001ThumbnailEditorController = ({
 		setBeforeLeaveDialog({ visible: true });
 	}, []);
 
+	const deleteDecoration = useCallback(
+		(decorationID: string) => {
+			const decoration = decorationsMap[decorationID];
+			setDecorationsMap((decolationsMap) => {
+				delete decorationsMap[decorationID];
+				return decolationsMap;
+			});
+			if (decoration.decorationType === 'Text') {
+				setThumbnailItemMapper((value) => {
+					if (!value.textMap || !decoration.key) {
+						return value;
+					}
+					delete value.textMap[decoration.key];
+					return value;
+				});
+			}
+			if (decoration.decorationType === 'Image' || decoration.decorationType === 'Video') {
+				setThumbnailItemMapper((value) => {
+					if (!value.storeUrlMap || !decoration.key) {
+						return value;
+					}
+					delete value.storeUrlMap[decoration.key];
+					return value;
+				});
+			}
+		},
+		[decorationsMap, setDecorationsMap, setThumbnailItemMapper],
+	);
+
 	const [textEditDialog, setTextEditDialog] = useState<{
 		visible: boolean;
 		key: string | undefined;
@@ -99,16 +128,34 @@ export const TPA001ThumbnailEditorController = ({
 	}>({ visible: false, key: undefined, text: '' });
 	const hideTextEditDialog = useCallback(() => setTextEditDialog({ visible: false, key: undefined, text: '' }), []);
 	const onSaveTextEditing = useCallback(() => {
-		// TODO: クリアされたら削除する
-		setThumbnailItemMapper((value) => ({
-			...value,
-			textMap: {
-				...value.textMap,
-				[textEditDialog.key!]: textEditDialog.text,
-			},
-		}));
+		if (!textEditDialog.key) {
+			return;
+		}
+
+		if (textEditDialog.text) {
+			const textMapKey = textEditDialog.key;
+			setThumbnailItemMapper((value) => ({
+				...value,
+				textMap: {
+					...value.textMap,
+					[textMapKey]: textEditDialog.text,
+				},
+			}));
+		} else {
+			const targetID = Object.keys(decorationsMap).find((id) => decorationsMap[id].key === textEditDialog.key);
+			if (targetID) {
+				deleteDecoration(targetID);
+			}
+		}
 		hideTextEditDialog();
-	}, [hideTextEditDialog, setThumbnailItemMapper, textEditDialog.key, textEditDialog.text]);
+	}, [
+		decorationsMap,
+		deleteDecoration,
+		hideTextEditDialog,
+		setThumbnailItemMapper,
+		textEditDialog.key,
+		textEditDialog.text,
+	]);
 	const onTextChange = useCallback((e: NativeSyntheticEvent<TextInputChangeEventData>) => {
 		setTextEditDialog((value) => ({
 			...value,
@@ -236,14 +283,15 @@ export const TPA001ThumbnailEditorController = ({
 			{
 				key: 'EditText',
 				title: i18n.t('EditText'),
-				icon: 'sort',
+				icon: 'format-text',
 				onPress: onEditTextClicked,
 			},
 			{ key: 'Order', title: i18n.t('Order'), icon: 'sort', onPress: () => {} },
 			{ key: 'Duplication', title: i18n.t('Duplication'), icon: 'content-copy', onPress: duplicationDecoration },
 			{ key: 'Replace', title: i18n.t('Replace'), icon: 'file-replace-outline', onPress: () => {} },
+			{ key: 'Delete', title: i18n.t('Delete'), icon: 'delete', onPress: () => deleteDecoration(activeDecorationID) },
 		],
-		[duplicationDecoration, onEditTextClicked],
+		[activeDecorationID, deleteDecoration, duplicationDecoration, onEditTextClicked],
 	);
 
 	const [selectedFooterMenu, setSelectedFooterMenu] = useState<(typeof footerMenuList)[number]['key']>(
@@ -292,6 +340,7 @@ export const TPA001ThumbnailEditorController = ({
 		bringForward,
 		sendBackward,
 		sendToBack,
+		deleteDecoration,
 		onTextPlusClicked,
 		pickImage,
 		onFigurePlusClicked,
