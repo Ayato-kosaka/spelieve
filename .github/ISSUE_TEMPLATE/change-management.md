@@ -11,10 +11,8 @@ assignees: Ayato-kosaka, Takapy1
 ## Select change type
  - [ ] ERD
 
-## Link of commit diff
+## Describe the change with commit diff link
 
 ## Describe the reason of change
-
-## Describe affection
 
 ## To-do list when deploying
