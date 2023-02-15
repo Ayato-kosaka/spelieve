@@ -5,7 +5,6 @@ import { ICT021PlanGroupsListProvider } from '../Contexts/ICT021PlanGroupsList';
 import { ICT031PlansMapProvider } from '../Contexts/ICT031PlansMap';
 import { INV002ItineraryTopTabNavigator } from '../Navigator/INV002ItineraryTopTabNavigator';
 
-import { IPA002ItineraryCover } from './IPA002ItineraryCover';
 import { IPA003EditPlan } from './IPA003EditPlan';
 
 import i18n from '@/Common/Hooks/i18n-js';
@@ -26,12 +25,6 @@ export const ItineraryPageNavigator = ({ navigation, route }: BottomTabNavigator
 							component={INV002ItineraryTopTabNavigator}
 							initialParams={{}}
 							options={{ title: '' }}
-						/>
-						<Stack.Screen
-							name="ItineraryCover"
-							component={IPA002ItineraryCover}
-							initialParams={{}}
-							options={{ title: i18n.t('Itinerary setting') }}
 						/>
 						<Stack.Screen
 							name="EditPlan"

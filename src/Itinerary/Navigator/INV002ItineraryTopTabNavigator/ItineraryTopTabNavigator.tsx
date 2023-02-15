@@ -1,7 +1,5 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import React, { useCallback, useEffect } from 'react';
-import { View } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import React, { useEffect } from 'react';
 
 import { INV002ItineraryTopTabNavigatorController } from './ItineraryTopTabNavigatorController';
 
@@ -16,29 +14,18 @@ export const INV002ItineraryTopTabNavigator = ({
 	route,
 	navigation,
 }: ItineraryStackScreenProps<'ItineraryTopTabNavigator'>) => {
-	const { itinerary, onPressSetting } = INV002ItineraryTopTabNavigatorController({
+	const { itinerary } = INV002ItineraryTopTabNavigatorController({
 		route,
 		navigation,
 	});
-
-	const headerRight = useCallback(
-		() => (
-			<View style={{ flexDirection: 'row' }}>
-				{/* <MaterialCommunityIcons name="export-variant" size={30} /> */}
-				<MaterialCommunityIcons name="cog" size={30} onPress={onPressSetting} />
-			</View>
-		),
-		[onPressSetting],
-	);
 
 	useEffect(() => {
 		if (itinerary) {
 			navigation.setOptions({
 				title: '',
-				headerRight,
 			});
 		}
-	}, [itinerary, headerRight, navigation]);
+	}, [itinerary, navigation]);
 
 	return (
 		<Tab.Navigator initialRouteName="ItineraryEdit">

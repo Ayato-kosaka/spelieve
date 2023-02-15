@@ -49,8 +49,6 @@ const ja: typeof Lang = {
 	'Add Plan group': 'プラングループ追加',
 	日目: '日目',
 	'copy Share URL': 'URL をコピー',
-
-	// IPA002ItineraryCover
 	'Itinerary Title': 'しおりタイトル',
 	'Itinerary SubTitle': 'しおりサブタイトル',
 	'Add Tag': 'タグ追加',

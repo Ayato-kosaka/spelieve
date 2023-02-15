@@ -1,11 +1,12 @@
 import { setStringAsync } from 'expo-clipboard';
 import React, { useContext } from 'react';
-import { ScrollView, ActivityIndicator, View } from 'react-native';
-import { Headline, Button } from 'react-native-paper';
+import { ScrollView, ActivityIndicator, View, Pressable, Image } from 'react-native';
+import { Headline, Button, Text, TextInput } from 'react-native-paper';
 
 import { IPA001ItineraryEditController } from './ItineraryEditController';
 import { styles } from './ItineraryEditStyle';
 
+import { CCO003DateTimePicker } from '@/Common/Components/CCO003DateTimePicker';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ItineraryTopTabScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { ENV } from '@/ENV';
@@ -19,17 +20,19 @@ export const IPA001ItineraryEdit = ({ route, navigation }: ItineraryTopTabScreen
 	const { isPlansLoading } = useContext(ICT031PlansMap);
 	const { planGroupsQSnap, createPlanGroup } = useContext(ICT021PlanGroupsList);
 
-	const { onPlanPress } = IPA001ItineraryEditController({
-		route,
-		navigation,
-	});
+	const { pageItinerary, onPressThumbnail, setPageItinerary, handleOnChange, updateItinerary, onPlanPress } =
+		IPA001ItineraryEditController({
+			route,
+			navigation,
+		});
 
 	if (
 		!route.params.itineraryID ||
 		!itineraryDocSnap ||
 		!itineraryDocSnap.exists() ||
 		isPlansLoading ||
-		!planGroupsQSnap
+		!planGroupsQSnap ||
+		!pageItinerary
 	) {
 		return <ActivityIndicator animating />;
 	}
@@ -39,6 +42,33 @@ export const IPA001ItineraryEdit = ({ route, navigation }: ItineraryTopTabScreen
 
 	return (
 		<ScrollView>
+			<Pressable onPress={onPressThumbnail}>
+				<Image source={{ uri: pageItinerary.imageUrl }} resizeMode="cover" style={styles.image} />
+			</Pressable>
+			<View>
+				<View style={styles.startDateComtainer}>
+					<Text style={styles.startDateLabel}>{i18n.t('Start date')}</Text>
+					<CCO003DateTimePicker
+						value={pageItinerary.startDate}
+						onChange={(event, date) => {
+							if (event.type === 'set') {
+								setPageItinerary({ ...pageItinerary, startDate: date! });
+							}
+						}}
+						style={styles.startDateTimePicker}
+					/>
+				</View>
+				<TextInput
+					mode="outlined"
+					label={i18n.t('Description')}
+					value={pageItinerary.caption}
+					onChange={handleOnChange('caption')}
+					onBlur={updateItinerary}
+					multiline
+					style={styles.captionTextInput}
+				/>
+			</View>
+
 			{planGroupsQSnap?.docs.map((planGroupsDoc) => {
 				const planGroup = planGroupsDoc.data();
 				isAnotherDay = prevDateNumber !== planGroup.dayNumber;

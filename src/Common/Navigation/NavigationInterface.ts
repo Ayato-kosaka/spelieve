@@ -5,7 +5,6 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import {
 	EditPlanPropsInterface,
-	ItineraryCoverPropsInterface,
 	ItineraryEditPropsInterface,
 	PlacePropsInterface,
 	PlacesPropsInterface,
@@ -59,7 +58,6 @@ export type BottomTabNavigatorScreenProps<Screen extends keyof BottomTabNavigato
  * Itinerary Stack の型定義
  */
 export type ItineraryStackParamList = {
-	ItineraryCover: ItineraryCoverPropsInterface;
 	ItineraryTopTabNavigator: NavigatorScreenParams<ItineraryTopTabParamList>;
 	EditPlan: EditPlanPropsInterface;
 	HelloSpelieve: Record<string, never>;

@@ -28,7 +28,6 @@ const ItineraryTopTabScreenProps: Weaken<ItineraryTopTabParamList, keyof Itinera
 };
 
 const ItineraryStackScreens: Weaken<ItineraryStackParamList, keyof ItineraryStackParamList> = {
-	ItineraryCover: 'ItineraryCover',
 	ItineraryTopTabNavigator: {
 		screens: ItineraryTopTabScreenProps,
 	},

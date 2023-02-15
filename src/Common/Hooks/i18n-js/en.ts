@@ -49,8 +49,6 @@ const en: typeof Lang = {
 	'Add Plan group': 'Add Plan group',
 	日目: 'Day',
 	'copy Share URL': 'copy Share URL',
-
-	// IPA002ItineraryCover
 	'Itinerary Title': 'Itinerary Title',
 	'Itinerary SubTitle': 'Itinerary SubTitle',
 	'Add Tag': 'Add Tag',
