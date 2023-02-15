@@ -46,7 +46,7 @@ export const TPA001ThumbnailEditorController = ({
 	useEffect(() => {
 		setThumbnailID(fromThumbnailID);
 		if (!fromThumbnailID) {
-			// テンプレート選択に画面遷移
+			// TODO: テンプレート選択に画面遷移
 		}
 	}, [fromThumbnailID, setThumbnailID]);
 
@@ -58,9 +58,9 @@ export const TPA001ThumbnailEditorController = ({
 				createdAt: new Date(),
 			});
 			await Promise.all(
-				Object.keys(decorationsMap).map(async (decorationID) => {
+				Object.keys(decorationsMap).map((decorationID) => {
 					const dDocRef = doc(getCollection(tDocRef), decorationID);
-					await setDoc(dDocRef, decorationsMap[decorationID]);
+					return setDoc(dDocRef, decorationsMap[decorationID]);
 				}),
 			);
 			return tDocRef.id;
