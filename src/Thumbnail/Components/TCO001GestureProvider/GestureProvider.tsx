@@ -18,7 +18,6 @@ export const TCO001GestureProvider = ({
 	 * translateX -> style に反映される translateX
 	 * savedTranslateX ->  手を止めた状態の translateX
 	 */
-	console.log('TCO001GestureProvider.render');
 	const translateX = useSharedValue(initial.translateX);
 	const translateY = useSharedValue(initial.translateY);
 	const scale = useSharedValue(initial.scale);
