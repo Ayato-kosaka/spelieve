@@ -10,18 +10,19 @@ import { styles } from './ThumbnailEditorStyle';
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ThumbnailStackScreenProps } from '@/Common/Navigation/NavigationInterface';
-import { TMC01101ThumbnailBackground } from '@/Thumbnail/Contexts/TCT011MThumbnailOne/ModelComponents/TMC01101ThumbnailBackground/ThumbnailBackground';
 import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
+import { TMC02301Decoration } from '@/Thumbnail/Contexts/TCT023DecorationsMap/ModelComponents/TMC02301Decoration/Decoration';
 
 export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScreenProps<'TPA001ThumbnailEditor'>) => {
 	// グローバルコンテキスト取得
 	const { thumbnailItemMapper, setThumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
 
 	// コンテキスト取得
-	const { isLoading } = useContext(TCT023DecorationsMap);
+	const { isLoading, decorationsMap } = useContext(TCT023DecorationsMap);
 
 	const {
 		viewShotRef,
+		onLoadResolveMap,
 		beforeLeaveDialog,
 		hideBeforeLeaveDialog,
 		onLeaveScreen,
@@ -140,8 +141,10 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 					// options={{
 					// 	result: 'base64',
 					// }}
-				>
-					<TMC01101ThumbnailBackground aspectRatio={4 / 3} />
+					style={{ width: '100%', aspectRatio: 4 / 3, overflow: 'hidden', borderWidth: 1 }}>
+					{Object.keys(decorationsMap).map((key) => (
+						<TMC02301Decoration key={key} decorationID={key} onLoad={onLoadResolveMap[key]} />
+					))}
 				</ViewShot>
 
 				{/* フッター */}

@@ -31,6 +31,7 @@ export const TPA001ThumbnailEditorController = ({
 		useContext(TCT023DecorationsMap);
 
 	const viewShotRef = useRef<ViewShot>(null);
+	const [onLoadResolveMap, setOnLoadResolveMap] = useState<{ [key: string]: (value: boolean) => void }>({});
 
 	const initialDecoration = useMemo(
 		() => ({
@@ -76,20 +77,37 @@ export const TPA001ThumbnailEditorController = ({
 		hideBeforeLeaveDialog();
 		const captureURI = await viewShotRef?.current?.capture?.();
 		const downloadURL = captureURI && (await CHK005StorageUtils.uploadImageAsync(storage, captureURI));
+
+		const tmpRsolveMap: typeof onLoadResolveMap = {};
+		Promise.all(
+			Object.keys(decorationsMap).map(
+				(decorationID) =>
+					new Promise<boolean>((resolve, reject) => {
+						tmpRsolveMap[decorationID] = resolve;
+					}),
+			),
+		)
+			.then(async () => {
+				const dummyCaptureURI = await viewShotRef?.current?.capture?.();
+				const dummyDownloadURL =
+					dummyCaptureURI && (await CHK005StorageUtils.uploadImageAsync(storage, dummyCaptureURI));
+				if (dummyDownloadURL) {
+					const thumbnailID = await createThumbnail(dummyDownloadURL);
+					if (downloadURL) {
+						thumbnailItemMapper.onBack?.(thumbnailID, thumbnailItemMapper, downloadURL);
+					}
+				}
+				navigation.goBack();
+			})
+			.catch(() => {});
 		setThumbnailItemMapper((value) => ({
 			...value,
+			storeUrlMap: {},
 			textMap: {},
 		}));
-		const dummyCaptureURI = await viewShotRef?.current?.capture?.();
-		const dummyDownloadURL = dummyCaptureURI && (await CHK005StorageUtils.uploadImageAsync(storage, dummyCaptureURI));
-		if (dummyDownloadURL) {
-			const thumbnailID = await createThumbnail(dummyDownloadURL);
-			if (downloadURL) {
-				thumbnailItemMapper.onBack?.(thumbnailID, thumbnailItemMapper, downloadURL);
-			}
-		}
-		navigation.goBack();
-	}, [createThumbnail, hideBeforeLeaveDialog, navigation, setThumbnailItemMapper, thumbnailItemMapper]);
+		console.log('setResolveMap(tmpRsolveMap)', tmpRsolveMap);
+		setOnLoadResolveMap(tmpRsolveMap);
+	}, [createThumbnail, decorationsMap, hideBeforeLeaveDialog, navigation, setThumbnailItemMapper, thumbnailItemMapper]);
 	const onDiscardClicked = useCallback(() => {
 		hideBeforeLeaveDialog();
 		navigation.goBack();
@@ -333,6 +351,7 @@ export const TPA001ThumbnailEditorController = ({
 
 	return {
 		viewShotRef,
+		onLoadResolveMap,
 		beforeLeaveDialog,
 		hideBeforeLeaveDialog,
 		onLeaveScreen,
