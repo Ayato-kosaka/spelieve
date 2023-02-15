@@ -126,7 +126,7 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 					// options={{
 					// 	result: 'base64',
 					// }}
-					style={{ width: '100%', aspectRatio: 4 / 3, overflow: 'hidden', borderWidth: 1 }}>
+					style={{ width: '100%', aspectRatio: thumbnailItemMapper.aspectRatio, overflow: 'hidden', borderWidth: 1 }}>
 					{Object.keys(decorationsMap).map((key) => (
 						<TMC02301Decoration key={key} decorationID={key} onLoad={onLoadResolveMap[key]} />
 					))}

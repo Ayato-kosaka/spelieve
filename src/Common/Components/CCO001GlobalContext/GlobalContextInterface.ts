@@ -4,6 +4,7 @@ export interface ThumbnailEditorValInterface {
 }
 
 export interface ThumbnailItemMapperInterface {
+	aspectRatio: number;
 	textMap: {
 		[key: string]: string;
 	};

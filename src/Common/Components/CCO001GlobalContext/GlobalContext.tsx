@@ -6,6 +6,7 @@ export const CCO001ThumbnailEditor = createContext({} as ThumbnailEditorValInter
 
 const CCO001ThumbnailEditorProvider = ({ children }: { children: ReactNode }) => {
 	const [thumbnailItemMapper, setThumbnailItemMapper] = useState<ThumbnailItemMapperInterface>({
+		aspectRatio: 1,
 		textMap: {},
 		storeUrlMap: {},
 	});

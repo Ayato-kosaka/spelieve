@@ -124,6 +124,7 @@ export const IPA001ItineraryEditController = ({ route, navigation }: ItineraryTo
 			return;
 		}
 		setThumbnailItemMapper({
+			aspectRatio: 1,
 			textMap: pageItinerary.textMap,
 			storeUrlMap: pageItinerary.storeUrlMap,
 			onBack(thumbnailID, thumbnailItemMapper, imageUrl) {

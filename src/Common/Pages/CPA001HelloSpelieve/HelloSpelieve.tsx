@@ -217,6 +217,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 						mode="contained"
 						onPress={() => {
 							setThumbnailItemMapper({
+								aspectRatio: 1,
 								textMap: { xxx: 'サンプル横浜行くぞい！' },
 								storeUrlMap: {
 									sampleImage:
