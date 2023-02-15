@@ -1,9 +1,10 @@
 import React, { useCallback, useContext, useEffect } from 'react';
 import { ActivityIndicator, Pressable, SafeAreaView, ScrollView, View } from 'react-native';
-import { Button, Dialog, Portal, Text, TextInput } from 'react-native-paper';
+import { Button, Dialog, Portal, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ViewShot from 'react-native-view-shot';
 
+import { TPA001TextEditDialog } from './TextEditDialog/TextEditDialog';
 import { TPA001ThumbnailEditorController } from './ThumbnailEditorController';
 import { styles } from './ThumbnailEditorStyle';
 
@@ -31,7 +32,7 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		textEditDialog,
 		hideTextEditDialog,
 		onSaveTextEditing,
-		onTextChange,
+		text,
 		footerMenuList,
 		selectedFooterMenu,
 		footerMenuOnPress,
@@ -103,28 +104,12 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 					</Dialog.Actions>
 				</Dialog>
 
-				{/* テキスト編集のためのダイアログ */}
-				<Dialog visible={textEditDialog.visible} onDismiss={onSaveTextEditing}>
-					<Dialog.Content>
-						<TextInput
-							mode="outlined"
-							placeholder={i18n.t('テキストを入力してください')}
-							value={textEditDialog.text}
-							onChangeText={onTextChange}
-						/>
-					</Dialog.Content>
-					<Dialog.Actions>
-						<Button onPress={hideTextEditDialog} color="black">
-							{i18n.t('Cancel')}
-						</Button>
-						<Button
-							// eslint-disable-next-line @typescript-eslint/no-misused-promises
-							onPress={onSaveTextEditing}
-							color="black">
-							{i18n.t('Save')}
-						</Button>
-					</Dialog.Actions>
-				</Dialog>
+				<TPA001TextEditDialog
+					textEditDialog={textEditDialog}
+					textProps={text}
+					hideTextEditDialog={hideTextEditDialog}
+					onSaveTextEditing={onSaveTextEditing}
+				/>
 			</Portal>
 			<View style={{ height: '100%', justifyContent: 'space-between' }}>
 				<Button

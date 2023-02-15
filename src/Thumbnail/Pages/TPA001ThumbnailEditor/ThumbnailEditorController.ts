@@ -5,6 +5,8 @@ import { GestureResponderEvent, PressableProps } from 'react-native';
 import uuid from 'react-native-uuid';
 import ViewShot from 'react-native-view-shot';
 
+import { TextEditDialogPropsInterface } from './TextEditDialog/TextEditDialog';
+
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
 import { CCO006ImagePickerController } from '@/Common/Components/CCO006ImagePicker/ImagePickerController';
 import { ImagePickerPropsInterface } from '@/Common/Components/CCO006ImagePicker/ImagePickerPropsInterface';
@@ -152,47 +154,44 @@ export const TPA001ThumbnailEditorController = ({
 		[decorationsMap, setDecorationsMap, setThumbnailItemMapper],
 	);
 
-	const [textEditDialog, setTextEditDialog] = useState<{
-		visible: boolean;
-		key: string | undefined;
-		text: string;
-	}>({ visible: false, key: undefined, text: '' });
-	const hideTextEditDialog = useCallback(() => setTextEditDialog({ visible: false, key: undefined, text: '' }), []);
-	const onSaveTextEditing = useCallback(() => {
-		if (!textEditDialog.key) {
-			return;
-		}
-
-		if (textEditDialog.text) {
-			const textMapKey = textEditDialog.key;
-			setThumbnailItemMapper((value) => ({
-				...value,
-				textMap: {
-					...value.textMap,
-					[textMapKey]: textEditDialog.text,
-				},
-			}));
-		} else {
-			const targetID = Object.keys(decorationsMap).find((id) => decorationsMap[id].key === textEditDialog.key);
-			if (targetID) {
-				deleteDecoration(targetID);
+	const [textEditDialog, setTextEditDialog] = useState<TextEditDialogPropsInterface['textEditDialog']>({
+		visible: false,
+		key: undefined,
+	});
+	const text = useMemo(
+		() =>
+			(decorationsMap[activeDecorationID] &&
+				decorationsMap[activeDecorationID].key &&
+				thumbnailItemMapper.textMap[decorationsMap[activeDecorationID].key!]) ||
+			'',
+		[activeDecorationID, decorationsMap, thumbnailItemMapper.textMap],
+	);
+	const hideTextEditDialog = useCallback(() => setTextEditDialog({ visible: false, key: undefined }), []);
+	const onSaveTextEditing = useCallback(
+		(t: string) => () => {
+			if (!textEditDialog.key) {
+				return;
 			}
-		}
-		hideTextEditDialog();
-	}, [
-		decorationsMap,
-		deleteDecoration,
-		hideTextEditDialog,
-		setThumbnailItemMapper,
-		textEditDialog.key,
-		textEditDialog.text,
-	]);
-	const onTextChange = useCallback((text: string) => {
-		setTextEditDialog((value) => ({
-			...value,
-			text,
-		}));
-	}, []);
+
+			if (t) {
+				const textMapKey = textEditDialog.key;
+				setThumbnailItemMapper((value) => ({
+					...value,
+					textMap: {
+						...value.textMap,
+						[textMapKey]: t,
+					},
+				}));
+			} else {
+				const targetID = Object.keys(decorationsMap).find((id) => decorationsMap[id].key === textEditDialog.key);
+				if (targetID) {
+					deleteDecoration(targetID);
+				}
+			}
+			hideTextEditDialog();
+		},
+		[decorationsMap, deleteDecoration, hideTextEditDialog, setThumbnailItemMapper, textEditDialog.key],
+	);
 	const onEditTextClicked = useCallback(() => {
 		if (!decorationsMap[activeDecorationID].key) {
 			return;
@@ -200,9 +199,8 @@ export const TPA001ThumbnailEditorController = ({
 		setTextEditDialog({
 			visible: true,
 			key: decorationsMap[activeDecorationID].key,
-			text: thumbnailItemMapper.textMap[decorationsMap[activeDecorationID].key!] || '',
 		});
-	}, [activeDecorationID, decorationsMap, thumbnailItemMapper.textMap]);
+	}, [activeDecorationID, decorationsMap]);
 
 	const onPickImage: ImagePickerPropsInterface['onPickImage'] = useCallback(
 		(imageUrl, key) => {
@@ -358,9 +356,9 @@ export const TPA001ThumbnailEditorController = ({
 		onSaveClicked,
 		onDiscardClicked,
 		textEditDialog,
+		text,
 		hideTextEditDialog,
 		onSaveTextEditing,
-		onTextChange,
 		footerMenuList,
 		selectedFooterMenu,
 		footerMenuOnPress,
