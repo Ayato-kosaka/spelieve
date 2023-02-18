@@ -15,7 +15,7 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 	const { storeUrlMap, textMap } = thumbnailItemMapper;
 	const { decorationsMap, setDecorationsMap, activeDecorationID, setActiveDecorationID } =
 		useContext(TCT023DecorationsMap);
-	const decoration = decorationsMap[decorationID];
+	const decoration = decorationsMap[decorationID]!;
 	console.log('decoration', decorationID);
 
 	const value = useMemo(() => {
@@ -45,12 +45,12 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 			setDecorationsMap({
 				...decorationsMap,
 				[decorationID]: {
-					...decorationsMap[decorationID],
+					...decoration,
 					...val,
 				},
 			});
 		},
-		[decorationID, decorationsMap, setDecorationsMap],
+		[decoration, decorationID, decorationsMap, setDecorationsMap],
 	);
 
 	const isActive = useMemo(() => activeDecorationID === decorationID, [activeDecorationID, decorationID]);

@@ -15,6 +15,7 @@ import i18n from '@/Common/Hooks/i18n-js';
 import { ThumbnailStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { TCT011MThumbnailOne } from '@/Thumbnail/Contexts/TCT011MThumbnailOne/ThumbnailOne';
 import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
+import { DecorationsMapInterface } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMapInterface';
 import { storage } from '@/Thumbnail/Endpoint/firebaseStorage';
 
 export const TPA001ThumbnailEditorController = ({
@@ -40,6 +41,11 @@ export const TPA001ThumbnailEditorController = ({
 
 	const viewShotRef = useRef<ViewShot>(null);
 	const [onLoadResolveMap, setOnLoadResolveMap] = useState<{ [key: string]: (value: boolean) => void }>({});
+
+	const activeDecoration: DecorationsMapInterface | undefined = useMemo(
+		() => decorationsMap[activeDecorationID],
+		[activeDecorationID, decorationsMap],
+	);
 
 	const initialDecoration = useMemo(
 		() => ({
@@ -153,6 +159,9 @@ export const TPA001ThumbnailEditorController = ({
 	const deleteDecoration = useCallback(
 		(decorationID: string) => {
 			const decoration = decorationsMap[decorationID];
+			if (!decoration) {
+				return;
+			}
 			setDecorationsMap((decolationsMap) => {
 				delete decorationsMap[decorationID];
 				return decolationsMap;
@@ -184,12 +193,8 @@ export const TPA001ThumbnailEditorController = ({
 		key: undefined,
 	});
 	const text = useMemo(
-		() =>
-			(decorationsMap[activeDecorationID] &&
-				decorationsMap[activeDecorationID].key &&
-				thumbnailItemMapper.textMap[decorationsMap[activeDecorationID].key!]) ||
-			'',
-		[activeDecorationID, decorationsMap, thumbnailItemMapper.textMap],
+		() => (activeDecoration && activeDecoration.key && thumbnailItemMapper.textMap[activeDecoration.key]) || '',
+		[activeDecoration, thumbnailItemMapper.textMap],
 	);
 	const hideTextEditDialog = useCallback(() => setTextEditDialog({ visible: false, key: undefined }), []);
 	const onSaveTextEditing = useCallback(
@@ -208,7 +213,7 @@ export const TPA001ThumbnailEditorController = ({
 					},
 				}));
 			} else {
-				const targetID = Object.keys(decorationsMap).find((id) => decorationsMap[id].key === textEditDialog.key);
+				const targetID = Object.keys(decorationsMap).find((id) => decorationsMap[id]!.key === textEditDialog.key);
 				if (targetID) {
 					deleteDecoration(targetID);
 				}
@@ -218,14 +223,14 @@ export const TPA001ThumbnailEditorController = ({
 		[decorationsMap, deleteDecoration, hideTextEditDialog, setThumbnailItemMapper, textEditDialog.key],
 	);
 	const onEditTextClicked = useCallback(() => {
-		if (!decorationsMap[activeDecorationID].key) {
+		if (!activeDecoration || !activeDecoration.key) {
 			return;
 		}
 		setTextEditDialog({
 			visible: true,
-			key: decorationsMap[activeDecorationID].key,
+			key: activeDecoration.key,
 		});
-	}, [activeDecorationID, decorationsMap]);
+	}, [activeDecoration]);
 
 	const onPickImage: ImagePickerPropsInterface['onPickImage'] = useCallback(
 		(imageUrl, key) => {
@@ -260,73 +265,87 @@ export const TPA001ThumbnailEditorController = ({
 	});
 
 	const duplicationDecoration = useCallback(() => {
-		createDecoration(decorationsMap[activeDecorationID]);
-	}, [activeDecorationID, createDecoration, decorationsMap]);
+		if (!activeDecoration) {
+			return;
+		}
+		createDecoration(activeDecoration);
+	}, [activeDecoration, createDecoration]);
 
 	const bringToFront = useCallback(() => {
-		console.log(activeDecorationID);
+		if (!activeDecoration) {
+			return;
+		}
 		setDecorationsMap({
 			...decorationsMap,
 			[activeDecorationID]: {
-				...decorationsMap[activeDecorationID],
+				...activeDecoration,
 				order:
 					Object.keys(decorationsMap).reduce(
-						(prev, key) => Math.max(prev, decorationsMap[key].order),
+						(prev, key) => Math.max(prev, decorationsMap[key]!.order),
 						Number.MIN_SAFE_INTEGER,
 					) + 1,
 			},
 		});
-	}, [activeDecorationID, decorationsMap, setDecorationsMap]);
+	}, [activeDecoration, activeDecorationID, decorationsMap, setDecorationsMap]);
 
 	const bringForward = useCallback(() => {
+		if (!activeDecoration) {
+			return;
+		}
 		const targetID =
 			Object.keys(decorationsMap)
-				.filter((key) => decorationsMap[key].order > decorationsMap[activeDecorationID].order)
-				.sort((keyA, keyB) => decorationsMap[keyA].order - decorationsMap[keyB].order)[0] || activeDecorationID;
+				.filter((key) => decorationsMap[key]!.order > activeDecoration.order)
+				.sort((keyA, keyB) => decorationsMap[keyA]!.order - decorationsMap[keyB]!.order)[0] || activeDecorationID;
 		setDecorationsMap({
 			...decorationsMap,
 			[activeDecorationID]: {
-				...decorationsMap[activeDecorationID],
-				order: decorationsMap[targetID].order,
+				...activeDecoration,
+				order: decorationsMap[targetID]!.order,
 			},
 			[targetID]: {
-				...decorationsMap[targetID],
-				order: decorationsMap[activeDecorationID].order,
+				...decorationsMap[targetID]!,
+				order: activeDecoration.order,
 			},
 		});
-	}, [activeDecorationID, decorationsMap, setDecorationsMap]);
+	}, [activeDecoration, activeDecorationID, decorationsMap, setDecorationsMap]);
 
 	const sendBackward = useCallback(() => {
+		if (!activeDecoration) {
+			return;
+		}
 		const targetID =
 			Object.keys(decorationsMap)
-				.filter((key) => decorationsMap[key].order < decorationsMap[activeDecorationID].order)
-				.sort((keyA, keyB) => decorationsMap[keyB].order - decorationsMap[keyA].order)[0] || activeDecorationID;
+				.filter((key) => decorationsMap[key]!.order < activeDecoration.order)
+				.sort((keyA, keyB) => decorationsMap[keyB]!.order - decorationsMap[keyA]!.order)[0] || activeDecorationID;
 		setDecorationsMap({
 			...decorationsMap,
 			[activeDecorationID]: {
-				...decorationsMap[activeDecorationID],
-				order: decorationsMap[targetID].order,
+				...activeDecoration,
+				order: decorationsMap[targetID]!.order,
 			},
 			[targetID]: {
-				...decorationsMap[targetID],
-				order: decorationsMap[activeDecorationID].order,
+				...decorationsMap[targetID]!,
+				order: activeDecoration.order,
 			},
 		});
-	}, [activeDecorationID, decorationsMap, setDecorationsMap]);
+	}, [activeDecoration, activeDecorationID, decorationsMap, setDecorationsMap]);
 
 	const sendToBack = useCallback(() => {
+		if (!activeDecoration) {
+			return;
+		}
 		setDecorationsMap({
 			...decorationsMap,
 			[activeDecorationID]: {
-				...decorationsMap[activeDecorationID],
+				...activeDecoration,
 				order:
 					Object.keys(decorationsMap).reduce(
-						(prev, key) => Math.min(prev, decorationsMap[key].order),
+						(prev, key) => Math.min(prev, decorationsMap[key]!.order),
 						Number.MAX_SAFE_INTEGER,
 					) - 1,
 			},
 		});
-	}, [activeDecorationID, decorationsMap, setDecorationsMap]);
+	}, [activeDecoration, activeDecorationID, decorationsMap, setDecorationsMap]);
 
 	const footerMenuList = useMemo(
 		() => [
@@ -344,9 +363,11 @@ export const TPA001ThumbnailEditorController = ({
 		[activeDecorationID, deleteDecoration, duplicationDecoration, onEditTextClicked],
 	);
 
-	const [selectedFooterMenu, setSelectedFooterMenu] = useState<(typeof footerMenuList)[number]['key']>(
-		footerMenuList[0].key,
-	);
+	const [selectedFooterMenu, setSelectedFooterMenu] = useState<(typeof footerMenuList)[number]['key'] | ''>('');
+	// useEffect(() => {
+	// 	if(footerMenuList.find(footerMenu => footerMenu.key === selectedFooterMenu)?.)
+	// 	setSelectedFooterMenu('')
+	// }, [])
 	const footerMenuOnPress = useCallback(
 		(onPress: PressableProps['onPress'], selected: typeof selectedFooterMenu) => (event: GestureResponderEvent) => {
 			setSelectedFooterMenu(selected);

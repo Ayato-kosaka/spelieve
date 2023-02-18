@@ -11,11 +11,11 @@ export interface DecorationsMapInterface extends Weaken<Decorations, 'decoration
 }
 export interface DecorationsMapValInterface {
 	decorationsMap: {
-		[key: string]: DecorationsMapInterface;
+		[key: string]: DecorationsMapInterface | undefined;
 	};
 	setDecorationsMap: React.Dispatch<
 		React.SetStateAction<{
-			[key: string]: DecorationsMapInterface;
+			[key: string]: DecorationsMapInterface | undefined;
 		}>
 	>;
 	getCollection: (

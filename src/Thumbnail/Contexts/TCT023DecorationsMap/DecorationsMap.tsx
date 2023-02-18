@@ -77,7 +77,7 @@ export const TCT023DecorationsMapProvider = ({ children }: { children: ReactNode
 					order:
 						Object.keys(decorationsMap).length > 0
 							? Object.keys(decorationsMap).reduce(
-									(prev, key) => Math.max(prev, decorationsMap[key].order),
+									(prev, key) => Math.max(prev, decorationsMap[key]!.order),
 									Number.MIN_SAFE_INTEGER,
 							  ) + 1
 							: 0,
