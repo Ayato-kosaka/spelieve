@@ -350,15 +350,25 @@ export const TPA001ThumbnailEditorController = ({
 	const footerMenuList = useMemo(
 		() => [
 			{
-				key: 'EditText',
+				key: 'EditText' as const,
 				title: i18n.t('EditText'),
 				icon: 'format-text',
 				onPress: onEditTextClicked,
 			},
-			{ key: 'Order', title: i18n.t('Order'), icon: 'sort', onPress: () => {} },
-			{ key: 'Duplication', title: i18n.t('Duplication'), icon: 'content-copy', onPress: duplicationDecoration },
-			{ key: 'Replace', title: i18n.t('Replace'), icon: 'file-replace-outline', onPress: () => {} },
-			{ key: 'Delete', title: i18n.t('Delete'), icon: 'delete', onPress: () => deleteDecoration(activeDecorationID) },
+			{ key: 'Order' as const, title: i18n.t('Order'), icon: 'sort', onPress: () => {} },
+			{
+				key: 'Duplicate' as const,
+				title: i18n.t('Duplication'),
+				icon: 'content-copy',
+				onPress: duplicationDecoration,
+			},
+			{ key: 'Replace' as const, title: i18n.t('Replace'), icon: 'file-replace-outline', onPress: () => {} },
+			{
+				key: 'Delete' as const,
+				title: i18n.t('Delete'),
+				icon: 'delete',
+				onPress: () => deleteDecoration(activeDecorationID),
+			},
 		],
 		[activeDecorationID, deleteDecoration, duplicationDecoration, onEditTextClicked],
 	);
@@ -394,6 +404,7 @@ export const TPA001ThumbnailEditorController = ({
 	);
 
 	return {
+		activeDecoration,
 		viewShotRef,
 		onLoadResolveMap,
 		beforeLeaveDialog,

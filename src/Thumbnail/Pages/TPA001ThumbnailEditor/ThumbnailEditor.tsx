@@ -13,6 +13,7 @@ import i18n from '@/Common/Hooks/i18n-js';
 import { ThumbnailStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
 import { TMC02301Decoration } from '@/Thumbnail/Contexts/TCT023DecorationsMap/ModelComponents/TMC02301Decoration/Decoration';
+import { ThumnailRule } from '@/Thumbnail/Hooks/ThumbnailRule';
 
 export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScreenProps<'TPA001ThumbnailEditor'>) => {
 	// グローバルコンテキスト取得
@@ -22,6 +23,7 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 	const { isLoading, decorationsMap } = useContext(TCT023DecorationsMap);
 
 	const {
+		activeDecoration,
 		viewShotRef,
 		onLoadResolveMap,
 		beforeLeaveDialog,
@@ -136,15 +138,20 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 				<View>
 					{/* フッター大分類 */}
 					<ScrollView horizontal>
-						{footerMenuList.map((footerMenu, index) => (
-							<Pressable
-								key={footerMenu.key}
-								onPress={footerMenuOnPress(footerMenu.onPress, footerMenu.key)}
-								style={{ width: 80 }}>
-								<MaterialCommunityIcons name={footerMenu.icon} size={30} style={{ textAlign: 'center' }} />
-								<Text style={{ textAlign: 'center' }}>{footerMenu.title}</Text>
-							</Pressable>
-						))}
+						{footerMenuList
+							.filter(
+								(footerMenu) =>
+									activeDecoration && ThumnailRule.FooterDisplay()[activeDecoration.decorationType][footerMenu.key],
+							)
+							.map((footerMenu, index) => (
+								<Pressable
+									key={footerMenu.key}
+									onPress={footerMenuOnPress(footerMenu.onPress, footerMenu.key)}
+									style={{ width: 80 }}>
+									<MaterialCommunityIcons name={footerMenu.icon} size={30} style={{ textAlign: 'center' }} />
+									<Text style={{ textAlign: 'center' }}>{footerMenu.title}</Text>
+								</Pressable>
+							))}
 					</ScrollView>
 
 					{/* Order 選択時のフッターメニュー */}
