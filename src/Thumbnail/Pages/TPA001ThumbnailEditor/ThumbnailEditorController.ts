@@ -29,8 +29,14 @@ export const TPA001ThumbnailEditorController = ({
 
 	// コンテキスト取得
 	const { thumbnail, thumbnailCollectionRef, setThumbnailID } = useContext(TCT011MThumbnailOne);
-	const { decorationsMap, setDecorationsMap, getCollection, createDecoration, activeDecorationID, isLoading } =
-		useContext(TCT023DecorationsMap);
+	const {
+		decorationsMap,
+		setDecorationsMap,
+		getCollection,
+		createDecoration,
+		activeDecorationID,
+		setActiveDecorationID,
+	} = useContext(TCT023DecorationsMap);
 
 	const viewShotRef = useRef<ViewShot>(null);
 	const [onLoadResolveMap, setOnLoadResolveMap] = useState<{ [key: string]: (value: boolean) => void }>({});
@@ -76,11 +82,22 @@ export const TPA001ThumbnailEditorController = ({
 	}>({ visible: false });
 	const hideBeforeLeaveDialog = useCallback(() => setBeforeLeaveDialog({ visible: false }), []);
 	const onSaveClicked = useCallback(async () => {
+		let tmpRsolveMap: typeof onLoadResolveMap = {};
+		const promises = Object.keys(decorationsMap).map(
+			(decorationID) =>
+				new Promise<boolean>((resolve, reject) => {
+					tmpRsolveMap[decorationID] = resolve;
+				}),
+		);
 		hideBeforeLeaveDialog();
+		setActiveDecorationID('');
+		setOnLoadResolveMap(tmpRsolveMap);
+		await Promise.all(promises);
+
 		const captureURI = await viewShotRef?.current?.capture?.();
 		const downloadURL = captureURI && (await CHK005StorageUtils.uploadImageAsync(storage, captureURI));
 
-		const tmpRsolveMap: typeof onLoadResolveMap = {};
+		tmpRsolveMap = {};
 		Promise.all(
 			Object.keys(decorationsMap).map(
 				(decorationID) =>
@@ -109,7 +126,15 @@ export const TPA001ThumbnailEditorController = ({
 		}));
 		console.log('setResolveMap(tmpRsolveMap)', tmpRsolveMap);
 		setOnLoadResolveMap(tmpRsolveMap);
-	}, [createThumbnail, decorationsMap, hideBeforeLeaveDialog, navigation, setThumbnailItemMapper, thumbnailItemMapper]);
+	}, [
+		createThumbnail,
+		decorationsMap,
+		hideBeforeLeaveDialog,
+		navigation,
+		setActiveDecorationID,
+		setThumbnailItemMapper,
+		thumbnailItemMapper,
+	]);
 	const onDiscardClicked = useCallback(() => {
 		hideBeforeLeaveDialog();
 		navigation.goBack();
