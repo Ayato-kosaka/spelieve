@@ -118,7 +118,7 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 					onPress={() => {
 						navigation.navigate('TPA002ThumbnailTemplate', {});
 					}}>
-					go to template
+					{i18n.t('go to select template')}
 				</Button>
 
 				{/* キャバス */}
