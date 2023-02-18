@@ -6,12 +6,13 @@ module.exports = function (api) {
 			'transform-inline-environment-variables',
 			'@babel/plugin-proposal-export-namespace-from',
 			'react-native-reanimated/plugin',
+			'babel-plugin-styled-components',
 			[
 				'module-resolver',
 				{
 					alias: {
 						'@': './src',
-						'@assets': './assets'
+						'@assets': './assets',
 					},
 				},
 			],
