@@ -355,6 +355,8 @@ export const TPA001ThumbnailEditorController = ({
 				icon: 'format-text',
 				onPress: onEditTextClicked,
 			},
+			{ key: 'Replace' as const, title: i18n.t('Replace'), icon: 'file-replace-outline', onPress: () => {} },
+			{ key: 'Color' as const, title: i18n.t('Color'), icon: 'palette-outline', onPress: () => {} },
 			{ key: 'Order' as const, title: i18n.t('Order'), icon: 'sort', onPress: () => {} },
 			{
 				key: 'Duplicate' as const,
@@ -362,7 +364,6 @@ export const TPA001ThumbnailEditorController = ({
 				icon: 'content-copy',
 				onPress: duplicationDecoration,
 			},
-			{ key: 'Replace' as const, title: i18n.t('Replace'), icon: 'file-replace-outline', onPress: () => {} },
 			{
 				key: 'Delete' as const,
 				title: i18n.t('Delete'),
@@ -403,6 +404,35 @@ export const TPA001ThumbnailEditorController = ({
 		[createDecoration, initialDecoration],
 	);
 
+	const [colorPickerDialog, setColorPickerDialog] = useState<{
+		visible: boolean;
+	}>({ visible: false });
+	useEffect(() => {
+		if (selectedFooterMenu === 'Color') {
+			setColorPickerDialog({ visible: true });
+		}
+	}, [selectedFooterMenu]);
+	const hideColorPickerDialog = useCallback(() => {
+		setColorPickerDialog({ visible: false });
+		setSelectedFooterMenu('');
+	}, []);
+	const onSaveColorPickerDialog = useCallback(
+		(color: string) => () => {
+			hideColorPickerDialog();
+			if (!activeDecoration) {
+				return;
+			}
+			setDecorationsMap((v) => ({
+				...v,
+				[activeDecorationID]: {
+					...activeDecoration,
+					color,
+				},
+			}));
+		},
+		[activeDecoration, activeDecorationID, hideColorPickerDialog, setDecorationsMap],
+	);
+
 	return {
 		activeDecoration,
 		viewShotRef,
@@ -416,6 +446,9 @@ export const TPA001ThumbnailEditorController = ({
 		text,
 		hideTextEditDialog,
 		onSaveTextEditing,
+		colorPickerDialog,
+		hideColorPickerDialog,
+		onSaveColorPickerDialog,
 		footerMenuList,
 		selectedFooterMenu,
 		footerMenuOnPress,

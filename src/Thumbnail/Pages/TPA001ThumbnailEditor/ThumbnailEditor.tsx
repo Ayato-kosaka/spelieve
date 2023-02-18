@@ -4,6 +4,7 @@ import { Button, Dialog, Portal, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ViewShot from 'react-native-view-shot';
 
+import { TPA001ColorPickerDialog } from './ColorPickerDialog/ColorPickerDialog';
 import { TPA001TextEditDialog } from './TextEditDialog/TextEditDialog';
 import { TPA001ThumbnailEditorController } from './ThumbnailEditorController';
 import { styles } from './ThumbnailEditorStyle';
@@ -35,6 +36,9 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		hideTextEditDialog,
 		onSaveTextEditing,
 		text,
+		colorPickerDialog,
+		hideColorPickerDialog,
+		onSaveColorPickerDialog,
 		footerMenuList,
 		selectedFooterMenu,
 		footerMenuOnPress,
@@ -112,6 +116,16 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 					hideTextEditDialog={hideTextEditDialog}
 					onSaveTextEditing={onSaveTextEditing}
 				/>
+
+				{/* Color 選択時のダイアログ */}
+				{activeDecoration && activeDecoration.color && (
+					<TPA001ColorPickerDialog
+						colorPickerDialog={colorPickerDialog}
+						colorProps={activeDecoration.color}
+						hideColorPickerDialog={hideColorPickerDialog}
+						onSaveColorPickerDialog={onSaveColorPickerDialog}
+					/>
+				)}
 			</Portal>
 			<View style={{ height: '100%', justifyContent: 'space-between' }}>
 				<Button
