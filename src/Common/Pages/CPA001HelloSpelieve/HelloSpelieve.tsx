@@ -222,7 +222,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 								aspectRatio: 1,
 								textMap: { xxx: 'サンプル横浜行くぞい！' },
 								storeUrlMap: {
-									sampleImage:
+									'b87e0c4d-bb1f-48a9-a304-80ce4728f2a7':
 										'https://firebasestorage.googleapis.com/v0/b/spelieve-dev.appspot.com/o/12373bcd-013b-43d3-bbcf-f95c3d991edc?alt=media&token=91171ed7-7a92-439b-9c4b-a675cabe49bc',
 								},
 								onBack(thumbnailID, thumbnailItemMapper, uri) {
@@ -232,7 +232,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 							navigation.navigate('ThumbnailPageNavigator', {
 								screen: 'TPA001ThumbnailEditor',
 								params: {
-									fromThumbnailID: 'aaaaaa',
+									fromThumbnailID: 'uQeeIznY2sV6ECOkz53E',
 								},
 							});
 						}}>
