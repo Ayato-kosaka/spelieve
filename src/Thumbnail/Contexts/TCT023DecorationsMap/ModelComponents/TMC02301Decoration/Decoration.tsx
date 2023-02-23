@@ -64,7 +64,7 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 
 	return (
 		<TCO001GestureProvider
-			initial={decoration}
+			initial={decoration.gesture}
 			onEndGesture={onEndGesture}
 			isActive={isActive}
 			onSingleTapFinalize={onSingleTapFinalize}

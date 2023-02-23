@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect , useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, SafeAreaView, ScrollView, View } from 'react-native';
 import { Button, Dialog, Portal, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';

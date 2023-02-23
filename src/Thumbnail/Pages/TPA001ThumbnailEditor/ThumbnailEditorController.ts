@@ -47,12 +47,20 @@ export const TPA001ThumbnailEditorController = ({
 		[activeDecorationID, decorationsMap],
 	);
 
-	const initialDecoration = useMemo(
+	const initialDecoration: Pick<DecorationsMapInterface, 'gesture' | 'maskGesture'> = useMemo(
 		() => ({
-			translateX: 200,
-			translateY: 200,
-			rotateZ: 0,
-			scale: 1,
+			gesture: {
+				translateX: 200,
+				translateY: 200,
+				rotateZ: 0,
+				scale: 1,
+			},
+			maskGesture: {
+				translateX: 200,
+				translateY: 200,
+				rotateZ: 0,
+				scale: 1,
+			},
 		}),
 		[],
 	); // TODO: 要修正 translateX, translateY は 中央に
