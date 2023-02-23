@@ -11,19 +11,19 @@ https://www.tablesgenerator.com/text_tables
 /* 
 Footer ルール
 https://docs.google.com/spreadsheets/d/1BPeKHqCv-_5kgNvtpAC83pegNnN0g19VU8vYzMKiqEU/edit#gid=0
-+------------+----------+---------+-------+------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
-| key        | EditText | Replace | Color | Crop | Order | Animation | Border | BorderColor | Shadow | Opacity | Duplicate | Delete |
-+------------+----------+---------+-------+------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
-| Background |          |   TRUE  |  TRUE | TRUE |       |    TRUE   |  TRUE  |     TRUE    |  TRUE  |   TRUE  |           |        |
-+------------+----------+---------+-------+------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
-| Video      |          |   TRUE  |       | TRUE |  TRUE |    TRUE   |  TRUE  |     TRUE    |  TRUE  |   TRUE  |    TRUE   |  TRUE  |
-+------------+----------+---------+-------+------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
-| Image      |          |   TRUE  |       | TRUE |  TRUE |    TRUE   |  TRUE  |     TRUE    |  TRUE  |   TRUE  |    TRUE   |  TRUE  |
-+------------+----------+---------+-------+------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
-| Figure     |          |   TRUE  |  TRUE | TRUE |  TRUE |    TRUE   |  TRUE  |     TRUE    |  TRUE  |   TRUE  |    TRUE   |  TRUE  |
-+------------+----------+---------+-------+------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
-| Text       |   TRUE   |         |  TRUE |      |  TRUE |    TRUE   |  TRUE  |     TRUE    |  TRUE  |   TRUE  |           |        |
-+------------+----------+---------+-------+------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
++------------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
+| key        | EditText | Replace | Color | Mask | AspectRatio | Order | Animation | Border | BorderColor | Shadow | Opacity | Duplicate | Delete |
++------------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
+| Background |          |   TRUE  |  TRUE | TRUE |             |       |    TRUE   |  TRUE  |     TRUE    |  TRUE  |   TRUE  |           |        |
++------------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
+| Video      |          |   TRUE  |       | TRUE |             |  TRUE |    TRUE   |  TRUE  |     TRUE    |  TRUE  |   TRUE  |    TRUE   |  TRUE  |
++------------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
+| Image      |          |   TRUE  |       | TRUE |             |  TRUE |    TRUE   |  TRUE  |     TRUE    |  TRUE  |   TRUE  |    TRUE   |  TRUE  |
++------------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
+| Figure     |          |   TRUE  |  TRUE | TRUE |     TRUE    |  TRUE |    TRUE   |  TRUE  |     TRUE    |  TRUE  |   TRUE  |    TRUE   |  TRUE  |
++------------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
+| Text       |   TRUE   |         |  TRUE |      |             |  TRUE |    TRUE   |  TRUE  |     TRUE    |  TRUE  |   TRUE  |           |        |
++------------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
 */
 const FooterDisplay = () =>
 	({
@@ -31,7 +31,8 @@ const FooterDisplay = () =>
 			EditText: false,
 			Replace: true,
 			Color: true,
-			Crop: true,
+			Mask: true,
+			AspectRatio: false,
 			Order: false,
 			Animation: true,
 			Border: true,
@@ -45,7 +46,8 @@ const FooterDisplay = () =>
 			EditText: false,
 			Replace: true,
 			Color: false,
-			Crop: true,
+			Mask: true,
+			AspectRatio: false,
 			Order: true,
 			Animation: true,
 			Border: true,
@@ -59,7 +61,8 @@ const FooterDisplay = () =>
 			EditText: false,
 			Replace: true,
 			Color: false,
-			Crop: true,
+			Mask: true,
+			AspectRatio: false,
 			Order: true,
 			Animation: true,
 			Border: true,
@@ -73,7 +76,8 @@ const FooterDisplay = () =>
 			EditText: false,
 			Replace: true,
 			Color: true,
-			Crop: true,
+			Mask: true,
+			AspectRatio: true,
 			Order: true,
 			Animation: true,
 			Border: true,
@@ -87,7 +91,8 @@ const FooterDisplay = () =>
 			EditText: true,
 			Replace: false,
 			Color: true,
-			Crop: false,
+			Mask: false,
+			AspectRatio: false,
 			Order: true,
 			Animation: true,
 			Border: true,
