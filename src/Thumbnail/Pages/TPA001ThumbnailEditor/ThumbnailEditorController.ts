@@ -240,14 +240,20 @@ export const TPA001ThumbnailEditorController = ({
 		});
 	}, [activeDecoration]);
 
-	const [maskDialog, setMaskDialog] = useState<{ visible: boolean }>({ visible: false });
+	const [maskDialog, setMaskDialog] = useState<{ visible: boolean; decorationID: string }>({
+		visible: false,
+		decorationID: '',
+	});
 	const hideMaskDialog = useCallback(() => {
-		setMaskDialog({ visible: false });
+		setMaskDialog({ visible: false, decorationID: '' });
 	}, []);
 	const onSaveMaskDialog = useCallback(() => {
 		console.log('onSaveMaskDialog');
 	}, []);
-	const onMaskClicked = useCallback(() => setMaskDialog({ visible: true }), []);
+	const onMaskClicked = useCallback(
+		() => setMaskDialog({ visible: true, decorationID: activeDecorationID }),
+		[activeDecorationID],
+	);
 
 	const onPickImage: ImagePickerPropsInterface['onPickImage'] = useCallback(
 		(imageUrl, key) => {
@@ -477,7 +483,6 @@ export const TPA001ThumbnailEditorController = ({
 		bringForward,
 		sendBackward,
 		sendToBack,
-		deleteDecoration,
 		onTextPlusClicked,
 		pickImage,
 		onFigurePlusClicked,

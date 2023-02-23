@@ -14,8 +14,8 @@ import i18n from '@/Common/Hooks/i18n-js';
 import { ThumbnailStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
 import { TMC02301Decoration } from '@/Thumbnail/Contexts/TCT023DecorationsMap/ModelComponents/TMC02301Decoration/Decoration';
-import { TMC02302MaskDecoration } from '@/Thumbnail/Contexts/TCT023DecorationsMap/ModelComponents/TMC02302MaskDecoration/MaskDecoration';
 import { ThumnailRule } from '@/Thumbnail/Hooks/ThumbnailRule';
+import { TPA001MaskDecoration } from '@/Thumbnail/Pages/TPA001ThumbnailEditor/MaskDecoration/MaskDecoration';
 
 export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScreenProps<'TPA001ThumbnailEditor'>) => {
 	// グローバルコンテキスト取得
@@ -50,7 +50,6 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		bringForward,
 		sendBackward,
 		sendToBack,
-		deleteDecoration,
 		onTextPlusClicked,
 		pickImage,
 		onFigurePlusClicked,
@@ -84,6 +83,7 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 			headerLeft,
 		});
 	}, [headerLeft, headerRight, navigation]);
+	console.log('decorationsMap', decorationsMap);
 
 	if (isLoading) {
 		return <ActivityIndicator animating />;
@@ -96,7 +96,14 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 				{/* Mask ダイアログ */}
 				<Dialog visible={maskDialog.visible} onDismiss={onSaveMaskDialog}>
 					<Dialog.Content>
-						<TMC02302MaskDecoration />
+						<TPA001MaskDecoration
+							decoration={decorationsMap[maskDialog.decorationID]!}
+							imageURI={
+								decorationsMap[maskDialog.decorationID] &&
+								decorationsMap[maskDialog.decorationID]!.key &&
+								thumbnailItemMapper.storeUrlMap[decorationsMap[maskDialog.decorationID]!.key!]
+							}
+						/>
 					</Dialog.Content>
 					<Dialog.Actions>
 						<Button onPress={hideMaskDialog} color="black">
