@@ -240,6 +240,15 @@ export const TPA001ThumbnailEditorController = ({
 		});
 	}, [activeDecoration]);
 
+	const [maskDialog, setMaskDialog] = useState<{ visible: boolean }>({ visible: false });
+	const hideMaskDialog = useCallback(() => {
+		setMaskDialog({ visible: false });
+	}, []);
+	const onSaveMaskDialog = useCallback(() => {
+		console.log('onSaveMaskDialog');
+	}, []);
+	const onMaskClicked = useCallback(() => setMaskDialog({ visible: true }), []);
+
 	const onPickImage: ImagePickerPropsInterface['onPickImage'] = useCallback(
 		(imageUrl, key) => {
 			setThumbnailItemMapper((v) => {
@@ -365,6 +374,7 @@ export const TPA001ThumbnailEditorController = ({
 			},
 			{ key: 'Replace' as const, title: i18n.t('Replace'), icon: 'file-replace-outline', onPress: () => {} },
 			{ key: 'Color' as const, title: i18n.t('Color'), icon: 'palette-outline', onPress: () => {} },
+			{ key: 'Mask' as const, title: i18n.t('Mask'), icon: 'content-cut', onPress: onMaskClicked },
 			{ key: 'Order' as const, title: i18n.t('Order'), icon: 'sort', onPress: () => {} },
 			{
 				key: 'Duplicate' as const,
@@ -379,7 +389,7 @@ export const TPA001ThumbnailEditorController = ({
 				onPress: () => deleteDecoration(activeDecorationID),
 			},
 		],
-		[activeDecorationID, deleteDecoration, duplicationDecoration, onEditTextClicked],
+		[activeDecorationID, deleteDecoration, duplicationDecoration, onEditTextClicked, onMaskClicked],
 	);
 
 	const [selectedFooterMenu, setSelectedFooterMenu] = useState<(typeof footerMenuList)[number]['key'] | ''>('');
@@ -454,6 +464,9 @@ export const TPA001ThumbnailEditorController = ({
 		text,
 		hideTextEditDialog,
 		onSaveTextEditing,
+		maskDialog,
+		onSaveMaskDialog,
+		hideMaskDialog,
 		colorPickerDialog,
 		hideColorPickerDialog,
 		onSaveColorPickerDialog,

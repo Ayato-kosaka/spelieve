@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Linking, Pressable, SafeAreaView, View, Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Headline, Text, Button, Title } from 'react-native-paper';
@@ -232,7 +232,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 							navigation.navigate('ThumbnailPageNavigator', {
 								screen: 'TPA001ThumbnailEditor',
 								params: {
-									fromThumbnailID: 'uQeeIznY2sV6ECOkz53E',
+									fromThumbnailID: 'HVClefrb102gUdcTp2Cu',
 								},
 							});
 						}}>

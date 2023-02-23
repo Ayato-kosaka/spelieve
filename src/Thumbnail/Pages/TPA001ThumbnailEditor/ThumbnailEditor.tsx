@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import { ActivityIndicator, Pressable, SafeAreaView, ScrollView, View } from 'react-native';
 import { Button, Dialog, Portal, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -34,9 +34,12 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		onSaveClicked,
 		onDiscardClicked,
 		textEditDialog,
+		text,
 		hideTextEditDialog,
 		onSaveTextEditing,
-		text,
+		maskDialog,
+		onSaveMaskDialog,
+		hideMaskDialog,
 		colorPickerDialog,
 		hideColorPickerDialog,
 		onSaveColorPickerDialog,
@@ -47,6 +50,7 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		bringForward,
 		sendBackward,
 		sendToBack,
+		deleteDecoration,
 		onTextPlusClicked,
 		pickImage,
 		onFigurePlusClicked,
@@ -80,14 +84,6 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 			headerLeft,
 		});
 	}, [headerLeft, headerRight, navigation]);
-
-	const [maskDialog, setMaskDialog] = useState<{ visible: boolean }>({ visible: true });
-	const hideMaskDialog = useCallback(() => {
-		setMaskDialog({ visible: false });
-	}, []);
-	const onSaveMaskDialog = useCallback(() => {
-		console.log('onSaveMaskDialog');
-	}, []);
 
 	if (isLoading) {
 		return <ActivityIndicator animating />;

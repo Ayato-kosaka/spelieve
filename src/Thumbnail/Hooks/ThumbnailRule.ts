@@ -22,7 +22,7 @@ https://docs.google.com/spreadsheets/d/1BPeKHqCv-_5kgNvtpAC83pegNnN0g19VU8vYzMKi
 +------------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
 | Figure     |          |   TRUE  |  TRUE | TRUE |     TRUE    |  TRUE |    TRUE   |  TRUE  |     TRUE    |  TRUE  |   TRUE  |    TRUE   |  TRUE  |
 +------------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
-| Text       |   TRUE   |         |  TRUE |      |             |  TRUE |    TRUE   |  TRUE  |     TRUE    |  TRUE  |   TRUE  |           |        |
+| Text       |   TRUE   |         |  TRUE |      |             |  TRUE |    TRUE   |  TRUE  |     TRUE    |  TRUE  |   TRUE  |           |  TRUE  |
 +------------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
 */
 const FooterDisplay = () =>
@@ -100,7 +100,7 @@ const FooterDisplay = () =>
 			Shadow: true,
 			Opacity: true,
 			Duplicate: false,
-			Delete: false,
+			Delete: true,
 		},
 	} as const);
 

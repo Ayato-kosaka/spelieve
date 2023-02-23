@@ -46,7 +46,10 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 				...decorationsMap,
 				[decorationID]: {
 					...decoration,
-					...val,
+					gesture: {
+						...decoration.gesture,
+						...val,
+					},
 				},
 			});
 		},
