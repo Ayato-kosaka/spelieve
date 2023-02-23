@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { runOnJS, useAnimatedReaction, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
@@ -16,6 +16,8 @@ export const TCO001GestureProvider = ({
 	onEndGesture,
 	isActive = true,
 	onSingleTapFinalize,
+	onAnimating,
+	animatedStyleShared,
 	viewStyle,
 	children,
 }: GestureProviderPropsInterface) => {
@@ -108,20 +110,38 @@ export const TCO001GestureProvider = ({
 	);
 
 	// animatedStyle を設定する
-	const animatedStyle = useAnimatedStyle(() => ({
-		position: 'absolute',
-		borderWidth: isActive ? 1 : 0,
-		transform: [
-			{
-				translateX: translateX.value,
-			},
-			{
-				translateY: translateY.value,
-			},
-			{ scale: scale.value },
-			{ rotateZ: `${(rotateZ.value / Math.PI) * 180}deg` },
-		],
-	}));
+	// const animatedStyle = useAnimatedStyle(() => ({
+	// 	transform: [
+	// 		{
+	// 			translateX: translateX.value,
+	// 		},
+	// 		{
+	// 			translateY: translateY.value,
+	// 		},
+	// 		{ scale: scale.value },
+	// 		{ rotateZ: `${(rotateZ.value / Math.PI) * 180}deg` },
+	// 	],
+	// }));
+
+	useAnimatedReaction(
+		() => ({
+			translateX: translateX.value,
+			translateY: translateY.value,
+			scale: scale.value,
+			rotateZ: rotateZ.value,
+		}),
+		(prepareResult, preparePreviousResult) => {
+			onAnimating?.(prepareResult);
+			// console.log('useAnimatedReaction', maskRef.current, prepareResult);
+			// if (maskRef.current) {
+			// 	maskRef.current.style.maskPosition = `${prepareResult.translateX}px ${prepareResult.translateY}px`;
+			// 	maskRef.current.style.webkitMaskPosition = `${prepareResult.translateX}px ${prepareResult.translateY}px`;
+			// }
+		},
+		[translateX, translateY, scale, rotateZ],
+	);
+
+	const animatedStyle = useAnimatedStyle(() => animatedStyleShared?.value || {});
 
 	const composed = useMemo(
 		() => Gesture.Simultaneous(singleTap, panGesture, pinchGesture, rotationGesture),
@@ -130,7 +150,7 @@ export const TCO001GestureProvider = ({
 
 	return (
 		<GestureDetector gesture={composed}>
-			<Animated.View style={[viewStyle, animatedStyle]}>{children}</Animated.View>
+			<Animated.View style={[animatedStyle, viewStyle]}>{children}</Animated.View>
 		</GestureDetector>
 	);
 };

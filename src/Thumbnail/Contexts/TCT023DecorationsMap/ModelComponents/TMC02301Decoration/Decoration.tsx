@@ -1,6 +1,7 @@
 import { useCallback, useContext, useEffect, useMemo } from 'react';
 import { Image, StyleProp, ViewStyle, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
+import { AnimatedTransform, SharedValue, useDerivedValue } from 'react-native-reanimated';
 
 import { TCT023DecorationsMap } from '../../DecorationsMap';
 
@@ -8,7 +9,10 @@ import { DecorationPropsInterface } from './DecorationInterface';
 
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
 import { TCO001GestureProvider } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProvider';
-import { GestureProviderPropsInterface } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderPropsInterface';
+import {
+	GestureProviderInterface,
+	GestureProviderPropsInterface,
+} from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderPropsInterface';
 
 export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInterface) => {
 	const { thumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
@@ -61,7 +65,30 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 		setActiveDecorationID(decorationID);
 	}, [decorationID, setActiveDecorationID]);
 
-	const gestureStyle: StyleProp<ViewStyle> = useMemo(() => ({ zIndex: decoration.order }), [decoration.order]);
+	const viewStyle: StyleProp<ViewStyle> = useMemo(
+		() => ({ zIndex: decoration.order, position: 'absolute', borderWidth: isActive ? 1 : 0 }),
+		[decoration.order, isActive],
+	);
+
+	const animatedStyle: SharedValue<{ transform: AnimatedTransform }> = useDerivedValue(() => ({ transform: [] }));
+	const onAnimating: GestureProviderPropsInterface['onAnimating'] = useCallback(
+		(event: GestureProviderInterface) => {
+			if (!animatedStyle.value) return;
+			animatedStyle.value = {
+				transform: [
+					{
+						translateX: event.translateX,
+					},
+					{
+						translateY: event.translateY,
+					},
+					{ scale: event.scale },
+					{ rotateZ: `${(event.rotateZ / Math.PI) * 180}deg` },
+				],
+			};
+		},
+		[animatedStyle],
+	);
 
 	const styles = StyleSheet.create({ designItemStyle: { width: 100, height: 100 } });
 
@@ -71,7 +98,9 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 			onEndGesture={onEndGesture}
 			isActive={isActive}
 			onSingleTapFinalize={onSingleTapFinalize}
-			viewStyle={gestureStyle}>
+			onAnimating={onAnimating}
+			animatedStyleShared={animatedStyle}
+			viewStyle={viewStyle}>
 			{decoration.decorationType === 'Figure' && (
 				<View style={[styles.designItemStyle, { backgroundColor: decoration.color }]} />
 			)}
