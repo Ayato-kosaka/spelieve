@@ -1,7 +1,10 @@
-import { Fragment, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { View } from 'react-native';
 
 import { MaskDecorationPropsInterface } from './MaskDecorationInterface';
+
+import { TCO001GestureProvider } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProvider';
+import { GestureProviderInterface } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderPropsInterface';
 
 export const TPA001MaskDecoration = ({ decoration, imageURI }: MaskDecorationPropsInterface) => {
 	const maskRef = useRef<HTMLImageElement>(null);
@@ -22,8 +25,17 @@ export const TPA001MaskDecoration = ({ decoration, imageURI }: MaskDecorationPro
 			}
 		};
 	}, [decoration.maskUri]);
+
+	const onAnimating = useCallback((event: GestureProviderInterface) => {
+		if (maskRef.current) {
+			maskRef.current.style.maskPosition = `${event.translateX}px ${event.translateY}px`;
+			maskRef.current.style.webkitMaskPosition = `${event.translateX}px ${event.translateY}px`;
+			maskRef.current.style.webkitMaskSize = 'auto 100%';
+			maskRef.current.style.maskSize = 'auto 100%';
+		}
+	}, []);
 	return (
-		<>
+		<TCO001GestureProvider onEndGesture={() => {}} onAnimating={onAnimating}>
 			<View />
 			{decoration.decorationType === 'Image' && (
 				<img
@@ -37,6 +49,6 @@ export const TPA001MaskDecoration = ({ decoration, imageURI }: MaskDecorationPro
 				/>
 			)}
 			{decoration.decorationType === 'Figure' && <View />}
-		</>
+		</TCO001GestureProvider>
 	);
 };

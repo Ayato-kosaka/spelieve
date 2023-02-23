@@ -132,11 +132,6 @@ export const TCO001GestureProvider = ({
 		}),
 		(prepareResult, preparePreviousResult) => {
 			onAnimating?.(prepareResult);
-			// console.log('useAnimatedReaction', maskRef.current, prepareResult);
-			// if (maskRef.current) {
-			// 	maskRef.current.style.maskPosition = `${prepareResult.translateX}px ${prepareResult.translateY}px`;
-			// 	maskRef.current.style.webkitMaskPosition = `${prepareResult.translateX}px ${prepareResult.translateY}px`;
-			// }
 		},
 		[translateX, translateY, scale, rotateZ],
 	);
