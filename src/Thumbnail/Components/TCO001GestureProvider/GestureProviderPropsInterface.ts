@@ -10,10 +10,10 @@ interface GestureProviderInterface {
 }
 
 export interface GestureProviderPropsInterface {
-	initial: GestureProviderInterface;
+	initial?: GestureProviderInterface;
 	onEndGesture: (val: Partial<GestureProviderInterface>) => void;
-	isActive: boolean;
-	onSingleTapFinalize: (event: GestureStateChangeEvent<TapGestureHandlerEventPayload>, success: boolean) => void;
-	viewStyle: StyleProp<ViewStyle>;
+	isActive?: boolean;
+	onSingleTapFinalize?: (event: GestureStateChangeEvent<TapGestureHandlerEventPayload>, success: boolean) => void;
+	viewStyle?: StyleProp<ViewStyle>;
 	children: ReactNode;
 }

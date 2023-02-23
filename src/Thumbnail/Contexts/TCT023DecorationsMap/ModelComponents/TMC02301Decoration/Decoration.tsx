@@ -54,12 +54,9 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 	);
 
 	const isActive = useMemo(() => activeDecorationID === decorationID, [activeDecorationID, decorationID]);
-	const onSingleTapFinalize: GestureProviderPropsInterface['onSingleTapFinalize'] = useCallback(
-		(event, success) => {
-			setActiveDecorationID(decorationID);
-		},
-		[decorationID, setActiveDecorationID],
-	);
+	const onSingleTapFinalize: GestureProviderPropsInterface['onSingleTapFinalize'] = useCallback(() => {
+		setActiveDecorationID(decorationID);
+	}, [decorationID, setActiveDecorationID]);
 
 	const gestureStyle: StyleProp<ViewStyle> = useMemo(() => ({ zIndex: decoration.order }), [decoration.order]);
 
