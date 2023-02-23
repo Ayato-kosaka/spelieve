@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect , useState } from 'react';
 import { ActivityIndicator, Pressable, SafeAreaView, ScrollView, View } from 'react-native';
 import { Button, Dialog, Portal, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -14,6 +14,7 @@ import i18n from '@/Common/Hooks/i18n-js';
 import { ThumbnailStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
 import { TMC02301Decoration } from '@/Thumbnail/Contexts/TCT023DecorationsMap/ModelComponents/TMC02301Decoration/Decoration';
+import { TMC02302MaskDecoration } from '@/Thumbnail/Contexts/TCT023DecorationsMap/ModelComponents/TMC02302MaskDecoration/MaskDecoration';
 import { ThumnailRule } from '@/Thumbnail/Hooks/ThumbnailRule';
 
 export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScreenProps<'TPA001ThumbnailEditor'>) => {
@@ -80,6 +81,14 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		});
 	}, [headerLeft, headerRight, navigation]);
 
+	const [maskDialog, setMaskDialog] = useState<{ visible: boolean }>({ visible: true });
+	const hideMaskDialog = useCallback(() => {
+		setMaskDialog({ visible: false });
+	}, []);
+	const onSaveMaskDialog = useCallback(() => {
+		console.log('onSaveMaskDialog');
+	}, []);
+
 	if (isLoading) {
 		return <ActivityIndicator animating />;
 	}
@@ -88,6 +97,20 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		<>
 			<SafeAreaView />
 			<Portal>
+				{/* Mask ダイアログ */}
+				<Dialog visible={maskDialog.visible} onDismiss={onSaveMaskDialog}>
+					<Dialog.Content>
+						<TMC02302MaskDecoration />
+					</Dialog.Content>
+					<Dialog.Actions>
+						<Button onPress={hideMaskDialog} color="black">
+							{i18n.t('Cancel')}
+						</Button>
+						<Button onPress={onSaveMaskDialog} color="black">
+							{i18n.t('Save')}
+						</Button>
+					</Dialog.Actions>
+				</Dialog>
 				{/* 閉じるボタン押下時に出現するダイアログ */}
 				<Dialog visible={beforeLeaveDialog.visible} onDismiss={hideBeforeLeaveDialog}>
 					<Dialog.Title>{i18n.t('Discard Thumbnail?')}</Dialog.Title>
