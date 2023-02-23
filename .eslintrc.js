@@ -1,6 +1,7 @@
 module.exports = {
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
+		cache: true,
 		ecmaFeatures: {
 			jsx: true,
 		},
@@ -9,7 +10,6 @@ module.exports = {
 		tsconfigRootDir: './',
 		project: ['./tsconfig.json'],
 	},
-	caches: true,
 	env: {
 		browser: true,
 		es2021: true,
