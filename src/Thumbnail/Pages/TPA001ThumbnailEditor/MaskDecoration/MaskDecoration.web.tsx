@@ -32,6 +32,7 @@ export const TPA001MaskDecoration = ({ decoration, imageURI }: MaskDecorationPro
 			maskRef.current.style.webkitMaskPosition = `${event.translateX}px ${event.translateY}px`;
 			maskRef.current.style.webkitMaskSize = 'auto 100%';
 			maskRef.current.style.maskSize = 'auto 100%';
+			// TODO: rotate は、div.mask を分ける必要ある
 		}
 	}, []);
 	return (
