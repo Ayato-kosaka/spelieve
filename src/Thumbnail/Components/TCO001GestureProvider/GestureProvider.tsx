@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { runOnJS, useAnimatedReaction, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
@@ -7,9 +7,14 @@ import { GestureProviderPropsInterface } from './GestureProviderPropsInterface';
 import { Logger } from '@/Common/Hooks/CHK001Utils';
 
 export const TCO001GestureProvider = ({
-	initial,
+	initial = {
+		translateX: 0,
+		translateY: 0,
+		scale: 1,
+		rotateZ: 0,
+	},
 	onEndGesture,
-	isActive,
+	isActive = true,
 	onSingleTapFinalize,
 	viewStyle,
 	children,
@@ -32,7 +37,9 @@ export const TCO001GestureProvider = ({
 		// web で onStart が動作しなく、onBegin を利用すると !success の場合も反応するため、onFinalize で制御する
 		.onFinalize((event, success) => {
 			if (success) {
-				runOnJS(onSingleTapFinalize)(event, success);
+				if (onSingleTapFinalize) {
+					runOnJS(onSingleTapFinalize)(event, success);
+				}
 			}
 		});
 
