@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useMemo } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import { Image, StyleProp, ViewStyle, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
@@ -29,15 +29,19 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 		return undefined;
 	}, [decoration.decorationType, decoration.key, storeUrlMap, textMap]);
 
+	// 読み完了時に props.onLoad を実行する処理
+	const valueRef = useRef<typeof value>(undefined);
 	useEffect(() => {
-		if (decoration.decorationType === 'Video' || decoration.decorationType === 'Image') {
-			return;
+		if (valueRef.current === value) {
+			onLoad?.();
 		}
-		onLoad?.(true);
-	}, [decoration.decorationType, onLoad]);
-
-	const onImageLoad = useCallback(() => {
-		onLoad?.(true);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [onLoad]);
+	useEffect(() => {
+		valueRef.current = value;
+	}, [value]);
+	const onSourceLoad = useCallback(() => {
+		onLoad?.();
 	}, [onLoad]);
 
 	const onEndGesture: GestureProviderPropsInterface['onEndGesture'] = useCallback(
@@ -88,7 +92,7 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 							// TODO: 修正する
 							uri: value || 'https://thumb.photo-ac.com/15/1527a37a819426cf6ac7a8761eb4bf67_t.jpeg',
 						}}
-						onLoad={onImageLoad}
+						onLoad={onSourceLoad}
 					/>
 				)}
 				{decoration.decorationType === 'Text' && decoration.key && <Text>{value || 'Dummy Text'}</Text>}

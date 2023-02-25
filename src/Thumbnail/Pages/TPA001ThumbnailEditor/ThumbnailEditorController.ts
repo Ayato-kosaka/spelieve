@@ -40,7 +40,7 @@ export const TPA001ThumbnailEditorController = ({
 	} = useContext(TCT023DecorationsMap);
 
 	const viewShotRef = useRef<ViewShot>(null);
-	const [onLoadResolveMap, setOnLoadResolveMap] = useState<{ [key: string]: (value: boolean) => void }>({});
+	const [onLoadResolveMap, setOnLoadResolveMap] = useState<{ [key: string]: (value: void) => void }>({});
 
 	const activeDecoration: DecorationsMapInterface | undefined = useMemo(
 		() => decorationsMap[activeDecorationID],
@@ -96,18 +96,24 @@ export const TPA001ThumbnailEditorController = ({
 	}>({ visible: false });
 	const hideBeforeLeaveDialog = useCallback(() => setBeforeLeaveDialog({ visible: false }), []);
 	const onSaveClicked = useCallback(async () => {
+		hideBeforeLeaveDialog();
+
+		// 各 Decoraton Component の読み込みが完了したことを示すためのマップを作成する
 		let tmpRsolveMap: typeof onLoadResolveMap = {};
+
+		// 各 Decoraton Component の Load を待機する Promise を作成して、tmpRsolveMap に保存する
 		const promises = Object.keys(decorationsMap).map(
 			(decorationID) =>
-				new Promise<boolean>((resolve, reject) => {
+				new Promise<void>((resolve, reject) => {
 					tmpRsolveMap[decorationID] = resolve;
 				}),
 		);
-		hideBeforeLeaveDialog();
-		setActiveDecorationID('');
 		setOnLoadResolveMap(tmpRsolveMap);
-		await Promise.all(promises);
 
+		// active による装飾を除去するために、activeDecorationID を初期化します。
+		// そして、全ての Decoration コンポーネントが再読込されるまで待機します。
+		setActiveDecorationID('');
+		await Promise.all(promises);
 		const captureURI = await viewShotRef?.current?.capture?.();
 		const downloadURL = captureURI && (await CHK005StorageUtils.uploadImageAsync(storage, captureURI));
 
@@ -115,7 +121,7 @@ export const TPA001ThumbnailEditorController = ({
 		Promise.all(
 			Object.keys(decorationsMap).map(
 				(decorationID) =>
-					new Promise<boolean>((resolve, reject) => {
+					new Promise<void>((resolve, reject) => {
 						tmpRsolveMap[decorationID] = resolve;
 					}),
 			),

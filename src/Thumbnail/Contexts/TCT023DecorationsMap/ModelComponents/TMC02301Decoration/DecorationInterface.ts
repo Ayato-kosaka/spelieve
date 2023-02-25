@@ -1,4 +1,4 @@
 export interface DecorationPropsInterface {
 	decorationID: string;
-	onLoad?: (value: boolean) => void;
+	onLoad?: (value: void) => void;
 }
