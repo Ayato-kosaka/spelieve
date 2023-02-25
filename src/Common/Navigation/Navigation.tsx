@@ -36,7 +36,10 @@ export const Navigation = () => {
 				const previousRouteName: string | undefined = routeNameRef.current;
 				const currentRouteName: string | undefined = navigationRef.current?.getCurrentRoute()?.name;
 
+				console.log('onStateChange !!! ')
+
 				if (previousRouteName !== currentRouteName && currentRouteName) {
+					console.log('send log!')
 					// 同じページ以外に遷移した時に発火
 					await sendAnalyticsLogEvent(currentRouteName, {
 						screen_class: currentRouteName,
