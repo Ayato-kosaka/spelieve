@@ -9,7 +9,7 @@ import { GestureProviderInterface } from '@/Thumbnail/Components/TCO001GesturePr
 export const TPA001MaskDecoration = ({ decoration, imageURI }: MaskDecorationPropsInterface) => {
 	const maskRef = useRef<HTMLImageElement>(null);
 	useEffect(() => {
-		if (decoration.maskUri === undefined) return;
+		if (decoration?.maskUri === undefined) return;
 		const image = new Image();
 		image.src = decoration.maskUri;
 		image.onload = () => {
@@ -24,7 +24,7 @@ export const TPA001MaskDecoration = ({ decoration, imageURI }: MaskDecorationPro
 				maskRef.current.draggable = false;
 			}
 		};
-	}, [decoration.maskUri]);
+	}, [decoration?.maskUri]);
 
 	const onAnimating = useCallback((event: GestureProviderInterface) => {
 		'worklet';
@@ -37,6 +37,9 @@ export const TPA001MaskDecoration = ({ decoration, imageURI }: MaskDecorationPro
 			// TODO: rotate は、div.mask を分ける必要ある
 		}
 	}, []);
+	if (!decoration) {
+		return <View />;
+	}
 	return (
 		<TCO001GestureProvider onEndGesture={() => {}} onAnimating={onAnimating}>
 			<View />

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { runOnJS, useAnimatedReaction, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import { runOnJS, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 
 import { GestureProviderPropsInterface } from './GestureProviderPropsInterface';
 
@@ -17,8 +17,6 @@ export const TCO001GestureProvider = ({
 	isActive = true,
 	onSingleTapFinalize,
 	onAnimating,
-	animatedStyleShared,
-	viewStyle,
 	children,
 }: GestureProviderPropsInterface) => {
 	/**
@@ -109,20 +107,7 @@ export const TCO001GestureProvider = ({
 		[onEndGesture],
 	);
 
-	// animatedStyle を設定する
-	// const animatedStyle = useAnimatedStyle(() => ({
-	// 	transform: [
-	// 		{
-	// 			translateX: translateX.value,
-	// 		},
-	// 		{
-	// 			translateY: translateY.value,
-	// 		},
-	// 		{ scale: scale.value },
-	// 		{ rotateZ: `${(rotateZ.value / Math.PI) * 180}deg` },
-	// 	],
-	// }));
-
+	// onAnimating
 	useAnimatedReaction(
 		() => ({
 			translateX: translateX.value,
@@ -136,16 +121,10 @@ export const TCO001GestureProvider = ({
 		[translateX, translateY, scale, rotateZ],
 	);
 
-	const animatedStyle = useAnimatedStyle(() => animatedStyleShared?.value || {});
-
 	const composed = useMemo(
 		() => Gesture.Simultaneous(singleTap, panGesture, pinchGesture, rotationGesture),
 		[panGesture, pinchGesture, rotationGesture, singleTap],
 	);
 
-	return (
-		<GestureDetector gesture={composed}>
-			<Animated.View style={[animatedStyle, viewStyle]}>{children}</Animated.View>
-		</GestureDetector>
-	);
+	return <GestureDetector gesture={composed}>{children}</GestureDetector>;
 };

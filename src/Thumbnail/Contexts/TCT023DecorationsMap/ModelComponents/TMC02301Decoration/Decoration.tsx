@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useMemo } from 'react';
 import { Image, StyleProp, ViewStyle, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
-import { AnimatedTransform, SharedValue, useDerivedValue } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 
 import { TCT023DecorationsMap } from '../../DecorationsMap';
 
@@ -9,10 +9,8 @@ import { DecorationPropsInterface } from './DecorationInterface';
 
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
 import { TCO001GestureProvider } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProvider';
-import {
-	GestureProviderInterface,
-	GestureProviderPropsInterface,
-} from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderPropsInterface';
+import { TCO001UseAnimatedStyle } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderController';
+import { GestureProviderPropsInterface } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderPropsInterface';
 
 export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInterface) => {
 	const { thumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
@@ -20,7 +18,6 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 	const { decorationsMap, setDecorationsMap, activeDecorationID, setActiveDecorationID } =
 		useContext(TCT023DecorationsMap);
 	const decoration = decorationsMap[decorationID]!;
-	console.log('decoration', decorationID);
 
 	const value = useMemo(() => {
 		if (decoration.decorationType === 'Video' || decoration.decorationType === 'Image') {
@@ -45,7 +42,6 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 
 	const onEndGesture: GestureProviderPropsInterface['onEndGesture'] = useCallback(
 		(val) => {
-			console.log('decorationsMap', decorationsMap);
 			setDecorationsMap({
 				...decorationsMap,
 				[decorationID]: {
@@ -70,29 +66,9 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 		[decoration.order, isActive],
 	);
 
-	const animatedStyle: SharedValue<{ transform: AnimatedTransform }> = useDerivedValue(() => ({ transform: [] }));
-	const onAnimating: GestureProviderPropsInterface['onAnimating'] = useCallback(
-		(event: GestureProviderInterface) => {
-			'worklet';
-
-			if (!animatedStyle.value) return;
-			animatedStyle.value = {
-				transform: [
-					{
-						translateX: event.translateX,
-					},
-					{
-						translateY: event.translateY,
-					},
-					{ scale: event.scale },
-					{ rotateZ: `${(event.rotateZ / Math.PI) * 180}deg` },
-				],
-			};
-		},
-		[animatedStyle],
-	);
-
 	const styles = StyleSheet.create({ designItemStyle: { width: 100, height: 100 } });
+
+	const { onAnimating, animatedStyle } = TCO001UseAnimatedStyle();
 
 	return (
 		<TCO001GestureProvider
@@ -100,22 +76,23 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 			onEndGesture={onEndGesture}
 			isActive={isActive}
 			onSingleTapFinalize={onSingleTapFinalize}
-			onAnimating={onAnimating}
-			animatedStyleShared={animatedStyle}
-			viewStyle={viewStyle}>
-			{decoration.decorationType === 'Figure' && (
-				<View style={[styles.designItemStyle, { backgroundColor: decoration.color }]} />
-			)}
-			{decoration.decorationType === 'Image' && (
-				<Image
-					style={styles.designItemStyle}
-					source={{
-						uri: value || 'https://thumb.photo-ac.com/15/1527a37a819426cf6ac7a8761eb4bf67_t.jpeg',
-					}}
-					onLoad={onImageLoad}
-				/>
-			)}
-			{decoration.decorationType === 'Text' && decoration.key && <Text>{value || 'Dummy Text'}</Text>}
+			onAnimating={onAnimating}>
+			<Animated.View style={[animatedStyle, viewStyle]}>
+				{decoration.decorationType === 'Figure' && (
+					<View style={[styles.designItemStyle, { backgroundColor: decoration.color }]} />
+				)}
+				{decoration.decorationType === 'Image' && (
+					<Image
+						style={styles.designItemStyle}
+						source={{
+							// TODO: 修正する
+							uri: value || 'https://thumb.photo-ac.com/15/1527a37a819426cf6ac7a8761eb4bf67_t.jpeg',
+						}}
+						onLoad={onImageLoad}
+					/>
+				)}
+				{decoration.decorationType === 'Text' && decoration.key && <Text>{value || 'Dummy Text'}</Text>}
+			</Animated.View>
 		</TCO001GestureProvider>
 	);
 };

@@ -83,7 +83,6 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 			headerLeft,
 		});
 	}, [headerLeft, headerRight, navigation]);
-	console.log('decorationsMap', decorationsMap);
 
 	if (isLoading) {
 		return <ActivityIndicator animating />;
@@ -97,7 +96,7 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 				<Dialog visible={maskDialog.visible} onDismiss={onSaveMaskDialog}>
 					<Dialog.Content>
 						<TPA001MaskDecoration
-							decoration={decorationsMap[maskDialog.decorationID]!}
+							decoration={decorationsMap[maskDialog.decorationID]}
 							imageURI={
 								decorationsMap[maskDialog.decorationID] &&
 								decorationsMap[maskDialog.decorationID]!.key &&
