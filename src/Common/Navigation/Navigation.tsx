@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useRef } from 'react';
 
 import i18n from '../Hooks/i18n-js';
 import { ModalScreen } from '../Pages/ModalScreen';
@@ -10,21 +11,47 @@ import { NotFoundScreen } from '../Pages/NotFoundScreen';
 import { LinkingConfiguration } from './LinkingConfiguration';
 import { RootStackParamList, RootTabParamList } from './NavigationInterface';
 
+import { sendAnalyticsLogEvent } from '@/Common/Hooks/Analytics/Analytics';
 import { ItineraryPageNavigator } from '@/Itinerary/Pages/ItineraryPageNavigator';
 import { PlacePageNavigator } from '@/Place/Pages/PlacePageNavigator/PlacePageNavigator';
 import { navigationTheme } from '@/ThemeProvider';
 import { ThumbnailPageNavigator } from '@/Thumbnail/Pages/ThumbnailPageNavigator';
 
-export const Navigation = () => (
-	<NavigationContainer
-		linking={LinkingConfiguration}
-		theme={navigationTheme}
-		documentTitle={{
-			formatter: (options, route) => 'Spelieve ~旅のしおり簡単作成アプリ~',
-		}}>
-		<RootNavigator />
-	</NavigationContainer>
-);
+export const Navigation = () => {
+	const navigationRef = useNavigationContainerRef<RootStackParamList>(); // 今のnavigationの管理
+	const routeNameRef = useRef<string | undefined>(''); // おそらく1つ前のページ一時保存用
+
+	return (
+		<NavigationContainer
+			linking={LinkingConfiguration}
+			theme={navigationTheme}
+			documentTitle={{
+				formatter: (options, route) => 'Spelieve ~旅のしおり簡単作成アプリ~',
+			}}
+			ref={navigationRef}
+			onReady={() => {
+				routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
+			}}
+			onStateChange={async () => {
+				const previousRouteName: string | undefined = routeNameRef.current;
+				const currentRouteName: string | undefined = navigationRef.current?.getCurrentRoute()?.name;
+
+				if (previousRouteName !== currentRouteName && currentRouteName) {
+					// 同じページ以外に遷移した時に発火
+					await sendAnalyticsLogEvent(currentRouteName, {
+						screen_class: currentRouteName,
+					});
+					// await analytics().logScreenView({
+					// 	screen_name: currentRouteName,
+					// 	screen_class: currentRouteName,
+					// });
+				}
+				routeNameRef.current = currentRouteName;
+			}}>
+			<RootNavigator />
+		</NavigationContainer>
+	);
+};
 
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
