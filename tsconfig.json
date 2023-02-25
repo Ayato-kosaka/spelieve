@@ -6,7 +6,6 @@
 		"incremental": true,
 		"noEmit": true,
 		"outDir": "dist/",
-		"types": ["@types/styled-components-react-native"],
 		"paths": {
 			"@/*": ["./src/*"],
 			"@assets/*": ["./assets/*"]

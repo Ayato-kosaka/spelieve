@@ -59,8 +59,7 @@
 		"react-native-web": "0.18.10",
 		"react-native-wheel-color-picker": "^1.2.0",
 		"react-spring-bottom-sheet": "^3.4.1",
-		"spelieve-common": "^1.1.132",
-		"styled-components": "^5.3.6"
+		"spelieve-common": "^1.1.132"
 	},
 	"devDependencies": {
 		"@babel/core": "7.20.12",
@@ -71,12 +70,10 @@
 		"@types/react-native": "0.70.8",
 		"@types/react-native-autocomplete-input": "^5.1.0",
 		"@types/react-native-vector-icons": "^6.4.12",
-		"@types/styled-components-react-native": "^5.2.1",
 		"@types/uuid": "^9.0.0",
 		"@typescript-eslint/eslint-plugin": "5.48.0",
 		"@typescript-eslint/parser": "5.48.0",
 		"babel-plugin-module-resolver": "4.1.0",
-		"babel-plugin-styled-components": "^2.0.7",
 		"babel-plugin-transform-inline-environment-variables": "0.4.4",
 		"eslint": "8.31.0",
 		"eslint-config-airbnb": "19.0.4",
