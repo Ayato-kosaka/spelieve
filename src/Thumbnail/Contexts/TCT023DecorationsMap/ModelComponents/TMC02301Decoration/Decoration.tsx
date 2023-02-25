@@ -73,6 +73,8 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 	const animatedStyle: SharedValue<{ transform: AnimatedTransform }> = useDerivedValue(() => ({ transform: [] }));
 	const onAnimating: GestureProviderPropsInterface['onAnimating'] = useCallback(
 		(event: GestureProviderInterface) => {
+			'worklet';
+
 			if (!animatedStyle.value) return;
 			animatedStyle.value = {
 				transform: [

@@ -27,6 +27,8 @@ export const TPA001MaskDecoration = ({ decoration, imageURI }: MaskDecorationPro
 	}, [decoration.maskUri]);
 
 	const onAnimating = useCallback((event: GestureProviderInterface) => {
+		'worklet';
+
 		if (maskRef.current) {
 			maskRef.current.style.maskPosition = `${event.translateX}px ${event.translateY}px`;
 			maskRef.current.style.webkitMaskPosition = `${event.translateX}px ${event.translateY}px`;
