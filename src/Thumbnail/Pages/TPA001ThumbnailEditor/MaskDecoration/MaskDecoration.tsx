@@ -7,14 +7,14 @@ import { MaskDecorationPropsInterface } from './MaskDecorationInterface';
 import { TCO001GestureProvider } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProvider';
 import { TCO001UseAnimatedStyle } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderController';
 
-export const TPA001MaskDecoration = ({ decoration, imageURI }: MaskDecorationPropsInterface) => {
+export const TPA001MaskDecoration = ({ decoration, imageURI, onEndMaskGesture }: MaskDecorationPropsInterface) => {
 	const { onAnimating, animatedStyle } = TCO001UseAnimatedStyle();
 
 	if (!decoration) {
 		return <View />;
 	}
 	return (
-		<TCO001GestureProvider onEndGesture={() => {}} onAnimating={onAnimating}>
+		<TCO001GestureProvider onEndGesture={onEndMaskGesture} onAnimating={onAnimating}>
 			<MaskedView
 				style={{
 					width: '100%',

@@ -39,6 +39,7 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		onSaveTextEditing,
 		maskDialog,
 		onSaveMaskDialog,
+		onEndMaskGesture,
 		hideMaskDialog,
 		colorPickerDialog,
 		hideColorPickerDialog,
@@ -102,6 +103,7 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 								decorationsMap[maskDialog.decorationID]!.key &&
 								thumbnailItemMapper.storeUrlMap[decorationsMap[maskDialog.decorationID]!.key!]
 							}
+							onEndMaskGesture={onEndMaskGesture}
 						/>
 					</Dialog.Content>
 					<Dialog.Actions>

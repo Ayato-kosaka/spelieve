@@ -5,6 +5,8 @@ import { GestureResponderEvent, PressableProps } from 'react-native';
 import uuid from 'react-native-uuid';
 import ViewShot from 'react-native-view-shot';
 
+import { Decorations } from 'spelieve-common/lib/Models/Thumbnail/TDB02/Decorations';
+
 import { TextEditDialogPropsInterface } from './TextEditDialog/TextEditDialog';
 
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
@@ -13,6 +15,7 @@ import { ImagePickerPropsInterface } from '@/Common/Components/CCO006ImagePicker
 import { CHK005StorageUtils } from '@/Common/Hooks/CHK005StorageUtils';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ThumbnailStackScreenProps } from '@/Common/Navigation/NavigationInterface';
+import { GestureProviderPropsInterface } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderPropsInterface';
 import { TCT011MThumbnailOne } from '@/Thumbnail/Contexts/TCT011MThumbnailOne/ThumbnailOne';
 import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
 import { DecorationsMapInterface } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMapInterface';
@@ -245,18 +248,40 @@ export const TPA001ThumbnailEditorController = ({
 		});
 	}, [activeDecoration]);
 
-	const [maskDialog, setMaskDialog] = useState<{ visible: boolean; decorationID: string }>({
+	const [maskDialog, setMaskDialog] = useState<{
+		visible: boolean;
+		decorationID: string;
+		maskTransform: Decorations['maskTransform'];
+	}>({
 		visible: false,
 		decorationID: '',
+		maskTransform: { translateX: 0, translateY: 0, scale: 1, rotateZ: 0 },
 	});
+	const onMaskClicked = useCallback(() => {
+		if (activeDecoration)
+			setMaskDialog({ visible: true, decorationID: activeDecorationID, maskTransform: activeDecoration.maskTransform });
+	}, [activeDecoration, activeDecorationID]);
 	const hideMaskDialog = useCallback(() => {
-		setMaskDialog({ visible: false, decorationID: '' });
+		setMaskDialog({
+			visible: false,
+			decorationID: '',
+			maskTransform: { translateX: 0, translateY: 0, scale: 1, rotateZ: 0 },
+		});
 	}, []);
-	const onSaveMaskDialog = useCallback(() => {}, []);
-	const onMaskClicked = useCallback(
-		() => setMaskDialog({ visible: true, decorationID: activeDecorationID }),
-		[activeDecorationID],
-	);
+	const onEndMaskGesture: GestureProviderPropsInterface['onEndGesture'] = useCallback((transorm) => {
+		setMaskDialog((v) => ({ ...v, maskTransform: { ...v.maskTransform, ...transorm } }));
+	}, []);
+	const onSaveMaskDialog = useCallback(() => {
+		setDecorationsMap((v) => ({
+			...v,
+			[maskDialog.decorationID]: v[maskDialog.decorationID]
+				? {
+						...v[maskDialog.decorationID]!,
+						maskTransform: maskDialog.maskTransform,
+				  }
+				: undefined,
+		}));
+	}, [maskDialog.decorationID, maskDialog.maskTransform, setDecorationsMap]);
 
 	const onPickImage: ImagePickerPropsInterface['onPickImage'] = useCallback(
 		(imageUrl, key) => {
@@ -474,6 +499,7 @@ export const TPA001ThumbnailEditorController = ({
 		hideTextEditDialog,
 		onSaveTextEditing,
 		maskDialog,
+		onEndMaskGesture,
 		onSaveMaskDialog,
 		hideMaskDialog,
 		colorPickerDialog,

@@ -12,7 +12,6 @@ export const TCO001UseAnimatedStyle = () => {
 		(event: GestureProviderInterface) => {
 			'worklet';
 
-			if (!animatedStyleShared.value) return;
 			animatedStyleShared.value = {
 				transform: [
 					{
@@ -29,7 +28,7 @@ export const TCO001UseAnimatedStyle = () => {
 		[animatedStyleShared],
 	);
 
-	const animatedStyle = useAnimatedStyle(() => animatedStyleShared?.value || {});
+	const animatedStyle = useAnimatedStyle(() => animatedStyleShared.value);
 
 	return {
 		onAnimating,
