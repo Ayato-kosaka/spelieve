@@ -144,7 +144,6 @@ export const TPA001ThumbnailEditorController = ({
 			storeUrlMap: {},
 			textMap: {},
 		}));
-		console.log('setResolveMap(tmpRsolveMap)', tmpRsolveMap);
 		setOnLoadResolveMap(tmpRsolveMap);
 	}, [
 		createThumbnail,
@@ -253,9 +252,7 @@ export const TPA001ThumbnailEditorController = ({
 	const hideMaskDialog = useCallback(() => {
 		setMaskDialog({ visible: false, decorationID: '' });
 	}, []);
-	const onSaveMaskDialog = useCallback(() => {
-		console.log('onSaveMaskDialog');
-	}, []);
+	const onSaveMaskDialog = useCallback(() => {}, []);
 	const onMaskClicked = useCallback(
 		() => setMaskDialog({ visible: true, decorationID: activeDecorationID }),
 		[activeDecorationID],

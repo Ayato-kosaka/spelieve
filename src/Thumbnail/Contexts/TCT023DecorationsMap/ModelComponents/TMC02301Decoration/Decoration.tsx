@@ -20,8 +20,12 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 	const decoration = decorationsMap[decorationID]!;
 
 	const value = useMemo(() => {
-		if (decoration.decorationType === 'Video' || decoration.decorationType === 'Image') {
+		if (decoration.decorationType === 'Video') {
 			return storeUrlMap[decoration.key!];
+		}
+		if (decoration.decorationType === 'Image') {
+			// TODO: 修正する
+			return storeUrlMap[decoration.key!] || 'https://thumb.photo-ac.com/15/1527a37a819426cf6ac7a8761eb4bf67_t.jpeg';
 		}
 		if (decoration.decorationType === 'Text') {
 			return textMap[decoration.key!];
@@ -30,18 +34,24 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 	}, [decoration.decorationType, decoration.key, storeUrlMap, textMap]);
 
 	// 読み完了時に props.onLoad を実行する処理
-	const valueRef = useRef<typeof value>(undefined);
+	const sourceLoadRef = useRef<{ isLoading: boolean; onLoad?: () => void }>({ isLoading: false });
 	useEffect(() => {
-		if (valueRef.current === value) {
+		if (value) {
+			sourceLoadRef.current.isLoading = true;
+		}
+	}, [value]);
+	const onSourceLoad = useCallback(() => {
+		sourceLoadRef.current.onLoad?.();
+		sourceLoadRef.current.isLoading = false;
+		sourceLoadRef.current.onLoad = undefined;
+	}, []);
+	useEffect(() => {
+		if (sourceLoadRef.current.isLoading) {
+			sourceLoadRef.current.onLoad = onLoad;
+		} else {
 			onLoad?.();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [onLoad]);
-	useEffect(() => {
-		valueRef.current = value;
-	}, [value]);
-	const onSourceLoad = useCallback(() => {
-		onLoad?.();
 	}, [onLoad]);
 
 	const onEndGesture: GestureProviderPropsInterface['onEndGesture'] = useCallback(
@@ -89,8 +99,7 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 					<Image
 						style={styles.designItemStyle}
 						source={{
-							// TODO: 修正する
-							uri: value || 'https://thumb.photo-ac.com/15/1527a37a819426cf6ac7a8761eb4bf67_t.jpeg',
+							uri: value,
 						}}
 						onLoad={onSourceLoad}
 					/>
