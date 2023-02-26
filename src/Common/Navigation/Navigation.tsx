@@ -21,6 +21,18 @@ export const Navigation = () => {
 	const navigationRef = useNavigationContainerRef<RootStackParamList>();
 	const routeNameRef = useRef<string | undefined>('');
 
+	const handlePageChanged = async (): Promise<void> => {
+		const previousRouteName: string | undefined = routeNameRef.current;
+		const currentRouteName: string | undefined = navigationRef.current?.getCurrentRoute()?.name;
+
+		if (previousRouteName !== currentRouteName && currentRouteName) {
+			await sendAnalyticsLogEvent(currentRouteName, {
+				screen_class: currentRouteName,
+			});
+		}
+		routeNameRef.current = currentRouteName;
+	};
+
 	return (
 		<NavigationContainer
 			linking={LinkingConfiguration}
@@ -32,17 +44,7 @@ export const Navigation = () => {
 			onReady={() => {
 				routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
 			}}
-			onStateChange={async () => {
-				const previousRouteName: string | undefined = routeNameRef.current;
-				const currentRouteName: string | undefined = navigationRef.current?.getCurrentRoute()?.name;
-
-				if (previousRouteName !== currentRouteName && currentRouteName) {
-					await sendAnalyticsLogEvent(currentRouteName, {
-						screen_class: currentRouteName,
-					});
-				}
-				routeNameRef.current = currentRouteName;
-			}}>
+			onStateChange={() => handlePageChanged()}>
 			<RootNavigator />
 		</NavigationContainer>
 	);

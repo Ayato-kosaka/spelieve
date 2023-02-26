@@ -10,6 +10,5 @@ export const sendAnalyticsLogEvent = (
 		[key: string]: string | number | boolean;
 	} = {},
 ) => {
-	console.log('called web analytics event');
 	logEvent(webAnalytics, event, params);
 };
