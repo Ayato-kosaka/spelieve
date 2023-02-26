@@ -59,7 +59,7 @@
 		"react-native-web": "0.18.10",
 		"react-native-wheel-color-picker": "^1.2.0",
 		"react-spring-bottom-sheet": "^3.4.1",
-		"spelieve-common": "^1.1.132"
+		"spelieve-common": "^1.1.133"
 	},
 	"devDependencies": {
 		"@babel/core": "7.20.12",

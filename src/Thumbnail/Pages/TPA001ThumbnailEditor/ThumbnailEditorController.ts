@@ -47,15 +47,15 @@ export const TPA001ThumbnailEditorController = ({
 		[activeDecorationID, decorationsMap],
 	);
 
-	const initialDecoration: Pick<DecorationsMapInterface, 'gesture' | 'maskGesture'> = useMemo(
+	const initialDecoration: Pick<DecorationsMapInterface, 'transform' | 'maskTransform'> = useMemo(
 		() => ({
-			gesture: {
+			transform: {
 				translateX: 200,
 				translateY: 200,
 				rotateZ: 0,
 				scale: 1,
 			},
-			maskGesture: {
+			maskTransform: {
 				translateX: 200,
 				translateY: 200,
 				rotateZ: 0,
