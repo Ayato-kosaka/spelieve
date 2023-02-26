@@ -18,8 +18,8 @@ import { navigationTheme } from '@/ThemeProvider';
 import { ThumbnailPageNavigator } from '@/Thumbnail/Pages/ThumbnailPageNavigator';
 
 export const Navigation = () => {
-	const navigationRef = useNavigationContainerRef<RootStackParamList>(); // 今のnavigationの管理
-	const routeNameRef = useRef<string | undefined>(''); // おそらく1つ前のページ一時保存用
+	const navigationRef = useNavigationContainerRef<RootStackParamList>();
+	const routeNameRef = useRef<string | undefined>('');
 
 	return (
 		<NavigationContainer
@@ -36,18 +36,10 @@ export const Navigation = () => {
 				const previousRouteName: string | undefined = routeNameRef.current;
 				const currentRouteName: string | undefined = navigationRef.current?.getCurrentRoute()?.name;
 
-				console.log('onStateChange !!! ')
-
 				if (previousRouteName !== currentRouteName && currentRouteName) {
-					console.log('send log!')
-					// 同じページ以外に遷移した時に発火
 					await sendAnalyticsLogEvent(currentRouteName, {
 						screen_class: currentRouteName,
 					});
-					// await analytics().logScreenView({
-					// 	screen_name: currentRouteName,
-					// 	screen_class: currentRouteName,
-					// });
 				}
 				routeNameRef.current = currentRouteName;
 			}}>
