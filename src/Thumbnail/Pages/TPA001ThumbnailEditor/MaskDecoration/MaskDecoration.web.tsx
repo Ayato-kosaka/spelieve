@@ -6,7 +6,7 @@ import { MaskDecorationPropsInterface } from './MaskDecorationInterface';
 import { TCO001GestureProvider } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProvider';
 import { GestureProviderInterface } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderPropsInterface';
 
-export const TPA001MaskDecoration = ({ decoration, imageURI }: MaskDecorationPropsInterface) => {
+export const TPA001MaskDecoration = ({ decoration, imageURI, onEndMaskGesture }: MaskDecorationPropsInterface) => {
 	const maskRef = useRef<HTMLImageElement>(null);
 	useEffect(() => {
 		if (decoration?.maskUri === undefined) return;
@@ -41,7 +41,7 @@ export const TPA001MaskDecoration = ({ decoration, imageURI }: MaskDecorationPro
 		return <View />;
 	}
 	return (
-		<TCO001GestureProvider onEndGesture={() => {}} onAnimating={onAnimating}>
+		<TCO001GestureProvider onEndGesture={onEndMaskGesture} onAnimating={onAnimating}>
 			<View />
 			{decoration.decorationType === 'Image' && (
 				<img
