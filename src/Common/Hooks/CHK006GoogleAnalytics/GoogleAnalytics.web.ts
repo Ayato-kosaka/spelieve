@@ -1,7 +1,8 @@
 import { getAnalytics, logEvent } from 'firebase/analytics';
 
-import app from '@/Common/Endpoint/firebase';
 import { GoogleAnalyticsInterface } from './GoogleAnalyticsInterface';
+
+import app from '@/Common/Endpoint/firebase';
 
 const webAnalytics = getAnalytics(app);
 
