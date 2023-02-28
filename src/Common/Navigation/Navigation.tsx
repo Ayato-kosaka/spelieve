@@ -11,7 +11,7 @@ import { NotFoundScreen } from '../Pages/NotFoundScreen';
 import { LinkingConfiguration } from './LinkingConfiguration';
 import { RootStackParamList, RootTabParamList } from './NavigationInterface';
 
-import { CHK005Analytics } from '@/Common/Hooks/CHK005Analytics/Analytics';
+import { CHK006GoogleAnalytics } from '@/Common/Hooks/CHK006GoogleAnalytics/GoogleAnalytics';
 import { ItineraryPageNavigator } from '@/Itinerary/Pages/ItineraryPageNavigator';
 import { PlacePageNavigator } from '@/Place/Pages/PlacePageNavigator/PlacePageNavigator';
 import { navigationTheme } from '@/ThemeProvider';
@@ -26,7 +26,7 @@ export const Navigation = () => {
 		const currentRouteName: string | undefined = navigationRef.current?.getCurrentRoute()?.name;
 
 		if (previousRouteName !== currentRouteName && currentRouteName) {
-			CHK005Analytics.sendAnalyticsLogEvent(currentRouteName, {
+			CHK006GoogleAnalytics.sendAnalyticsLogEvent(currentRouteName, {
 				screen_class: currentRouteName,
 			});
 		}

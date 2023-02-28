@@ -1,6 +1,7 @@
 import analytics from '@react-native-firebase/analytics';
+import { GoogleAnalyticsInterface } from './GoogleAnalyticsInterface';
 
-export const CHK005Analytics = {
+export const CHK006GoogleAnalytics: GoogleAnalyticsInterface = {
 	sendAnalyticsLogEvent: (
 		event: string,
 		params: {
