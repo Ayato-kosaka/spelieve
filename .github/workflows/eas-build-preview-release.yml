@@ -35,6 +35,8 @@ jobs:
           path: spelieve-secret
 
       - run: 'mv ./spelieve-secret/spelieve-frontend/release/ENV.ts ./src'
+      - run: 'mv ./spelieve-secret/spelieve-frontend/release/GoogleService-Info.plist ./'
+      - run: 'mv ./spelieve-secret/spelieve-frontend/release/google-services.json ./'
 
       - run: 'rm -rf spelieve-secret/'
 
