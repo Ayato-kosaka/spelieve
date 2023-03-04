@@ -54,7 +54,7 @@ export const PPA001PlacesController = ({ navigation, route }: PlaceStackScreenPr
 
 	const onAutocompleteClicked = (data: PlaceAutocompleteResult, details: MPlace | null) => {
 		const isIncludes = (arr: AddressType[], target: AddressType[]) => arr.some((el) => target.includes(el));
-		const addressType: AddressType[] = [AddressType.establishment];
+		const addressType: AddressType[] = [AddressType.street_address, AddressType.establishment, AddressType.premise];
 		const sendedDataTypes: AddressType[] = data.types;
 		Logger('PPA001PlacesController', 'onAutocompleteClicked', { data, details });
 
