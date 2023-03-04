@@ -33,6 +33,8 @@ jobs:
           path: spelieve-secret
           
       - run: 'mv ./spelieve-secret/spelieve-frontend/production/ENV.ts ./src'
+      - run: 'mv ./spelieve-secret/spelieve-frontend/production/GoogleService-Info.plist ./'
+      - run: 'mv ./spelieve-secret/spelieve-frontend/production/google-services.json ./'
       
       - run: 'rm -rf spelieve-secret/'
 
