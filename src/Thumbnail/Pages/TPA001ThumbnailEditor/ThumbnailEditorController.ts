@@ -59,8 +59,8 @@ export const TPA001ThumbnailEditorController = ({
 				scale: 1,
 			},
 			maskTransform: {
-				translateX: 200,
-				translateY: 200,
+				translateX: 0,
+				translateY: 0,
 				rotateZ: 0,
 				scale: 1,
 			},
@@ -251,20 +251,32 @@ export const TPA001ThumbnailEditorController = ({
 	const [maskDialog, setMaskDialog] = useState<{
 		visible: boolean;
 		decorationID: string;
+		maskUri: Decorations['maskUri'];
 		maskTransform: Decorations['maskTransform'];
 	}>({
 		visible: false,
 		decorationID: '',
+		maskUri: undefined,
 		maskTransform: { translateX: 0, translateY: 0, scale: 1, rotateZ: 0 },
 	});
+	const onSelectMask = useCallback((maskUri: string) => {
+		setMaskDialog((v) => ({ ...v, maskUri }));
+	}, []);
 	const onMaskClicked = useCallback(() => {
 		if (activeDecoration)
-			setMaskDialog({ visible: true, decorationID: activeDecorationID, maskTransform: activeDecoration.maskTransform });
+			setMaskDialog({
+				visible: true,
+				decorationID: activeDecorationID,
+				// TODO: あとで変更する
+				maskUri: activeDecoration.maskUri ?? 'https://cdn-icons-png.flaticon.com/512/2107/2107776.png',
+				maskTransform: activeDecoration.maskTransform,
+			});
 	}, [activeDecoration, activeDecorationID]);
 	const hideMaskDialog = useCallback(() => {
 		setMaskDialog({
 			visible: false,
 			decorationID: '',
+			maskUri: undefined,
 			maskTransform: { translateX: 0, translateY: 0, scale: 1, rotateZ: 0 },
 		});
 	}, []);
@@ -277,11 +289,13 @@ export const TPA001ThumbnailEditorController = ({
 			[maskDialog.decorationID]: v[maskDialog.decorationID]
 				? {
 						...v[maskDialog.decorationID]!,
+						maskUri: maskDialog.maskUri,
 						maskTransform: maskDialog.maskTransform,
 				  }
 				: undefined,
 		}));
-	}, [maskDialog.decorationID, maskDialog.maskTransform, setDecorationsMap]);
+		hideMaskDialog();
+	}, [hideMaskDialog, maskDialog.decorationID, maskDialog.maskTransform, maskDialog.maskUri, setDecorationsMap]);
 
 	const onPickImage: ImagePickerPropsInterface['onPickImage'] = useCallback(
 		(imageUrl, key) => {

@@ -6,27 +6,28 @@ import { MaskDecorationPropsInterface } from './MaskDecorationInterface';
 import { TCO001GestureProvider } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProvider';
 import { GestureProviderInterface } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderPropsInterface';
 
-export const TPA001MaskDecoration = ({ decoration, imageURI, onEndMaskGesture }: MaskDecorationPropsInterface) => {
+export const TPA001MaskDecoration = ({
+	decoration,
+	imageURI,
+	maskUri,
+	maskTransform,
+	onEndMaskGesture,
+}: MaskDecorationPropsInterface) => {
 	const maskRef = useRef<HTMLImageElement>(null);
 	const initMasRef = useCallback(() => {
 		if (!maskRef.current) return;
+		if (!maskUri) return;
 		// for more infomation about css_mask_image read https://www.webdesignleaves.com/pr/css/css_mask_image.html
-		maskRef.current.style.webkitMaskImage = `url(${
-			decoration?.maskUri ??
-			// TODO: 後で変える
-			'https://cdn-icons-png.flaticon.com/512/2107/2107776.png'
-		})`;
-		maskRef.current.style.maskImage = `url(${
-			decoration?.maskUri ??
-			// TODO: 後で変える
-			'https://cdn-icons-png.flaticon.com/512/2107/2107776.png'
-		})`;
-		maskRef.current.style.webkitMaskRepeat = 'no-repeat';
-		maskRef.current.style.maskRepeat = 'no-repeat';
+		maskRef.current.style.webkitMaskImage = `url(${maskUri})`;
+		maskRef.current.style.maskImage = `url(${maskUri})`;
+		maskRef.current.style.maskPosition = `${maskTransform.translateX}px ${maskTransform.translateY}px`;
+		maskRef.current.style.webkitMaskPosition = `${maskTransform.translateX}px ${maskTransform.translateY}px`;
 		maskRef.current.style.webkitMaskSize = 'auto 100%';
 		maskRef.current.style.maskSize = 'auto 100%';
+		maskRef.current.style.webkitMaskRepeat = 'no-repeat';
+		maskRef.current.style.maskRepeat = 'no-repeat';
 		maskRef.current.draggable = false;
-	}, [decoration?.maskUri]);
+	}, [maskTransform.translateX, maskTransform.translateY, maskUri]);
 	useEffect(() => {
 		if (!decoration) return;
 		if (decoration.decorationType === 'Image') {
@@ -54,7 +55,7 @@ export const TPA001MaskDecoration = ({ decoration, imageURI, onEndMaskGesture }:
 		return <View />;
 	}
 	return (
-		<TCO001GestureProvider onEndGesture={onEndMaskGesture} onAnimating={onAnimating}>
+		<TCO001GestureProvider initial={maskTransform} onEndGesture={onEndMaskGesture} onAnimating={onAnimating}>
 			<View>
 				<View />
 				{decoration.decorationType === 'Image' && (

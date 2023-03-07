@@ -7,14 +7,20 @@ import { MaskDecorationPropsInterface } from './MaskDecorationInterface';
 import { TCO001GestureProvider } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProvider';
 import { TCO001UseAnimatedStyle } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderController';
 
-export const TPA001MaskDecoration = ({ decoration, imageURI, onEndMaskGesture }: MaskDecorationPropsInterface) => {
+export const TPA001MaskDecoration = ({
+	decoration,
+	imageURI,
+	maskUri,
+	maskTransform,
+	onEndMaskGesture,
+}: MaskDecorationPropsInterface) => {
 	const { onAnimating, animatedStyle } = TCO001UseAnimatedStyle();
 
 	if (!decoration) {
 		return <View />;
 	}
 	return (
-		<TCO001GestureProvider onEndGesture={onEndMaskGesture} onAnimating={onAnimating}>
+		<TCO001GestureProvider initial={maskTransform} onEndGesture={onEndMaskGesture} onAnimating={onAnimating}>
 			<MaskedView
 				style={{
 					width: '100%',
@@ -23,10 +29,7 @@ export const TPA001MaskDecoration = ({ decoration, imageURI, onEndMaskGesture }:
 				maskElement={
 					<Animated.Image
 						source={{
-							uri:
-								decoration.maskUri ??
-								// TODO: 後で変える
-								'https://cdn-icons-png.flaticon.com/512/2107/2107776.png',
+							uri: maskUri,
 						}}
 						style={[
 							{

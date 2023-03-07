@@ -1,9 +1,9 @@
 import { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
-import { Image, StyleProp, ViewStyle, StyleSheet, View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { StyleProp, ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { TCT023DecorationsMap } from '../../DecorationsMap';
+import { TMC02302MaskedDecoration } from '../TMC02302MaskedDecoration/MaskedDecoration';
 
 import { DecorationPropsInterface } from './DecorationInterface';
 
@@ -80,7 +80,8 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 		[decoration.order, isActive],
 	);
 
-	const styles = StyleSheet.create({ designItemStyle: { width: 100, height: 100 } });
+	// TODO: あとで変更する
+	const designItemStyle = { width: 100, height: 100 };
 
 	const { onAnimating, animatedStyle } = TCO001UseAnimatedStyle();
 
@@ -92,19 +93,12 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 			onSingleTapFinalize={onSingleTapFinalize}
 			onAnimating={onAnimating}>
 			<Animated.View style={[animatedStyle, viewStyle]}>
-				{decoration.decorationType === 'Figure' && (
-					<View style={[styles.designItemStyle, { backgroundColor: decoration.color }]} />
-				)}
-				{decoration.decorationType === 'Image' && (
-					<Image
-						style={styles.designItemStyle}
-						source={{
-							uri: value,
-						}}
-						onLoad={onSourceLoad}
-					/>
-				)}
-				{decoration.decorationType === 'Text' && decoration.key && <Text>{value || 'Dummy Text'}</Text>}
+				<TMC02302MaskedDecoration
+					decorationID={decorationID}
+					value={value}
+					designItemStyle={designItemStyle}
+					onSourceLoad={onSourceLoad}
+				/>
 			</Animated.View>
 		</TCO001GestureProvider>
 	);

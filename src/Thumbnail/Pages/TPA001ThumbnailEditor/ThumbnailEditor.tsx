@@ -103,6 +103,8 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 								decorationsMap[maskDialog.decorationID]!.key &&
 								thumbnailItemMapper.storeUrlMap[decorationsMap[maskDialog.decorationID]!.key!]
 							}
+							maskUri={maskDialog.maskUri}
+							maskTransform={maskDialog.maskTransform}
 							onEndMaskGesture={onEndMaskGesture}
 						/>
 					</Dialog.Content>
