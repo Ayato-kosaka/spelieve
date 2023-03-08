@@ -7,6 +7,7 @@ import ViewShot from 'react-native-view-shot';
 
 import { Decorations } from 'spelieve-common/lib/Models/Thumbnail/TDB02/Decorations';
 
+import { MaskDecorationPropsInterface } from './MaskDecoration/MaskDecorationInterface';
 import { TextEditDialogPropsInterface } from './TextEditDialog/TextEditDialog';
 
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
@@ -20,6 +21,7 @@ import { TCT011MThumbnailOne } from '@/Thumbnail/Contexts/TCT011MThumbnailOne/Th
 import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
 import { DecorationsMapInterface } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMapInterface';
 import { storage } from '@/Thumbnail/Endpoint/firebaseStorage';
+import { ThumnailRule } from '@/Thumbnail/Hooks/ThumbnailRule';
 
 export const TPA001ThumbnailEditorController = ({
 	navigation,
@@ -41,6 +43,8 @@ export const TPA001ThumbnailEditorController = ({
 		activeDecorationID,
 		setActiveDecorationID,
 	} = useContext(TCT023DecorationsMap);
+
+	const { decorationTypeFeature } = ThumnailRule;
 
 	const viewShotRef = useRef<ViewShot>(null);
 	const [onLoadResolveMap, setOnLoadResolveMap] = useState<{ [key: string]: (value: void) => void }>({});
@@ -262,6 +266,13 @@ export const TPA001ThumbnailEditorController = ({
 	const onSelectMask = useCallback((maskUri: string) => {
 		setMaskDialog((v) => ({ ...v, maskUri }));
 	}, []);
+	const maskItemStyle: MaskDecorationPropsInterface['maskItemStyle'] = useMemo(
+		() =>
+			activeDecoration
+				? { ...decorationTypeFeature(activeDecoration).designItemStyle, width: '100%' }
+				: { width: 0, aspectRatio: 0 },
+		[activeDecoration, decorationTypeFeature],
+	);
 	const onMaskClicked = useCallback(() => {
 		if (activeDecoration)
 			setMaskDialog({
@@ -515,6 +526,7 @@ export const TPA001ThumbnailEditorController = ({
 		maskDialog,
 		onEndMaskGesture,
 		onSaveMaskDialog,
+		maskItemStyle,
 		hideMaskDialog,
 		colorPickerDialog,
 		hideColorPickerDialog,

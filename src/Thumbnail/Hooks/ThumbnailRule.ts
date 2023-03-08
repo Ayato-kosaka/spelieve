@@ -106,16 +106,16 @@ const FooterDisplay = () =>
 		},
 	} as const);
 
-const decorationTypeFeature = (decoration: DecorationsMapInterface) => {
+export const decorationTypeFeature = (decoration: DecorationsMapInterface) => {
 	switch (decoration.decorationType) {
 		case 'Video':
-			return { designItemHeight: '100%' };
+			return { designItemStyle: { height: '100%' } };
 		case 'Image':
-			return { designItemHeight: '100%' };
+			return { designItemStyle: { height: '100%' } };
 		case 'Figure':
-			return { designItemHeight: 100 };
+			return { designItemStyle: { aspectRatio: 1 } };
 		case 'Text':
-			return { designItemHeight: '100%' };
+			return { designItemStyle: { height: '100%' } };
 		default: {
 			// TypeScriptのnever型を使用して、列挙型にない値が指定された場合にエラーを検出
 			const exhaustiveCheck: never = decoration.decorationType;

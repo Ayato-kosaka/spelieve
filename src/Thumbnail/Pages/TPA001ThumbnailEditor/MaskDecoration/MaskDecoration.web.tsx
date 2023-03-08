@@ -12,6 +12,7 @@ export const TPA001MaskDecoration = ({
 	maskUri,
 	maskTransform,
 	onEndMaskGesture,
+	maskItemStyle,
 }: MaskDecorationPropsInterface) => {
 	const maskRef = useRef<HTMLImageElement>(null);
 	const initMasRef = useCallback(() => {
@@ -38,6 +39,9 @@ export const TPA001MaskDecoration = ({
 				initMasRef();
 			};
 		}
+		if (decoration.decorationType === 'Figure') {
+			initMasRef();
+		}
 	}, [decoration, decoration?.maskUri, imageURI, initMasRef]);
 
 	const onAnimating = useCallback((event: GestureProviderInterface) => {
@@ -57,19 +61,20 @@ export const TPA001MaskDecoration = ({
 	return (
 		<TCO001GestureProvider initial={maskTransform} onEndGesture={onEndMaskGesture} onAnimating={onAnimating}>
 			<View>
-				<View />
 				{decoration.decorationType === 'Image' && (
 					<img
 						src={imageURI}
 						alt="decoration"
 						style={{
-							flex: 1,
 							objectFit: 'cover',
+							...maskItemStyle,
 						}}
 						ref={maskRef}
 					/>
 				)}
-				{decoration.decorationType === 'Figure' && <View />}
+				{decoration.decorationType === 'Figure' && (
+					<div style={{ backgroundColor: decoration.color, ...maskItemStyle }} ref={maskRef} />
+				)}
 			</View>
 		</TCO001GestureProvider>
 	);

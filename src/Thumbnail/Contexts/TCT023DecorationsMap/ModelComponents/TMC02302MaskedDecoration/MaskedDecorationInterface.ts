@@ -1,9 +1,8 @@
+import { decorationTypeFeature } from '@/Thumbnail/Hooks/ThumbnailRule';
+
 export interface MaskedDecorationPropsInterface {
 	decorationID: string;
 	value: string | undefined;
-	designItemStyle: {
-		width: number | string;
-		height: number | string;
-	};
+	designItemStyle: ReturnType<typeof decorationTypeFeature>['designItemStyle'];
 	onSourceLoad: () => void;
 }

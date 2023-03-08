@@ -13,6 +13,7 @@ export const TPA001MaskDecoration = ({
 	maskUri,
 	maskTransform,
 	onEndMaskGesture,
+	maskItemStyle,
 }: MaskDecorationPropsInterface) => {
 	const { onAnimating, animatedStyle } = TCO001UseAnimatedStyle();
 
@@ -24,7 +25,6 @@ export const TPA001MaskDecoration = ({
 			<MaskedView
 				style={{
 					width: '100%',
-					aspectRatio: 1,
 				}}
 				maskElement={
 					<Animated.Image
@@ -40,18 +40,18 @@ export const TPA001MaskDecoration = ({
 						resizeMode="cover"
 					/>
 				}>
-				<Image
-					source={{
-						uri:
-							imageURI ??
-							// TODO: 後で変える
-							'https://firebasestorage.googleapis.com/v0/b/spelieve-dev.appspot.com/o/12373bcd-013b-43d3-bbcf-f95c3d991edc?alt=media&token=91171ed7-7a92-439b-9c4b-a675cabe49bc',
-					}}
-					style={{
-						flex: 1,
-					}}
-					resizeMode="cover"
-				/>
+				{decoration.decorationType === 'Figure' && (
+					<View style={[maskItemStyle, { backgroundColor: decoration.color }]} />
+				)}
+				{decoration.decorationType === 'Image' && (
+					<Image
+						source={{
+							uri: imageURI,
+						}}
+						style={[maskItemStyle]}
+						resizeMode="cover"
+					/>
+				)}
 			</MaskedView>
 		</TCO001GestureProvider>
 	);

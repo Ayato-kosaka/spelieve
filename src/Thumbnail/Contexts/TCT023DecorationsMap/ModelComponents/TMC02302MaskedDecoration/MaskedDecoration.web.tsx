@@ -41,6 +41,9 @@ export const TMC02302MaskedDecoration = ({
 				onSourceLoad();
 			};
 		}
+		if (decoration.decorationType === 'Figure') {
+			setMasRef();
+		}
 	}, [decoration, setMasRef, onSourceLoad, value]);
 
 	if (!decoration) {
@@ -49,7 +52,7 @@ export const TMC02302MaskedDecoration = ({
 	return (
 		<View>
 			{decoration.decorationType === 'Figure' && (
-				<View style={[designItemStyle, { backgroundColor: decoration.color }]} />
+				<div style={{ backgroundColor: decoration.color, ...designItemStyle }} ref={maskRef} />
 			)}
 			{decoration.decorationType === 'Image' && (
 				<img

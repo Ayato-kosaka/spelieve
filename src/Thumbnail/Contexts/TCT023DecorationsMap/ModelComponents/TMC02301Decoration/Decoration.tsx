@@ -84,7 +84,7 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 	);
 
 	const designItemStyle = useMemo(
-		() => ({ width: 100, height: decorationTypeFeature(decoration).designItemHeight }),
+		() => ({ ...decorationTypeFeature(decoration).designItemStyle, width: 100 }),
 		[decoration, decorationTypeFeature],
 	);
 
