@@ -21,8 +21,8 @@ export const TMC02302MaskedDecoration = ({
 		if (!decoration?.maskUri) return;
 		maskRef.current.style.webkitMaskImage = `url(${decoration.maskUri})`;
 		maskRef.current.style.maskImage = `url(${decoration.maskUri})`;
-		maskRef.current.style.maskPosition = `${decoration?.maskTransform.translateX}px ${decoration?.maskTransform.translateY}px`;
-		maskRef.current.style.webkitMaskPosition = `${decoration?.maskTransform.translateX}px ${decoration?.maskTransform.translateY}px`;
+		maskRef.current.style.maskPosition = `${decoration.maskTransform.translateX}px ${decoration.maskTransform.translateY}px`;
+		maskRef.current.style.webkitMaskPosition = `${decoration.maskTransform.translateX}px ${decoration.maskTransform.translateY}px`;
 		maskRef.current.style.webkitMaskSize = 'auto 100%';
 		maskRef.current.style.maskSize = 'auto 100%';
 		maskRef.current.style.webkitMaskRepeat = 'no-repeat';

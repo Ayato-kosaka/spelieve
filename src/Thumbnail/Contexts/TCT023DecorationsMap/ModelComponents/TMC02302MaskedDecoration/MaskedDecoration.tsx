@@ -1,5 +1,5 @@
 import MaskedView from '@react-native-masked-view/masked-view';
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { Image, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
@@ -16,7 +16,22 @@ export const TMC02302MaskedDecoration = ({
 }: MaskedDecorationPropsInterface) => {
 	const { decorationsMap } = useContext(TCT023DecorationsMap);
 	const decoration = decorationsMap[decorationID];
-
+	const transform = useMemo(
+		() =>
+			decoration?.maskTransform
+				? [
+						{
+							translateX: decoration.maskTransform.translateX,
+						},
+						{
+							translateY: decoration.maskTransform.translateY,
+						},
+						{ scale: decoration.maskTransform.scale },
+						{ rotateZ: `${(decoration.maskTransform.rotateZ / Math.PI) * 180}deg` },
+				  ]
+				: [],
+		[decoration?.maskTransform],
+	);
 	if (!decoration) {
 		return <View />;
 	}
@@ -30,20 +45,23 @@ export const TMC02302MaskedDecoration = ({
 				decoration.maskUri ? (
 					<Animated.Image
 						source={{
-							uri:
-								decoration.maskUri ??
-								// TODO: 後で変える
-								'https://cdn-icons-png.flaticon.com/512/2107/2107776.png',
+							uri: decoration.maskUri,
 						}}
 						style={[
 							{
 								flex: 1,
+								transform,
 							},
 						]}
 						resizeMode="cover"
 					/>
 				) : (
-					<View />
+					<View
+						style={{
+							backgroundColor: 'black',
+							flex: 1,
+						}}
+					/>
 				)
 			}>
 			{decoration.decorationType === 'Figure' && (
