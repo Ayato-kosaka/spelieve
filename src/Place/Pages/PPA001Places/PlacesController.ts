@@ -54,6 +54,7 @@ export const PPA001PlacesController = ({ navigation, route }: PlaceStackScreenPr
 
 	const onAutocompleteClicked = (data: PlaceAutocompleteResult, details: MPlace | null) => {
 		const isIncludes = (arr: AddressType[], target: AddressType[]) => arr.some((el) => target.includes(el));
+		// https://github.com/Ayato-kosaka/spelieve/issues/595 の検討により以下３つのAddressTypeを指定
 		const addressType: AddressType[] = [AddressType.street_address, AddressType.establishment, AddressType.premise];
 		const sendedDataTypes: AddressType[] = data.types;
 		Logger('PPA001PlacesController', 'onAutocompleteClicked', { data, details });

@@ -28,6 +28,7 @@ export const PCO002GooglePlacesAutocompleteController = ({
 		PlaceHttpPost<Omit<PlaceAutocompleteRequest['params'], 'key'>, PlaceAutocompleteResponse>('PBL004', {
 			input,
 			language: GooglePlaceLanguageTagFromIETFLanguageTag[i18n.locale],
+			// https://github.com/Ayato-kosaka/spelieve/issues/595 の検討により以下2つのTypeを指定
 			types: onlySpot ? ('street_address|premise' as unknown as PlaceAutocompleteType) : undefined,
 		})
 			.then((res) => {
