@@ -28,7 +28,7 @@ export const PCO002GooglePlacesAutocompleteController = ({
 		PlaceHttpPost<Omit<PlaceAutocompleteRequest['params'], 'key'>, PlaceAutocompleteResponse>('PBL004', {
 			input,
 			language: GooglePlaceLanguageTagFromIETFLanguageTag[i18n.locale],
-			types: onlySpot ? ('geocode|establishment' as unknown as PlaceAutocompleteType) : undefined,
+			types: onlySpot ? ('street_address|establishment|premise' as unknown as PlaceAutocompleteType) : undefined,
 		})
 			.then((res) => {
 				setPlacesResult(res.data.predictions);
