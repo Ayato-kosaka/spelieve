@@ -17,17 +17,18 @@ export const TMC02302MaskedDecoration = ({
 	const maskRef = useRef<HTMLImageElement>(null);
 	const setMasRef = useCallback(() => {
 		if (!maskRef.current) return;
+		maskRef.current.style.webkitMaskRepeat = 'no-repeat';
+		maskRef.current.style.maskRepeat = 'no-repeat';
+		maskRef.current.draggable = false;
 		if (!decoration?.maskTransform) return;
 		if (!decoration?.maskUri) return;
 		maskRef.current.style.webkitMaskImage = `url(${decoration.maskUri})`;
 		maskRef.current.style.maskImage = `url(${decoration.maskUri})`;
 		maskRef.current.style.maskPosition = `${decoration.maskTransform.translateX}px ${decoration.maskTransform.translateY}px`;
 		maskRef.current.style.webkitMaskPosition = `${decoration.maskTransform.translateX}px ${decoration.maskTransform.translateY}px`;
+		// TODO: あとで変更する
 		maskRef.current.style.webkitMaskSize = 'auto 100%';
 		maskRef.current.style.maskSize = 'auto 100%';
-		maskRef.current.style.webkitMaskRepeat = 'no-repeat';
-		maskRef.current.style.maskRepeat = 'no-repeat';
-		maskRef.current.draggable = false;
 	}, [decoration?.maskTransform, decoration?.maskUri]);
 	useEffect(() => {
 		if (!decoration) return;

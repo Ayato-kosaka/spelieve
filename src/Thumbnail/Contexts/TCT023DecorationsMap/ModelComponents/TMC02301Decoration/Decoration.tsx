@@ -11,6 +11,7 @@ import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/G
 import { TCO001GestureProvider } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProvider';
 import { TCO001UseAnimatedStyle } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderController';
 import { GestureProviderPropsInterface } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderPropsInterface';
+import { ThumnailRule } from '@/Thumbnail/Hooks/ThumbnailRule';
 
 export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInterface) => {
 	const { thumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
@@ -18,6 +19,8 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 	const { decorationsMap, setDecorationsMap, activeDecorationID, setActiveDecorationID } =
 		useContext(TCT023DecorationsMap);
 	const decoration = decorationsMap[decorationID]!;
+
+	const { decorationTypeFeature } = ThumnailRule;
 
 	const value = useMemo(() => {
 		if (decoration.decorationType === 'Video') {
@@ -80,8 +83,10 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 		[decoration.order, isActive],
 	);
 
-	// TODO: あとで変更する
-	const designItemStyle = { width: 100, height: 100 };
+	const designItemStyle = useMemo(
+		() => ({ width: 100, height: decorationTypeFeature(decoration).designItemHeight }),
+		[decoration, decorationTypeFeature],
+	);
 
 	const { onAnimating, animatedStyle } = TCO001UseAnimatedStyle();
 

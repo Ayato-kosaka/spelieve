@@ -8,6 +8,8 @@ https://www.tablesgenerator.com/text_tables
 
 */
 
+import { DecorationsMapInterface } from '../Contexts/TCT023DecorationsMap/DecorationsMapInterface';
+
 /* 
 Footer ルール
 https://docs.google.com/spreadsheets/d/1BPeKHqCv-_5kgNvtpAC83pegNnN0g19VU8vYzMKiqEU/edit#gid=0
@@ -104,6 +106,26 @@ const FooterDisplay = () =>
 		},
 	} as const);
 
+const decorationTypeFeature = (decoration: DecorationsMapInterface) => {
+	switch (decoration.decorationType) {
+		case 'Video':
+			return { designItemHeight: '100%' };
+		case 'Image':
+			return { designItemHeight: '100%' };
+		case 'Figure':
+			return { designItemHeight: 100 };
+		case 'Text':
+			return { designItemHeight: '100%' };
+		default: {
+			// TypeScriptのnever型を使用して、列挙型にない値が指定された場合にエラーを検出
+			const exhaustiveCheck: never = decoration.decorationType;
+			// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+			throw new Error(`Unexpected decoration type: ${exhaustiveCheck}`);
+		}
+	}
+};
+
 export const ThumnailRule = {
 	FooterDisplay,
+	decorationTypeFeature,
 };
