@@ -64,6 +64,8 @@ export const TCT023DecorationsMapProvider = ({ children }: { children: ReactNode
 		fetchData();
 	}, [firestoreConverter, getCollection, mThumbnailOneIsLoading, thumbnailDocRef]);
 
+	const [activeDecorationID, setActiveDecorationID] = useState<string>('');
+
 	const createDecoration: DecorationsMapValInterface['createDecoration'] = useCallback(
 		(data) => {
 			const id = uuid.v4() as unknown as string;
@@ -82,11 +84,10 @@ export const TCT023DecorationsMapProvider = ({ children }: { children: ReactNode
 					updatedAt: new Date(),
 				},
 			});
+			setActiveDecorationID(id);
 		},
 		[decorationsMap],
 	);
-
-	const [activeDecorationID, setActiveDecorationID] = useState<string>('');
 
 	const value = useMemo(
 		() => ({
