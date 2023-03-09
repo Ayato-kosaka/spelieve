@@ -71,7 +71,6 @@ export const TCT023DecorationsMapProvider = ({ children }: { children: ReactNode
 				...decorationsMap,
 				[id]: {
 					...data,
-					color: '#000',
 					order:
 						Object.keys(decorationsMap).length > 0
 							? Object.keys(decorationsMap).reduce(

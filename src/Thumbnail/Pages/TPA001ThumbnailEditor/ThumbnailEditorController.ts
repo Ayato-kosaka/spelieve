@@ -54,7 +54,7 @@ export const TPA001ThumbnailEditorController = ({
 		[activeDecorationID, decorationsMap],
 	);
 
-	const initialDecoration: Pick<DecorationsMapInterface, 'transform' | 'maskTransform'> = useMemo(
+	const initialDecoration: Pick<DecorationsMapInterface, 'transform' | 'maskTransform' | 'color'> = useMemo(
 		() => ({
 			transform: {
 				translateX: 200,
@@ -68,6 +68,7 @@ export const TPA001ThumbnailEditorController = ({
 				rotateZ: 0,
 				scale: 1,
 			},
+			color: '#000',
 		}),
 		[],
 	); // TODO: 要修正 translateX, translateY は 中央に
