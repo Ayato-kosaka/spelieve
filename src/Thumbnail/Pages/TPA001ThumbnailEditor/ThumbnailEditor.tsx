@@ -1,31 +1,59 @@
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import { ActivityIndicator, Pressable, SafeAreaView, ScrollView, View } from 'react-native';
 import { Button, Dialog, Portal, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ViewShot from 'react-native-view-shot';
 
 import { TPA001ColorPickerDialog } from './ColorPickerDialog/ColorPickerDialog';
+import { TPA001ColorPickerDialogController } from './Controller/ColorPickerDialogController';
+import { TPA001CreateDecorationController } from './Controller/CreateDecorationController';
+import { TPA001FooterMenuController } from './Controller/FooterMenuController';
+import { TPA001LeaveDialogController } from './Controller/LeaveDialogController';
+import { TPA001MaskDialogController } from './Controller/MaskDialogController';
+import { TPA001TextEditDialogController } from './Controller/TextEditDialogController';
 import { TPA001TextEditDialog } from './TextEditDialog/TextEditDialog';
-import { TPA001ThumbnailEditorController } from './ThumbnailEditorController';
 import { styles } from './ThumbnailEditorStyle';
 
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ThumbnailStackScreenProps } from '@/Common/Navigation/NavigationInterface';
+import { TCT011MThumbnailOne } from '@/Thumbnail/Contexts/TCT011MThumbnailOne/ThumbnailOne';
 import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
+import { DecorationsMapInterface } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMapInterface';
 import { TMC02301Decoration } from '@/Thumbnail/Contexts/TCT023DecorationsMap/ModelComponents/TMC02301Decoration/Decoration';
 import { ThumnailRule } from '@/Thumbnail/Hooks/ThumbnailRule';
 import { TPA001MaskDecoration } from '@/Thumbnail/Pages/TPA001ThumbnailEditor/MaskDecoration/MaskDecoration';
 
 export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScreenProps<'TPA001ThumbnailEditor'>) => {
+	// パラメータ取得
+	const { fromThumbnailID } = route.params;
+
 	// グローバルコンテキスト取得
-	const { thumbnailItemMapper, setThumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
+	const { thumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
 
 	// コンテキスト取得
-	const { isLoading, decorationsMap } = useContext(TCT023DecorationsMap);
+	const { setThumbnailID } = useContext(TCT011MThumbnailOne);
+	const { isLoading, decorationsMap, activeDecorationID } = useContext(TCT023DecorationsMap);
 
+	const activeDecoration: DecorationsMapInterface | undefined = useMemo(
+		() => decorationsMap[activeDecorationID],
+		[activeDecorationID, decorationsMap],
+	);
+
+	// route.params.fromThumbnailID を監視し、context に渡す
+	useEffect(() => {
+		setThumbnailID(fromThumbnailID);
+		if (!fromThumbnailID) {
+			// TODO: テンプレート選択に画面遷移
+		}
+	}, [fromThumbnailID, setThumbnailID]);
+
+	// Controller 呼び出し
+	const { onTextPlusClicked, pickImage, onFigurePlusClicked } = TPA001CreateDecorationController({
+		navigation,
+		route,
+	});
 	const {
-		activeDecoration,
 		viewShotRef,
 		onLoadResolveMap,
 		beforeLeaveDialog,
@@ -33,31 +61,42 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		onLeaveScreen,
 		onSaveClicked,
 		onDiscardClicked,
-		textEditDialog,
-		text,
-		hideTextEditDialog,
-		onSaveTextEditing,
-		maskDialog,
-		onSaveMaskDialog,
-		maskItemStyle,
-		onEndMaskGesture,
-		hideMaskDialog,
-		colorPickerDialog,
-		hideColorPickerDialog,
-		onSaveColorPickerDialog,
+	} = TPA001LeaveDialogController({
+		navigation,
+		route,
+	});
+	const {
+		deleteDecoration,
 		footerMenuList,
 		selectedFooterMenu,
+		setSelectedFooterMenu,
 		footerMenuOnPress,
 		bringToFront,
 		bringForward,
 		sendBackward,
 		sendToBack,
-		onTextPlusClicked,
-		pickImage,
-		onFigurePlusClicked,
-	} = TPA001ThumbnailEditorController({
+	} = TPA001FooterMenuController({
 		navigation,
 		route,
+	});
+	const { textEditDialog, text, hideTextEditDialog, onSaveTextEditing } = TPA001TextEditDialogController({
+		navigation,
+		route,
+		selectedFooterMenu,
+		setSelectedFooterMenu,
+		deleteDecoration,
+	});
+	const { maskDialog, onEndMaskGesture, onSaveMaskDialog, maskItemStyle, hideMaskDialog } = TPA001MaskDialogController({
+		navigation,
+		route,
+		selectedFooterMenu,
+		setSelectedFooterMenu,
+	});
+	const { colorPickerDialog, hideColorPickerDialog, onSaveColorPickerDialog } = TPA001ColorPickerDialogController({
+		navigation,
+		route,
+		selectedFooterMenu,
+		setSelectedFooterMenu,
 	});
 
 	const headerRight = useCallback(
