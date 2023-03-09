@@ -183,8 +183,11 @@ export const TPA001ThumbnailEditorController = ({
 				return;
 			}
 			setDecorationsMap((decolationsMap) => {
-				delete decorationsMap[decorationID];
-				return decolationsMap;
+				// ReactのuseStateフックで作成したstateはイミュータブル（不変）であることが望ましいため、
+				// stateを更新する際には常に新しいオブジェクトを作成する必要があります。
+				const tmp = { ...decolationsMap };
+				delete tmp[decorationID];
+				return tmp;
 			});
 			if (decoration.decorationType === 'Text') {
 				setThumbnailItemMapper((value) => {
@@ -372,17 +375,17 @@ export const TPA001ThumbnailEditorController = ({
 			Object.keys(decorationsMap)
 				.filter((key) => decorationsMap[key]!.order > activeDecoration.order)
 				.sort((keyA, keyB) => decorationsMap[keyA]!.order - decorationsMap[keyB]!.order)[0] || activeDecorationID;
-		setDecorationsMap({
-			...decorationsMap,
+		setDecorationsMap((x) => ({
+			...x,
 			[activeDecorationID]: {
 				...activeDecoration,
-				order: decorationsMap[targetID]!.order,
+				order: x[targetID]!.order,
 			},
 			[targetID]: {
-				...decorationsMap[targetID]!,
+				...x[targetID]!,
 				order: activeDecoration.order,
 			},
-		});
+		}));
 	}, [activeDecoration, activeDecorationID, decorationsMap, setDecorationsMap]);
 
 	const sendBackward = useCallback(() => {
@@ -393,17 +396,17 @@ export const TPA001ThumbnailEditorController = ({
 			Object.keys(decorationsMap)
 				.filter((key) => decorationsMap[key]!.order < activeDecoration.order)
 				.sort((keyA, keyB) => decorationsMap[keyB]!.order - decorationsMap[keyA]!.order)[0] || activeDecorationID;
-		setDecorationsMap({
-			...decorationsMap,
+		setDecorationsMap((x) => ({
+			...x,
 			[activeDecorationID]: {
 				...activeDecoration,
-				order: decorationsMap[targetID]!.order,
+				order: x[targetID]!.order,
 			},
 			[targetID]: {
-				...decorationsMap[targetID]!,
+				...x[targetID]!,
 				order: activeDecoration.order,
 			},
-		});
+		}));
 	}, [activeDecoration, activeDecorationID, decorationsMap, setDecorationsMap]);
 
 	const sendToBack = useCallback(() => {
