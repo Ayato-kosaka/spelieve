@@ -26,7 +26,8 @@ export default ({ config }: ConfigContext) => {
 				config: {
 					googleMapsApiKey: process.env.GCP_API_KEY_IOS,
 				},
-				buildNumber: '2'
+				buildNumber: '2',
+				googleServicesFile: './GoogleService-Info.plist',
 			},
 			android: {
 				adaptiveIcon: {
@@ -41,6 +42,7 @@ export default ({ config }: ConfigContext) => {
 				},
 				versionCode: 5, // TODO: 毎submitで変更の必要あり
 				permissions: [],
+				googleServicesFile: './google-services.json',
 			},
 			web: {
 				shortName: 'Spelieve',
@@ -55,7 +57,20 @@ export default ({ config }: ConfigContext) => {
 						photosPermission: 'Allow $(PRODUCT_NAME) to access your photos',
 						cameraPermission: 'Allow $(PRODUCT_NAME) to access your camera',
 					},
+					
 				],
+				[
+					'expo-build-properties',
+					{
+						'ios': {
+							'useFrameworks': 'static'
+						}
+					}
+				],
+				'@react-native-firebase/app',
+				'@react-native-firebase/perf',
+				'@react-native-firebase/crashlytics',
+				'./bin/react-native-maps-plugin',
 			],
 			extra: {
 				eas: {

@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useRef } from 'react';
 
 import { CCO001GlobalContext } from '../Components/CCO001GlobalContext/GlobalContext';
 import i18n from '../Hooks/i18n-js';
@@ -11,21 +12,44 @@ import { NotFoundScreen } from '../Pages/NotFoundScreen';
 import { LinkingConfiguration } from './LinkingConfiguration';
 import { RootStackParamList, BottomTabNavigatorParamList, RootStackScreenProps } from './NavigationInterface';
 
+import { CHK006GoogleAnalytics } from '@/Common/Hooks/CHK006GoogleAnalytics/GoogleAnalytics';
 import { ItineraryPageNavigator } from '@/Itinerary/Pages/ItineraryPageNavigator';
 import { PlacePageNavigator } from '@/Place/Pages/PlacePageNavigator/PlacePageNavigator';
 import { navigationTheme } from '@/ThemeProvider';
 import { ThumbnailPageNavigator } from '@/Thumbnail/Pages/ThumbnailPageNavigator';
 
-export const Navigation = () => (
-	<NavigationContainer
-		linking={LinkingConfiguration}
-		theme={navigationTheme}
-		documentTitle={{
-			formatter: (options, route) => 'Spelieve ~旅のしおり簡単作成アプリ~',
-		}}>
-		<RootNavigator />
-	</NavigationContainer>
-);
+export const Navigation = () => {
+	const navigationRef = useNavigationContainerRef<RootStackParamList>();
+	const routeNameRef = useRef<string | undefined>('');
+
+	const handlePageChanged = () => {
+		const previousRouteName: string | undefined = routeNameRef.current;
+		const currentRouteName: string | undefined = navigationRef.current?.getCurrentRoute()?.name;
+
+		if (previousRouteName !== currentRouteName && currentRouteName) {
+			CHK006GoogleAnalytics.sendAnalyticsLogEvent(currentRouteName, {
+				screen_class: currentRouteName,
+			});
+		}
+		routeNameRef.current = currentRouteName;
+	};
+
+	return (
+		<NavigationContainer
+			linking={LinkingConfiguration}
+			theme={navigationTheme}
+			documentTitle={{
+				formatter: (options, route) => 'Spelieve ~旅のしおり簡単作成アプリ~',
+			}}
+			ref={navigationRef}
+			onReady={() => {
+				routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
+			}}
+			onStateChange={() => handlePageChanged()}>
+			<RootNavigator />
+		</NavigationContainer>
+	);
+};
 
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
