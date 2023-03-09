@@ -5,17 +5,16 @@ import { ICT021PlanGroupsListProvider } from '../Contexts/ICT021PlanGroupsList';
 import { ICT031PlansMapProvider } from '../Contexts/ICT031PlansMap';
 import { INV002ItineraryTopTabNavigator } from '../Navigator/INV002ItineraryTopTabNavigator';
 
-import { IPA002ItineraryCover } from './IPA002ItineraryCover';
 import { IPA003EditPlan } from './IPA003EditPlan';
 
 import i18n from '@/Common/Hooks/i18n-js';
-import { ItineraryStackParamList } from '@/Common/Navigation/NavigationInterface';
+import { BottomTabNavigatorScreenProps, ItineraryStackParamList } from '@/Common/Navigation/NavigationInterface';
 import { CPA001HelloSpelieve } from '@/Common/Pages/CPA001HelloSpelieve/HelloSpelieve';
 import { PCT012MPlaceOneProvider } from '@/Place/Contexts/PCT012MPlaceOne';
 
 const Stack = createNativeStackNavigator<ItineraryStackParamList>();
 
-export const ItineraryPageNavigator = () => (
+export const ItineraryPageNavigator = ({ navigation, route }: BottomTabNavigatorScreenProps<'Itinerary'>) => (
 	<ICT011ItineraryOneProvider>
 		<ICT031PlansMapProvider>
 			<ICT021PlanGroupsListProvider>
@@ -26,12 +25,6 @@ export const ItineraryPageNavigator = () => (
 							component={INV002ItineraryTopTabNavigator}
 							initialParams={{}}
 							options={{ title: '' }}
-						/>
-						<Stack.Screen
-							name="ItineraryCover"
-							component={IPA002ItineraryCover}
-							initialParams={{}}
-							options={{ title: i18n.t('Itinerary setting') }}
 						/>
 						<Stack.Screen
 							name="EditPlan"

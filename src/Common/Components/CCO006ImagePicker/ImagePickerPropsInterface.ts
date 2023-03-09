@@ -5,7 +5,7 @@ import { StyleProp, ViewStyle } from 'react-native';
 
 export interface ImagePickerPropsInterface {
 	children: React.ReactNode;
-	onPickImage: (imageUrl: string) => void;
+	onPickImage: (imageUrl: string, key?: string) => void;
 	imagePickerOptions: ImagePickerOptions;
 	imageManipulatorActions: Action[];
 	storage: FirebaseStorage;

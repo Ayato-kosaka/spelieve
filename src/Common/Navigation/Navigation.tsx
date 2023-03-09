@@ -4,12 +4,13 @@ import { NavigationContainer, useNavigationContainerRef } from '@react-navigatio
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useRef } from 'react';
 
+import { CCO001GlobalContext } from '../Components/CCO001GlobalContext/GlobalContext';
 import i18n from '../Hooks/i18n-js';
 import { ModalScreen } from '../Pages/ModalScreen';
 import { NotFoundScreen } from '../Pages/NotFoundScreen';
 
 import { LinkingConfiguration } from './LinkingConfiguration';
-import { RootStackParamList, RootTabParamList } from './NavigationInterface';
+import { RootStackParamList, BottomTabNavigatorParamList, RootStackScreenProps } from './NavigationInterface';
 
 import { CHK006GoogleAnalytics } from '@/Common/Hooks/CHK006GoogleAnalytics/GoogleAnalytics';
 import { ItineraryPageNavigator } from '@/Itinerary/Pages/ItineraryPageNavigator';
@@ -57,24 +58,30 @@ export const Navigation = () => {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootNavigator = () => (
-	<Stack.Navigator>
-		<Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-		<Stack.Screen name="ThumbnailPageNavigator" component={ThumbnailPageNavigator} options={{ headerShown: false }} />
-		<Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-		<Stack.Group screenOptions={{ presentation: 'modal' }}>
-			<Stack.Screen name="Modal" component={ModalScreen} />
-		</Stack.Group>
-	</Stack.Navigator>
+	<CCO001GlobalContext>
+		<Stack.Navigator>
+			<Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} options={{ headerShown: false }} />
+			<Stack.Screen
+				name="ThumbnailPageNavigator"
+				component={ThumbnailPageNavigator}
+				options={{ headerShown: false, gestureEnabled: false }}
+			/>
+			<Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+			<Stack.Group screenOptions={{ presentation: 'modal' }}>
+				<Stack.Screen name="Modal" component={ModalScreen} />
+			</Stack.Group>
+		</Stack.Navigator>
+	</CCO001GlobalContext>
 );
 
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
  * https://reactnavigation.org/docs/bottom-tab-navigator
  */
-const BottomTab = createMaterialBottomTabNavigator<RootTabParamList>();
+const BottomTab = createMaterialBottomTabNavigator<BottomTabNavigatorParamList>();
 
-const BottomTabNavigator = () => (
-	<BottomTab.Navigator initialRouteName="Itinerary">
+const BottomTabNavigator = ({ navigation, route }: RootStackScreenProps<'BottomTabNavigator'>) => (
+	<BottomTab.Navigator initialRouteName="Itinerary" barStyle={{ backgroundColor: 'white' }}>
 		<BottomTab.Screen
 			name="Itinerary"
 			component={ItineraryPageNavigator}

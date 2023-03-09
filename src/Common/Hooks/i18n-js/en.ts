@@ -24,7 +24,7 @@ const en: typeof Lang = {
 	お問い合わせ: 'Contact',
 	フィードバック: 'Feedback',
 	'Copyright © Spelieve ': 'Copyright © Spelieve ',
-	'開発者用 Itinerary で始める': '開発者用 Itinerary で始める',
+	開発者用: '開発者用',
 
 	// ImagePickerCOntroller.ts
 	'Upload failed, sorry :(': 'Upload failed, sorry :(',
@@ -49,8 +49,6 @@ const en: typeof Lang = {
 	'Add Plan group': 'Add Plan group',
 	日目: 'Day',
 	'copy Share URL': 'copy Share URL',
-
-	// IPA002ItineraryCover
 	'Itinerary Title': 'Itinerary Title',
 	'Itinerary SubTitle': 'Itinerary SubTitle',
 	'Add Tag': 'Add Tag',

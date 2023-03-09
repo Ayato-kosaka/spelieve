@@ -1,204 +1,205 @@
-import { MediaTypeOptions } from 'expo-image-picker';
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { GestureResponderEvent, Pressable, PressableProps, SafeAreaView, ScrollView, View } from 'react-native';
-import { Text } from 'react-native-paper';
+import React, { useCallback, useContext, useEffect } from 'react';
+import { ActivityIndicator, Pressable, SafeAreaView, ScrollView, View } from 'react-native';
+import { Button, Dialog, Portal, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import ViewShot from 'react-native-view-shot';
 
+import { TPA001ColorPickerDialog } from './ColorPickerDialog/ColorPickerDialog';
+import { TPA001TextEditDialog } from './TextEditDialog/TextEditDialog';
+import { TPA001ThumbnailEditorController } from './ThumbnailEditorController';
 import { styles } from './ThumbnailEditorStyle';
 
-import { CCO006ImagePickerController } from '@/Common/Components/CCO006ImagePicker/ImagePickerController';
-import { ImagePickerPropsInterface } from '@/Common/Components/CCO006ImagePicker/ImagePickerPropsInterface';
+import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ThumbnailStackScreenProps } from '@/Common/Navigation/NavigationInterface';
-import { storage } from '@/Itinerary/Endpoint/firebaseStorage';
-import { TMC01101ThumbnailBackground } from '@/Thumbnail/Contexts/TCT011MThumbnailOne/ModelComponents/TMC01101ThumbnailBackground/ThumbnailBackground';
 import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
-
-const MThumbnail = {
-	baseItemType: 'Shape',
-};
+import { TMC02301Decoration } from '@/Thumbnail/Contexts/TCT023DecorationsMap/ModelComponents/TMC02301Decoration/Decoration';
+import { ThumnailRule } from '@/Thumbnail/Hooks/ThumbnailRule';
+import { TPA001MaskDecoration } from '@/Thumbnail/Pages/TPA001ThumbnailEditor/MaskDecoration/MaskDecoration';
 
 export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScreenProps<'TPA001ThumbnailEditor'>) => {
-	const { decorationsMap, setDecorationsMap, createDecoration, activeDecorationID } = useContext(TCT023DecorationsMap);
-	const initialDecoration = useMemo(
-		() => ({
-			translateX: 200,
-			translateY: 200,
-			rotateZ: 0,
-			scale: 1,
-		}),
-		[],
-	); // TODO: 要修正 translateX, translateY は 中央に
+	// グローバルコンテキスト取得
+	const { thumbnailItemMapper, setThumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
 
-	const onPickImage: ImagePickerPropsInterface['onPickImage'] = useCallback(
-		(imageUrl) => {
-			createDecoration({ ...initialDecoration, decorationType: 'Image', imageUrl });
-		},
-		[createDecoration, initialDecoration],
-	);
+	// コンテキスト取得
+	const { isLoading, decorationsMap } = useContext(TCT023DecorationsMap);
 
-	const { pickImage } = CCO006ImagePickerController({
-		onPickImage,
-		imagePickerOptions: {
-			allowsEditing: true,
-			allowsMultipleSelection: false,
-			mediaTypes: MediaTypeOptions.Images,
-			quality: 1,
-		},
-		imageManipulatorActions: [
-			{
-				resize: {
-					width: 900,
-				},
-			},
-		],
-		storage,
+	const {
+		activeDecoration,
+		viewShotRef,
+		onLoadResolveMap,
+		beforeLeaveDialog,
+		hideBeforeLeaveDialog,
+		onLeaveScreen,
+		onSaveClicked,
+		onDiscardClicked,
+		textEditDialog,
+		text,
+		hideTextEditDialog,
+		onSaveTextEditing,
+		maskDialog,
+		onSaveMaskDialog,
+		maskItemStyle,
+		onEndMaskGesture,
+		hideMaskDialog,
+		colorPickerDialog,
+		hideColorPickerDialog,
+		onSaveColorPickerDialog,
+		footerMenuList,
+		selectedFooterMenu,
+		footerMenuOnPress,
+		bringToFront,
+		bringForward,
+		sendBackward,
+		sendToBack,
+		onTextPlusClicked,
+		pickImage,
+		onFigurePlusClicked,
+	} = TPA001ThumbnailEditorController({
+		navigation,
+		route,
 	});
 
-	const duplicationDecoration = useCallback(() => {
-		createDecoration(decorationsMap[activeDecorationID]);
-	}, [activeDecorationID, createDecoration, decorationsMap]);
-
-	const bringToFront = useCallback(() => {
-		console.log(activeDecorationID);
-		setDecorationsMap({
-			...decorationsMap,
-			[activeDecorationID]: {
-				...decorationsMap[activeDecorationID],
-				order:
-					Object.keys(decorationsMap).reduce(
-						(prev, key) => Math.max(prev, decorationsMap[key].order),
-						Number.MIN_SAFE_INTEGER,
-					) + 1,
-			},
-		});
-	}, [activeDecorationID, decorationsMap, setDecorationsMap]);
-
-	const bringForward = useCallback(() => {
-		const targetID =
-			Object.keys(decorationsMap)
-				.filter((key) => decorationsMap[key].order > decorationsMap[activeDecorationID].order)
-				.sort((keyA, keyB) => decorationsMap[keyA].order - decorationsMap[keyB].order)[0] || activeDecorationID;
-		setDecorationsMap({
-			...decorationsMap,
-			[activeDecorationID]: {
-				...decorationsMap[activeDecorationID],
-				order: decorationsMap[targetID].order,
-			},
-			[targetID]: {
-				...decorationsMap[targetID],
-				order: decorationsMap[activeDecorationID].order,
-			},
-		});
-	}, [activeDecorationID, decorationsMap, setDecorationsMap]);
-
-	const sendBackward = useCallback(() => {
-		const targetID =
-			Object.keys(decorationsMap)
-				.filter((key) => decorationsMap[key].order < decorationsMap[activeDecorationID].order)
-				.sort((keyA, keyB) => decorationsMap[keyB].order - decorationsMap[keyA].order)[0] || activeDecorationID;
-		setDecorationsMap({
-			...decorationsMap,
-			[activeDecorationID]: {
-				...decorationsMap[activeDecorationID],
-				order: decorationsMap[targetID].order,
-			},
-			[targetID]: {
-				...decorationsMap[targetID],
-				order: decorationsMap[activeDecorationID].order,
-			},
-		});
-	}, [activeDecorationID, decorationsMap, setDecorationsMap]);
-
-	const sendToBack = useCallback(() => {
-		setDecorationsMap({
-			...decorationsMap,
-			[activeDecorationID]: {
-				...decorationsMap[activeDecorationID],
-				order:
-					Object.keys(decorationsMap).reduce(
-						(prev, key) => Math.min(prev, decorationsMap[key].order),
-						Number.MAX_SAFE_INTEGER,
-					) - 1,
-			},
-		});
-	}, [activeDecorationID, decorationsMap, setDecorationsMap]);
-
-	const footerMenuList = [
-		{ key: 'Order', title: i18n.t('Order'), icon: 'sort', onPress: () => {} },
-		{ key: 'Duplication', title: i18n.t('Duplication'), icon: 'content-copy', onPress: duplicationDecoration },
-		{ key: 'Replace', title: i18n.t('Replace'), icon: 'file-replace-outline', onPress: () => {} },
-	] as const;
-
-	const [selectedFooterMenu, setSelectedFooterMenu] = useState<(typeof footerMenuList)[number]['key']>(
-		footerMenuList[0].key,
-	);
-	const footerMenuOnPress = useCallback(
-		(onPress: PressableProps['onPress'], selected: typeof selectedFooterMenu) => (event: GestureResponderEvent) => {
-			setSelectedFooterMenu(selected);
-			if (onPress) {
-				onPress(event);
-			}
-		},
-		[],
-	);
-
-	const headerRightItems = useMemo(
-		() =>
-			[
-				{
-					key: 'Text',
-					icon: 'text-box-plus',
-					onPress: () => createDecoration({ ...initialDecoration, decorationType: 'Text' }),
-				},
-				{
-					key: 'Image',
-					icon: 'image-plus',
-					onPress: pickImage,
-				},
-				{
-					key: 'Figure',
-					icon: 'shape-rectangle-plus',
-					onPress: () => createDecoration({ ...initialDecoration, decorationType: 'Figure' }),
-				},
-			] as const,
-		[createDecoration, initialDecoration, pickImage],
-	);
 	const headerRight = useCallback(
 		() => (
 			<View style={{ flexDirection: 'row' }}>
-				{headerRightItems.map((item) => (
-					// eslint-disable-next-line @typescript-eslint/no-misused-promises
-					<MaterialCommunityIcons key={item.key} name={item.icon} size={30} onPress={item.onPress} />
-				))}
+				<MaterialCommunityIcons name="text-box-plus" size={30} onPress={onTextPlusClicked} />
+				{/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+				<MaterialCommunityIcons name="image-plus" size={30} onPress={pickImage} />
+				<MaterialCommunityIcons name="shape-rectangle-plus" size={30} onPress={onFigurePlusClicked} />
 			</View>
 		),
-		[headerRightItems],
+		[onFigurePlusClicked, onTextPlusClicked, pickImage],
 	);
-
+	const headerLeft = useCallback(
+		() => (
+			<View style={{ flexDirection: 'row' }}>
+				<MaterialCommunityIcons name="close" size={30} onPress={onLeaveScreen} />
+			</View>
+		),
+		[onLeaveScreen],
+	);
 	useEffect(() => {
 		navigation.setOptions({
 			headerRight,
+			headerLeft,
 		});
-	}, [headerRight, navigation]);
+	}, [headerLeft, headerRight, navigation]);
+
+	if (isLoading) {
+		return <ActivityIndicator animating />;
+	}
 
 	return (
 		<>
 			<SafeAreaView />
+			<Portal>
+				{/* Mask ダイアログ */}
+				<Dialog visible={maskDialog.visible} onDismiss={onSaveMaskDialog}>
+					<Dialog.Content>
+						<TPA001MaskDecoration
+							decoration={decorationsMap[maskDialog.decorationID]}
+							imageURI={
+								decorationsMap[maskDialog.decorationID] &&
+								decorationsMap[maskDialog.decorationID]!.key &&
+								thumbnailItemMapper.storeUrlMap[decorationsMap[maskDialog.decorationID]!.key!]
+							}
+							maskUri={maskDialog.maskUri}
+							maskTransform={maskDialog.maskTransform}
+							onEndMaskGesture={onEndMaskGesture}
+							maskItemStyle={maskItemStyle}
+						/>
+					</Dialog.Content>
+					<Dialog.Actions>
+						<Button onPress={hideMaskDialog} color="black">
+							{i18n.t('Cancel')}
+						</Button>
+						<Button onPress={onSaveMaskDialog} color="black">
+							{i18n.t('Save')}
+						</Button>
+					</Dialog.Actions>
+				</Dialog>
+				{/* 閉じるボタン押下時に出現するダイアログ */}
+				<Dialog visible={beforeLeaveDialog.visible} onDismiss={hideBeforeLeaveDialog}>
+					<Dialog.Title>{i18n.t('Discard Thumbnail?')}</Dialog.Title>
+					<Dialog.Content>
+						<Text>{i18n.t('変更を保存せずに戻りますか？')}</Text>
+					</Dialog.Content>
+					<Dialog.Actions>
+						<Button onPress={hideBeforeLeaveDialog} color="black">
+							{i18n.t('Cancel')}
+						</Button>
+						<Button
+							// eslint-disable-next-line @typescript-eslint/no-misused-promises
+							onPress={onSaveClicked}
+							color="black">
+							{i18n.t('Save')}
+						</Button>
+						<Button onPress={onDiscardClicked} color="red">
+							{i18n.t('Discard')}
+						</Button>
+					</Dialog.Actions>
+				</Dialog>
+
+				<TPA001TextEditDialog
+					textEditDialog={textEditDialog}
+					textProps={text}
+					hideTextEditDialog={hideTextEditDialog}
+					onSaveTextEditing={onSaveTextEditing}
+				/>
+
+				{/* Color 選択時のダイアログ */}
+				{activeDecoration && activeDecoration.color && (
+					<TPA001ColorPickerDialog
+						colorPickerDialog={colorPickerDialog}
+						colorProps={activeDecoration.color}
+						hideColorPickerDialog={hideColorPickerDialog}
+						onSaveColorPickerDialog={onSaveColorPickerDialog}
+					/>
+				)}
+			</Portal>
 			<View style={{ height: '100%', justifyContent: 'space-between' }}>
-				<TMC01101ThumbnailBackground aspectRatio={4 / 3} />
+				<Button
+					onPress={() => {
+						navigation.navigate('TPA002ThumbnailTemplate', {});
+					}}>
+					{i18n.t('go to select template')}
+				</Button>
+
+				{/* キャバス */}
+				<ViewShot
+					// TODO: resize する
+					ref={viewShotRef}
+					// options={{
+					// 	result: 'base64',
+					// }}
+					style={{ width: '100%', aspectRatio: thumbnailItemMapper.aspectRatio, overflow: 'hidden', borderWidth: 1 }}>
+					{Object.keys(decorationsMap).map((key) => (
+						<TMC02301Decoration key={key} decorationID={key} onLoad={onLoadResolveMap[key]} />
+					))}
+				</ViewShot>
+
+				{/* フッター */}
 				<View>
+					{/* フッター大分類 */}
 					<ScrollView horizontal>
-						{footerMenuList.map((footerMenu, index) => (
-							<Pressable
-								key={footerMenu.key}
-								onPress={footerMenuOnPress(footerMenu.onPress, footerMenu.key)}
-								style={{ width: 80 }}>
-								<MaterialCommunityIcons name={footerMenu.icon} size={30} style={{ textAlign: 'center' }} />
-								<Text style={{ textAlign: 'center' }}>{footerMenu.title}</Text>
-							</Pressable>
-						))}
+						{footerMenuList
+							.filter(
+								(footerMenu) =>
+									activeDecoration && ThumnailRule.FooterDisplay()[activeDecoration.decorationType][footerMenu.key],
+							)
+							.map((footerMenu, index) => (
+								<Pressable
+									key={footerMenu.key}
+									onPress={footerMenuOnPress(footerMenu.onPress, footerMenu.key)}
+									style={{ width: 80 }}>
+									<MaterialCommunityIcons name={footerMenu.icon} size={30} style={{ textAlign: 'center' }} />
+									<Text style={{ textAlign: 'center' }}>{footerMenu.title}</Text>
+								</Pressable>
+							))}
 					</ScrollView>
+
+					{/* Order 選択時のフッターメニュー */}
 					{selectedFooterMenu === 'Order' && (
 						<View>
 							<Pressable onPress={bringToFront} style={styles.orderPressable}>

@@ -5,17 +5,19 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import {
 	EditPlanPropsInterface,
-	ItineraryCoverPropsInterface,
 	ItineraryEditPropsInterface,
 	PlacePropsInterface,
 	PlacesPropsInterface,
 } from 'spelieve-common/lib/Interfaces';
 
+import { ThumbnailEditorPropsInterface } from '@/Thumbnail/Pages/TPA001ThumbnailEditor/ThumbnailEditorInterface';
+import { ThumbnailTemplatePropsInterface } from '@/Thumbnail/Pages/TPA002ThumbnailTemplate/ThumbnailTemplateInterface';
+
 /**
  * Root Stack の型定義
  */
 export type RootStackParamList = {
-	Root: NavigatorScreenParams<RootTabParamList> | undefined;
+	BottomTabNavigator: NavigatorScreenParams<BottomTabNavigatorParamList> | undefined;
 	ThumbnailPageNavigator: NavigatorScreenParams<ThumbnailStackParamList>;
 	Modal: undefined;
 	NotFound: undefined;
@@ -30,7 +32,8 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> = Nati
  * Thumbnail Stack の型定義
  */
 export type ThumbnailStackParamList = {
-	TPA001ThumbnailEditor: Record<string, never>;
+	TPA001ThumbnailEditor: ThumbnailEditorPropsInterface;
+	TPA002ThumbnailTemplate: ThumbnailTemplatePropsInterface;
 };
 
 export type ThumbnailStackScreenProps<Screen extends keyof ThumbnailStackParamList> = CompositeScreenProps<
@@ -41,13 +44,13 @@ export type ThumbnailStackScreenProps<Screen extends keyof ThumbnailStackParamLi
 /**
  * Bottom Tab の型定義
  */
-export type RootTabParamList = {
+export type BottomTabNavigatorParamList = {
 	Itinerary: NavigatorScreenParams<ItineraryStackParamList>;
 	Place: NavigatorScreenParams<PlaceStackParamList>;
 };
 
-export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
-	MaterialBottomTabScreenProps<RootTabParamList, Screen>,
+export type BottomTabNavigatorScreenProps<Screen extends keyof BottomTabNavigatorParamList> = CompositeScreenProps<
+	MaterialBottomTabScreenProps<BottomTabNavigatorParamList, Screen>,
 	NativeStackScreenProps<RootStackParamList>
 >;
 
@@ -55,7 +58,6 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> = Composit
  * Itinerary Stack の型定義
  */
 export type ItineraryStackParamList = {
-	ItineraryCover: ItineraryCoverPropsInterface;
 	ItineraryTopTabNavigator: NavigatorScreenParams<ItineraryTopTabParamList>;
 	EditPlan: EditPlanPropsInterface;
 	HelloSpelieve: Record<string, never>;
@@ -63,7 +65,7 @@ export type ItineraryStackParamList = {
 
 export type ItineraryStackScreenProps<Screen extends keyof ItineraryStackParamList> = CompositeScreenProps<
 	NativeStackScreenProps<ItineraryStackParamList, Screen>,
-	MaterialBottomTabScreenProps<RootTabParamList>
+	CompositeScreenProps<NativeStackScreenProps<BottomTabNavigatorParamList>, NativeStackScreenProps<RootStackParamList>>
 >;
 
 /**
@@ -76,7 +78,13 @@ export type ItineraryTopTabParamList = {
 
 export type ItineraryTopTabScreenProps<Screen extends keyof ItineraryTopTabParamList> = CompositeScreenProps<
 	MaterialTopTabScreenProps<ItineraryTopTabParamList, Screen>,
-	NativeStackScreenProps<ItineraryStackParamList>
+	CompositeScreenProps<
+		NativeStackScreenProps<ItineraryStackParamList>,
+		CompositeScreenProps<
+			NativeStackScreenProps<BottomTabNavigatorParamList>,
+			NativeStackScreenProps<RootStackParamList>
+		>
+	>
 >;
 
 /**
@@ -89,5 +97,5 @@ export type PlaceStackParamList = {
 
 export type PlaceStackScreenProps<Screen extends keyof PlaceStackParamList> = CompositeScreenProps<
 	NativeStackScreenProps<PlaceStackParamList, Screen>,
-	MaterialBottomTabScreenProps<RootTabParamList>
+	CompositeScreenProps<NativeStackScreenProps<BottomTabNavigatorParamList>, NativeStackScreenProps<RootStackParamList>>
 >;

@@ -6,6 +6,8 @@ import { ThumbnailBackgroundPropsInterface } from './ThumbnailBackgroundInterfac
 import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
 import { TMC02301Decoration } from '@/Thumbnail/Contexts/TCT023DecorationsMap/ModelComponents/TMC02301Decoration/Decoration';
 
+// TODO: この機能は削除する
+
 export const TMC01101ThumbnailBackground = ({ aspectRatio }: ThumbnailBackgroundPropsInterface) => {
 	const { decorationsMap } = useContext(TCT023DecorationsMap);
 	return (

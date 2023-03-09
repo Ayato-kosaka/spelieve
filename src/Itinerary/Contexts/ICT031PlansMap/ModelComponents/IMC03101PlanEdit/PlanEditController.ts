@@ -1,10 +1,11 @@
 import { setDoc, doc, deleteDoc } from 'firebase/firestore';
 import { useCallback, useContext, useEffect, useMemo } from 'react';
 
-import { PlanEditPropsInterface } from 'spelieve-common/lib/Interfaces';
 import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 
 import { ICT031PlansMap } from '../..';
+
+import { PlanEditPropsInterface } from './PlanEditPropsInterface';
 
 import * as CHK001Utils from '@/Common/Hooks/CHK001Utils';
 import { ICT021PlanGroupsList } from '@/Itinerary/Contexts/ICT021PlanGroupsList';
@@ -15,7 +16,7 @@ export const IMC03101PlanEditController = ({
 	dependentPlanID,
 	planGroupsDoc,
 	isPlanGroupMounted,
-}: PlanEditPropsInterface) => {
+}: Omit<PlanEditPropsInterface, 'onPlanPress'>) => {
 	const { planGroupsQSnap } = useContext(ICT021PlanGroupsList);
 	const { plansCRef, plansDocSnapMap } = useContext(ICT031PlansMap);
 	const planDocSnap = useMemo(() => plansDocSnapMap[planID], [planID, plansDocSnapMap]);
