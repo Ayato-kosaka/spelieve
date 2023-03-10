@@ -8,6 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       expo-cache:
+        type: choice
         description: 'Whether to use Expo cache'
         default: true
         required: false
