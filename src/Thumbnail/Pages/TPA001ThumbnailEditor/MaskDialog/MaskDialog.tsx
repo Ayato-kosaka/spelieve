@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ActivityIndicator, Image, View } from 'react-native';
+import { ActivityIndicator, Image, Pressable, View } from 'react-native';
 import { Button, Dialog, Portal } from 'react-native-paper';
 
 import { TPA001MaskDialogController } from './MaskDialogController';
@@ -19,10 +19,11 @@ export const TPA001MaskDialog = ({ selectedFooterMenu, setSelectedFooterMenu }: 
 	const { decorationsMap } = useContext(TCT023DecorationsMap);
 	const { maskShapeList, isLoading } = useContext(TCT032MMaskShapeList);
 
-	const { maskDialog, onEndMaskGesture, onSaveMaskDialog, maskItemStyle, hideMaskDialog } = TPA001MaskDialogController({
-		selectedFooterMenu,
-		setSelectedFooterMenu,
-	});
+	const { maskDialog, onSelectMask, onEndMaskGesture, onSaveMaskDialog, maskItemStyle, hideMaskDialog } =
+		TPA001MaskDialogController({
+			selectedFooterMenu,
+			setSelectedFooterMenu,
+		});
 
 	if (isLoading) {
 		return <ActivityIndicator animating />;
@@ -47,7 +48,15 @@ export const TPA001MaskDialog = ({ selectedFooterMenu, setSelectedFooterMenu }: 
 					<View>
 						{maskShapeList.map((maskShapeDoc) => {
 							const maskShape = maskShapeDoc.data();
-							return <Image key={maskShapeDoc.id} source={{ uri: maskShape.storageUrl }} />;
+							return (
+								<Pressable key={maskShapeDoc.id} onPress={() => onSelectMask(maskShape.storageUrl)}>
+									<Image
+										source={{ uri: maskShape.storageUrl }}
+										style={{ width: 50, aspectRatio: 1 }}
+										resizeMode="contain"
+									/>
+								</Pressable>
+							);
 						})}
 					</View>
 				</Dialog.Content>

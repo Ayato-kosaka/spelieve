@@ -1,4 +1,4 @@
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, limit, query, where } from 'firebase/firestore';
 import { useState, createContext, useEffect, useMemo, ReactNode } from 'react';
 
 import { MMaskShape } from 'spelieve-common/lib/Models/Thumbnail/TDB03/MMaskShape';
@@ -30,7 +30,9 @@ export const TCT032MMaskShapeListProvider = ({ children }: { children: ReactNode
 		setIsLoading(true);
 
 		const fetchData = async () => {
-			const querySnapshot = await getDocs(maskShapeCollectionRef);
+			const querySnapshot = await getDocs(
+				query(maskShapeCollectionRef, where(MMaskShape.Cols.attached_count, '>', 50), limit(5)),
+			);
 			setMaskShapeList(querySnapshot.docs.map((doc) => doc));
 			setIsLoading(false);
 		};

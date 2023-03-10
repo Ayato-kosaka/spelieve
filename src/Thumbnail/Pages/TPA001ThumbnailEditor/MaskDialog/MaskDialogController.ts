@@ -49,8 +49,7 @@ export const TPA001MaskDialogController = ({
 				setMaskDialog({
 					visible: true,
 					decorationID: activeDecorationID,
-					// TODO: あとで変更する
-					maskUri: activeDecoration.maskUri ?? 'https://cdn-icons-png.flaticon.com/512/2107/2107776.png',
+					maskUri: activeDecoration.maskUri,
 					maskTransform: activeDecoration.maskTransform,
 				});
 		}
@@ -84,6 +83,7 @@ export const TPA001MaskDialogController = ({
 
 	return {
 		maskDialog,
+		onSelectMask,
 		onEndMaskGesture,
 		onSaveMaskDialog,
 		maskItemStyle,
