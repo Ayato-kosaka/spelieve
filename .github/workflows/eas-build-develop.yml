@@ -34,7 +34,7 @@ jobs:
         with:
           expo-version: 4.x
           token: ${{ secrets.EXPO_TOKEN }}
-          expo-cache: true
+          expo-cache: ${{ github.event.inputs.expo-cache }}
 
       - name: Checkout spelieve-secret
         uses: actions/checkout@v3
