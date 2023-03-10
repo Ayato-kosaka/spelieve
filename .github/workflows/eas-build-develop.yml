@@ -6,6 +6,14 @@ on:
     paths:
       - 'app.config.ts'
   workflow_dispatch:
+    inputs:
+      expo-cache:
+        description: 'Whether to use Expo cache'
+        default: true
+        required: false
+        options:
+          - "true"
+          - "false"
 
 jobs:
   build:
