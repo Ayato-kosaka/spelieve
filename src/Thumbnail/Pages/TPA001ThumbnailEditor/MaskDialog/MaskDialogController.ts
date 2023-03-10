@@ -2,27 +2,18 @@ import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import { Decorations } from 'spelieve-common/lib/Models/Thumbnail/TDB02/Decorations';
 
-import { MaskDecorationPropsInterface } from '../MaskDecoration/MaskDecorationInterface';
+import { MaskDecorationPropsInterface } from './MaskDecoration/MaskDecorationInterface';
+import { TPA001MaskDialogPropsInterface } from './MaskDialogInterface';
 
-import { TPA001FooterMenuController } from './FooterMenuController';
-
-import { ThumbnailStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { GestureProviderPropsInterface } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderPropsInterface';
 import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
 import { DecorationsMapInterface } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMapInterface';
 import { ThumnailRule } from '@/Thumbnail/Hooks/ThumbnailRule';
 
-interface TPA001MaskDialogControllerPropsInterface extends ThumbnailStackScreenProps<'TPA001ThumbnailEditor'> {
-	selectedFooterMenu: ReturnType<typeof TPA001FooterMenuController>['selectedFooterMenu'];
-	setSelectedFooterMenu: ReturnType<typeof TPA001FooterMenuController>['setSelectedFooterMenu'];
-}
-
 export const TPA001MaskDialogController = ({
-	navigation,
-	route,
 	selectedFooterMenu,
 	setSelectedFooterMenu,
-}: TPA001MaskDialogControllerPropsInterface) => {
+}: TPA001MaskDialogPropsInterface) => {
 	const { decorationsMap, setDecorationsMap, activeDecorationID } = useContext(TCT023DecorationsMap);
 
 	const { decorationTypeFeature } = ThumnailRule;

@@ -9,8 +9,8 @@ import { TPA001ColorPickerDialogController } from './Controller/ColorPickerDialo
 import { TPA001CreateDecorationController } from './Controller/CreateDecorationController';
 import { TPA001FooterMenuController } from './Controller/FooterMenuController';
 import { TPA001LeaveDialogController } from './Controller/LeaveDialogController';
-import { TPA001MaskDialogController } from './Controller/MaskDialogController';
 import { TPA001TextEditDialogController } from './Controller/TextEditDialogController';
+import { TPA001MaskDialog } from './MaskDialog/MaskDialog';
 import { TPA001TextEditDialog } from './TextEditDialog/TextEditDialog';
 import { styles } from './ThumbnailEditorStyle';
 
@@ -22,7 +22,6 @@ import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/
 import { DecorationsMapInterface } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMapInterface';
 import { TMC02301Decoration } from '@/Thumbnail/Contexts/TCT023DecorationsMap/ModelComponents/TMC02301Decoration/Decoration';
 import { ThumnailRule } from '@/Thumbnail/Hooks/ThumbnailRule';
-import { TPA001MaskDecoration } from '@/Thumbnail/Pages/TPA001ThumbnailEditor/MaskDecoration/MaskDecoration';
 
 export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScreenProps<'TPA001ThumbnailEditor'>) => {
 	// パラメータ取得
@@ -86,12 +85,6 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		setSelectedFooterMenu,
 		deleteDecoration,
 	});
-	const { maskDialog, onEndMaskGesture, onSaveMaskDialog, maskItemStyle, hideMaskDialog } = TPA001MaskDialogController({
-		navigation,
-		route,
-		selectedFooterMenu,
-		setSelectedFooterMenu,
-	});
 	const { colorPickerDialog, hideColorPickerDialog, onSaveColorPickerDialog } = TPA001ColorPickerDialogController({
 		navigation,
 		route,
@@ -132,32 +125,8 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 	return (
 		<>
 			<SafeAreaView />
+			<TPA001MaskDialog selectedFooterMenu={selectedFooterMenu} setSelectedFooterMenu={setSelectedFooterMenu} />
 			<Portal>
-				{/* Mask ダイアログ */}
-				<Dialog visible={maskDialog.visible} onDismiss={onSaveMaskDialog}>
-					<Dialog.Content>
-						<TPA001MaskDecoration
-							decoration={decorationsMap[maskDialog.decorationID]}
-							imageURI={
-								decorationsMap[maskDialog.decorationID] &&
-								decorationsMap[maskDialog.decorationID]!.key &&
-								thumbnailItemMapper.storeUrlMap[decorationsMap[maskDialog.decorationID]!.key!]
-							}
-							maskUri={maskDialog.maskUri}
-							maskTransform={maskDialog.maskTransform}
-							onEndMaskGesture={onEndMaskGesture}
-							maskItemStyle={maskItemStyle}
-						/>
-					</Dialog.Content>
-					<Dialog.Actions>
-						<Button onPress={hideMaskDialog} color="black">
-							{i18n.t('Cancel')}
-						</Button>
-						<Button onPress={onSaveMaskDialog} color="black">
-							{i18n.t('Save')}
-						</Button>
-					</Dialog.Actions>
-				</Dialog>
 				{/* 閉じるボタン押下時に出現するダイアログ */}
 				<Dialog visible={beforeLeaveDialog.visible} onDismiss={hideBeforeLeaveDialog}>
 					<Dialog.Title>{i18n.t('Discard Thumbnail?')}</Dialog.Title>
