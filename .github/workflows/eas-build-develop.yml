@@ -15,6 +15,14 @@ on:
         options:
           - "true"
           - "false"
+      eas-cache:
+        type: choice
+        description: 'Whether to use EAS cache'
+        default: true
+        required: false
+        options:
+          - "true"
+          - "false"
 
 jobs:
   build:
@@ -35,6 +43,7 @@ jobs:
           expo-version: 4.x
           token: ${{ secrets.EXPO_TOKEN }}
           expo-cache: ${{ github.event.inputs.expo-cache }}
+          eas-cache: ${{ github.event.inputs.eas-cache }}
 
       - name: Checkout spelieve-secret
         uses: actions/checkout@v3
