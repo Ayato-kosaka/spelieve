@@ -16,7 +16,7 @@ import { customColors, materialColors } from '@/ThemeProvider';
 export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenProps<'HelloSpelieve'>) => {
 	const [recentItineraries, setRecentItineraries] = useState<RecentItinerariesInterface | undefined>(undefined);
 	useEffect(() => {
-		console.log('setRecentItineraries'); // TODO: 再ソートされない。この画面に入ったらソートしたい。
+		// TODO: 再ソートされない。この画面に入ったらソートしたい。
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		(async () => {
 			setRecentItineraries(
@@ -226,6 +226,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 										'https://firebasestorage.googleapis.com/v0/b/spelieve-dev.appspot.com/o/12373bcd-013b-43d3-bbcf-f95c3d991edc?alt=media&token=91171ed7-7a92-439b-9c4b-a675cabe49bc',
 								},
 								onBack(thumbnailID, thumbnailItemMapper, uri) {
+									// eslint-disable-next-line no-console
 									console.log('onBack', { thumbnailID, thumbnailItemMapper, uri });
 								},
 							});
