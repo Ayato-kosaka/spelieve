@@ -5,7 +5,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import ViewShot from 'react-native-view-shot';
 
 import { TPA001ColorPickerDialog } from './ColorPickerDialog/ColorPickerDialog';
-import { TPA001ColorPickerDialogController } from './Controller/ColorPickerDialogController';
 import { TPA001CreateDecorationController } from './Controller/CreateDecorationController';
 import { TPA001FooterMenuController } from './Controller/FooterMenuController';
 import { TPA001LeaveDialogController } from './Controller/LeaveDialogController';
@@ -85,12 +84,6 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		setSelectedFooterMenu,
 		deleteDecoration,
 	});
-	const { colorPickerDialog, hideColorPickerDialog, onSaveColorPickerDialog } = TPA001ColorPickerDialogController({
-		navigation,
-		route,
-		selectedFooterMenu,
-		setSelectedFooterMenu,
-	});
 
 	const headerRight = useCallback(
 		() => (
@@ -126,6 +119,7 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		<>
 			<SafeAreaView />
 			<TPA001MaskDialog selectedFooterMenu={selectedFooterMenu} setSelectedFooterMenu={setSelectedFooterMenu} />
+			<TPA001ColorPickerDialog selectedFooterMenu={selectedFooterMenu} setSelectedFooterMenu={setSelectedFooterMenu} />
 			<Portal>
 				{/* 閉じるボタン押下時に出現するダイアログ */}
 				<Dialog visible={beforeLeaveDialog.visible} onDismiss={hideBeforeLeaveDialog}>
@@ -155,16 +149,6 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 					hideTextEditDialog={hideTextEditDialog}
 					onSaveTextEditing={onSaveTextEditing}
 				/>
-
-				{/* Color 選択時のダイアログ */}
-				{activeDecoration && activeDecoration.color && (
-					<TPA001ColorPickerDialog
-						colorPickerDialog={colorPickerDialog}
-						colorProps={activeDecoration.color}
-						hideColorPickerDialog={hideColorPickerDialog}
-						onSaveColorPickerDialog={onSaveColorPickerDialog}
-					/>
-				)}
 			</Portal>
 			<View style={{ height: '100%', justifyContent: 'space-between' }}>
 				<Button

@@ -1,22 +1,14 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
-import { TPA001FooterMenuController } from './FooterMenuController';
+import { TPA001ColorPickerDialogPropsInterface } from './ColorPickerDialogInterface';
 
-import { ThumbnailStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
 import { DecorationsMapInterface } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMapInterface';
 
-interface TPA001ColorPickerDialogControllerPropsInterface extends ThumbnailStackScreenProps<'TPA001ThumbnailEditor'> {
-	selectedFooterMenu: ReturnType<typeof TPA001FooterMenuController>['selectedFooterMenu'];
-	setSelectedFooterMenu: ReturnType<typeof TPA001FooterMenuController>['setSelectedFooterMenu'];
-}
-
 export const TPA001ColorPickerDialogController = ({
-	navigation,
-	route,
 	selectedFooterMenu,
 	setSelectedFooterMenu,
-}: TPA001ColorPickerDialogControllerPropsInterface) => {
+}: TPA001ColorPickerDialogPropsInterface) => {
 	const { decorationsMap, setDecorationsMap, activeDecorationID } = useContext(TCT023DecorationsMap);
 
 	const activeDecoration: DecorationsMapInterface | undefined = useMemo(
@@ -53,9 +45,17 @@ export const TPA001ColorPickerDialogController = ({
 		[activeDecoration, activeDecorationID, hideColorPickerDialog, setDecorationsMap],
 	);
 
+	const [color, setColor] = useState<string>('');
+	useEffect(() => {
+		if (activeDecoration?.color) setColor(activeDecoration?.color);
+	}, [activeDecoration?.color]);
+
 	return {
+		activeDecoration,
 		colorPickerDialog,
 		hideColorPickerDialog,
 		onSaveColorPickerDialog,
+		color,
+		setColor,
 	};
 };
