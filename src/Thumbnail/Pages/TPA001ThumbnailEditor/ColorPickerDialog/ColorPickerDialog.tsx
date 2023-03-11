@@ -1,4 +1,5 @@
-import { ActivityIndicator, Button, Dialog, Portal } from 'react-native-paper';
+import { View } from 'react-native';
+import { Button, Dialog, Portal } from 'react-native-paper';
 import ColorPicker from 'react-native-wheel-color-picker';
 
 import { TPA001ColorPickerDialogController } from './ColorPickerDialogController';
@@ -16,46 +17,49 @@ export const TPA001ColorPickerDialog = ({
 			selectedFooterMenu,
 			setSelectedFooterMenu,
 		});
-	if (!activeDecoration?.color) return <ActivityIndicator animating />;
 
 	return (
 		<Portal>
 			<Dialog visible={colorPickerDialog.visible} onDismiss={hideColorPickerDialog}>
 				<Dialog.Title>{i18n.t('Color')}</Dialog.Title>
 				<Dialog.Content>
-					<ColorPicker
-						row={false}
-						noSnap
-						thumbSize={30}
-						sliderSize={20}
-						gapSize={30}
-						discrete={false}
-						discreteLength={undefined}
-						sliderHidden={false}
-						swatches
-						swatchesLast={false}
-						swatchesOnly={false}
-						swatchesHitSlop={undefined}
-						color={color}
-						palette={[
-							'#000',
-							materialColors.grey[500],
-							materialColors.red[700],
-							materialColors.purple[700],
-							materialColors.blue[700],
-							materialColors.lightblue[700],
-							materialColors.green[800],
-							materialColors.lightgreen[700],
-							materialColors.yellow[500],
-							materialColors.orange[700],
-						]}
-						shadeWheelThumb
-						shadeSliderThumb
-						autoResetSlider={false}
-						onInteractionStart={undefined}
-						onColorChange={undefined}
-						onColorChangeComplete={(v) => setColor(v)}
-					/>
+					{activeDecoration?.color ? (
+						<ColorPicker
+							row={false}
+							noSnap
+							thumbSize={30}
+							sliderSize={20}
+							gapSize={30}
+							discrete={false}
+							discreteLength={undefined}
+							sliderHidden={false}
+							swatches
+							swatchesLast={false}
+							swatchesOnly={false}
+							swatchesHitSlop={undefined}
+							color={color}
+							palette={[
+								'#000',
+								materialColors.grey[500],
+								materialColors.red[700],
+								materialColors.purple[700],
+								materialColors.blue[700],
+								materialColors.lightblue[700],
+								materialColors.green[800],
+								materialColors.lightgreen[700],
+								materialColors.yellow[500],
+								materialColors.orange[700],
+							]}
+							shadeWheelThumb
+							shadeSliderThumb
+							autoResetSlider={false}
+							onInteractionStart={undefined}
+							onColorChange={undefined}
+							onColorChangeComplete={(v) => setColor(v)}
+						/>
+					) : (
+						<View />
+					)}
 				</Dialog.Content>
 				<Dialog.Actions>
 					<Button onPress={hideColorPickerDialog} color="black">
