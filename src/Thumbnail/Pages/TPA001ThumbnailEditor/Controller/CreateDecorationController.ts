@@ -56,7 +56,7 @@ export const TPA001CreateDecorationController = ({
 	const { pickImage } = CCO006ImagePickerController({
 		onPickImage,
 		imagePickerOptions: {
-			allowsEditing: true,
+			allowsEditing: false,
 			allowsMultipleSelection: false,
 			mediaTypes: MediaTypeOptions.Images,
 			quality: 1,
