@@ -8,6 +8,8 @@ import { TCT023DecorationsMap } from '../../DecorationsMap';
 
 import { MaskedDecorationPropsInterface } from './MaskedDecorationInterface';
 
+import { useGetImageRatio } from '@/Common/Hooks/CHK001Utils';
+
 export const TMC02302MaskedDecoration = ({
 	decorationID,
 	value,
@@ -32,6 +34,9 @@ export const TMC02302MaskedDecoration = ({
 				: [],
 		[decoration?.maskTransform],
 	);
+
+	const { aspectRatio } = useGetImageRatio(value);
+
 	if (!decoration) {
 		return <View />;
 	}
@@ -67,9 +72,9 @@ export const TMC02302MaskedDecoration = ({
 			{decoration.decorationType === 'Figure' && (
 				<View style={[designItemStyle, { backgroundColor: decoration.color }]} />
 			)}
-			{decoration.decorationType === 'Image' && (
+			{decoration.decorationType === 'Image' && value && (
 				<Image
-					style={designItemStyle}
+					style={[designItemStyle, { aspectRatio }]}
 					source={{
 						uri: value,
 					}}
