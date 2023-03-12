@@ -74,11 +74,15 @@ export const TPA001TextEditDialogController = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedFooterMenu]);
 
+	const [fontFamily, setFontFamily] = useState('');
+
 	return {
 		textEditDialog,
 		text,
 		setText,
 		hideTextEditDialog,
 		onSaveTextEditing,
+		fontFamily,
+		setFontFamily,
 	};
 };
