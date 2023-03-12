@@ -82,7 +82,9 @@ export const TMC02302MaskedDecoration = ({
 					resizeMode="cover"
 				/>
 			)}
-			{decoration.decorationType === 'Text' && decoration.key && <Text>{value || 'Dummy Text'}</Text>}
+			{decoration.decorationType === 'Text' && decoration.key && (
+				<Text style={{ fontSize: 32, color: decoration.color }}>{value || 'Dummy Text'}</Text>
+			)}
 		</MaskedView>
 	);
 };
