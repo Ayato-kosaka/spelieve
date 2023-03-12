@@ -1,27 +1,31 @@
-import { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Linking, Pressable, SafeAreaView, View, Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Headline, Subheading, Text, Button, Title } from 'react-native-paper';
+import { Headline, Text, Button, Title } from 'react-native-paper';
 
 import { RecentItinerariesInterface, getRecentItineraries } from './HelloSpelieveRecentItineraryHook';
 
+import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
 import { CCO007GoogleBannerAd } from '@/Common/Components/CCO007GoogleBannerAd/GoogleBannerAd';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ItineraryStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { ENV } from '@/ENV';
 import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001GooglePlaceAPI';
-import { customColors, materialColors, paperTheme } from '@/ThemeProvider';
+import { customColors, materialColors } from '@/ThemeProvider';
 
 export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenProps<'HelloSpelieve'>) => {
 	const [recentItineraries, setRecentItineraries] = useState<RecentItinerariesInterface | undefined>(undefined);
 	useEffect(() => {
+		console.log('setRecentItineraries'); // TODO: 再ソートされない。この画面に入ったらソートしたい。
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		(async () => {
 			setRecentItineraries(
 				(await getRecentItineraries()).sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime()),
 			);
 		})();
-	});
+	}, []);
+
+	const { setThumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
 
 	return (
 		// TODO: https://github.com/Ayato-kosaka/spelieve/issues/156 LP作成計画検討
@@ -122,7 +126,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 					{recentItineraries && recentItineraries.length > 0 && (
 						<View style={{ marginVertical: 64 }}>
 							<Headline style={{ textAlign: 'center' }}>{i18n.t('最近作成した旅行プラン')}</Headline>
-							<ScrollView style={{ maxHeight: 700 }}>
+							<ScrollView style={{ maxHeight: 700 }} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}>
 								{recentItineraries.map((recentItinerary) => (
 									<Pressable
 										key={recentItinerary.itineraryID}
@@ -135,24 +139,50 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 											});
 										}}
 										style={{
-											borderWidth: 1,
-											borderColor: materialColors.grey[400],
-											borderRadius: 4,
-											marginVertical: 4,
-											paddingHorizontal: 4,
-											paddingVertical: 4,
+											width: '50%',
 										}}>
-										<Subheading style={{ color: paperTheme.colors.primary }}>
-											{recentItinerary.title || i18n.t('no title')}
-										</Subheading>
-										<Text>{recentItinerary.subTitle || i18n.t('no sub title')}</Text>
-										<Text style={{ color: materialColors.grey[700] }}>
-											{recentItinerary.updatedAt.toLocaleDateString('en-US', {
-												year: 'numeric',
-												month: '2-digit',
-												day: '2-digit',
-											})}
-										</Text>
+										<View
+											style={{
+												borderWidth: 1,
+												borderColor: materialColors.grey[400],
+												borderRadius: 4,
+												margin: 8,
+											}}>
+											{recentItinerary.imageUrl ? (
+												<Image
+													source={{ uri: recentItinerary.imageUrl }}
+													style={{
+														paddingTop: '100%',
+														width: '100%',
+													}}
+												/>
+											) : (
+												<View
+													style={{
+														paddingTop: '100%',
+														width: '100%',
+														position: 'relative',
+														overflow: 'hidden',
+													}}>
+													<View
+														style={{
+															position: 'absolute',
+															width: '100%',
+															top: 0,
+															bottom: 0,
+															justifyContent: 'center',
+														}}>
+														<Text
+															style={{
+																textAlign: 'center',
+																flexWrap: 'wrap',
+															}}>
+															{i18n.t('No Thumbnail')}
+														</Text>
+													</View>
+												</View>
+											)}
+										</View>
 									</Pressable>
 								))}
 							</ScrollView>
@@ -187,15 +217,26 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 				{ENV.LOGGER && (
 					<Button
 						mode="contained"
-						onPress={() =>
-							navigation.navigate('ItineraryTopTabNavigator', {
-								screen: 'ItineraryEdit',
-								params: {
-									itineraryID: 'uMFhF6OQph2UUuKEsKNa',
+						onPress={() => {
+							setThumbnailItemMapper({
+								aspectRatio: 1,
+								textMap: { xxx: 'サンプル横浜行くぞい！' },
+								storeUrlMap: {
+									'b87e0c4d-bb1f-48a9-a304-80ce4728f2a7':
+										'https://firebasestorage.googleapis.com/v0/b/spelieve-dev.appspot.com/o/12373bcd-013b-43d3-bbcf-f95c3d991edc?alt=media&token=91171ed7-7a92-439b-9c4b-a675cabe49bc',
 								},
-							})
-						}>
-						{i18n.t('開発者用 Itinerary で始める')}
+								onBack(thumbnailID, thumbnailItemMapper, uri) {
+									console.log('onBack', { thumbnailID, thumbnailItemMapper, uri });
+								},
+							});
+							navigation.navigate('ThumbnailPageNavigator', {
+								screen: 'TPA001ThumbnailEditor',
+								params: {
+									fromThumbnailID: 'HVClefrb102gUdcTp2Cu',
+								},
+							});
+						}}>
+						{i18n.t('開発者用')}
 					</Button>
 				)}
 			</ScrollView>

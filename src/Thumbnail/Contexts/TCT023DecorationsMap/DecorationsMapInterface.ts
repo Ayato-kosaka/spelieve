@@ -1,25 +1,28 @@
-interface TDB02Decorations {
-	decorationType: 'Video' | 'Image' | 'Figure' | 'Line' | 'Text';
-	translateX: number;
-	translateY: number;
-	rotateZ: number;
-	scale: number;
-	order: number;
-	color: string;
-	imageUrl?: string; // Image の時必須
-}
+import { CollectionReference, DocumentReference } from 'firebase/firestore';
 
-export type DecorationsMapInteface = TDB02Decorations;
-export interface DecorationsMapValInteface {
+import { Decorations } from 'spelieve-common/lib/Models/Thumbnail/TDB02/Decorations';
+
+import { MThumbnailOneInterface } from '../TCT011MThumbnailOne/MThumbnailOneInterface';
+
+import { Weaken } from '@/Common/Hooks/CHK003TypeScript';
+
+export interface DecorationsMapInterface extends Weaken<Decorations, 'decorationType'> {
+	decorationType: 'Video' | 'Image' | 'Figure' | 'Text';
+}
+export interface DecorationsMapValInterface {
 	decorationsMap: {
-		[key: string]: DecorationsMapInteface;
+		[key: string]: DecorationsMapInterface | undefined;
 	};
 	setDecorationsMap: React.Dispatch<
 		React.SetStateAction<{
-			[key: string]: DecorationsMapInteface;
+			[key: string]: DecorationsMapInterface | undefined;
 		}>
 	>;
-	createDecoration: (data: Omit<DecorationsMapInteface, 'color' | 'order'>) => void;
+	getCollection: (
+		parentDocRef: DocumentReference<MThumbnailOneInterface>,
+	) => CollectionReference<DecorationsMapInterface>;
+	createDecoration: (data: Omit<DecorationsMapInterface, 'color' | 'order' | 'createdAt' | 'updatedAt'>) => void;
 	activeDecorationID: string;
 	setActiveDecorationID: React.Dispatch<React.SetStateAction<string>>;
+	isLoading: boolean;
 }

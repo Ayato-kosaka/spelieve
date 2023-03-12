@@ -1,8 +1,7 @@
 import { ReactNode } from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
 import { GestureStateChangeEvent, TapGestureHandlerEventPayload } from 'react-native-gesture-handler';
 
-interface GestureProviderInterface {
+export interface GestureProviderInterface {
 	translateX: number;
 	translateY: number;
 	scale: number;
@@ -10,10 +9,10 @@ interface GestureProviderInterface {
 }
 
 export interface GestureProviderPropsInterface {
-	initial: GestureProviderInterface;
+	initial?: GestureProviderInterface;
 	onEndGesture: (val: Partial<GestureProviderInterface>) => void;
-	isActive: boolean;
-	onSingleTapFinalize: (event: GestureStateChangeEvent<TapGestureHandlerEventPayload>, success: boolean) => void;
-	viewStyle: StyleProp<ViewStyle>;
+	isActive?: boolean;
+	onSingleTapFinalize?: (event: GestureStateChangeEvent<TapGestureHandlerEventPayload>, success: boolean) => void;
+	onAnimating?: (event: GestureProviderInterface) => void;
 	children: ReactNode;
 }

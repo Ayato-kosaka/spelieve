@@ -1,24 +1,28 @@
 import React, { useMemo } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { runOnJS, useAnimatedReaction, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import { runOnJS, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 
 import { GestureProviderPropsInterface } from './GestureProviderPropsInterface';
 
 import { Logger } from '@/Common/Hooks/CHK001Utils';
 
 export const TCO001GestureProvider = ({
-	initial,
+	initial = {
+		translateX: 0,
+		translateY: 0,
+		scale: 1,
+		rotateZ: 0,
+	},
 	onEndGesture,
-	isActive,
+	isActive = true,
 	onSingleTapFinalize,
-	viewStyle,
+	onAnimating,
 	children,
 }: GestureProviderPropsInterface) => {
 	/**
 	 * translateX -> style に反映される translateX
 	 * savedTranslateX ->  手を止めた状態の translateX
 	 */
-	console.log('TCO001GestureProvider.render');
 	const translateX = useSharedValue(initial.translateX);
 	const translateY = useSharedValue(initial.translateY);
 	const scale = useSharedValue(initial.scale);
@@ -33,7 +37,9 @@ export const TCO001GestureProvider = ({
 		// web で onStart が動作しなく、onBegin を利用すると !success の場合も反応するため、onFinalize で制御する
 		.onFinalize((event, success) => {
 			if (success) {
-				runOnJS(onSingleTapFinalize)(event, success);
+				if (onSingleTapFinalize) {
+					runOnJS(onSingleTapFinalize)(event, success);
+				}
 			}
 		});
 
@@ -101,30 +107,24 @@ export const TCO001GestureProvider = ({
 		[onEndGesture],
 	);
 
-	// animatedStyle を設定する
-	const animatedStyle = useAnimatedStyle(() => ({
-		position: 'absolute',
-		borderWidth: isActive ? 1 : 0,
-		transform: [
-			{
-				translateX: translateX.value,
-			},
-			{
-				translateY: translateY.value,
-			},
-			{ scale: scale.value },
-			{ rotateZ: `${(rotateZ.value / Math.PI) * 180}deg` },
-		],
-	}));
+	// onAnimating
+	useAnimatedReaction(
+		() => ({
+			translateX: translateX.value,
+			translateY: translateY.value,
+			scale: scale.value,
+			rotateZ: rotateZ.value,
+		}),
+		(prepareResult, preparePreviousResult) => {
+			onAnimating?.(prepareResult);
+		},
+		[translateX, translateY, scale, rotateZ],
+	);
 
 	const composed = useMemo(
 		() => Gesture.Simultaneous(singleTap, panGesture, pinchGesture, rotationGesture),
 		[panGesture, pinchGesture, rotationGesture, singleTap],
 	);
 
-	return (
-		<GestureDetector gesture={composed}>
-			<Animated.View style={[viewStyle, animatedStyle]}>{children}</Animated.View>
-		</GestureDetector>
-	);
+	return <GestureDetector gesture={composed}>{children}</GestureDetector>;
 };

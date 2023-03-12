@@ -6,6 +6,26 @@ on:
     paths:
       - 'app.config.ts'
   workflow_dispatch:
+    inputs:
+      expo-cache:
+        type: choice
+        description: 'Whether to use Expo cache'
+        default: true
+        required: false
+        options:
+          - "true"
+          - "false"
+      eas-cache:
+        type: choice
+        description: 'Whether to use EAS cache'
+        default: true
+        required: false
+        options:
+          - "true"
+          - "false"
+      eas-build-command:
+        description: 'EAS build command'
+        required: true
 
 jobs:
   build:
@@ -25,7 +45,8 @@ jobs:
         with:
           expo-version: 4.x
           token: ${{ secrets.EXPO_TOKEN }}
-          expo-cache: true
+          expo-cache: ${{ github.event.inputs.expo-cache }}
+          eas-cache: ${{ github.event.inputs.eas-cache }}
 
       - name: Checkout spelieve-secret
         uses: actions/checkout@v3
@@ -44,4 +65,4 @@ jobs:
         run: npm ci
 
       - name: Build on EAS
-        run: npx eas-cli build --profile development --platform all --non-interactive --no-wait
+        run: npx eas-cli build --profile development --platform all --non-interactive --no-wait ${{ github.event.inputs.eas-build-command }}
