@@ -16,7 +16,7 @@ export const TCO003OutlineTextBorder = ({ textShadowColor, stroke, text, textPro
 						width: w,
 						height: h,
 					},
-					textShadowColor,
+					textShadowColor: textShadowColor || 'transparent',
 					textShadowRadius: 1,
 				},
 			],

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ActivityIndicator, Image, Pressable, View } from 'react-native';
+import { Image, Pressable, View } from 'react-native';
 import { Button, Dialog, Portal } from 'react-native-paper';
 
 import { TPA001MaskDialogController } from './MaskDialogController';
@@ -25,40 +25,42 @@ export const TPA001MaskDialog = ({ selectedFooterMenu, setSelectedFooterMenu }: 
 			setSelectedFooterMenu,
 		});
 
-	if (isLoading) {
-		return <ActivityIndicator animating />;
-	}
-
 	return (
 		<Portal>
 			<Dialog visible={maskDialog.visible} onDismiss={onSaveMaskDialog}>
 				<Dialog.Content>
-					<TPA001MaskDecoration
-						decoration={decorationsMap[maskDialog.decorationID]}
-						imageURI={
-							decorationsMap[maskDialog.decorationID] &&
-							decorationsMap[maskDialog.decorationID]!.key &&
-							thumbnailItemMapper.storeUrlMap[decorationsMap[maskDialog.decorationID]!.key!]
-						}
-						maskUri={maskDialog.maskUri}
-						maskTransform={maskDialog.maskTransform}
-						onEndMaskGesture={onEndMaskGesture}
-						maskItemStyle={maskItemStyle}
-					/>
-					<View>
-						{maskShapeList.map((maskShapeDoc) => {
-							const maskShape = maskShapeDoc.data();
-							return (
-								<Pressable key={maskShapeDoc.id} onPress={() => onSelectMask(maskShape.storageUrl)}>
-									<Image
-										source={{ uri: maskShape.storageUrl }}
-										style={{ width: 50, aspectRatio: 1 }}
-										resizeMode="contain"
-									/>
-								</Pressable>
-							);
-						})}
-					</View>
+					{isLoading ? (
+						<View />
+					) : (
+						<>
+							<TPA001MaskDecoration
+								decoration={decorationsMap[maskDialog.decorationID]}
+								imageURI={
+									decorationsMap[maskDialog.decorationID] &&
+									decorationsMap[maskDialog.decorationID]!.key &&
+									thumbnailItemMapper.storeUrlMap[decorationsMap[maskDialog.decorationID]!.key!]
+								}
+								maskUri={maskDialog.maskUri}
+								maskTransform={maskDialog.maskTransform}
+								onEndMaskGesture={onEndMaskGesture}
+								maskItemStyle={maskItemStyle}
+							/>
+							<View>
+								{maskShapeList.map((maskShapeDoc) => {
+									const maskShape = maskShapeDoc.data();
+									return (
+										<Pressable key={maskShapeDoc.id} onPress={() => onSelectMask(maskShape.storageUrl)}>
+											<Image
+												source={{ uri: maskShape.storageUrl }}
+												style={{ width: 50, aspectRatio: 1 }}
+												resizeMode="contain"
+											/>
+										</Pressable>
+									);
+								})}
+							</View>
+						</>
+					)}
 				</Dialog.Content>
 				<Dialog.Actions>
 					<Button onPress={hideMaskDialog} color="black">

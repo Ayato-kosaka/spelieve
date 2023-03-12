@@ -153,6 +153,7 @@ export const TPA001FooterMenuController = ({
 			{ key: 'Color' as const, title: i18n.t('Color'), icon: 'palette-outline', onPress: () => {} },
 			{ key: 'Mask' as const, title: i18n.t('Mask'), icon: 'content-cut', onPress: () => {} },
 			{ key: 'Order' as const, title: i18n.t('Order'), icon: 'sort', onPress: () => {} },
+			{ key: 'BorderColor' as const, title: i18n.t('Border Color'), icon: 'border-color', onPress: () => {} },
 			{
 				key: 'Duplicate' as const,
 				title: i18n.t('Duplication'),

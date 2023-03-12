@@ -70,11 +70,21 @@ export const TMC02302MaskedDecoration = ({
 				)
 			}>
 			{decoration.decorationType === 'Figure' && (
-				<View style={[designItemStyle, { backgroundColor: decoration.color }]} />
+				<View
+					style={[
+						designItemStyle,
+						{
+							backgroundColor: decoration.color,
+							borderWidth: 1,
+							borderColor: decoration.borderColor,
+							borderStyle: 'solid',
+						},
+					]}
+				/>
 			)}
 			{decoration.decorationType === 'Image' && value && (
 				<Image
-					style={[designItemStyle, { aspectRatio }]}
+					style={[designItemStyle, { aspectRatio, borderWidth: 1, borderColor: decoration.borderColor }]}
 					source={{
 						uri: value,
 					}}
@@ -85,7 +95,7 @@ export const TMC02302MaskedDecoration = ({
 			{decoration.decorationType === 'Text' && (
 				<TCO003OutlineTextBorder
 					stroke={2}
-					textShadowColor="transparent"
+					textShadowColor={decoration.borderColor}
 					text={value || 'Dummy Text'}
 					textProps={{
 						style: {

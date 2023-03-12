@@ -4,6 +4,7 @@ import { Button, Dialog, Portal, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ViewShot from 'react-native-view-shot';
 
+import { TPA001BorderColorPickerDialog } from './BorderColorPickerDialog/BorderColorPickerDialog';
 import { TPA001ColorPickerDialog } from './ColorPickerDialog/ColorPickerDialog';
 import { TPA001CreateDecorationController } from './Controller/CreateDecorationController';
 import { TPA001FooterMenuController } from './Controller/FooterMenuController';
@@ -120,6 +121,10 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 			<SafeAreaView />
 			<TPA001MaskDialog selectedFooterMenu={selectedFooterMenu} setSelectedFooterMenu={setSelectedFooterMenu} />
 			<TPA001ColorPickerDialog selectedFooterMenu={selectedFooterMenu} setSelectedFooterMenu={setSelectedFooterMenu} />
+			<TPA001BorderColorPickerDialog
+				selectedFooterMenu={selectedFooterMenu}
+				setSelectedFooterMenu={setSelectedFooterMenu}
+			/>
 			<Portal>
 				{/* 閉じるボタン押下時に出現するダイアログ */}
 				<Dialog visible={beforeLeaveDialog.visible} onDismiss={hideBeforeLeaveDialog}>

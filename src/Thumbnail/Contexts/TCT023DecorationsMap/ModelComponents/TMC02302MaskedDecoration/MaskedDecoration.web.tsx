@@ -53,7 +53,16 @@ export const TMC02302MaskedDecoration = ({
 	return (
 		<View>
 			{decoration.decorationType === 'Figure' && (
-				<div style={{ backgroundColor: decoration.color, ...designItemStyle }} ref={maskRef} />
+				<div
+					style={{
+						backgroundColor: decoration.color,
+						...designItemStyle,
+						borderWidth: 1,
+						borderColor: decoration.borderColor,
+						borderStyle: 'solid',
+					}}
+					ref={maskRef}
+				/>
 			)}
 			{decoration.decorationType === 'Image' && (
 				<img
@@ -62,6 +71,9 @@ export const TMC02302MaskedDecoration = ({
 					style={{
 						objectFit: 'cover',
 						...designItemStyle,
+						borderWidth: 1,
+						borderColor: decoration.borderColor,
+						borderStyle: 'solid',
 					}}
 					ref={maskRef}
 				/>
@@ -69,7 +81,7 @@ export const TMC02302MaskedDecoration = ({
 			{decoration.decorationType === 'Text' && decoration.key && (
 				<TCO003OutlineTextBorder
 					stroke={2}
-					textShadowColor="transparent"
+					textShadowColor={decoration.borderColor}
 					text={value || 'Dummy Text'}
 					textProps={{
 						style: {
