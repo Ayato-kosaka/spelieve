@@ -24,39 +24,41 @@ export const TPA001ColorPickerDialog = ({
 				<Dialog.Title>{i18n.t('Color')}</Dialog.Title>
 				<Dialog.Content>
 					{activeDecoration?.color ? (
-						<ColorPicker
-							row={false}
-							noSnap
-							thumbSize={30}
-							sliderSize={20}
-							gapSize={30}
-							discrete={false}
-							discreteLength={undefined}
-							sliderHidden={false}
-							swatches
-							swatchesLast={false}
-							swatchesOnly={false}
-							swatchesHitSlop={undefined}
-							color={color}
-							palette={[
-								'#000',
-								materialColors.grey[500],
-								materialColors.red[700],
-								materialColors.purple[700],
-								materialColors.blue[700],
-								materialColors.lightblue[700],
-								materialColors.green[800],
-								materialColors.lightgreen[700],
-								materialColors.yellow[500],
-								materialColors.orange[700],
-							]}
-							shadeWheelThumb
-							shadeSliderThumb
-							autoResetSlider={false}
-							onInteractionStart={undefined}
-							onColorChange={undefined}
-							onColorChangeComplete={(v) => setColor(v)}
-						/>
+						<View style={{ height: 300 }}>
+							<ColorPicker
+								row={false}
+								noSnap
+								thumbSize={30}
+								sliderSize={20}
+								gapSize={30}
+								discrete={false}
+								discreteLength={undefined}
+								sliderHidden={false}
+								swatches
+								swatchesLast={false}
+								swatchesOnly={false}
+								swatchesHitSlop={undefined}
+								color={color}
+								palette={[
+									'#000',
+									materialColors.grey[500],
+									materialColors.red[700],
+									materialColors.purple[700],
+									materialColors.blue[700],
+									materialColors.lightblue[700],
+									materialColors.green[800],
+									materialColors.lightgreen[700],
+									materialColors.yellow[500],
+									materialColors.orange[700],
+								]}
+								shadeWheelThumb
+								shadeSliderThumb
+								autoResetSlider={false}
+								onInteractionStart={undefined}
+								onColorChange={undefined}
+								onColorChangeComplete={(v) => setColor(v)}
+							/>
+						</View>
 					) : (
 						<View />
 					)}
