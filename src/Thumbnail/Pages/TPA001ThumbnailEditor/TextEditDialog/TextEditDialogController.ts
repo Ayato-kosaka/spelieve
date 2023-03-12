@@ -1,27 +1,16 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
-import { TextEditDialogPropsInterface } from '../TextEditDialog/TextEditDialog';
-
-import { TPA001FooterMenuController } from './FooterMenuController';
+import { TPA001TextEditDialogPropsInterface } from './TextEditDialogInterface';
 
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
-import { ThumbnailStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
 import { DecorationsMapInterface } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMapInterface';
 
-interface TPA001TextEditDialogControllerPropsInterface extends ThumbnailStackScreenProps<'TPA001ThumbnailEditor'> {
-	selectedFooterMenu: ReturnType<typeof TPA001FooterMenuController>['selectedFooterMenu'];
-	setSelectedFooterMenu: ReturnType<typeof TPA001FooterMenuController>['setSelectedFooterMenu'];
-	deleteDecoration: ReturnType<typeof TPA001FooterMenuController>['deleteDecoration'];
-}
-
 export const TPA001TextEditDialogController = ({
-	navigation,
-	route,
 	selectedFooterMenu,
 	setSelectedFooterMenu,
 	deleteDecoration,
-}: TPA001TextEditDialogControllerPropsInterface) => {
+}: TPA001TextEditDialogPropsInterface) => {
 	// グローバルコンテキスト取得
 	const { thumbnailItemMapper, setThumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
 
@@ -32,14 +21,17 @@ export const TPA001TextEditDialogController = ({
 		[activeDecorationID, decorationsMap],
 	);
 
-	const [textEditDialog, setTextEditDialog] = useState<TextEditDialogPropsInterface['textEditDialog']>({
+	const [textEditDialog, setTextEditDialog] = useState<{
+		visible: boolean;
+		key: string | undefined;
+	}>({
 		visible: false,
 		key: undefined,
 	});
-	const text = useMemo(
-		() => (activeDecoration && activeDecoration.key && thumbnailItemMapper.textMap[activeDecoration.key]) || '',
-		[activeDecoration, thumbnailItemMapper.textMap],
-	);
+	const [text, setText] = useState<string>('');
+	useEffect(() => {
+		setText((activeDecoration && activeDecoration.key && thumbnailItemMapper.textMap[activeDecoration.key]) || '');
+	}, [activeDecoration, thumbnailItemMapper.textMap]);
 	const hideTextEditDialog = useCallback(() => {
 		setTextEditDialog({ visible: false, key: undefined });
 		setSelectedFooterMenu('');
@@ -85,6 +77,7 @@ export const TPA001TextEditDialogController = ({
 	return {
 		textEditDialog,
 		text,
+		setText,
 		hideTextEditDialog,
 		onSaveTextEditing,
 	};

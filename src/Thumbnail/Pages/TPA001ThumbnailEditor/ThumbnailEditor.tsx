@@ -9,7 +9,6 @@ import { TPA001ColorPickerDialog } from './ColorPickerDialog/ColorPickerDialog';
 import { TPA001CreateDecorationController } from './Controller/CreateDecorationController';
 import { TPA001FooterMenuController } from './Controller/FooterMenuController';
 import { TPA001LeaveDialogController } from './Controller/LeaveDialogController';
-import { TPA001TextEditDialogController } from './Controller/TextEditDialogController';
 import { TPA001MaskDialog } from './MaskDialog/MaskDialog';
 import { TPA001TextEditDialog } from './TextEditDialog/TextEditDialog';
 import { styles } from './ThumbnailEditorStyle';
@@ -78,13 +77,6 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		navigation,
 		route,
 	});
-	const { textEditDialog, text, hideTextEditDialog, onSaveTextEditing } = TPA001TextEditDialogController({
-		navigation,
-		route,
-		selectedFooterMenu,
-		setSelectedFooterMenu,
-		deleteDecoration,
-	});
 
 	const headerRight = useCallback(
 		() => (
@@ -125,6 +117,7 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 				selectedFooterMenu={selectedFooterMenu}
 				setSelectedFooterMenu={setSelectedFooterMenu}
 			/>
+			<TPA001TextEditDialog selectedFooterMenu={selectedFooterMenu} setSelectedFooterMenu={setSelectedFooterMenu} deleteDecoration={deleteDecoration} />
 			<Portal>
 				{/* 閉じるボタン押下時に出現するダイアログ */}
 				<Dialog visible={beforeLeaveDialog.visible} onDismiss={hideBeforeLeaveDialog}>
@@ -147,13 +140,6 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 						</Button>
 					</Dialog.Actions>
 				</Dialog>
-
-				<TPA001TextEditDialog
-					textEditDialog={textEditDialog}
-					textProps={text}
-					hideTextEditDialog={hideTextEditDialog}
-					onSaveTextEditing={onSaveTextEditing}
-				/>
 			</Portal>
 			<View style={{ height: '100%', justifyContent: 'space-between' }}>
 				<Button
