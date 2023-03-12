@@ -1,7 +1,6 @@
 import MaskedView from '@react-native-masked-view/masked-view';
 import { useContext, useMemo } from 'react';
 import { Image, View } from 'react-native';
-import { Text } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 
 import { TCT023DecorationsMap } from '../../DecorationsMap';
@@ -9,6 +8,7 @@ import { TCT023DecorationsMap } from '../../DecorationsMap';
 import { MaskedDecorationPropsInterface } from './MaskedDecorationInterface';
 
 import { useGetImageRatio } from '@/Common/Hooks/CHK001Utils';
+import { TCO003OutlineTextBorder } from '@/Thumbnail/Components/TCO003OutlineTextBorder/OutlineTextBorder';
 
 export const TMC02302MaskedDecoration = ({
 	decorationID,
@@ -82,8 +82,19 @@ export const TMC02302MaskedDecoration = ({
 					resizeMode="cover"
 				/>
 			)}
-			{decoration.decorationType === 'Text' && decoration.key && (
-				<Text style={{ fontSize: 32, color: decoration.color }}>{value || 'Dummy Text'}</Text>
+			{decoration.decorationType === 'Text' && (
+				<TCO003OutlineTextBorder
+					stroke={2}
+					textShadowColor="transparent"
+					text={value || 'Dummy Text'}
+					textProps={{
+						style: {
+							fontSize: 64,
+							color: decoration.color,
+							width: '100%',
+						},
+					}}
+				/>
 			)}
 		</MaskedView>
 	);

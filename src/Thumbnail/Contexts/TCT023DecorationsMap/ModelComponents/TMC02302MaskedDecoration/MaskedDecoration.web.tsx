@@ -1,10 +1,11 @@
 import { useCallback, useContext, useEffect, useRef } from 'react';
 import { View } from 'react-native';
-import { Text } from 'react-native-paper';
 
 import { TCT023DecorationsMap } from '../../DecorationsMap';
 
 import { MaskedDecorationPropsInterface } from './MaskedDecorationInterface';
+
+import { TCO003OutlineTextBorder } from '@/Thumbnail/Components/TCO003OutlineTextBorder/OutlineTextBorder';
 
 export const TMC02302MaskedDecoration = ({
 	decorationID,
@@ -66,7 +67,18 @@ export const TMC02302MaskedDecoration = ({
 				/>
 			)}
 			{decoration.decorationType === 'Text' && decoration.key && (
-				<Text style={{ fontSize: 32, color: decoration.color }}>{value || 'Dummy Text'}</Text>
+				<TCO003OutlineTextBorder
+					stroke={2}
+					textShadowColor="transparent"
+					text={value || 'Dummy Text'}
+					textProps={{
+						style: {
+							fontSize: 64,
+							color: decoration.color,
+							width: '100%',
+						},
+					}}
+				/>
 			)}
 		</View>
 	);
