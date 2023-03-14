@@ -14,7 +14,7 @@ export const TPA001TextEditDialogController = ({
 	// グローバルコンテキスト取得
 	const { thumbnailItemMapper, setThumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
 
-	const { decorationsMap, activeDecorationID } = useContext(TCT023DecorationsMap);
+	const { decorationsMap, setDecorationsMap, activeDecorationID } = useContext(TCT023DecorationsMap);
 
 	const activeDecoration: DecorationsMapInterface | undefined = useMemo(
 		() => decorationsMap[activeDecorationID],
@@ -28,39 +28,50 @@ export const TPA001TextEditDialogController = ({
 		visible: false,
 		key: undefined,
 	});
+
+	const [fontFamily, setFontFamily] = useState('');
 	const [text, setText] = useState<string>('');
+
 	useEffect(() => {
 		setText((activeDecoration && activeDecoration.key && thumbnailItemMapper.textMap[activeDecoration.key]) || '');
 	}, [activeDecoration, thumbnailItemMapper.textMap]);
+
 	const hideTextEditDialog = useCallback(() => {
 		setTextEditDialog({ visible: false, key: undefined });
 		setSelectedFooterMenu('');
 	}, [setSelectedFooterMenu]);
-	const onSaveTextEditing = useCallback(
-		(t: string) => () => {
-			if (!textEditDialog.key) {
-				return;
-			}
 
-			if (t) {
-				const textMapKey = textEditDialog.key;
-				setThumbnailItemMapper((value) => ({
-					...value,
-					textMap: {
-						...value.textMap,
-						[textMapKey]: t,
-					},
-				}));
-			} else {
-				const targetID = Object.keys(decorationsMap).find((id) => decorationsMap[id]!.key === textEditDialog.key);
-				if (targetID) {
-					deleteDecoration(targetID);
-				}
+	const onSaveTextEditing = useCallback(() => {
+		if (!textEditDialog.key) {
+			return;
+		}
+
+		if (text) {
+			const textMapKey = textEditDialog.key;
+			setThumbnailItemMapper((value) => ({
+				...value,
+				textMap: {
+					...value.textMap,
+					[textMapKey]: text,
+				},
+			}));
+			// setDecorationsMap((v) => ({
+			// 	...v,
+			// 	[activeDecorationID]: {
+			// 		...activeDecoration,
+			// 		fontFamily,
+			// 	},
+			// }));
+		} else {
+			// 空文字に設定した場合は、Decoration を削除する。
+			const targetID = Object.keys(decorationsMap).find((id) => decorationsMap[id]!.key === textEditDialog.key);
+			if (targetID) {
+				deleteDecoration(targetID);
 			}
-			hideTextEditDialog();
-		},
-		[decorationsMap, deleteDecoration, hideTextEditDialog, setThumbnailItemMapper, textEditDialog.key],
-	);
+		}
+		hideTextEditDialog();
+	}, [decorationsMap, deleteDecoration, hideTextEditDialog, setThumbnailItemMapper, text, textEditDialog.key]);
+
 	useEffect(() => {
 		if (selectedFooterMenu === 'EditText') {
 			if (!activeDecoration || !activeDecoration.key) {
@@ -73,8 +84,6 @@ export const TPA001TextEditDialogController = ({
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedFooterMenu]);
-
-	const [fontFamily, setFontFamily] = useState('');
 
 	return {
 		textEditDialog,
