@@ -11,7 +11,6 @@ import db from '@/Thumbnail/Endpoint/firestore';
 export const TCT011MThumbnailOne = createContext({} as MThumbnailOneValInterface);
 
 const initialThumbnail: MThumbnailOneInterface = {
-	backgroundItemType: 'Figure',
 	imageUrl: '',
 	prevThumbnailID: undefined,
 	createdAt: new Date(),
@@ -29,13 +28,7 @@ export const TCT011MThumbnailOneProvider = ({ children }: { children: ReactNode 
 			collection(db, MThumbnail.modelName).withConverter(
 				FirestoreConverter<MThumbnail, MThumbnailOneInterface>(
 					MThumbnail,
-					(model) => {
-						const backgroundItemType = model.backgroundItemType as MThumbnailOneInterface['backgroundItemType'];
-						return {
-							...model,
-							backgroundItemType,
-						};
-					},
+					(model) => model,
 					(data) => {
 						const copiedCount = 0;
 						return {
