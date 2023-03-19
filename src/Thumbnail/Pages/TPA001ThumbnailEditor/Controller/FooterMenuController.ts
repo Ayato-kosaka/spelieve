@@ -216,7 +216,6 @@ export const TPA001FooterMenuController = ({
 	const footerMenuOnPress = useCallback(
 		(onPress: PressableProps['onPress'], selected: typeof selectedFooterMenu) => (event: GestureResponderEvent) => {
 			setSelectedFooterMenu(selected);
-			console.log('footerMenuOnPress', onPress);
 			if (onPress) {
 				onPress(event);
 			}
