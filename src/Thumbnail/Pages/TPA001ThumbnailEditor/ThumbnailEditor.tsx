@@ -1,3 +1,4 @@
+import { MediaTypeOptions } from 'expo-image-picker';
 import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import { ActivityIndicator, Pressable, SafeAreaView, ScrollView, View } from 'react-native';
 import { Button, Dialog, Portal, Text } from 'react-native-paper';
@@ -46,10 +47,24 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		}
 	}, [fromThumbnailID, setThumbnailID]);
 
+	const imagePickerOptions = {
+		allowsEditing: false,
+		allowsMultipleSelection: false,
+		mediaTypes: MediaTypeOptions.Images,
+		quality: 1,
+	};
+	const imageManipulatorActions = [
+		{
+			resize: {
+				width: 900,
+			},
+		},
+	];
+
 	// Controller 呼び出し
 	const { onTextPlusClicked, pickImage, onFigurePlusClicked } = TPA001CreateDecorationController({
-		navigation,
-		route,
+		imagePickerOptions,
+		imageManipulatorActions,
 	});
 	const {
 		viewShotRef,
@@ -74,8 +89,8 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		sendBackward,
 		sendToBack,
 	} = TPA001FooterMenuController({
-		navigation,
-		route,
+		imagePickerOptions,
+		imageManipulatorActions,
 	});
 
 	const headerRight = useCallback(
@@ -117,7 +132,11 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 				selectedFooterMenu={selectedFooterMenu}
 				setSelectedFooterMenu={setSelectedFooterMenu}
 			/>
-			<TPA001TextEditDialog selectedFooterMenu={selectedFooterMenu} setSelectedFooterMenu={setSelectedFooterMenu} deleteDecoration={deleteDecoration} />
+			<TPA001TextEditDialog
+				selectedFooterMenu={selectedFooterMenu}
+				setSelectedFooterMenu={setSelectedFooterMenu}
+				deleteDecoration={deleteDecoration}
+			/>
 			<Portal>
 				{/* 閉じるボタン押下時に出現するダイアログ */}
 				<Dialog visible={beforeLeaveDialog.visible} onDismiss={hideBeforeLeaveDialog}>

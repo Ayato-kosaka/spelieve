@@ -1,16 +1,23 @@
+import { Action } from 'expo-image-manipulator';
+import { ImagePickerOptions } from 'expo-image-picker';
 import { useCallback, useContext, useMemo, useState } from 'react';
 import { GestureResponderEvent, PressableProps } from 'react-native';
 
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
+import { CCO006ImagePickerController } from '@/Common/Components/CCO006ImagePicker/ImagePickerController';
+import { Error } from '@/Common/Hooks/CHK001Utils';
 import i18n from '@/Common/Hooks/i18n-js';
-import { ThumbnailStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
 import { DecorationsMapInterface } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMapInterface';
+import { storage } from '@/Thumbnail/Endpoint/firebaseStorage';
 
 export const TPA001FooterMenuController = ({
-	navigation,
-	route,
-}: ThumbnailStackScreenProps<'TPA001ThumbnailEditor'>) => {
+	imagePickerOptions,
+	imageManipulatorActions,
+}: {
+	imagePickerOptions: ImagePickerOptions;
+	imageManipulatorActions: Action[];
+}) => {
 	// パラメータ取得
 
 	// グローバルコンテキスト取得
@@ -141,6 +148,37 @@ export const TPA001FooterMenuController = ({
 		});
 	}, [activeDecoration, activeDecorationID, decorationsMap, setDecorationsMap]);
 
+	const onPickImage = useCallback(
+		(imageUrl: string) => {
+			if (!activeDecoration?.key) {
+				return;
+			}
+			const key = activeDecoration?.key;
+			setThumbnailItemMapper((v) => ({
+				...v,
+				storeUrlMap: {
+					...v.storeUrlMap,
+					[key]: imageUrl,
+				},
+			}));
+		},
+		[activeDecoration?.key, setThumbnailItemMapper],
+	);
+	const { pickImage } = CCO006ImagePickerController({
+		onPickImage,
+		storage,
+		imagePickerOptions,
+		imageManipulatorActions,
+	});
+	const onPressReplace = useCallback(() => {
+		if (!activeDecoration) {
+			return;
+		}
+		if (activeDecoration.decorationType === 'Image') {
+			pickImage().catch((e) => Error('TPA001FooterMenuController', 'onPressReplace', e));
+		}
+	}, [activeDecoration, pickImage]);
+
 	const footerMenuList = useMemo(
 		() => [
 			{
@@ -149,7 +187,7 @@ export const TPA001FooterMenuController = ({
 				icon: 'format-text',
 				onPress: () => {},
 			},
-			{ key: 'Replace' as const, title: i18n.t('Replace'), icon: 'file-replace-outline', onPress: () => {} },
+			{ key: 'Replace' as const, title: i18n.t('Replace'), icon: 'file-replace-outline', onPress: onPressReplace },
 			{ key: 'Color' as const, title: i18n.t('Color'), icon: 'palette-outline', onPress: () => {} },
 			{ key: 'Mask' as const, title: i18n.t('Mask'), icon: 'content-cut', onPress: () => {} },
 			{ key: 'Order' as const, title: i18n.t('Order'), icon: 'sort', onPress: () => {} },
@@ -167,7 +205,7 @@ export const TPA001FooterMenuController = ({
 				onPress: () => deleteDecoration(activeDecorationID),
 			},
 		],
-		[activeDecorationID, deleteDecoration, duplicationDecoration],
+		[activeDecorationID, deleteDecoration, duplicationDecoration, onPressReplace],
 	);
 
 	const [selectedFooterMenu, setSelectedFooterMenu] = useState<(typeof footerMenuList)[number]['key'] | ''>('');
@@ -178,6 +216,7 @@ export const TPA001FooterMenuController = ({
 	const footerMenuOnPress = useCallback(
 		(onPress: PressableProps['onPress'], selected: typeof selectedFooterMenu) => (event: GestureResponderEvent) => {
 			setSelectedFooterMenu(selected);
+			console.log('footerMenuOnPress', onPress);
 			if (onPress) {
 				onPress(event);
 			}
