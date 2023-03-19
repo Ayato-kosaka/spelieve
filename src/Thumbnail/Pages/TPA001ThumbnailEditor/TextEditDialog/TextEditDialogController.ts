@@ -42,7 +42,7 @@ export const TPA001TextEditDialogController = ({
 	}, [setSelectedFooterMenu]);
 
 	const onSaveTextEditing = useCallback(() => {
-		if (!textEditDialog.key) {
+		if (!textEditDialog.key || !activeDecoration) {
 			return;
 		}
 
@@ -55,13 +55,13 @@ export const TPA001TextEditDialogController = ({
 					[textMapKey]: text,
 				},
 			}));
-			// setDecorationsMap((v) => ({
-			// 	...v,
-			// 	[activeDecorationID]: {
-			// 		...activeDecoration,
-			// 		fontFamily,
-			// 	},
-			// }));
+			setDecorationsMap((v) => ({
+				...v,
+				[activeDecorationID]: {
+					...activeDecoration,
+					fontFamily,
+				},
+			}));
 		} else {
 			// 空文字に設定した場合は、Decoration を削除する。
 			const targetID = Object.keys(decorationsMap).find((id) => decorationsMap[id]!.key === textEditDialog.key);
@@ -70,7 +70,18 @@ export const TPA001TextEditDialogController = ({
 			}
 		}
 		hideTextEditDialog();
-	}, [decorationsMap, deleteDecoration, hideTextEditDialog, setThumbnailItemMapper, text, textEditDialog.key]);
+	}, [
+		activeDecoration,
+		activeDecorationID,
+		decorationsMap,
+		deleteDecoration,
+		fontFamily,
+		hideTextEditDialog,
+		setDecorationsMap,
+		setThumbnailItemMapper,
+		text,
+		textEditDialog.key,
+	]);
 
 	useEffect(() => {
 		if (selectedFooterMenu === 'EditText') {

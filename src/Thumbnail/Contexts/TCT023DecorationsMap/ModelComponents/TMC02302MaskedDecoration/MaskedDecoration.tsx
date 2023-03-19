@@ -102,6 +102,7 @@ export const TMC02302MaskedDecoration = ({
 							fontSize: 64,
 							color: decoration.color,
 							width: '100%',
+							fontFamily: decoration.fontFamily,
 						},
 					}}
 				/>
