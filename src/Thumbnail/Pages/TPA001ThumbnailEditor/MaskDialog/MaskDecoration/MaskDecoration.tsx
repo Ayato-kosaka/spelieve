@@ -25,7 +25,7 @@ export const TPA001MaskDecoration = ({
 
 	const { aspectRatio } = useGetImageRatio(imageURI);
 
-	if (!decoration || aspectRatio === 0) {
+	if (!decoration || (decoration.decorationType === 'Image' && aspectRatio === 0)) {
 		return <View />;
 	}
 	return (
