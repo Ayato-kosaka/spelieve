@@ -37,7 +37,7 @@ export const useGetImageRatio = (uri: string | undefined) => {
 				setAspectRatio(
 					await new Promise<number>((resolve, reject) => {
 						Image.getSize(uri, (originalWidth, originalHeight) => {
-							resolve(originalHeight / originalWidth);
+							resolve(originalWidth / originalHeight);
 						});
 					}),
 				);
