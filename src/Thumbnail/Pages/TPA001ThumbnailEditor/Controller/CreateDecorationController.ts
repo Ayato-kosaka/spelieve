@@ -23,26 +23,29 @@ export const TPA001CreateDecorationController = ({
 
 	const { createDecoration } = useContext(TCT023DecorationsMap);
 
-	const initialDecoration: Pick<DecorationsMapInterface, 'transform' | 'maskTransform' | 'color' | 'borderColor'> =
-		useMemo(
-			() => ({
-				transform: {
-					translateX: 200,
-					translateY: 200,
-					rotateZ: 0,
-					scale: 1,
-				},
-				maskTransform: {
-					translateX: 0,
-					translateY: 0,
-					rotateZ: 0,
-					scale: 1,
-				},
-				color: '#000',
-				borderColor: '#0000',
-			}),
-			[],
-		); // TODO: 要修正 translateX, translateY は 中央に
+	const initialDecoration: Pick<
+		DecorationsMapInterface,
+		'transform' | 'maskTransform' | 'color' | 'borderColor' | 'aspectRatio'
+	> = useMemo(
+		() => ({
+			transform: {
+				translateX: 200,
+				translateY: 200,
+				rotateZ: 0,
+				scale: 1,
+			},
+			maskTransform: {
+				translateX: 0,
+				translateY: 0,
+				rotateZ: 0,
+				scale: 1,
+			},
+			color: '#000',
+			borderColor: '#0000',
+			aspectRatio: 1,
+		}),
+		[],
+	); // TODO: 要修正 translateX, translateY は 中央に
 
 	const onPickImage: ImagePickerPropsInterface['onPickImage'] = useCallback(
 		(imageUrl) => {
