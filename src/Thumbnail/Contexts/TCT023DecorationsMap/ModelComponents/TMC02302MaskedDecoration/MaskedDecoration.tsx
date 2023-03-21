@@ -37,9 +37,10 @@ export const TMC02302MaskedDecoration = ({
 
 	const { aspectRatio } = useGetImageRatio(value);
 
-	if (!decoration) {
+	if (!decoration || (decoration.decorationType === 'Image' && aspectRatio === 0)) {
 		return <View />;
 	}
+
 	return (
 		<MaskedView
 			style={{
