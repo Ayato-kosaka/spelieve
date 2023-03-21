@@ -66,8 +66,6 @@ export const TPA001LeaveDialogController = ({
 		await Promise.all(promises);
 		const captureURI = await viewShotRef?.current?.capture?.();
 		const downloadURL = captureURI && (await CHK005StorageUtils.uploadImageAsync(storage, captureURI));
-		console.log({ captureURI, downloadURL });
-		return;
 		tmpRsolveMap = {};
 		Promise.all(
 			Object.keys(decorationsMap).map(
