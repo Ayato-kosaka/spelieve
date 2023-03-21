@@ -64,8 +64,16 @@ export const TPA001MaskDialogController = ({
 		});
 		setSelectedFooterMenu('');
 	}, [setSelectedFooterMenu]);
-	const onEndMaskGesture: GestureProviderPropsInterface['onEndGesture'] = useCallback((transorm) => {
-		setMaskDialog((v) => ({ ...v, maskTransform: { ...v.maskTransform, ...transorm } }));
+	const onEndMaskGesture: GestureProviderPropsInterface['onEndGesture'] = useCallback((val) => {
+		setMaskDialog((v) => ({
+			...v,
+			maskTransform: {
+				translateX: val.translateX?.value || v.maskTransform.translateX,
+				translateY: val.translateY?.value || v.maskTransform.translateY,
+				scale: val.scale?.value || v.maskTransform.scale,
+				rotateZ: val.rotateZ?.value || v.maskTransform.rotateZ,
+			},
+		}));
 	}, []);
 	const onSaveMaskDialog = useCallback(() => {
 		setDecorationsMap((v) => ({

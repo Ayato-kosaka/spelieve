@@ -1,6 +1,6 @@
 import MaskedView from '@react-native-masked-view/masked-view';
 import { Image, View } from 'react-native';
-import Animated from 'react-native-reanimated';
+import Animated, { useSharedValue } from 'react-native-reanimated';
 
 import { MaskDecorationPropsInterface } from './MaskDecorationInterface';
 
@@ -16,7 +16,12 @@ export const TPA001MaskDecoration = ({
 	onEndMaskGesture,
 	maskItemStyle,
 }: MaskDecorationPropsInterface) => {
-	const { onAnimating, animatedStyle } = TCO001UseAnimatedStyle();
+	const translateX = useSharedValue(maskTransform.translateX);
+	const translateY = useSharedValue(maskTransform.translateY);
+	const scale = useSharedValue(maskTransform.scale);
+	const rotateZ = useSharedValue(maskTransform.rotateZ);
+
+	const { animatedStyle } = TCO001UseAnimatedStyle({ translateX, translateY, scale, rotateZ });
 
 	const { aspectRatio } = useGetImageRatio(imageURI);
 
@@ -24,7 +29,7 @@ export const TPA001MaskDecoration = ({
 		return <View />;
 	}
 	return (
-		<TCO001GestureProvider initial={maskTransform} onEndGesture={onEndMaskGesture} onAnimating={onAnimating}>
+		<TCO001GestureProvider gesture={{ translateX, translateY, scale, rotateZ }} onEndGesture={onEndMaskGesture}>
 			<MaskedView
 				style={{
 					width: '100%',

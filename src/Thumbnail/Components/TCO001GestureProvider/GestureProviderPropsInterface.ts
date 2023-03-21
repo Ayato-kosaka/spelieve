@@ -1,18 +1,18 @@
 import { ReactNode } from 'react';
 import { GestureStateChangeEvent, TapGestureHandlerEventPayload } from 'react-native-gesture-handler';
+import { SharedValue } from 'react-native-reanimated';
 
 export interface GestureProviderInterface {
-	translateX: number;
-	translateY: number;
-	scale: number;
-	rotateZ: number;
+	translateX: SharedValue<number>;
+	translateY: SharedValue<number>;
+	scale: SharedValue<number>;
+	rotateZ: SharedValue<number>;
 }
 
 export interface GestureProviderPropsInterface {
-	initial?: GestureProviderInterface;
-	onEndGesture: (val: Partial<GestureProviderInterface>) => void;
+	gesture: GestureProviderInterface;
 	isActive?: boolean;
+	onEndGesture: (val: Partial<GestureProviderInterface>) => void;
 	onSingleTapFinalize?: (event: GestureStateChangeEvent<TapGestureHandlerEventPayload>, success: boolean) => void;
-	onAnimating?: (event: GestureProviderInterface) => void;
 	children: ReactNode;
 }

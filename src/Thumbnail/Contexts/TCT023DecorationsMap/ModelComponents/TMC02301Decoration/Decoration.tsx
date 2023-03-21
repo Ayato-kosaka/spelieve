@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
-import Animated from 'react-native-reanimated';
+import Animated, { useSharedValue } from 'react-native-reanimated';
 
 import { TCT023DecorationsMap } from '../../DecorationsMap';
 import { TMC02302MaskedDecoration } from '../TMC02302MaskedDecoration/MaskedDecoration';
@@ -21,6 +21,11 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 	const decoration = decorationsMap[decorationID]!;
 
 	const { decorationTypeFeature } = ThumnailRule;
+
+	const translateX = useSharedValue(decoration.transform.translateX);
+	const translateY = useSharedValue(decoration.transform.translateY);
+	const scale = useSharedValue(decoration.transform.scale);
+	const rotateZ = useSharedValue(decoration.transform.rotateZ);
 
 	const value = useMemo(() => {
 		if (decoration.decorationType === 'Video') {
@@ -64,8 +69,10 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 				[decorationID]: {
 					...decoration,
 					transform: {
-						...decoration.transform,
-						...val,
+						translateX: val.translateX?.value || decoration.transform.translateX,
+						translateY: val.translateY?.value || decoration.transform.translateY,
+						scale: val.scale?.value || decoration.transform.scale,
+						rotateZ: val.rotateZ?.value || decoration.transform.rotateZ,
 					},
 				},
 			});
@@ -88,15 +95,14 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 		[decoration, decorationTypeFeature],
 	);
 
-	const { onAnimating, animatedStyle } = TCO001UseAnimatedStyle();
+	const { animatedStyle } = TCO001UseAnimatedStyle({ translateX, translateY, scale, rotateZ });
 
 	return (
 		<TCO001GestureProvider
-			initial={decoration.transform}
+			gesture={{ translateX, translateY, scale, rotateZ }}
 			onEndGesture={onEndGesture}
 			isActive={isActive}
-			onSingleTapFinalize={onSingleTapFinalize}
-			onAnimating={onAnimating}>
+			onSingleTapFinalize={onSingleTapFinalize}>
 			<Animated.View style={[animatedStyle, viewStyle]}>
 				<TMC02302MaskedDecoration
 					decorationID={decorationID}
