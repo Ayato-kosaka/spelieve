@@ -47,19 +47,25 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		}
 	}, [fromThumbnailID, setThumbnailID]);
 
-	const imagePickerOptions = {
-		allowsEditing: false,
-		allowsMultipleSelection: false,
-		mediaTypes: MediaTypeOptions.Images,
-		quality: 1,
-	};
-	const imageManipulatorActions = [
-		{
-			resize: {
-				width: 900,
+	const imagePickerOptions = useMemo(
+		() => ({
+			allowsEditing: false,
+			allowsMultipleSelection: false,
+			mediaTypes: MediaTypeOptions.Images,
+			quality: 1,
+		}),
+		[],
+	);
+	const imageManipulatorActions = useMemo(
+		() => [
+			{
+				resize: {
+					width: 900,
+				},
 			},
-		},
-	];
+		],
+		[],
+	);
 
 	// Controller 呼び出し
 	const { onTextPlusClicked, pickImage, onFigurePlusClicked } = TPA001CreateDecorationController({
