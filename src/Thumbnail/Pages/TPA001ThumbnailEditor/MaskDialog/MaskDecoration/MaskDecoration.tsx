@@ -32,7 +32,7 @@ export const TPA001MaskDecoration = ({
 		<TCO001GestureProvider gesture={{ translateX, translateY, scale, rotateZ }} onEndGesture={onEndMaskGesture}>
 			<MaskedView
 				style={{
-					width: '100%',
+					alignItems: 'center',
 				}}
 				maskElement={
 					maskUri ? (
@@ -65,7 +65,7 @@ export const TPA001MaskDecoration = ({
 						source={{
 							uri: imageURI,
 						}}
-						style={[maskItemStyle, { aspectRatio }]}
+						style={[maskItemStyle, { aspectRatio, maxHeight: 500 }]}
 						resizeMode="cover"
 					/>
 				)}
