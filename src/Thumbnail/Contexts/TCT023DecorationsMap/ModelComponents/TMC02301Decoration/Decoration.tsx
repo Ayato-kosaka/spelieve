@@ -36,7 +36,8 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 			return storeUrlMap[decoration.key!] || 'https://thumb.photo-ac.com/15/1527a37a819426cf6ac7a8761eb4bf67_t.jpeg';
 		}
 		if (decoration.decorationType === 'Text') {
-			return textMap[decoration.key!];
+			// TODO: 修正する
+			return textMap[decoration.key!] || 'Dummy Text';
 		}
 		return undefined;
 	}, [decoration.decorationType, decoration.key, storeUrlMap, textMap]);

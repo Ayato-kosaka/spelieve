@@ -91,11 +91,11 @@ export const TMC02302MaskedDecoration = ({ decorationID, value, onSourceLoad }: 
 					resizeMode="cover"
 				/>
 			)}
-			{decoration.decorationType === 'Text' && (
+			{decoration.decorationType === 'Text' && value && (
 				<TCO003OutlineTextBorder
 					stroke={2}
 					textShadowColor={decoration.borderColor}
-					text={value || 'Dummy Text'}
+					text={value}
 					textProps={{
 						style: {
 							fontSize: 64,

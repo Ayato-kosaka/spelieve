@@ -66,6 +66,8 @@ export const TPA001LeaveDialogController = ({
 		await Promise.all(promises);
 		const captureURI = await viewShotRef?.current?.capture?.();
 		const downloadURL = captureURI && (await CHK005StorageUtils.uploadImageAsync(storage, captureURI));
+
+		// 各 Decoraton Component の Load を待機する Promise を作成して、tmpRsolveMap に保存する
 		tmpRsolveMap = {};
 		Promise.all(
 			Object.keys(decorationsMap).map(
