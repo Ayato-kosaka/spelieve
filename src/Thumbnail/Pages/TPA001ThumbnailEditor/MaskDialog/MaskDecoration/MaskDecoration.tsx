@@ -14,7 +14,6 @@ export const TPA001MaskDecoration = ({
 	maskUri,
 	maskTransform,
 	onEndMaskGesture,
-	maskItemStyle,
 }: MaskDecorationPropsInterface) => {
 	const translateX = useSharedValue(maskTransform.translateX);
 	const translateY = useSharedValue(maskTransform.translateY);
@@ -58,14 +57,21 @@ export const TPA001MaskDecoration = ({
 					)
 				}>
 				{decoration.decorationType === 'Figure' && (
-					<View style={[maskItemStyle, { backgroundColor: decoration.color }]} />
+					<View
+						style={{
+							width: '100%',
+							maxHeight: 500,
+							backgroundColor: decoration.color,
+							aspectRatio: decoration.aspectRatio,
+						}}
+					/>
 				)}
 				{decoration.decorationType === 'Image' && (
 					<Image
 						source={{
 							uri: imageURI,
 						}}
-						style={[maskItemStyle, { aspectRatio, maxHeight: 500 }]}
+						style={{ width: '100%', maxHeight: 500, aspectRatio }}
 						resizeMode="cover"
 					/>
 				)}

@@ -2,7 +2,6 @@ import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import { Decorations } from 'spelieve-common/lib/Models/Thumbnail/TDB02/Decorations';
 
-import { MaskDecorationPropsInterface } from './MaskDecoration/MaskDecorationInterface';
 import { TPA001MaskDialogPropsInterface } from './MaskDialogInterface';
 
 import { GestureProviderPropsInterface } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderPropsInterface';
@@ -36,13 +35,6 @@ export const TPA001MaskDialogController = ({
 	const onSelectMask = useCallback((maskUri: string) => {
 		setMaskDialog((v) => ({ ...v, maskUri }));
 	}, []);
-	const maskItemStyle: MaskDecorationPropsInterface['maskItemStyle'] = useMemo(
-		() =>
-			activeDecoration
-				? { ...decorationTypeFeature(activeDecoration).designItemStyle, width: '100%' }
-				: { width: 0, aspectRatio: 0 },
-		[activeDecoration, decorationTypeFeature],
-	);
 	useEffect(() => {
 		if (selectedFooterMenu === 'Mask') {
 			if (activeDecoration)
@@ -94,7 +86,6 @@ export const TPA001MaskDialogController = ({
 		onSelectMask,
 		onEndMaskGesture,
 		onSaveMaskDialog,
-		maskItemStyle,
 		hideMaskDialog,
 	};
 };

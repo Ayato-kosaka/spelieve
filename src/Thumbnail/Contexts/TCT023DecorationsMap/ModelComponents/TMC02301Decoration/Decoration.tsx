@@ -90,11 +90,6 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 		[decoration.order, isActive],
 	);
 
-	const designItemStyle = useMemo(
-		() => ({ ...decorationTypeFeature(decoration).designItemStyle, width: 100 }),
-		[decoration, decorationTypeFeature],
-	);
-
 	const { animatedStyle } = TCO001UseAnimatedStyle({ translateX, translateY, scale, rotateZ });
 
 	return (
@@ -104,12 +99,7 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 			isActive={isActive}
 			onSingleTapFinalize={onSingleTapFinalize}>
 			<Animated.View style={[animatedStyle, viewStyle]}>
-				<TMC02302MaskedDecoration
-					decorationID={decorationID}
-					value={value}
-					designItemStyle={designItemStyle}
-					onSourceLoad={onSourceLoad}
-				/>
+				<TMC02302MaskedDecoration decorationID={decorationID} value={value} onSourceLoad={onSourceLoad} />
 			</Animated.View>
 		</TCO001GestureProvider>
 	);

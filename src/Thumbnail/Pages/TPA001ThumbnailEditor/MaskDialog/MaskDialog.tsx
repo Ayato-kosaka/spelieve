@@ -19,11 +19,10 @@ export const TPA001MaskDialog = ({ selectedFooterMenu, setSelectedFooterMenu }: 
 	const { decorationsMap } = useContext(TCT023DecorationsMap);
 	const { maskShapeList, isLoading } = useContext(TCT032MMaskShapeList);
 
-	const { maskDialog, onSelectMask, onEndMaskGesture, onSaveMaskDialog, maskItemStyle, hideMaskDialog } =
-		TPA001MaskDialogController({
-			selectedFooterMenu,
-			setSelectedFooterMenu,
-		});
+	const { maskDialog, onSelectMask, onEndMaskGesture, onSaveMaskDialog, hideMaskDialog } = TPA001MaskDialogController({
+		selectedFooterMenu,
+		setSelectedFooterMenu,
+	});
 
 	return (
 		<Portal>
@@ -43,7 +42,6 @@ export const TPA001MaskDialog = ({ selectedFooterMenu, setSelectedFooterMenu }: 
 								maskUri={maskDialog.maskUri}
 								maskTransform={maskDialog.maskTransform}
 								onEndMaskGesture={onEndMaskGesture}
-								maskItemStyle={maskItemStyle}
 							/>
 							<View>
 								{maskShapeList.map((maskShapeDoc) => {

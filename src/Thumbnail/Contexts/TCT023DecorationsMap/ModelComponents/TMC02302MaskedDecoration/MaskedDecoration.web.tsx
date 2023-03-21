@@ -7,12 +7,7 @@ import { MaskedDecorationPropsInterface } from './MaskedDecorationInterface';
 
 import { TCO003OutlineTextBorder } from '@/Thumbnail/Components/TCO003OutlineTextBorder/OutlineTextBorder';
 
-export const TMC02302MaskedDecoration = ({
-	decorationID,
-	value,
-	designItemStyle,
-	onSourceLoad,
-}: MaskedDecorationPropsInterface) => {
+export const TMC02302MaskedDecoration = ({ decorationID, value, onSourceLoad }: MaskedDecorationPropsInterface) => {
 	const { decorationsMap } = useContext(TCT023DecorationsMap);
 	const decoration = decorationsMap[decorationID];
 	const maskRef = useRef<HTMLImageElement>(null);
@@ -55,22 +50,9 @@ export const TMC02302MaskedDecoration = ({
 			{decoration.decorationType === 'Figure' && (
 				<div
 					style={{
+						width: 100,
+						aspectRatio: decoration.aspectRatio,
 						backgroundColor: decoration.color,
-						...designItemStyle,
-						borderWidth: 1,
-						borderColor: decoration.borderColor,
-						borderStyle: 'solid',
-					}}
-					ref={maskRef}
-				/>
-			)}
-			{decoration.decorationType === 'Image' && (
-				<img
-					src={value}
-					alt="decoration"
-					style={{
-						objectFit: 'cover',
-						...designItemStyle,
 						borderWidth: 1,
 						borderColor: decoration.borderColor,
 						borderStyle: 'solid',
@@ -91,6 +73,20 @@ export const TMC02302MaskedDecoration = ({
 							fontFamily: decoration.fontFamily,
 						},
 					}}
+				/>
+			)}
+			{decoration.decorationType === 'Image' && (
+				<img
+					src={value}
+					alt="decoration"
+					style={{
+						width: 100,
+						objectFit: 'cover',
+						borderWidth: 1,
+						borderColor: decoration.borderColor,
+						borderStyle: 'solid',
+					}}
+					ref={maskRef}
 				/>
 			)}
 		</View>
