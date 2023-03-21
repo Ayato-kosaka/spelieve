@@ -4,7 +4,6 @@ import Animated, { useSharedValue } from 'react-native-reanimated';
 
 import { MaskDecorationPropsInterface } from './MaskDecorationInterface';
 
-import { useGetImageRatio } from '@/Common/Hooks/CHK001Utils';
 import { TCO001GestureProvider } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProvider';
 import { TCO001UseAnimatedStyle } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderController';
 
@@ -22,9 +21,7 @@ export const TPA001MaskDecoration = ({
 
 	const { animatedStyle } = TCO001UseAnimatedStyle({ translateX, translateY, scale, rotateZ });
 
-	const { aspectRatio } = useGetImageRatio(imageURI);
-
-	if (!decoration || (decoration.decorationType === 'Image' && aspectRatio === 0)) {
+	if (!decoration) {
 		return <View />;
 	}
 	return (
@@ -71,7 +68,7 @@ export const TPA001MaskDecoration = ({
 						source={{
 							uri: imageURI,
 						}}
-						style={{ width: '100%', maxHeight: 500, aspectRatio }}
+						style={{ width: '100%', maxHeight: 500, aspectRatio: decoration.aspectRatio }}
 						resizeMode="cover"
 					/>
 				)}

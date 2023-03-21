@@ -1,6 +1,7 @@
 import { Action } from 'expo-image-manipulator';
 import { ImagePickerOptions } from 'expo-image-picker';
 import { useCallback, useContext, useMemo } from 'react';
+import { Image } from 'react-native';
 import uuid from 'react-native-uuid';
 
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
@@ -57,7 +58,14 @@ export const TPA001CreateDecorationController = ({
 					[key]: imageUrl,
 				},
 			}));
-			createDecoration({ ...initialDecoration, decorationType: 'Image', key });
+			Image.getSize(imageUrl, (originalWidth, originalHeight) => {
+				createDecoration({
+					...initialDecoration,
+					decorationType: 'Image',
+					key,
+					aspectRatio: originalWidth / originalHeight,
+				});
+			});
 		},
 		[createDecoration, initialDecoration, setThumbnailItemMapper],
 	);
