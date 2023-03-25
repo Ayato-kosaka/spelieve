@@ -179,11 +179,10 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 
 				{/* キャバス */}
 				<ViewShot
-					// TODO: resize する
 					ref={viewShotRef}
-					// options={{
-					// 	result: 'base64',
-					// }}
+					options={{
+						width: 900,
+					}}
 					style={{
 						width: windowWidth,
 						aspectRatio: thumbnailItemMapper.aspectRatio,
