@@ -1,6 +1,6 @@
 import { MediaTypeOptions } from 'expo-image-picker';
 import React, { useCallback, useContext, useEffect, useMemo } from 'react';
-import { ActivityIndicator, Pressable, SafeAreaView, ScrollView, View } from 'react-native';
+import { ActivityIndicator, Dimensions, Pressable, SafeAreaView, ScrollView, View } from 'react-native';
 import { Button, Dialog, Portal, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ViewShot from 'react-native-view-shot';
@@ -38,6 +38,9 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		() => decorationsMap[activeDecorationID],
 		[activeDecorationID, decorationsMap],
 	);
+
+	// 画面の向きに応じて動的に変化する
+	const windowWidth = Dimensions.get('window').width;
 
 	// route.params.fromThumbnailID を監視し、context に渡す
 	useEffect(() => {
@@ -181,9 +184,19 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 					// options={{
 					// 	result: 'base64',
 					// }}
-					style={{ width: '100%', aspectRatio: thumbnailItemMapper.aspectRatio, overflow: 'hidden', borderWidth: 1 }}>
+					style={{
+						width: windowWidth,
+						aspectRatio: thumbnailItemMapper.aspectRatio,
+						overflow: 'hidden',
+						borderWidth: 1,
+					}}>
 					{Object.keys(decorationsMap).map((key) => (
-						<TMC02301Decoration key={key} decorationID={key} onLoad={onLoadResolveMap[key]} />
+						<TMC02301Decoration
+							key={key}
+							decorationID={key}
+							onLoad={onLoadResolveMap[key]}
+							canvasSize={{ width: windowWidth, height: windowWidth / thumbnailItemMapper.aspectRatio }}
+						/>
 					))}
 				</ViewShot>
 

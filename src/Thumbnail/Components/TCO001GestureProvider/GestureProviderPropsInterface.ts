@@ -15,4 +15,8 @@ export interface GestureProviderPropsInterface {
 	onEndGesture: (val: Partial<GestureProviderInterface>) => void;
 	onSingleTapFinalize?: (event: GestureStateChangeEvent<TapGestureHandlerEventPayload>, success: boolean) => void;
 	children: ReactNode;
+	componentSize: {
+		width: number;
+		height: number;
+	};
 }

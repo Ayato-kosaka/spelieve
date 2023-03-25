@@ -9,7 +9,12 @@ import { MaskedDecorationPropsInterface } from './MaskedDecorationInterface';
 
 import { TCO003OutlineTextBorder } from '@/Thumbnail/Components/TCO003OutlineTextBorder/OutlineTextBorder';
 
-export const TMC02302MaskedDecoration = ({ decorationID, value, onSourceLoad }: MaskedDecorationPropsInterface) => {
+export const TMC02302MaskedDecoration = ({
+	decorationID,
+	value,
+	onSourceLoad,
+	width,
+}: MaskedDecorationPropsInterface) => {
 	const { decorationsMap } = useContext(TCT023DecorationsMap);
 	const decoration = decorationsMap[decorationID];
 	const transform = useMemo(
@@ -66,7 +71,7 @@ export const TMC02302MaskedDecoration = ({ decorationID, value, onSourceLoad }: 
 				<View
 					style={[
 						{
-							width: 100,
+							width,
 							backgroundColor: decoration.color,
 							borderColor: decoration.borderColor,
 							aspectRatio: decoration.aspectRatio,
@@ -79,7 +84,7 @@ export const TMC02302MaskedDecoration = ({ decorationID, value, onSourceLoad }: 
 			{decoration.decorationType === 'Image' && value && (
 				<Image
 					style={{
-						width: 100,
+						width,
 						borderColor: decoration.borderColor,
 						aspectRatio: decoration.aspectRatio,
 						borderWidth: 1,

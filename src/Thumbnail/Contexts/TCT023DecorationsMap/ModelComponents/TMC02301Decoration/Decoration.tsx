@@ -12,7 +12,7 @@ import { TCO001GestureProvider } from '@/Thumbnail/Components/TCO001GestureProvi
 import { TCO001UseAnimatedStyle } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderController';
 import { GestureProviderPropsInterface } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderPropsInterface';
 
-export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInterface) => {
+export const TMC02301Decoration = ({ decorationID, onLoad, canvasSize }: DecorationPropsInterface) => {
 	const { thumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
 	const { storeUrlMap, textMap } = thumbnailItemMapper;
 	const { decorationsMap, setDecorationsMap, activeDecorationID, setActiveDecorationID } =
@@ -88,16 +88,25 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 		[decoration.order, isActive],
 	);
 
-	const { animatedStyle } = TCO001UseAnimatedStyle({ translateX, translateY, scale, rotateZ });
+	const { animatedStyle } = TCO001UseAnimatedStyle({
+		gesture: { translateX, translateY, scale, rotateZ },
+		componentSize: canvasSize,
+	});
 
 	return (
 		<TCO001GestureProvider
 			gesture={{ translateX, translateY, scale, rotateZ }}
 			onEndGesture={onEndGesture}
 			isActive={isActive}
-			onSingleTapFinalize={onSingleTapFinalize}>
+			onSingleTapFinalize={onSingleTapFinalize}
+			componentSize={canvasSize}>
 			<Animated.View style={[animatedStyle, viewStyle]}>
-				<TMC02302MaskedDecoration decorationID={decorationID} value={value} onSourceLoad={onSourceLoad} />
+				<TMC02302MaskedDecoration
+					decorationID={decorationID}
+					value={value}
+					onSourceLoad={onSourceLoad}
+					width={canvasSize.width / 4}
+				/>
 			</Animated.View>
 		</TCO001GestureProvider>
 	);

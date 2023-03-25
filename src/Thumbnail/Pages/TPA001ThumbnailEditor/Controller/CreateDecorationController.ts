@@ -30,8 +30,8 @@ export const TPA001CreateDecorationController = ({
 	> = useMemo(
 		() => ({
 			transform: {
-				translateX: 200,
-				translateY: 200,
+				translateX: 0.5,
+				translateY: 0.5,
 				rotateZ: 0,
 				scale: 1,
 			},
