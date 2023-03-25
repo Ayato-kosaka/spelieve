@@ -12,6 +12,7 @@ export const TCT011MThumbnailOne = createContext({} as MThumbnailOneValInterface
 
 const initialThumbnail: MThumbnailOneInterface = {
 	imageUrl: '',
+	aspectRatio: 0,
 	prevThumbnailID: undefined,
 	attachedCount: 0,
 	dummyTextMap: {},

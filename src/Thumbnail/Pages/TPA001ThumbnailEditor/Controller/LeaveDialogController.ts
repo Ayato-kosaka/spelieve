@@ -27,11 +27,13 @@ export const TPA001LeaveDialogController = ({
 	const [onLoadResolveMap, setOnLoadResolveMap] = useState<{ [key: string]: (resolve: void) => void }>({});
 
 	const createThumbnail = useCallback(
-		async (arg: Pick<MThumbnail, 'imageUrl' | 'dummyTextMap' | 'dummyStoreUrlMap'>) => {
+		async (arg: Pick<MThumbnail, 'imageUrl' | 'aspectRatio' | 'dummyTextMap' | 'dummyStoreUrlMap'>) => {
 			const tDocRef = await addDoc(thumbnailCollectionRef, {
-				...thumbnail,
 				...arg,
+				prevThumbnailID: thumbnail.prevThumbnailID,
+				attachedCount: 0,
 				createdAt: new Date(),
+				updatedAt: new Date(),
 			});
 			await Promise.all(
 				Object.keys(decorationsMap).map((decorationID) => {
@@ -102,7 +104,12 @@ export const TPA001LeaveDialogController = ({
 				const dummyDownloadURL =
 					dummyCaptureURI && (await CHK005StorageUtils.uploadImageAsync(storage, dummyCaptureURI));
 				if (dummyDownloadURL) {
-					const thumbnailID = await createThumbnail({ imageUrl: dummyDownloadURL, dummyStoreUrlMap, dummyTextMap });
+					const thumbnailID = await createThumbnail({
+						imageUrl: dummyDownloadURL,
+						aspectRatio: thumbnailItemMapper.aspectRatio,
+						dummyStoreUrlMap,
+						dummyTextMap,
+					});
 					if (downloadURL) {
 						thumbnailItemMapper.onBack?.(thumbnailID, thumbnailItemMapper, downloadURL);
 					}
