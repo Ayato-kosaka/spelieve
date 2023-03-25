@@ -7,7 +7,12 @@ import { MaskedDecorationPropsInterface } from './MaskedDecorationInterface';
 
 import { TCO003OutlineTextBorder } from '@/Thumbnail/Components/TCO003OutlineTextBorder/OutlineTextBorder';
 
-export const TMC02302MaskedDecoration = ({ decorationID, value, onSourceLoad }: MaskedDecorationPropsInterface) => {
+export const TMC02302MaskedDecoration = ({
+	decorationID,
+	value,
+	onSourceLoad,
+	width,
+}: MaskedDecorationPropsInterface) => {
 	const { decorationsMap } = useContext(TCT023DecorationsMap);
 	const decoration = decorationsMap[decorationID];
 	const maskRef = useRef<HTMLImageElement>(null);
@@ -20,12 +25,15 @@ export const TMC02302MaskedDecoration = ({ decorationID, value, onSourceLoad }: 
 		if (!decoration?.maskUri) return;
 		maskRef.current.style.webkitMaskImage = `url(${decoration.maskUri})`;
 		maskRef.current.style.maskImage = `url(${decoration.maskUri})`;
-		maskRef.current.style.maskPosition = `${decoration.maskTransform.translateX}px ${decoration.maskTransform.translateY}px`;
-		maskRef.current.style.webkitMaskPosition = `${decoration.maskTransform.translateX}px ${decoration.maskTransform.translateY}px`;
-		// TODO: あとで変更する
+		maskRef.current.style.maskPosition = `${decoration.maskTransform.translateX * width}px ${
+			(decoration.maskTransform.translateY * width) / decoration.aspectRatio
+		}px`;
+		maskRef.current.style.webkitMaskPosition = `${decoration.maskTransform.translateX * width}px ${
+			(decoration.maskTransform.translateY * width) / decoration.aspectRatio
+		}px`;
 		maskRef.current.style.webkitMaskSize = 'auto 100%';
 		maskRef.current.style.maskSize = 'auto 100%';
-	}, [decoration?.maskTransform, decoration?.maskUri]);
+	}, [decoration?.aspectRatio, decoration?.maskTransform, decoration?.maskUri, width]);
 	useEffect(() => {
 		if (!decoration) return;
 		if (decoration.decorationType === 'Image') {
@@ -50,7 +58,7 @@ export const TMC02302MaskedDecoration = ({ decorationID, value, onSourceLoad }: 
 			{decoration.decorationType === 'Figure' && (
 				<div
 					style={{
-						width: 100,
+						width,
 						aspectRatio: decoration.aspectRatio,
 						backgroundColor: decoration.color,
 						borderWidth: 1,
@@ -80,7 +88,7 @@ export const TMC02302MaskedDecoration = ({ decorationID, value, onSourceLoad }: 
 					src={value}
 					alt="decoration"
 					style={{
-						width: 100,
+						width,
 						objectFit: 'cover',
 						borderWidth: 1,
 						borderColor: decoration.borderColor,
