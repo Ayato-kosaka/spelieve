@@ -1,7 +1,9 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { LayoutChangeEvent } from 'react-native';
 
 import { Decorations } from 'spelieve-common/lib/Models/Thumbnail/TDB02/Decorations';
 
+import { MaskDecorationPropsInterface } from './MaskDecoration/MaskDecorationInterface';
 import { TPA001MaskDialogPropsInterface } from './MaskDialogInterface';
 
 import { GestureProviderPropsInterface } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderPropsInterface';
@@ -81,11 +83,22 @@ export const TPA001MaskDialogController = ({
 		hideMaskDialog();
 	}, [hideMaskDialog, maskDialog.decorationID, maskDialog.maskTransform, maskDialog.maskUri, setDecorationsMap]);
 
+	const [componentSize, setComponentSize] = useState<MaskDecorationPropsInterface['componentSize']>({
+		width: 0,
+		height: 0,
+	});
+
+	const onLayout = useCallback((event: LayoutChangeEvent) => {
+		setComponentSize(event.nativeEvent.layout);
+	}, []);
+
 	return {
 		maskDialog,
 		onSelectMask,
 		onEndMaskGesture,
 		onSaveMaskDialog,
 		hideMaskDialog,
+		componentSize,
+		onLayout,
 	};
 };

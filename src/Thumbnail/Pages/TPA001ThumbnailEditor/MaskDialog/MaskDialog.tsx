@@ -19,10 +19,11 @@ export const TPA001MaskDialog = ({ selectedFooterMenu, setSelectedFooterMenu }: 
 	const { decorationsMap } = useContext(TCT023DecorationsMap);
 	const { maskShapeList, isLoading } = useContext(TCT032MMaskShapeList);
 
-	const { maskDialog, onSelectMask, onEndMaskGesture, onSaveMaskDialog, hideMaskDialog } = TPA001MaskDialogController({
-		selectedFooterMenu,
-		setSelectedFooterMenu,
-	});
+	const { maskDialog, onSelectMask, onEndMaskGesture, onSaveMaskDialog, hideMaskDialog, componentSize, onLayout } =
+		TPA001MaskDialogController({
+			selectedFooterMenu,
+			setSelectedFooterMenu,
+		});
 
 	return (
 		<Portal>
@@ -31,7 +32,7 @@ export const TPA001MaskDialog = ({ selectedFooterMenu, setSelectedFooterMenu }: 
 					{isLoading ? (
 						<View />
 					) : (
-						<>
+						<View onLayout={onLayout}>
 							<TPA001MaskDecoration
 								decoration={decorationsMap[maskDialog.decorationID]}
 								imageURI={
@@ -42,6 +43,7 @@ export const TPA001MaskDialog = ({ selectedFooterMenu, setSelectedFooterMenu }: 
 								maskUri={maskDialog.maskUri}
 								maskTransform={maskDialog.maskTransform}
 								onEndMaskGesture={onEndMaskGesture}
+								componentSize={componentSize}
 							/>
 							<View>
 								{maskShapeList.map((maskShapeDoc) => {
@@ -57,7 +59,7 @@ export const TPA001MaskDialog = ({ selectedFooterMenu, setSelectedFooterMenu }: 
 									);
 								})}
 							</View>
-						</>
+						</View>
 					)}
 				</Dialog.Content>
 				<Dialog.Actions>

@@ -10,4 +10,5 @@ export interface MaskDecorationPropsInterface {
 	maskUri?: string | undefined;
 	maskTransform: Decorations['maskTransform'];
 	onEndMaskGesture: GestureProviderPropsInterface['onEndGesture'];
+	componentSize: GestureProviderPropsInterface['componentSize'];
 }

@@ -13,19 +13,26 @@ export const TPA001MaskDecoration = ({
 	maskUri,
 	maskTransform,
 	onEndMaskGesture,
+	componentSize,
 }: MaskDecorationPropsInterface) => {
 	const translateX = useSharedValue(maskTransform.translateX);
 	const translateY = useSharedValue(maskTransform.translateY);
 	const scale = useSharedValue(maskTransform.scale);
 	const rotateZ = useSharedValue(maskTransform.rotateZ);
 
-	const { animatedStyle } = TCO001UseAnimatedStyle({ translateX, translateY, scale, rotateZ });
+	const { animatedStyle } = TCO001UseAnimatedStyle({
+		gesture: { translateX, translateY, scale, rotateZ },
+		componentSize,
+	});
 
 	if (!decoration) {
 		return <View />;
 	}
 	return (
-		<TCO001GestureProvider gesture={{ translateX, translateY, scale, rotateZ }} onEndGesture={onEndMaskGesture}>
+		<TCO001GestureProvider
+			gesture={{ translateX, translateY, scale, rotateZ }}
+			onEndGesture={onEndMaskGesture}
+			componentSize={componentSize}>
 			<MaskedView
 				style={{
 					alignItems: 'center',
