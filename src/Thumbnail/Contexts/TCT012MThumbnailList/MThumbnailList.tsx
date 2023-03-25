@@ -1,4 +1,4 @@
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, limit, orderBy, query } from 'firebase/firestore';
 import { useState, createContext, useEffect, useMemo, ReactNode } from 'react';
 
 import { MThumbnail } from 'spelieve-common/lib/Models/Thumbnail/TDB01/MThumbnail';
@@ -30,7 +30,9 @@ export const TCT012MThumbnailListProvider = ({ children }: { children: ReactNode
 		setIsLoading(true);
 
 		const fetchData = async () => {
-			const querySnapshot = await getDocs(thumbnailCollectionRef);
+			const querySnapshot = await getDocs(
+				query(thumbnailCollectionRef, orderBy(MThumbnail.Cols.createdAt, 'desc'), limit(6)),
+			);
 			setThumbnailList(querySnapshot.docs.map((doc) => doc));
 			setIsLoading(false);
 		};
