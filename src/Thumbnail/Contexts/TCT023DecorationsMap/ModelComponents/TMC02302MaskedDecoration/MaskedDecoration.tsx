@@ -22,16 +22,16 @@ export const TMC02302MaskedDecoration = ({
 			decoration?.maskTransform
 				? [
 						{
-							translateX: decoration.maskTransform.translateX,
+							translateX: decoration.maskTransform.translateX * width,
 						},
 						{
-							translateY: decoration.maskTransform.translateY,
+							translateY: (decoration.maskTransform.translateY * width) / decoration.aspectRatio,
 						},
 						{ scale: decoration.maskTransform.scale },
 						{ rotateZ: `${(decoration.maskTransform.rotateZ / Math.PI) * 180}deg` },
 				  ]
 				: [],
-		[decoration?.maskTransform],
+		[decoration?.aspectRatio, decoration?.maskTransform, width],
 	);
 
 	if (!decoration) {
