@@ -11,7 +11,6 @@ import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/G
 import { TCO001GestureProvider } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProvider';
 import { TCO001UseAnimatedStyle } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderController';
 import { GestureProviderPropsInterface } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderPropsInterface';
-import { ThumnailRule } from '@/Thumbnail/Hooks/ThumbnailRule';
 
 export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInterface) => {
 	const { thumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
@@ -19,8 +18,6 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 	const { decorationsMap, setDecorationsMap, activeDecorationID, setActiveDecorationID } =
 		useContext(TCT023DecorationsMap);
 	const decoration = decorationsMap[decorationID]!;
-
-	const { decorationTypeFeature } = ThumnailRule;
 
 	const translateX = useSharedValue(decoration.transform.translateX);
 	const translateY = useSharedValue(decoration.transform.translateY);
