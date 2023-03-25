@@ -103,7 +103,7 @@ export const TMC02301Decoration = ({ decorationID, onLoad, canvasSize }: Decorat
 					decorationID={decorationID}
 					value={value}
 					onSourceLoad={onSourceLoad}
-					width={canvasSize.width / 4}
+					width={canvasSize.width / 3}
 				/>
 			</Animated.View>
 		</TCO001GestureProvider>
