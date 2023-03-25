@@ -13,6 +13,9 @@ export const TCT011MThumbnailOne = createContext({} as MThumbnailOneValInterface
 const initialThumbnail: MThumbnailOneInterface = {
 	imageUrl: '',
 	prevThumbnailID: undefined,
+	attachedCount: 0,
+	dummyTextMap: {},
+	dummyStoreUrlMap: {},
 	createdAt: new Date(),
 	updatedAt: new Date(),
 };
@@ -29,12 +32,9 @@ export const TCT011MThumbnailOneProvider = ({ children }: { children: ReactNode 
 				FirestoreConverter<MThumbnail, MThumbnailOneInterface>(
 					MThumbnail,
 					(model) => model,
-					(data) => {
-						const copiedCount = 0;
-						return {
-							...data,
-						};
-					},
+					(data) => ({
+						...data,
+					}),
 				),
 			),
 		[],

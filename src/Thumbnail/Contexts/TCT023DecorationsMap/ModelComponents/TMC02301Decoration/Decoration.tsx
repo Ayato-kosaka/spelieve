@@ -29,12 +29,10 @@ export const TMC02301Decoration = ({ decorationID, onLoad, canvasSize }: Decorat
 			return storeUrlMap[decoration.key!];
 		}
 		if (decoration.decorationType === 'Image') {
-			// TODO: 修正する
-			return storeUrlMap[decoration.key!] || 'https://thumb.photo-ac.com/15/1527a37a819426cf6ac7a8761eb4bf67_t.jpeg';
+			return storeUrlMap[decoration.key!];
 		}
 		if (decoration.decorationType === 'Text') {
-			// TODO: 修正する
-			return textMap[decoration.key!] || 'Dummy Text';
+			return textMap[decoration.key!];
 		}
 		return undefined;
 	}, [decoration.decorationType, decoration.key, storeUrlMap, textMap]);

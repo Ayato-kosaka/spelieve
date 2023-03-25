@@ -2,8 +2,11 @@ import { addDoc, doc, setDoc } from 'firebase/firestore';
 import { useCallback, useContext, useRef, useState } from 'react';
 import ViewShot from 'react-native-view-shot';
 
+import { MThumbnail } from 'spelieve-common/lib/Models/Thumbnail/TDB01/MThumbnail';
+
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
 import { CHK005StorageUtils } from '@/Common/Hooks/CHK005StorageUtils';
+import i18n from '@/Common/Hooks/i18n-js';
 import { ThumbnailStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { TCT011MThumbnailOne } from '@/Thumbnail/Contexts/TCT011MThumbnailOne/ThumbnailOne';
 import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
@@ -21,13 +24,13 @@ export const TPA001LeaveDialogController = ({
 	const { decorationsMap, getCollection, setActiveDecorationID } = useContext(TCT023DecorationsMap);
 
 	const viewShotRef = useRef<ViewShot>(null);
-	const [onLoadResolveMap, setOnLoadResolveMap] = useState<{ [key: string]: (value: void) => void }>({});
+	const [onLoadResolveMap, setOnLoadResolveMap] = useState<{ [key: string]: (resolve: void) => void }>({});
 
 	const createThumbnail = useCallback(
-		async (imageUrl: string) => {
+		async (arg: Pick<MThumbnail, 'imageUrl' | 'dummyTextMap' | 'dummyStoreUrlMap'>) => {
 			const tDocRef = await addDoc(thumbnailCollectionRef, {
 				...thumbnail,
-				imageUrl,
+				...arg,
 				createdAt: new Date(),
 			});
 			await Promise.all(
@@ -67,6 +70,23 @@ export const TPA001LeaveDialogController = ({
 		const captureURI = await viewShotRef?.current?.capture?.();
 		const downloadURL = captureURI && (await CHK005StorageUtils.uploadImageAsync(storage, captureURI));
 
+		// ダミーの内容に変更する
+		const decorations = Object.keys(decorationsMap).map((dKey) => decorationsMap[dKey]!);
+		const dummyStoreUrlMap = Object.keys(thumbnailItemMapper.storeUrlMap).reduce((prev, key) => {
+			if (decorations.some((d) => d.key === key)) {
+				// TODO: 修正する
+				prev[key] = 'https://thumb.photo-ac.com/15/1527a37a819426cf6ac7a8761eb4bf67_t.jpeg';
+			}
+			return prev;
+		}, {} as typeof thumbnailItemMapper.storeUrlMap);
+		const dummyTextMap = Object.keys(thumbnailItemMapper.textMap).reduce((prev, key) => {
+			if (decorations.some((d) => d.key === key)) {
+				// TODO: 修正する
+				prev[key] = i18n.t('Dummy Text');
+			}
+			return prev;
+		}, {} as typeof thumbnailItemMapper.textMap);
+
 		// 各 Decoraton Component の Load を待機する Promise を作成して、tmpRsolveMap に保存する
 		tmpRsolveMap = {};
 		Promise.all(
@@ -82,7 +102,7 @@ export const TPA001LeaveDialogController = ({
 				const dummyDownloadURL =
 					dummyCaptureURI && (await CHK005StorageUtils.uploadImageAsync(storage, dummyCaptureURI));
 				if (dummyDownloadURL) {
-					const thumbnailID = await createThumbnail(dummyDownloadURL);
+					const thumbnailID = await createThumbnail({ imageUrl: dummyDownloadURL, dummyStoreUrlMap, dummyTextMap });
 					if (downloadURL) {
 						thumbnailItemMapper.onBack?.(thumbnailID, thumbnailItemMapper, downloadURL);
 					}
@@ -92,8 +112,8 @@ export const TPA001LeaveDialogController = ({
 			.catch(() => {});
 		setThumbnailItemMapper((value) => ({
 			...value,
-			storeUrlMap: {},
-			textMap: {},
+			storeUrlMap: dummyStoreUrlMap,
+			textMap: dummyTextMap,
 		}));
 		setOnLoadResolveMap(tmpRsolveMap);
 	}, [
