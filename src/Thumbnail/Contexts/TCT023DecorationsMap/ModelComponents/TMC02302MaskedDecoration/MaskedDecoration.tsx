@@ -17,7 +17,7 @@ export const TMC02302MaskedDecoration = ({
 }: MaskedDecorationPropsInterface) => {
 	const { decorationsMap } = useContext(TCT023DecorationsMap);
 	const decoration = decorationsMap[decorationID];
-	const transform = useMemo(
+	const maskTransform = useMemo(
 		() =>
 			decoration?.maskTransform
 				? [
@@ -53,7 +53,7 @@ export const TMC02302MaskedDecoration = ({
 						style={[
 							{
 								flex: 1,
-								transform,
+								transform: maskTransform,
 							},
 						]}
 						resizeMode="cover"
