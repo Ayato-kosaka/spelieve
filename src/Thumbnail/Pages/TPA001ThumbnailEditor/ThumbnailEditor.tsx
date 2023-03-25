@@ -189,6 +189,7 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 						aspectRatio: thumbnailItemMapper.aspectRatio,
 						overflow: 'hidden',
 						borderWidth: 1,
+						backgroundColor: 'white',
 					}}>
 					{Object.keys(decorationsMap).map((key) => (
 						<TMC02301Decoration
