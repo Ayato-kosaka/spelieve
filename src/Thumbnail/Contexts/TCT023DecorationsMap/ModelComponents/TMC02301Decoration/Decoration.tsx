@@ -41,8 +41,11 @@ export const TMC02301Decoration = ({ decorationID, onLoad, canvasSize }: Decorat
 	const sourceLoadRef = useRef<{ isLoading: boolean; onLoad?: () => void }>({ isLoading: false });
 	useEffect(() => {
 		if (value) {
-			sourceLoadRef.current.isLoading = true;
+			if (decoration.decorationType === 'Image') {
+				sourceLoadRef.current.isLoading = true;
+			}
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [value]);
 	const onSourceLoad = useCallback(() => {
 		sourceLoadRef.current.onLoad?.();
