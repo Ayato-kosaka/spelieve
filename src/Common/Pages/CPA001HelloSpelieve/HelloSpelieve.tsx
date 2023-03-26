@@ -7,6 +7,7 @@ import { RecentItinerariesInterface, getRecentItineraries } from './HelloSpeliev
 
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
 import { CCO007GoogleBannerAd } from '@/Common/Components/CCO007GoogleBannerAd/GoogleBannerAd';
+import { Error } from '@/Common/Hooks/CHK001Utils';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ItineraryStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { ENV } from '@/ENV';
@@ -16,14 +17,15 @@ import { customColors, materialColors } from '@/ThemeProvider';
 export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenProps<'HelloSpelieve'>) => {
 	const [recentItineraries, setRecentItineraries] = useState<RecentItinerariesInterface | undefined>(undefined);
 	useEffect(() => {
-		// TODO: 再ソートされない。この画面に入ったらソートしたい。
-		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		(async () => {
-			setRecentItineraries(
-				(await getRecentItineraries()).sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime()),
-			);
-		})();
-	}, []);
+		const unsubscribe = navigation.addListener('focus', () => {
+			(async () => {
+				setRecentItineraries(
+					(await getRecentItineraries()).sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime()),
+				);
+			})().catch((e) => Error('CPA001HelloSpelieve', 'setRecentItineraries', e));
+		});
+		return unsubscribe;
+	}, [navigation]);
 
 	const { setThumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
 
