@@ -1,12 +1,33 @@
+import { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
 import { Button, Dialog, TextInput, Portal, List, useTheme } from 'react-native-paper';
 
 import { TPA001TextEditDialogController } from './TextEditDialogController';
-import { TPA001TextEditDialogPropsInterface } from './TextEditDialogInterface';
+import {
+	TPA001TextEditDialogPropsInterface,
+	TPA001TextEditDialogTextInputPropsInterface,
+} from './TextEditDialogInterface';
 
 import i18n from '@/Common/Hooks/i18n-js';
 import { materialColors } from '@/ThemeProvider';
 import { THK001UseFonts } from '@/Thumbnail/Hooks/THK001UseFonts';
+
+const TextEditDialogTextInput = ({ text, onBlur, style }: TPA001TextEditDialogTextInputPropsInterface) => {
+	const [value, setValue] = useState('');
+	useEffect(() => {
+		setValue(text);
+	}, [text]);
+	return (
+		<TextInput
+			mode="outlined"
+			value={value}
+			onChangeText={(e) => setValue(e)}
+			onBlur={() => onBlur(value)}
+			placeholder={i18n.t('テキストを入力してください')}
+			style={style}
+		/>
+	);
+};
 
 export const TPA001TextEditDialog = ({
 	selectedFooterMenu,
@@ -27,11 +48,11 @@ export const TPA001TextEditDialog = ({
 		<Portal>
 			<Dialog visible={textEditDialog.visible} onDismiss={onSaveTextEditing}>
 				<Dialog.Content>
-					<TextInput
-						mode="outlined"
-						placeholder={i18n.t('テキストを入力してください')}
-						value={text}
-						onChangeText={(e) => setText(e)}
+					<TextEditDialogTextInput
+						text={text}
+						onBlur={(t) => {
+							setText(t);
+						}}
 						style={{ fontFamily }}
 					/>
 					{fontsLoaded && (

@@ -33,8 +33,8 @@ export const TPA001TextEditDialogController = ({
 	const [text, setText] = useState<string>('');
 
 	useEffect(() => {
-		setText((activeDecoration && activeDecoration.key && thumbnailItemMapper.textMap[activeDecoration.key]) || '');
-	}, [activeDecoration, thumbnailItemMapper.textMap]);
+		setText((activeDecoration?.key && thumbnailItemMapper.textMap[activeDecoration.key]) || '');
+	}, [activeDecoration?.key, thumbnailItemMapper.textMap]);
 
 	const hideTextEditDialog = useCallback(() => {
 		setTextEditDialog({ visible: false, key: undefined });
