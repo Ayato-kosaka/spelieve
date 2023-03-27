@@ -7,7 +7,7 @@
 // *****************************************************************************
 
 import { useEffect, useState } from 'react';
-import { Image } from 'react-native';
+import { Dimensions, Image, Platform } from 'react-native';
 
 import { ENV } from '@/ENV';
 
@@ -50,4 +50,11 @@ export const useGetImageRatio = (uri: string | undefined) => {
 	return {
 		aspectRatio,
 	};
+};
+
+export const getWindowWidth = () => {
+	if (Platform.OS === 'web') {
+		return Dimensions.get('window').width < 450 ? Dimensions.get('window').width : 450;
+	}
+	return Dimensions.get('window').width;
 };

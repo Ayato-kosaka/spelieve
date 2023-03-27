@@ -1,6 +1,6 @@
 import { MediaTypeOptions } from 'expo-image-picker';
 import React, { useCallback, useContext, useEffect, useMemo } from 'react';
-import { ActivityIndicator, Dimensions, Pressable, SafeAreaView, ScrollView, View } from 'react-native';
+import { ActivityIndicator, Pressable, SafeAreaView, ScrollView, View } from 'react-native';
 import { Button, Dialog, Portal, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ViewShot from 'react-native-view-shot';
@@ -15,6 +15,7 @@ import { TPA001TextEditDialog } from './TextEditDialog/TextEditDialog';
 import { styles } from './ThumbnailEditorStyle';
 
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
+import { getWindowWidth } from '@/Common/Hooks/CHK001Utils';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ThumbnailStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { TCT011MThumbnailOne } from '@/Thumbnail/Contexts/TCT011MThumbnailOne/ThumbnailOne';
@@ -40,7 +41,7 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 	);
 
 	// 画面の向きに応じて動的に変化する
-	const windowWidth = Dimensions.get('window').width;
+	const windowWidth = getWindowWidth();
 
 	// route.params.fromThumbnailID を監視し、context に渡す
 	useEffect(() => {
