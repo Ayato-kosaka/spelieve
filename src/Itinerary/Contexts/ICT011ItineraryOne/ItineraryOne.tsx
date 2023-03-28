@@ -5,7 +5,7 @@ import { ItineraryOneInterface, ItineraryOneValInterface } from 'spelieve-common
 import { Itineraries } from 'spelieve-common/lib/Models/Itinerary/IDB01/Itineraries';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
-import { Logger } from '@/Common/Hooks/CHK001Utils';
+import { Error, Logger } from '@/Common/Hooks/CHK001Utils';
 import { storeRecentItinerary } from '@/Common/Pages/CPA001HelloSpelieve/HelloSpelieveRecentItineraryHook';
 import db from '@/Itinerary/Endpoint/firestore';
 
@@ -39,8 +39,12 @@ export const ICT011ItineraryOneProvider = ({ children }: { children: ReactNode }
 				Logger('IDB01/Itineraries', 'read docSnap.id', docSnap.id);
 				setItineraryDocSnap(docSnap);
 				const data = docSnap.data()!;
-				// eslint-disable-next-line @typescript-eslint/no-floating-promises
-				storeRecentItinerary({ ...data, itineraryID: docSnap.id, updatedAt: new Date() });
+				// R1: Itinerary 画面に遷移すると、itinearyId, updatedAt を更新する必要あり
+				// R2: imageUrl を更新された際に、local storage の imageUrl も更新する必要あり
+				// => 上記を考慮し、更新回数が多くなるが、onSnapshot の中で local storage への登録を行う
+				storeRecentItinerary({ itineraryID: docSnap.id, imageUrl: data.imageUrl, updatedAt: new Date() }).catch((e) =>
+					Error('ICT011ItineraryOne', 'useEffect.onSnapshot.storeRecentItinerary', e),
+				);
 			});
 			return () => unsubscribe();
 		}

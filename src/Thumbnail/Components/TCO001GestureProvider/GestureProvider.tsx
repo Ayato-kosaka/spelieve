@@ -7,26 +7,18 @@ import { GestureProviderPropsInterface } from './GestureProviderPropsInterface';
 import { Logger } from '@/Common/Hooks/CHK001Utils';
 
 export const TCO001GestureProvider = ({
-	initial = {
-		translateX: 0,
-		translateY: 0,
-		scale: 1,
-		rotateZ: 0,
-	},
-	onEndGesture,
+	gesture,
 	isActive = true,
+	onEndGesture,
 	onSingleTapFinalize,
-	onAnimating,
 	children,
+	componentSize,
 }: GestureProviderPropsInterface) => {
 	/**
 	 * translateX -> style に反映される translateX
 	 * savedTranslateX ->  手を止めた状態の translateX
 	 */
-	const translateX = useSharedValue(initial.translateX);
-	const translateY = useSharedValue(initial.translateY);
-	const scale = useSharedValue(initial.scale);
-	const rotateZ = useSharedValue(initial.rotateZ);
+	const { translateX, translateY, scale, rotateZ } = gesture;
 	const savedTranslateX = useSharedValue(translateX.value);
 	const savedTranslateY = useSharedValue(translateY.value);
 	const savedScale = useSharedValue(scale.value);
@@ -51,8 +43,8 @@ export const TCO001GestureProvider = ({
 			isPanGesturing.value = true;
 		})
 		.onUpdate((e) => {
-			translateX.value = savedTranslateX.value + e.translationX;
-			translateY.value = savedTranslateY.value + e.translationY;
+			translateX.value = savedTranslateX.value + e.translationX / componentSize.width;
+			translateY.value = savedTranslateY.value + e.translationY / componentSize.height;
 		})
 		.onEnd(() => {
 			savedTranslateX.value = translateX.value;
@@ -96,29 +88,10 @@ export const TCO001GestureProvider = ({
 		(prepareResult, preparePreviousResult) => {
 			if (preparePreviousResult && preparePreviousResult.some((x) => x) && prepareResult.every((x) => !x)) {
 				runOnJS(Logger)('TCO001GestureProvider', 'useAnimatedReaction', 'onEndGesture');
-				runOnJS(onEndGesture)({
-					translateX: translateX.value,
-					translateY: translateY.value,
-					scale: scale.value,
-					rotateZ: rotateZ.value,
-				});
+				runOnJS(onEndGesture)({ translateX, translateY, scale, rotateZ });
 			}
 		},
 		[onEndGesture],
-	);
-
-	// onAnimating
-	useAnimatedReaction(
-		() => ({
-			translateX: translateX.value,
-			translateY: translateY.value,
-			scale: scale.value,
-			rotateZ: rotateZ.value,
-		}),
-		(prepareResult, preparePreviousResult) => {
-			onAnimating?.(prepareResult);
-		},
-		[translateX, translateY, scale, rotateZ],
 	);
 
 	const composed = useMemo(

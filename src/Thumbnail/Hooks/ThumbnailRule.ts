@@ -13,37 +13,20 @@ import { DecorationsMapInterface } from '../Contexts/TCT023DecorationsMap/Decora
 /* 
 Footer ルール
 https://docs.google.com/spreadsheets/d/1BPeKHqCv-_5kgNvtpAC83pegNnN0g19VU8vYzMKiqEU/edit#gid=0
-+------------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
-| key        | EditText | Replace | Color | Mask | AspectRatio | Order | Animation | Border | BorderColor | Shadow | Opacity | Duplicate | Delete |
-+------------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
-| Background |          |   TRUE  |  TRUE | TRUE |             |       |    TRUE   |  TRUE  |     TRUE    |  TRUE  |   TRUE  |           |        |
-+------------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
-| Video      |          |   TRUE  |       | TRUE |             |  TRUE |    TRUE   |  TRUE  |     TRUE    |  TRUE  |   TRUE  |    TRUE   |  TRUE  |
-+------------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
-| Image      |          |   TRUE  |       | TRUE |             |  TRUE |    TRUE   |  TRUE  |     TRUE    |  TRUE  |   TRUE  |    TRUE   |  TRUE  |
-+------------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
-| Figure     |          |   TRUE  |  TRUE | TRUE |     TRUE    |  TRUE |    TRUE   |  TRUE  |     TRUE    |  TRUE  |   TRUE  |    TRUE   |  TRUE  |
-+------------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
-| Text       |   TRUE   |         |  TRUE |      |             |  TRUE |    TRUE   |  TRUE  |     TRUE    |  TRUE  |   TRUE  |           |  TRUE  |
-+------------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
++--------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
+| key    | EditText | Replace | Color | Mask | AspectRatio | Order | Animation | Border | BorderColor | Shadow | Opacity | Duplicate | Delete |
++--------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
+| Video  |          |   TRUE  |       | TRUE |             |  TRUE |    TRUE   |  TRUE  |     TRUE    |  TRUE  |   TRUE  |    TRUE   |  TRUE  |
++--------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
+| Image  |          |   TRUE  |       | TRUE |             |  TRUE |    TRUE   |  TRUE  |     TRUE    |  TRUE  |   TRUE  |    TRUE   |  TRUE  |
++--------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
+| Figure |          |         |  TRUE | TRUE |     TRUE    |  TRUE |    TRUE   |  TRUE  |     TRUE    |  TRUE  |   TRUE  |    TRUE   |  TRUE  |
++--------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
+| Text   |   TRUE   |         |  TRUE |      |             |  TRUE |    TRUE   |  TRUE  |     TRUE    |  TRUE  |   TRUE  |           |  TRUE  |
++--------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
 */
 const FooterDisplay = () =>
 	({
-		Background: {
-			EditText: false,
-			Replace: true,
-			Color: true,
-			Mask: true,
-			AspectRatio: false,
-			Order: false,
-			Animation: true,
-			Border: true,
-			BorderColor: true,
-			Shadow: true,
-			Opacity: true,
-			Duplicate: false,
-			Delete: false,
-		},
 		Video: {
 			EditText: false,
 			Replace: true,
@@ -76,7 +59,7 @@ const FooterDisplay = () =>
 		},
 		Figure: {
 			EditText: false,
-			Replace: true,
+			Replace: false,
 			Color: true,
 			Mask: true,
 			AspectRatio: true,
@@ -109,13 +92,13 @@ const FooterDisplay = () =>
 export const decorationTypeFeature = (decoration: DecorationsMapInterface) => {
 	switch (decoration.decorationType) {
 		case 'Video':
-			return { designItemStyle: { height: '100%' } };
+			return { designItemStyle: {} };
 		case 'Image':
-			return { designItemStyle: { height: '100%' } };
+			return { designItemStyle: {} };
 		case 'Figure':
 			return { designItemStyle: { aspectRatio: 1 } };
 		case 'Text':
-			return { designItemStyle: { height: '100%' } };
+			return { designItemStyle: {} };
 		default: {
 			// TypeScriptのnever型を使用して、列挙型にない値が指定された場合にエラーを検出
 			const exhaustiveCheck: never = decoration.decorationType;

@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
-import Animated from 'react-native-reanimated';
+import Animated, { useSharedValue } from 'react-native-reanimated';
 
 import { TCT023DecorationsMap } from '../../DecorationsMap';
 import { TMC02302MaskedDecoration } from '../TMC02302MaskedDecoration/MaskedDecoration';
@@ -11,24 +11,25 @@ import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/G
 import { TCO001GestureProvider } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProvider';
 import { TCO001UseAnimatedStyle } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderController';
 import { GestureProviderPropsInterface } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderPropsInterface';
-import { ThumnailRule } from '@/Thumbnail/Hooks/ThumbnailRule';
 
-export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInterface) => {
+export const TMC02301Decoration = ({ decorationID, onLoad, canvasSize }: DecorationPropsInterface) => {
 	const { thumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
 	const { storeUrlMap, textMap } = thumbnailItemMapper;
 	const { decorationsMap, setDecorationsMap, activeDecorationID, setActiveDecorationID } =
 		useContext(TCT023DecorationsMap);
 	const decoration = decorationsMap[decorationID]!;
 
-	const { decorationTypeFeature } = ThumnailRule;
+	const translateX = useSharedValue(decoration.transform.translateX);
+	const translateY = useSharedValue(decoration.transform.translateY);
+	const scale = useSharedValue(decoration.transform.scale);
+	const rotateZ = useSharedValue(decoration.transform.rotateZ);
 
 	const value = useMemo(() => {
 		if (decoration.decorationType === 'Video') {
 			return storeUrlMap[decoration.key!];
 		}
 		if (decoration.decorationType === 'Image') {
-			// TODO: 修正する
-			return storeUrlMap[decoration.key!] || 'https://thumb.photo-ac.com/15/1527a37a819426cf6ac7a8761eb4bf67_t.jpeg';
+			return storeUrlMap[decoration.key!];
 		}
 		if (decoration.decorationType === 'Text') {
 			return textMap[decoration.key!];
@@ -40,8 +41,11 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 	const sourceLoadRef = useRef<{ isLoading: boolean; onLoad?: () => void }>({ isLoading: false });
 	useEffect(() => {
 		if (value) {
-			sourceLoadRef.current.isLoading = true;
+			if (decoration.decorationType === 'Image') {
+				sourceLoadRef.current.isLoading = true;
+			}
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [value]);
 	const onSourceLoad = useCallback(() => {
 		sourceLoadRef.current.onLoad?.();
@@ -64,8 +68,10 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 				[decorationID]: {
 					...decoration,
 					transform: {
-						...decoration.transform,
-						...val,
+						translateX: val.translateX?.value || decoration.transform.translateX,
+						translateY: val.translateY?.value || decoration.transform.translateY,
+						scale: val.scale?.value || decoration.transform.scale,
+						rotateZ: val.rotateZ?.value || decoration.transform.rotateZ,
 					},
 				},
 			});
@@ -83,26 +89,24 @@ export const TMC02301Decoration = ({ decorationID, onLoad }: DecorationPropsInte
 		[decoration.order, isActive],
 	);
 
-	const designItemStyle = useMemo(
-		() => ({ ...decorationTypeFeature(decoration).designItemStyle, width: 100 }),
-		[decoration, decorationTypeFeature],
-	);
-
-	const { onAnimating, animatedStyle } = TCO001UseAnimatedStyle();
+	const { animatedStyle } = TCO001UseAnimatedStyle({
+		gesture: { translateX, translateY, scale, rotateZ },
+		componentSize: canvasSize,
+	});
 
 	return (
 		<TCO001GestureProvider
-			initial={decoration.transform}
+			gesture={{ translateX, translateY, scale, rotateZ }}
 			onEndGesture={onEndGesture}
 			isActive={isActive}
 			onSingleTapFinalize={onSingleTapFinalize}
-			onAnimating={onAnimating}>
+			componentSize={canvasSize}>
 			<Animated.View style={[animatedStyle, viewStyle]}>
 				<TMC02302MaskedDecoration
 					decorationID={decorationID}
 					value={value}
-					designItemStyle={designItemStyle}
 					onSourceLoad={onSourceLoad}
+					width={canvasSize.width / 3}
 				/>
 			</Animated.View>
 		</TCO001GestureProvider>

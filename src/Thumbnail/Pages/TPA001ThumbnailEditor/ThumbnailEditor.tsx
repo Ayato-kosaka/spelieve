@@ -1,31 +1,82 @@
-import React, { useCallback, useContext, useEffect } from 'react';
+import { MediaTypeOptions } from 'expo-image-picker';
+import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import { ActivityIndicator, Pressable, SafeAreaView, ScrollView, View } from 'react-native';
 import { Button, Dialog, Portal, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ViewShot from 'react-native-view-shot';
 
+import { TPA001BorderColorPickerDialog } from './BorderColorPickerDialog/BorderColorPickerDialog';
 import { TPA001ColorPickerDialog } from './ColorPickerDialog/ColorPickerDialog';
+import { TPA001CreateDecorationController } from './Controller/CreateDecorationController';
+import { TPA001FooterMenuController } from './Controller/FooterMenuController';
+import { TPA001LeaveDialogController } from './Controller/LeaveDialogController';
+import { TPA001MaskDialog } from './MaskDialog/MaskDialog';
 import { TPA001TextEditDialog } from './TextEditDialog/TextEditDialog';
-import { TPA001ThumbnailEditorController } from './ThumbnailEditorController';
 import { styles } from './ThumbnailEditorStyle';
 
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
+import { getWindowWidth } from '@/Common/Hooks/CHK001Utils';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ThumbnailStackScreenProps } from '@/Common/Navigation/NavigationInterface';
+import { TCT011MThumbnailOne } from '@/Thumbnail/Contexts/TCT011MThumbnailOne/ThumbnailOne';
 import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
+import { DecorationsMapInterface } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMapInterface';
 import { TMC02301Decoration } from '@/Thumbnail/Contexts/TCT023DecorationsMap/ModelComponents/TMC02301Decoration/Decoration';
 import { ThumnailRule } from '@/Thumbnail/Hooks/ThumbnailRule';
-import { TPA001MaskDecoration } from '@/Thumbnail/Pages/TPA001ThumbnailEditor/MaskDecoration/MaskDecoration';
 
 export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScreenProps<'TPA001ThumbnailEditor'>) => {
+	// パラメータ取得
+	const { fromThumbnailID } = route.params;
+
 	// グローバルコンテキスト取得
-	const { thumbnailItemMapper, setThumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
+	const { thumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
 
 	// コンテキスト取得
-	const { isLoading, decorationsMap } = useContext(TCT023DecorationsMap);
+	const { setThumbnailID } = useContext(TCT011MThumbnailOne);
+	const { isLoading, decorationsMap, activeDecorationID } = useContext(TCT023DecorationsMap);
 
+	const activeDecoration: DecorationsMapInterface | undefined = useMemo(
+		() => decorationsMap[activeDecorationID],
+		[activeDecorationID, decorationsMap],
+	);
+
+	// 画面の向きに応じて動的に変化する
+	const windowWidth = getWindowWidth();
+
+	// route.params.fromThumbnailID を監視し、context に渡す
+	useEffect(() => {
+		setThumbnailID(fromThumbnailID);
+		if (!fromThumbnailID) {
+			// TODO: テンプレート選択に画面遷移
+		}
+	}, [fromThumbnailID, setThumbnailID]);
+
+	const imagePickerOptions = useMemo(
+		() => ({
+			allowsEditing: false,
+			allowsMultipleSelection: false,
+			mediaTypes: MediaTypeOptions.Images,
+			quality: 1,
+		}),
+		[],
+	);
+	const imageManipulatorActions = useMemo(
+		() => [
+			{
+				resize: {
+					width: 900,
+				},
+			},
+		],
+		[],
+	);
+
+	// Controller 呼び出し
+	const { onTextPlusClicked, pickImage, onFigurePlusClicked } = TPA001CreateDecorationController({
+		imagePickerOptions,
+		imageManipulatorActions,
+	});
 	const {
-		activeDecoration,
 		viewShotRef,
 		onLoadResolveMap,
 		beforeLeaveDialog,
@@ -33,31 +84,23 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		onLeaveScreen,
 		onSaveClicked,
 		onDiscardClicked,
-		textEditDialog,
-		text,
-		hideTextEditDialog,
-		onSaveTextEditing,
-		maskDialog,
-		onSaveMaskDialog,
-		maskItemStyle,
-		onEndMaskGesture,
-		hideMaskDialog,
-		colorPickerDialog,
-		hideColorPickerDialog,
-		onSaveColorPickerDialog,
+	} = TPA001LeaveDialogController({
+		navigation,
+		route,
+	});
+	const {
+		deleteDecoration,
 		footerMenuList,
 		selectedFooterMenu,
+		setSelectedFooterMenu,
 		footerMenuOnPress,
 		bringToFront,
 		bringForward,
 		sendBackward,
 		sendToBack,
-		onTextPlusClicked,
-		pickImage,
-		onFigurePlusClicked,
-	} = TPA001ThumbnailEditorController({
-		navigation,
-		route,
+	} = TPA001FooterMenuController({
+		imagePickerOptions,
+		imageManipulatorActions,
 	});
 
 	const headerRight = useCallback(
@@ -93,32 +136,18 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 	return (
 		<>
 			<SafeAreaView />
+			<TPA001MaskDialog selectedFooterMenu={selectedFooterMenu} setSelectedFooterMenu={setSelectedFooterMenu} />
+			<TPA001ColorPickerDialog selectedFooterMenu={selectedFooterMenu} setSelectedFooterMenu={setSelectedFooterMenu} />
+			<TPA001BorderColorPickerDialog
+				selectedFooterMenu={selectedFooterMenu}
+				setSelectedFooterMenu={setSelectedFooterMenu}
+			/>
+			<TPA001TextEditDialog
+				selectedFooterMenu={selectedFooterMenu}
+				setSelectedFooterMenu={setSelectedFooterMenu}
+				deleteDecoration={deleteDecoration}
+			/>
 			<Portal>
-				{/* Mask ダイアログ */}
-				<Dialog visible={maskDialog.visible} onDismiss={onSaveMaskDialog}>
-					<Dialog.Content>
-						<TPA001MaskDecoration
-							decoration={decorationsMap[maskDialog.decorationID]}
-							imageURI={
-								decorationsMap[maskDialog.decorationID] &&
-								decorationsMap[maskDialog.decorationID]!.key &&
-								thumbnailItemMapper.storeUrlMap[decorationsMap[maskDialog.decorationID]!.key!]
-							}
-							maskUri={maskDialog.maskUri}
-							maskTransform={maskDialog.maskTransform}
-							onEndMaskGesture={onEndMaskGesture}
-							maskItemStyle={maskItemStyle}
-						/>
-					</Dialog.Content>
-					<Dialog.Actions>
-						<Button onPress={hideMaskDialog} color="black">
-							{i18n.t('Cancel')}
-						</Button>
-						<Button onPress={onSaveMaskDialog} color="black">
-							{i18n.t('Save')}
-						</Button>
-					</Dialog.Actions>
-				</Dialog>
 				{/* 閉じるボタン押下時に出現するダイアログ */}
 				<Dialog visible={beforeLeaveDialog.visible} onDismiss={hideBeforeLeaveDialog}>
 					<Dialog.Title>{i18n.t('Discard Thumbnail?')}</Dialog.Title>
@@ -140,23 +169,6 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 						</Button>
 					</Dialog.Actions>
 				</Dialog>
-
-				<TPA001TextEditDialog
-					textEditDialog={textEditDialog}
-					textProps={text}
-					hideTextEditDialog={hideTextEditDialog}
-					onSaveTextEditing={onSaveTextEditing}
-				/>
-
-				{/* Color 選択時のダイアログ */}
-				{activeDecoration && activeDecoration.color && (
-					<TPA001ColorPickerDialog
-						colorPickerDialog={colorPickerDialog}
-						colorProps={activeDecoration.color}
-						hideColorPickerDialog={hideColorPickerDialog}
-						onSaveColorPickerDialog={onSaveColorPickerDialog}
-					/>
-				)}
 			</Portal>
 			<View style={{ height: '100%', justifyContent: 'space-between' }}>
 				<Button
@@ -168,14 +180,24 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 
 				{/* キャバス */}
 				<ViewShot
-					// TODO: resize する
 					ref={viewShotRef}
-					// options={{
-					// 	result: 'base64',
-					// }}
-					style={{ width: '100%', aspectRatio: thumbnailItemMapper.aspectRatio, overflow: 'hidden', borderWidth: 1 }}>
+					options={{
+						width: 900,
+					}}
+					style={{
+						width: windowWidth,
+						aspectRatio: thumbnailItemMapper.aspectRatio,
+						overflow: 'hidden',
+						borderWidth: 1,
+						backgroundColor: 'white',
+					}}>
 					{Object.keys(decorationsMap).map((key) => (
-						<TMC02301Decoration key={key} decorationID={key} onLoad={onLoadResolveMap[key]} />
+						<TMC02301Decoration
+							key={key}
+							decorationID={key}
+							onLoad={onLoadResolveMap[key]}
+							canvasSize={{ width: windowWidth, height: windowWidth / thumbnailItemMapper.aspectRatio }}
+						/>
 					))}
 				</ViewShot>
 

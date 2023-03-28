@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { View } from 'react-native';
+import { useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 
 import { MaskDecorationPropsInterface } from './MaskDecorationInterface';
 
 import { TCO001GestureProvider } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProvider';
-import { GestureProviderInterface } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderPropsInterface';
 
 export const TPA001MaskDecoration = ({
 	decoration,
@@ -12,8 +12,13 @@ export const TPA001MaskDecoration = ({
 	maskUri,
 	maskTransform,
 	onEndMaskGesture,
-	maskItemStyle,
+	componentSize,
 }: MaskDecorationPropsInterface) => {
+	const translateX = useSharedValue(maskTransform.translateX);
+	const translateY = useSharedValue(maskTransform.translateY);
+	const scale = useSharedValue(maskTransform.scale);
+	const rotateZ = useSharedValue(maskTransform.rotateZ);
+
 	const maskRef = useRef<HTMLImageElement>(null);
 	const initMasRef = useCallback(() => {
 		if (!maskRef.current) return;
@@ -44,36 +49,56 @@ export const TPA001MaskDecoration = ({
 		}
 	}, [decoration, decoration?.maskUri, imageURI, initMasRef]);
 
-	const onAnimating = useCallback((event: GestureProviderInterface) => {
-		'worklet';
+	useAnimatedReaction(
+		() => ({
+			translateX: translateX.value,
+			translateY: translateY.value,
+			scale: scale.value,
+			rotateZ: rotateZ.value,
+		}),
+		(prepareResult, preparePreviousResult) => {
+			if (maskRef.current) {
+				maskRef.current.style.maskPosition = `${prepareResult.translateX}px ${prepareResult.translateY}px`;
+				maskRef.current.style.webkitMaskPosition = `${prepareResult.translateX}px ${prepareResult.translateY}px`;
+				maskRef.current.style.webkitMaskSize = 'auto 100%';
+				maskRef.current.style.maskSize = 'auto 100%';
+				// TODO: rotate は、div.mask を分ける必要ある
+			}
+		},
+		[translateX, translateY, scale, rotateZ],
+	);
 
-		if (maskRef.current) {
-			maskRef.current.style.maskPosition = `${event.translateX}px ${event.translateY}px`;
-			maskRef.current.style.webkitMaskPosition = `${event.translateX}px ${event.translateY}px`;
-			maskRef.current.style.webkitMaskSize = 'auto 100%';
-			maskRef.current.style.maskSize = 'auto 100%';
-			// TODO: rotate は、div.mask を分ける必要ある
-		}
-	}, []);
 	if (!decoration) {
 		return <View />;
 	}
 	return (
-		<TCO001GestureProvider initial={maskTransform} onEndGesture={onEndMaskGesture} onAnimating={onAnimating}>
+		<TCO001GestureProvider
+			gesture={{ translateX, translateY, scale, rotateZ }}
+			onEndGesture={onEndMaskGesture}
+			componentSize={componentSize}>
 			<View>
+				{decoration.decorationType === 'Figure' && (
+					<div
+						style={{
+							width: '100%',
+							maxHeight: 500,
+							backgroundColor: decoration.color,
+							aspectRatio: decoration.aspectRatio,
+						}}
+						ref={maskRef}
+					/>
+				)}
 				{decoration.decorationType === 'Image' && (
 					<img
 						src={imageURI}
 						alt="decoration"
 						style={{
+							width: '100%',
+							maxHeight: 500,
 							objectFit: 'cover',
-							...maskItemStyle,
 						}}
 						ref={maskRef}
 					/>
-				)}
-				{decoration.decorationType === 'Figure' && (
-					<div style={{ backgroundColor: decoration.color, ...maskItemStyle }} ref={maskRef} />
 				)}
 			</View>
 		</TCO001GestureProvider>

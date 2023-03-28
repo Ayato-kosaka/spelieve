@@ -1,6 +1,9 @@
 import { useCallback, useContext } from 'react';
 import { ActivityIndicator, Image, Pressable, View } from 'react-native';
 
+import { MThumbnail } from 'spelieve-common/lib/Models/Thumbnail/TDB01/MThumbnail';
+
+import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
 import { ThumbnailStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { TCT012MThumbnailList } from '@/Thumbnail/Contexts/TCT012MThumbnailList/MThumbnailList';
 
@@ -8,10 +11,18 @@ export const TPA002ThumbnailTemplate = ({
 	navigation,
 	route,
 }: ThumbnailStackScreenProps<'TPA002ThumbnailTemplate'>) => {
+	// グローバルコンテキスト取得
+	const { setThumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
+
 	const { thumbnailList, isLoading } = useContext(TCT012MThumbnailList);
 
 	const onThumbnailSelected = useCallback(
-		(thumbnailID: string) => {
+		(thumbnailID: string, thumbnail: MThumbnail) => {
+			setThumbnailItemMapper((val) => ({
+				...val,
+				storeUrlMap: thumbnail.dummyStoreUrlMap,
+				textMap: thumbnail.dummyTextMap,
+			}));
 			navigation.navigate({
 				name: 'TPA001ThumbnailEditor',
 				params: {
@@ -20,7 +31,7 @@ export const TPA002ThumbnailTemplate = ({
 				merge: true,
 			});
 		},
-		[navigation],
+		[navigation, setThumbnailItemMapper],
 	);
 
 	if (isLoading) {
@@ -38,7 +49,7 @@ export const TPA002ThumbnailTemplate = ({
 				return (
 					<Pressable
 						key={thumbnailDoc.id}
-						onPress={() => onThumbnailSelected(thumbnailDoc.id)}
+						onPress={() => onThumbnailSelected(thumbnailDoc.id, thumbnail)}
 						style={{
 							width: '50%',
 							padding: 8,

@@ -64,30 +64,24 @@ export const TCT023DecorationsMapProvider = ({ children }: { children: ReactNode
 		fetchData();
 	}, [firestoreConverter, getCollection, mThumbnailOneIsLoading, thumbnailDocRef]);
 
-	const createDecoration: DecorationsMapValInterface['createDecoration'] = useCallback(
-		(data) => {
-			const id = uuid.v4() as unknown as string;
-			setDecorationsMap({
-				...decorationsMap,
-				[id]: {
-					...data,
-					color: '#000',
-					order:
-						Object.keys(decorationsMap).length > 0
-							? Object.keys(decorationsMap).reduce(
-									(prev, key) => Math.max(prev, decorationsMap[key]!.order),
-									Number.MIN_SAFE_INTEGER,
-							  ) + 1
-							: 0,
-					createdAt: new Date(),
-					updatedAt: new Date(),
-				},
-			});
-		},
-		[decorationsMap],
-	);
-
 	const [activeDecorationID, setActiveDecorationID] = useState<string>('');
+
+	const createDecoration: DecorationsMapValInterface['createDecoration'] = useCallback((data) => {
+		const id = uuid.v4() as unknown as string;
+		setDecorationsMap((v) => ({
+			...v,
+			[id]: {
+				...data,
+				order:
+					Object.keys(v).length > 0
+						? Object.keys(v).reduce((prev, key) => Math.max(prev, v[key]!.order), Number.MIN_SAFE_INTEGER) + 1
+						: 0,
+				createdAt: new Date(),
+				updatedAt: new Date(),
+			},
+		}));
+		setActiveDecorationID(id);
+	}, []);
 
 	const value = useMemo(
 		() => ({

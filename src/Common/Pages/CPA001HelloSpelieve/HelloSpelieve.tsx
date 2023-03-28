@@ -7,6 +7,7 @@ import { RecentItinerariesInterface, getRecentItineraries } from './HelloSpeliev
 
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
 import { CCO007GoogleBannerAd } from '@/Common/Components/CCO007GoogleBannerAd/GoogleBannerAd';
+import { Error } from '@/Common/Hooks/CHK001Utils';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ItineraryStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { ENV } from '@/ENV';
@@ -16,14 +17,15 @@ import { customColors, materialColors } from '@/ThemeProvider';
 export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenProps<'HelloSpelieve'>) => {
 	const [recentItineraries, setRecentItineraries] = useState<RecentItinerariesInterface | undefined>(undefined);
 	useEffect(() => {
-		console.log('setRecentItineraries'); // TODO: 再ソートされない。この画面に入ったらソートしたい。
-		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		(async () => {
-			setRecentItineraries(
-				(await getRecentItineraries()).sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime()),
-			);
-		})();
-	}, []);
+		const unsubscribe = navigation.addListener('focus', () => {
+			(async () => {
+				setRecentItineraries(
+					(await getRecentItineraries()).sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime()),
+				);
+			})().catch((e) => Error('CPA001HelloSpelieve', 'setRecentItineraries', e));
+		});
+		return unsubscribe;
+	}, [navigation]);
 
 	const { setThumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
 
@@ -226,6 +228,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 										'https://firebasestorage.googleapis.com/v0/b/spelieve-dev.appspot.com/o/12373bcd-013b-43d3-bbcf-f95c3d991edc?alt=media&token=91171ed7-7a92-439b-9c4b-a675cabe49bc',
 								},
 								onBack(thumbnailID, thumbnailItemMapper, uri) {
+									// eslint-disable-next-line no-console
 									console.log('onBack', { thumbnailID, thumbnailItemMapper, uri });
 								},
 							});

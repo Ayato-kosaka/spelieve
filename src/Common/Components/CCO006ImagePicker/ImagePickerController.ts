@@ -1,5 +1,6 @@
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 import { launchImageLibraryAsync } from 'expo-image-picker';
+import { useCallback } from 'react';
 import { Alert } from 'react-native';
 
 import { ImagePickerPropsInterface } from './ImagePickerPropsInterface';
@@ -13,11 +14,14 @@ export const CCO006ImagePickerController = ({
 	imageManipulatorActions,
 	storage,
 }: Omit<ImagePickerPropsInterface, 'children' | 'style'>) => {
-	const resizeImage = async (uri: string): Promise<string> => {
-		const result = await manipulateAsync(uri, imageManipulatorActions, { compress: 1, format: SaveFormat.PNG });
-		return result.uri;
-	};
-	const pickImage = async () => {
+	const resizeImage = useCallback(
+		async (uri: string): Promise<string> => {
+			const result = await manipulateAsync(uri, imageManipulatorActions, { compress: 1, format: SaveFormat.PNG });
+			return result.uri;
+		},
+		[imageManipulatorActions],
+	);
+	const pickImage = useCallback(async () => {
 		// No permissions request is necessary for launching the image library
 		const pickerResult = await launchImageLibraryAsync(imagePickerOptions);
 
@@ -33,7 +37,7 @@ export const CCO006ImagePickerController = ({
 		} catch (e) {
 			Alert.alert(i18n.t('Upload failed, sorry :('));
 		}
-	};
+	}, [imagePickerOptions, onPickImage, resizeImage, storage]);
 
 	return { pickImage };
 };
