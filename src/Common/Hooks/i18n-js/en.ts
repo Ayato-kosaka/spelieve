@@ -115,7 +115,7 @@ const en: typeof Lang = {
 	'Dummy Text': 'Text',
 	テキストを入力してください: 'Enter text',
 	'Discard Thumbnail?': 'Discard Thumbnail?',
-	'変更を保存せずに戻りますか？': undefined,
+	'変更を保存せずに戻りますか？': 'Are you sure you want to leave without save your change?',
 	Discard: 'Discard',
 	'go to select template': 'Go to select template',
 	'Bring to Front': 'Bring to Front',
