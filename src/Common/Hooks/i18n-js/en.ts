@@ -105,7 +105,7 @@ const en: typeof Lang = {
 	Cancel: 'Cancel',
 	Save: 'Save',
 	Color: 'Color',
-	テキスト入力: undefined,
+	テキスト入力: 'Enter text',
 	EditText: 'EditText',
 	Replace: 'Replace',
 	Mask: 'Mask',
