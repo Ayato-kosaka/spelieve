@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { ScrollView } from 'react-native';
-import { Button, Dialog, TextInput, Portal, List, useTheme } from 'react-native-paper';
+import { ScrollView, View } from 'react-native';
+import { Button, Dialog, TextInput, Portal, List, useTheme, Text } from 'react-native-paper';
 
 import { TPA001TextEditDialogController } from './TextEditDialogController';
 import {
@@ -55,8 +55,12 @@ export const TPA001TextEditDialog = ({
 						}}
 						style={{ fontFamily }}
 					/>
+					<View style={{ flexDirection: 'row', overflow: 'hidden', height: 80, alignItems: 'center' }}>
+						<Text style={{ fontSize: 20, marginRight: 5 }}>FontFamily: </Text>
+						<Text style={{ fontFamily, fontSize: 20 }}>{fontFamily}</Text>
+					</View>
 					{fontsLoaded && (
-						<ScrollView style={{ height: 500 }}>
+						<ScrollView style={{ height: 450 }}>
 							{FONT_NAMES.map((fontName) => (
 								<List.Accordion
 									key={fontName}
