@@ -117,7 +117,7 @@ const en: typeof Lang = {
 	'Discard Thumbnail?': 'Discard Thumbnail?',
 	'変更を保存せずに戻りますか？': 'Are you sure you want to leave without save your change?',
 	Discard: 'Discard',
-	'go to select template': 'Go to select template',
+	'go to select template': 'Select template',
 	'Bring to Front': 'Bring to Front',
 	'Bring Forward': 'Bring Forward',
 	'Send Backward': 'Send Backward',
