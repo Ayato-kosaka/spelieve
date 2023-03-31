@@ -7,6 +7,7 @@ import { IPA001ItineraryEditController } from './ItineraryEditController';
 import { styles } from './ItineraryEditStyle';
 
 import { CCO003DateTimePicker } from '@/Common/Components/CCO003DateTimePicker';
+import { CCO007GoogleBannerAd } from '@/Common/Components/CCO007GoogleBannerAd/GoogleBannerAd';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ItineraryTopTabScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { ENV } from '@/ENV';
@@ -42,6 +43,7 @@ export const IPA001ItineraryEdit = ({ route, navigation }: ItineraryTopTabScreen
 
 	return (
 		<ScrollView>
+			<CCO007GoogleBannerAd />
 			<Pressable onPress={onPressThumbnail}>
 				<Image source={{ uri: pageItinerary.imageUrl }} resizeMode="cover" style={styles.image} />
 			</Pressable>
@@ -106,6 +108,7 @@ export const IPA001ItineraryEdit = ({ route, navigation }: ItineraryTopTabScreen
 				}}>
 				{i18n.t('copy Share URL')}
 			</Button>
+			<CCO007GoogleBannerAd />
 		</ScrollView>
 	);
 };

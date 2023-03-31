@@ -9,6 +9,7 @@ import { styles } from './EditPlanStyle';
 import { CCO003DateTimePicker } from '@/Common/Components/CCO003DateTimePicker';
 import { CCO004DurationPicker } from '@/Common/Components/CCO004DurationPicker';
 import { CCO006ImagePicker } from '@/Common/Components/CCO006ImagePicker/ImagePicker';
+import { CCO007GoogleBannerAd } from '@/Common/Components/CCO007GoogleBannerAd/GoogleBannerAd';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ItineraryStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { storage } from '@/Itinerary/Endpoint/firebaseStorage';
@@ -48,6 +49,7 @@ export const IPA003EditPlan = ({ route, navigation }: ItineraryStackScreenProps<
 
 	return (
 		<ScrollView>
+			<CCO007GoogleBannerAd />
 			<CCO006ImagePicker
 				onPickImage={onChangeImage}
 				imagePickerOptions={{
@@ -133,6 +135,7 @@ export const IPA003EditPlan = ({ route, navigation }: ItineraryStackScreenProps<
 				</Button>
 			)}
 			<PMC01202PlaceInformation />
+			<CCO007GoogleBannerAd />
 		</ScrollView>
 	);
 };
