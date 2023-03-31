@@ -113,7 +113,7 @@ const en: typeof Lang = {
 	Duplication: 'Duplication',
 	Delete: 'Delete',
 	'Dummy Text': 'Text',
-	テキストを入力してください: undefined,
+	テキストを入力してください: 'Enter text',
 	'Discard Thumbnail?': 'Discard Thumbnail?',
 	'変更を保存せずに戻りますか？': undefined,
 	Discard: 'Discard',
