@@ -52,11 +52,11 @@ export const TMC02302MaskedDecoration = ({
 						}}
 						style={[
 							{
-								flex: 1,
+								height: '100%',
 								transform: maskTransform,
 							},
 						]}
-						resizeMode="cover"
+						resizeMode="contain"
 					/>
 				) : (
 					<View

@@ -45,7 +45,7 @@ export const TPA001MaskDecoration = ({
 							}}
 							style={[
 								{
-									flex: 1,
+									height: '100%',
 								},
 								animatedStyle,
 							]}
