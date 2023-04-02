@@ -5,6 +5,7 @@ import { TCT023DecorationsMap } from '../../DecorationsMap';
 
 import { MaskedDecorationPropsInterface } from './MaskedDecorationInterface';
 
+import i18n from '@/Common/Hooks/i18n-js';
 import { TCO003OutlineTextBorder } from '@/Thumbnail/Components/TCO003OutlineTextBorder/OutlineTextBorder';
 
 export const TMC02302MaskedDecoration = ({
@@ -72,7 +73,7 @@ export const TMC02302MaskedDecoration = ({
 				<TCO003OutlineTextBorder
 					stroke={2}
 					textShadowColor={decoration.borderColor}
-					text={value || 'Dummy Text'}
+					text={value || i18n.t('Dummy Text')}
 					textProps={{
 						style: {
 							fontSize: 64,
