@@ -134,8 +134,7 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 	}
 
 	return (
-		<>
-			<SafeAreaView />
+		<SafeAreaView>
 			<TPA001MaskDialog selectedFooterMenu={selectedFooterMenu} setSelectedFooterMenu={setSelectedFooterMenu} />
 			<TPA001ColorPickerDialog selectedFooterMenu={selectedFooterMenu} setSelectedFooterMenu={setSelectedFooterMenu} />
 			<TPA001BorderColorPickerDialog
@@ -174,7 +173,9 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 				<Button
 					onPress={() => {
 						navigation.navigate('TPA002ThumbnailTemplate', {});
-					}}>
+					}}
+					color="black"
+					style={{ height: 80 }}>
 					{i18n.t('go to select template')}
 				</Button>
 
@@ -202,7 +203,7 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 				</ViewShot>
 
 				{/* フッター */}
-				<View>
+				<View style={{ height: 80 }}>
 					{/* フッター大分類 */}
 					<ScrollView horizontal>
 						{footerMenuList
@@ -244,6 +245,6 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 					)}
 				</View>
 			</View>
-		</>
+		</SafeAreaView>
 	);
 };
