@@ -203,7 +203,7 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 				</ViewShot>
 
 				{/* フッター */}
-				<View style={{ height: 80 }}>
+				<View style={{ minHeight: 80 }}>
 					{/* フッター大分類 */}
 					<ScrollView horizontal>
 						{footerMenuList
