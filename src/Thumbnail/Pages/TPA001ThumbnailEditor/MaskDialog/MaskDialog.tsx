@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Image, Pressable, View } from 'react-native';
+import { Image, Pressable, ScrollView, View } from 'react-native';
 import { Button, Dialog, Portal } from 'react-native-paper';
 
 import { TPA001MaskDialogController } from './MaskDialogController';
@@ -45,11 +45,14 @@ export const TPA001MaskDialog = ({ selectedFooterMenu, setSelectedFooterMenu }: 
 								onEndMaskGesture={onEndMaskGesture}
 								componentSize={componentSize}
 							/>
-							<View>
+							<ScrollView horizontal>
 								{maskShapeList.map((maskShapeDoc) => {
 									const maskShape = maskShapeDoc.data();
 									return (
-										<Pressable key={maskShapeDoc.id} onPress={() => onSelectMask(maskShape.storageUrl)}>
+										<Pressable
+											key={maskShapeDoc.id}
+											onPress={() => onSelectMask(maskShape.storageUrl)}
+											style={{ margin: 5 }}>
 											<Image
 												source={{ uri: maskShape.storageUrl }}
 												style={{ width: 50, aspectRatio: 1 }}
@@ -58,7 +61,7 @@ export const TPA001MaskDialog = ({ selectedFooterMenu, setSelectedFooterMenu }: 
 										</Pressable>
 									);
 								})}
-							</View>
+							</ScrollView>
 						</View>
 					)}
 				</Dialog.Content>
