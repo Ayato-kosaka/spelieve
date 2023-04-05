@@ -63,20 +63,24 @@ export const TMC02301Decoration = ({ decorationID, onLoad, canvasSize }: Decorat
 
 	const onEndGesture: GestureProviderPropsInterface['onEndGesture'] = useCallback(
 		(val) => {
-			setDecorationsMap({
-				...decorationsMap,
-				[decorationID]: {
-					...decoration,
-					transform: {
-						translateX: val.translateX?.value || decoration.transform.translateX,
-						translateY: val.translateY?.value || decoration.transform.translateY,
-						scale: val.scale?.value || decoration.transform.scale,
-						rotateZ: val.rotateZ?.value || decoration.transform.rotateZ,
+			setDecorationsMap((dm) => {
+				const d = dm[decorationID];
+				if (!d) return dm;
+				return {
+					...dm,
+					[decorationID]: {
+						...d,
+						transform: {
+							translateX: val.translateX?.value || d.transform.translateX,
+							translateY: val.translateY?.value || d.transform.translateY,
+							scale: val.scale?.value || d.transform.scale,
+							rotateZ: val.rotateZ?.value || d.transform.rotateZ,
+						},
 					},
-				},
+				};
 			});
 		},
-		[decoration, decorationID, decorationsMap, setDecorationsMap],
+		[decorationID, setDecorationsMap],
 	);
 
 	const isActive = useMemo(() => activeDecorationID === decorationID, [activeDecorationID, decorationID]);
