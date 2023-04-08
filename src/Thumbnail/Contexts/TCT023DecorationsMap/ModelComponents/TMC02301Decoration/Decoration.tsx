@@ -88,6 +88,13 @@ export const TMC02301Decoration = ({ decorationID, onLoad, canvasSize }: Decorat
 		setActiveDecorationID(decorationID);
 	}, [decorationID, setActiveDecorationID]);
 
+	const maskedDecorationSize = useMemo(
+		() => ({
+			width: canvasSize.width / 3,
+			height: canvasSize.width / 3 / decoration.aspectRatio,
+		}),
+		[canvasSize.width, decoration.aspectRatio],
+	);
 	const viewStyle: StyleProp<ViewStyle> = useMemo(
 		() => ({ zIndex: decoration.order, position: 'absolute', borderWidth: isActive ? 1 : 0 }),
 		[decoration.order, isActive],
@@ -95,7 +102,8 @@ export const TMC02301Decoration = ({ decorationID, onLoad, canvasSize }: Decorat
 
 	const { animatedStyle } = TCO001UseAnimatedStyle({
 		gesture: { translateX, translateY, scale, rotateZ },
-		componentSize: canvasSize,
+		canvasSize,
+		componentSize: maskedDecorationSize,
 	});
 
 	return (
@@ -104,13 +112,13 @@ export const TMC02301Decoration = ({ decorationID, onLoad, canvasSize }: Decorat
 			onEndGesture={onEndGesture}
 			isActive={isActive}
 			onSingleTapFinalize={onSingleTapFinalize}
-			componentSize={canvasSize}>
+			canvasSize={canvasSize}>
 			<Animated.View style={[animatedStyle, viewStyle]}>
 				<TMC02302MaskedDecoration
 					decorationID={decorationID}
 					value={value}
 					onSourceLoad={onSourceLoad}
-					width={canvasSize.width / 3}
+					containerSize={maskedDecorationSize}
 				/>
 			</Animated.View>
 		</TCO001GestureProvider>
