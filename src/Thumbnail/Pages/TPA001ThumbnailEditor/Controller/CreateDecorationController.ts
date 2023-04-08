@@ -33,7 +33,7 @@ export const TPA001CreateDecorationController = ({
 				translateX: 0.5,
 				translateY: 0.5,
 				rotateZ: 0,
-				scale: 1,
+				scale: 1 / 3,
 			},
 			maskTransform: {
 				translateX: 0,

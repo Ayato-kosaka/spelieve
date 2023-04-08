@@ -90,8 +90,8 @@ export const TMC02301Decoration = ({ decorationID, onLoad, canvasSize }: Decorat
 
 	const maskedDecorationSize = useMemo(
 		() => ({
-			width: canvasSize.width / 3,
-			height: canvasSize.width / 3 / decoration.aspectRatio,
+			width: canvasSize.width,
+			height: canvasSize.width / decoration.aspectRatio,
 		}),
 		[canvasSize.width, decoration.aspectRatio],
 	);
