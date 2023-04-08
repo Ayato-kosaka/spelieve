@@ -22,6 +22,7 @@ import { TCT011MThumbnailOne } from '@/Thumbnail/Contexts/TCT011MThumbnailOne/Th
 import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
 import { DecorationsMapInterface } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMapInterface';
 import { TMC02301Decoration } from '@/Thumbnail/Contexts/TCT023DecorationsMap/ModelComponents/TMC02301Decoration/Decoration';
+import { THK001UseFonts } from '@/Thumbnail/Hooks/THK001UseFonts';
 import { ThumnailRule } from '@/Thumbnail/Hooks/ThumbnailRule';
 
 export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScreenProps<'TPA001ThumbnailEditor'>) => {
@@ -103,6 +104,8 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		imageManipulatorActions,
 	});
 
+	const { fontsLoaded } = THK001UseFonts();
+
 	const headerRight = useCallback(
 		() => (
 			<View style={{ flexDirection: 'row' }}>
@@ -129,7 +132,7 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		});
 	}, [headerLeft, headerRight, navigation]);
 
-	if (isLoading) {
+	if (isLoading || fontsLoaded === false) {
 		return <ActivityIndicator animating />;
 	}
 
