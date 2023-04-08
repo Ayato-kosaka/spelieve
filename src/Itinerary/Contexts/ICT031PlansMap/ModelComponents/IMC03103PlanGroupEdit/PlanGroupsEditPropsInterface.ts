@@ -1,6 +1,6 @@
 import { QueryDocumentSnapshot } from 'firebase/firestore';
 
-import { PlanGroupsListInterface } from 'spelieve-common/lib/Interfaces';
+import { PlanGroupsListInterface } from '@/Itinerary/Contexts/ICT021PlanGroupsList/PlanGroupsListInterface';
 
 export interface PlanGroupsEditPropsInterface {
 	planGroupsDoc: QueryDocumentSnapshot<PlanGroupsListInterface>;

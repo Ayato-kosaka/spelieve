@@ -4,13 +4,12 @@ import { setDoc } from 'firebase/firestore';
 import { useContext, useEffect, useMemo, useCallback, useState, useRef } from 'react';
 import { TextInputChangeEventData } from 'react-native';
 
-import { PlansMapInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT031';
-
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
 import { ItineraryStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { ICT011ItineraryOne } from '@/Itinerary/Contexts/ICT011ItineraryOne';
 import { ICT021PlanGroupsList } from '@/Itinerary/Contexts/ICT021PlanGroupsList';
 import { ICT031PlansMap } from '@/Itinerary/Contexts/ICT031PlansMap';
+import { PlansMapInterface } from '@/Itinerary/Contexts/ICT031PlansMap/PlansMapInterface';
 import { PCT012MPlaceOne } from '@/Place/Contexts/PCT012MPlaceOne';
 
 export const IPA003EditPlanController = ({ route, navigation }: ItineraryStackScreenProps<'EditPlan'>) => {

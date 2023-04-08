@@ -1,18 +1,17 @@
 import { useContext, useEffect, useMemo } from 'react';
 
-import { ItineraryPreviewControllerInterface } from 'spelieve-common/lib/Interfaces';
 import { ItineraryOneInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT011';
-import { PlansMapInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT031';
 
 import { ItineraryTopTabScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { ICT011ItineraryOne } from '@/Itinerary/Contexts/ICT011ItineraryOne';
 import { ICT021PlanGroupsList } from '@/Itinerary/Contexts/ICT021PlanGroupsList';
 import { ICT031PlansMap } from '@/Itinerary/Contexts/ICT031PlansMap';
+import { PlansMapInterface } from '@/Itinerary/Contexts/ICT031PlansMap/PlansMapInterface';
 
 export const IPA004ItineraryPreviewController = ({
 	route,
 	navigation,
-}: ItineraryTopTabScreenProps<'ItineraryPreview'>): ItineraryPreviewControllerInterface => {
+}: ItineraryTopTabScreenProps<'ItineraryPreview'>) => {
 	const { itineraryDocSnap } = useContext(ICT011ItineraryOne);
 	const itinerary: ItineraryOneInterface | undefined = useMemo(() => itineraryDocSnap?.data(), [itineraryDocSnap]);
 

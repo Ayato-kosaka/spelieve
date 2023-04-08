@@ -2,11 +2,12 @@ import { TransitMode, TransitRoutingPreference } from '@googlemaps/google-maps-s
 import { collection, query, QuerySnapshot, onSnapshot, addDoc, orderBy } from 'firebase/firestore';
 import { useState, createContext, useEffect, useContext, useMemo, ReactNode, useCallback } from 'react';
 
-import { PlanGroupsListInterface, PlanGroupsListValInterface } from 'spelieve-common/lib/Interfaces/Itinerary';
 import { PlanGroups } from 'spelieve-common/lib/Models/Itinerary/IDB02/PlanGroups';
 import { Plans } from 'spelieve-common/lib/Models/Itinerary/IDB03/Plans';
 import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
+
+import { PlanGroupsListInterface, PlanGroupsListValInterface } from './PlanGroupsListInterface';
 
 import { ICT011ItineraryOne } from '@/Itinerary/Contexts/ICT011ItineraryOne';
 import { ICT031PlansMap } from '@/Itinerary/Contexts/ICT031PlansMap';
