@@ -43,7 +43,7 @@ export const TPA001MaskDialog = ({ selectedFooterMenu, setSelectedFooterMenu }: 
 								maskUri={maskDialog.maskUri}
 								maskTransform={maskDialog.maskTransform}
 								onEndMaskGesture={onEndMaskGesture}
-								componentSize={componentSize}
+								canvasSize={componentSize}
 							/>
 							<ScrollView horizontal>
 								{maskShapeList.map((maskShapeDoc) => {
