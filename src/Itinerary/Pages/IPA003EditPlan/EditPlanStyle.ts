@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
 	image: {
 		aspectRatio: 16 / 9,
 		backgroundColor: materialColors.grey[300],
-		height: 150,
+		width: '100%',
 	},
 	memoTextInput: {
 		backgroundColor: '#fff',
