@@ -20,8 +20,8 @@ export const TPA002ThumbnailTemplate = ({
 		(thumbnailID: string, thumbnail: MThumbnail) => {
 			setThumbnailItemMapper((val) => ({
 				...val,
-				storeUrlMap: thumbnail.dummyStoreUrlMap,
-				textMap: thumbnail.dummyTextMap,
+				storeUrlMap: { ...thumbnail.dummyStoreUrlMap, ...val.storeUrlMap },
+				textMap: { ...thumbnail.dummyTextMap, ...val.textMap },
 			}));
 			navigation.navigate({
 				name: 'TPA001ThumbnailEditor',
