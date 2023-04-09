@@ -2,6 +2,7 @@ import { Action } from 'expo-image-manipulator';
 import { ImagePickerOptions } from 'expo-image-picker';
 import { useCallback, useContext, useMemo, useState } from 'react';
 import { GestureResponderEvent, PressableProps } from 'react-native';
+import uuid from 'react-native-uuid';
 
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
 import { CCO006ImagePickerController } from '@/Common/Components/CCO006ImagePicker/ImagePickerController';
@@ -69,8 +70,32 @@ export const TPA001FooterMenuController = ({
 		if (!activeDecoration) {
 			return;
 		}
-		createDecoration(activeDecoration);
-	}, [activeDecoration, createDecoration]);
+		const newDecoration = { ...activeDecoration };
+		if (activeDecoration.decorationType === 'Text') {
+			// duplicate text
+			const key = uuid.v4() as string;
+			setThumbnailItemMapper((value) => ({
+				...value,
+				textMap: {
+					...value.textMap,
+					[key]: value.textMap[activeDecoration.key!],
+				},
+			}));
+			newDecoration.key = key;
+		} else if (activeDecoration.decorationType === 'Image') {
+			// duplicate image source url
+			const key = uuid.v4() as string;
+			setThumbnailItemMapper((v) => ({
+				...v,
+				storeUrlMap: {
+					...v.storeUrlMap,
+					[key]: v.storeUrlMap[activeDecoration.key!],
+				},
+			}));
+			newDecoration.key = key;
+		}
+		createDecoration(newDecoration);
+	}, [activeDecoration, createDecoration, setThumbnailItemMapper]);
 
 	const bringToFront = useCallback(() => {
 		if (!activeDecoration) {
