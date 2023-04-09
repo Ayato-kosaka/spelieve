@@ -212,7 +212,8 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 						{footerMenuList
 							.filter(
 								(footerMenu) =>
-									activeDecoration && ThumnailRule.FooterDisplay()[activeDecoration.decorationType][footerMenu.key],
+									activeDecoration &&
+									ThumnailRule.FooterDisplay()[activeDecoration.decorationType][footerMenu.key] === true,
 							)
 							.map((footerMenu, index) => (
 								<Pressable
