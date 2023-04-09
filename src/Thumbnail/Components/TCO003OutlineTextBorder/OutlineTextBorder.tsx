@@ -3,7 +3,13 @@ import { Text } from 'react-native-paper';
 
 import { OutlineTextBorderInterface } from './OutlineTextBorderInterface';
 
-export const TCO003OutlineTextBorder = ({ textShadowColor, stroke, text, textProps }: OutlineTextBorderInterface) => {
+export const TCO003OutlineTextBorder = ({
+	textShadowColor,
+	stroke,
+	text,
+	textProps,
+	onLayout,
+}: OutlineTextBorderInterface) => {
 	const createClones = (w: number, h: number) => {
 		const currentProps = textProps;
 
@@ -36,7 +42,7 @@ export const TCO003OutlineTextBorder = ({ textShadowColor, stroke, text, textPro
 	const left = createClones(-strokeW * 1.2, 0);
 
 	return (
-		<View>
+		<View onLayout={onLayout}>
 			<View style={{ position: 'absolute' }}>{left}</View>
 			<View style={{ position: 'absolute' }}>{right}</View>
 			<View style={{ position: 'absolute' }}>{bottom}</View>

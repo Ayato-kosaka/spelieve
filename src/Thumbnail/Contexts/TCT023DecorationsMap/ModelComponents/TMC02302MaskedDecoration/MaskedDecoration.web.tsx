@@ -5,9 +5,6 @@ import { TCT023DecorationsMap } from '../../DecorationsMap';
 
 import { MaskedDecorationPropsInterface } from './MaskedDecorationInterface';
 
-import i18n from '@/Common/Hooks/i18n-js';
-import { TCO003OutlineTextBorder } from '@/Thumbnail/Components/TCO003OutlineTextBorder/OutlineTextBorder';
-
 export const TMC02302MaskedDecoration = ({
 	decorationID,
 	value,
@@ -67,21 +64,6 @@ export const TMC02302MaskedDecoration = ({
 						borderStyle: 'solid',
 					}}
 					ref={maskRef}
-				/>
-			)}
-			{decoration.decorationType === 'Text' && decoration.key && (
-				<TCO003OutlineTextBorder
-					stroke={2}
-					textShadowColor={decoration.borderColor}
-					text={value || i18n.t('Dummy Text')}
-					textProps={{
-						style: {
-							fontSize: 64,
-							color: decoration.color,
-							width: '100%',
-							fontFamily: decoration.fontFamily,
-						},
-					}}
 				/>
 			)}
 			{decoration.decorationType === 'Image' && (

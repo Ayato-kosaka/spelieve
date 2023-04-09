@@ -1,5 +1,5 @@
-import { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { LayoutChangeEvent, StyleProp, ViewStyle } from 'react-native';
 import Animated, { useSharedValue } from 'react-native-reanimated';
 
 import { TCT023DecorationsMap } from '../../DecorationsMap';
@@ -11,6 +11,7 @@ import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/G
 import { TCO001GestureProvider } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProvider';
 import { TCO001UseAnimatedStyle } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderController';
 import { GestureProviderPropsInterface } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderPropsInterface';
+import { TCO003OutlineTextBorder } from '@/Thumbnail/Components/TCO003OutlineTextBorder/OutlineTextBorder';
 
 export const TMC02301Decoration = ({ decorationID, onLoad, canvasSize }: DecorationPropsInterface) => {
 	const { thumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
@@ -88,13 +89,27 @@ export const TMC02301Decoration = ({ decorationID, onLoad, canvasSize }: Decorat
 		setActiveDecorationID(decorationID);
 	}, [decorationID, setActiveDecorationID]);
 
-	const maskedDecorationSize = useMemo(
-		() => ({
-			width: canvasSize.width,
-			height: canvasSize.width / decoration.aspectRatio,
-		}),
-		[canvasSize.width, decoration.aspectRatio],
+	/*
+	 * デコレーションのサイズを取得する
+	 * Text の場合、FontSize を固定したいため、 onLayout を使用する。
+	 * Image, Figure の場合、 width を固定したいため、canvasSize と aspectRatio を使用する。
+	 */
+	const [decorationSize, setDecorationSize] = useState<
+		| {
+				width: number;
+				height: number;
+		  }
+		| undefined
+	>(
+		decoration.decorationType === 'Text'
+			? undefined
+			: { width: canvasSize.width, height: canvasSize.width * decoration.aspectRatio },
 	);
+	const onTextLayout = useCallback((event: LayoutChangeEvent) => {
+		const { width, height } = event.nativeEvent.layout;
+		setDecorationSize({ width, height });
+	}, []);
+
 	const viewStyle: StyleProp<ViewStyle> = useMemo(
 		() => ({ zIndex: decoration.order, position: 'absolute', borderWidth: isActive ? 1 : 0 }),
 		[decoration.order, isActive],
@@ -103,7 +118,7 @@ export const TMC02301Decoration = ({ decorationID, onLoad, canvasSize }: Decorat
 	const { animatedStyle } = TCO001UseAnimatedStyle({
 		gesture: { translateX, translateY, scale, rotateZ },
 		canvasSize,
-		componentSize: maskedDecorationSize,
+		componentSize: decorationSize,
 	});
 
 	return (
@@ -114,12 +129,33 @@ export const TMC02301Decoration = ({ decorationID, onLoad, canvasSize }: Decorat
 			onSingleTapFinalize={onSingleTapFinalize}
 			canvasSize={canvasSize}>
 			<Animated.View style={[animatedStyle, viewStyle]}>
-				<TMC02302MaskedDecoration
-					decorationID={decorationID}
-					value={value}
-					onSourceLoad={onSourceLoad}
-					containerSize={maskedDecorationSize}
-				/>
+				{decoration.decorationType === 'Text' ? (
+					value && (
+						<TCO003OutlineTextBorder
+							stroke={2}
+							textShadowColor={decoration.borderColor}
+							text={value}
+							textProps={{
+								style: {
+									fontSize: 72000 / canvasSize.width,
+									color: decoration.color,
+									width: '100%',
+									height: decorationSize?.height,
+									fontFamily: decoration.fontFamily,
+								},
+							}}
+							onLayout={onTextLayout}
+						/>
+					)
+				) : (
+					<TMC02302MaskedDecoration
+						decorationID={decorationID}
+						value={value}
+						onSourceLoad={onSourceLoad}
+						// Text 出ない場合、decorationSize は必ず存在する
+						containerSize={decorationSize!}
+					/>
+				)}
 			</Animated.View>
 		</TCO001GestureProvider>
 	);

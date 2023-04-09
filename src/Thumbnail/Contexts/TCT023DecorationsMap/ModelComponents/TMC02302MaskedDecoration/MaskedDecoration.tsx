@@ -7,8 +7,6 @@ import { TCT023DecorationsMap } from '../../DecorationsMap';
 
 import { MaskedDecorationPropsInterface } from './MaskedDecorationInterface';
 
-import { TCO003OutlineTextBorder } from '@/Thumbnail/Components/TCO003OutlineTextBorder/OutlineTextBorder';
-
 export const TMC02302MaskedDecoration = ({
 	decorationID,
 	value,
@@ -94,21 +92,6 @@ export const TMC02302MaskedDecoration = ({
 					}}
 					onLoad={onSourceLoad}
 					resizeMode="cover"
-				/>
-			)}
-			{decoration.decorationType === 'Text' && value && (
-				<TCO003OutlineTextBorder
-					stroke={2}
-					textShadowColor={decoration.borderColor}
-					text={value}
-					textProps={{
-						style: {
-							fontSize: 64,
-							color: decoration.color,
-							width: '100%',
-							fontFamily: decoration.fontFamily,
-						},
-					}}
 				/>
 			)}
 		</MaskedView>

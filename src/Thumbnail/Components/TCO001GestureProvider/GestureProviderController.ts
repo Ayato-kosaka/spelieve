@@ -3,7 +3,7 @@ import { useAnimatedStyle } from 'react-native-reanimated';
 import { GestureProviderPropsInterface } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderPropsInterface';
 
 interface UseAnimatedStyleInterface extends Pick<GestureProviderPropsInterface, 'gesture' | 'canvasSize'> {
-	componentSize?: { width: number; height: number };
+	componentSize?: { width: number; height: number } | undefined;
 }
 
 export const TCO001UseAnimatedStyle = ({
