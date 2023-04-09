@@ -103,7 +103,7 @@ export const TMC02301Decoration = ({ decorationID, onLoad, canvasSize }: Decorat
 	>(
 		decoration.decorationType === 'Text'
 			? undefined
-			: { width: canvasSize.width, height: canvasSize.width * decoration.aspectRatio },
+			: { width: canvasSize.width, height: canvasSize.width / decoration.aspectRatio },
 	);
 	const onTextLayout = useCallback((event: LayoutChangeEvent) => {
 		const { width, height } = event.nativeEvent.layout;
@@ -152,7 +152,7 @@ export const TMC02301Decoration = ({ decorationID, onLoad, canvasSize }: Decorat
 						decorationID={decorationID}
 						value={value}
 						onSourceLoad={onSourceLoad}
-						// Text 出ない場合、decorationSize は必ず存在する
+						// Text でない場合、decorationSize は必ず存在する
 						containerSize={decorationSize!}
 					/>
 				)}
