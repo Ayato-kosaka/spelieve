@@ -8,6 +8,7 @@ export const TCO003OutlineTextBorder = ({
 	stroke,
 	text,
 	textProps,
+	containerStyle,
 	onLayout,
 }: OutlineTextBorderInterface) => {
 	const createClones = (w: number, h: number) => {
@@ -42,7 +43,7 @@ export const TCO003OutlineTextBorder = ({
 	const left = createClones(-strokeW * 1.2, 0);
 
 	return (
-		<View onLayout={onLayout}>
+		<View onLayout={onLayout} style={containerStyle}>
 			<View style={{ position: 'absolute' }}>{left}</View>
 			<View style={{ position: 'absolute' }}>{right}</View>
 			<View style={{ position: 'absolute' }}>{bottom}</View>

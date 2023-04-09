@@ -140,10 +140,10 @@ export const TMC02301Decoration = ({ decorationID, onLoad, canvasSize }: Decorat
 									fontSize: 72000 / canvasSize.width,
 									color: decoration.color,
 									width: '100%',
-									height: decorationSize?.height,
 									fontFamily: decoration.fontFamily,
 								},
 							}}
+							containerStyle={{ width: decorationSize?.width, height: decorationSize?.height }}
 							onLayout={onTextLayout}
 						/>
 					)
