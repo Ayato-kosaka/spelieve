@@ -32,19 +32,21 @@ export const TPA001MaskDialog = ({ selectedFooterMenu, setSelectedFooterMenu }: 
 					{isLoading ? (
 						<View />
 					) : (
-						<View onLayout={onLayout}>
-							<TPA001MaskDecoration
-								decoration={decorationsMap[maskDialog.decorationID]}
-								imageURI={
-									decorationsMap[maskDialog.decorationID] &&
-									decorationsMap[maskDialog.decorationID]!.key &&
-									thumbnailItemMapper.storeUrlMap[decorationsMap[maskDialog.decorationID]!.key!]
-								}
-								maskUri={maskDialog.maskUri}
-								maskTransform={maskDialog.maskTransform}
-								onEndMaskGesture={onEndMaskGesture}
-								canvasSize={componentSize}
-							/>
+						<View>
+							<View onLayout={onLayout} style={{ borderWidth: 1 }}>
+								<TPA001MaskDecoration
+									decoration={decorationsMap[maskDialog.decorationID]}
+									imageURI={
+										decorationsMap[maskDialog.decorationID] &&
+										decorationsMap[maskDialog.decorationID]!.key &&
+										thumbnailItemMapper.storeUrlMap[decorationsMap[maskDialog.decorationID]!.key!]
+									}
+									maskUri={maskDialog.maskUri}
+									maskTransform={maskDialog.maskTransform}
+									onEndMaskGesture={onEndMaskGesture}
+									canvasSize={componentSize}
+								/>
+							</View>
 							<ScrollView horizontal>
 								{maskShapeList.map((maskShapeDoc) => {
 									const maskShape = maskShapeDoc.data();
