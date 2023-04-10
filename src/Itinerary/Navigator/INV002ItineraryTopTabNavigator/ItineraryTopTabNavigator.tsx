@@ -1,52 +1,31 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useCallback, useEffect } from 'react';
-import { View } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
-import { ItineraryEditPropsInterface } from 'spelieve-common/lib/Interfaces/Itinerary/IPA001';
+import React, { useEffect } from 'react';
 
 import { INV002ItineraryTopTabNavigatorController } from './ItineraryTopTabNavigatorController';
 
-import { BottomTabParamList } from '@/App';
 import i18n from '@/Common/Hooks/i18n-js';
+import { ItineraryTopTabParamList, ItineraryStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { IPA001ItineraryEdit } from '@/Itinerary/Pages/IPA001ItineraryEdit';
 import { IPA004ItineraryPreview } from '@/Itinerary/Pages/IPA004ItineraryPreview';
 
-export type TopTabParamList = {
-	ItineraryEdit: ItineraryEditPropsInterface;
-	ItineraryPreview: ItineraryEditPropsInterface;
-};
-
-const Tab = createMaterialTopTabNavigator<TopTabParamList>();
+const Tab = createMaterialTopTabNavigator<ItineraryTopTabParamList>();
 
 export const INV002ItineraryTopTabNavigator = ({
 	route,
 	navigation,
-}: NativeStackScreenProps<BottomTabParamList, 'TopTab'>) => {
-	const { itinerary, onPressSetting } = INV002ItineraryTopTabNavigatorController({
+}: ItineraryStackScreenProps<'ItineraryTopTabNavigator'>) => {
+	const { itinerary } = INV002ItineraryTopTabNavigatorController({
 		route,
 		navigation,
 	});
 
-	const headerRight = useCallback(
-		() => (
-			<View style={{ flexDirection: 'row' }}>
-				{/* <MaterialCommunityIcons name="export-variant" size={30} /> */}
-				<MaterialCommunityIcons name="cog" size={30} onPress={onPressSetting} />
-			</View>
-		),
-		[onPressSetting],
-	);
-
 	useEffect(() => {
 		if (itinerary) {
 			navigation.setOptions({
-				title: itinerary?.title || '',
-				headerRight,
+				title: '',
 			});
 		}
-	}, [itinerary, headerRight, navigation]);
+	}, [itinerary, navigation]);
 
 	return (
 		<Tab.Navigator initialRouteName="ItineraryEdit">

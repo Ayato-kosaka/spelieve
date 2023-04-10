@@ -3,10 +3,16 @@
 	"compilerOptions": {
 		"strict": true,
 		"baseUrl": "./",
+		"incremental": true,
+		"noEmit": true,
+		"outDir": "dist/",
 		"paths": {
 			"@/*": ["./src/*"],
 			"@assets/*": ["./assets/*"]
 		}
 	},
-	"typeRoots": ["./types"]
+	"typeRoots": ["./types"],
+	"include": ["src/**/*"],
+	// exclude を明示的に指定
+	"exclude": ["node_modules", "dist"]
 }

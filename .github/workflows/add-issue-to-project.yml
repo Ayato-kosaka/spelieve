@@ -1,0 +1,26 @@
+name: Adds all issues to Spelieve-Sprint project
+
+on:
+  issues:
+    types:
+      - opened
+
+jobs:
+  add-to-project:
+    name: Add issue to project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add issue to Spelieve-Sprint project
+        uses: actions/add-to-project@v0.4.0
+        with:
+          project-url: https://github.com/users/Ayato-kosaka/projects/1
+          github-token: ${{ secrets.REPO_PROJECTS_ACCESS_TOKEN }}
+          labeled: ':package: PBI'
+          label-operator: NOT
+          
+      - name: Add issue to Spelieve-Product project
+        uses: actions/add-to-project@v0.4.0
+        with:
+          project-url: https://github.com/users/Ayato-kosaka/projects/2
+          github-token: ${{ secrets.REPO_PROJECTS_ACCESS_TOKEN }}
+          labeled: ':package: PBI'

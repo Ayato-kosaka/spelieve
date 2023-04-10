@@ -2,10 +2,11 @@ import { Image, View, ScrollView } from 'react-native';
 import { Card, Subheading, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { ItineraryOneInterface, PlanGroupsListInterface, PlansMapInterface } from 'spelieve-common/lib/Interfaces';
-
 import { styles } from './ItineraryPostStyle';
 
+import { ItineraryOneInterface } from '@/Itinerary/Contexts/ICT011ItineraryOne/ItineraryOneIntereface';
+import { PlanGroupsListInterface } from '@/Itinerary/Contexts/ICT021PlanGroupsList/PlanGroupsListInterface';
+import { PlansMapInterface } from '@/Itinerary/Contexts/ICT031PlansMap/PlansMapInterface';
 import { travelModeConverter } from '@/Place/Hooks/PHK001GooglePlaceAPI';
 
 interface ItineraryPostPropsInterface {
@@ -22,7 +23,6 @@ export const ICO001ItineraryPost = ({ itinerary, planGroups, plans }: ItineraryP
 			<Card>
 				<Image source={{ uri: itinerary.imageUrl }} resizeMode="cover" style={styles.itinerayImage} />
 				<Card.Content>
-					<Subheading style={styles.itinerarySubTitle}>{itinerary.subTitle}</Subheading>
 					<Text style={styles.itineraryCaption}>{itinerary.caption}</Text>
 					{planGroups.map((planGroup) => {
 						isAnotherDay = prevDateNumber !== planGroup.dayNumber;

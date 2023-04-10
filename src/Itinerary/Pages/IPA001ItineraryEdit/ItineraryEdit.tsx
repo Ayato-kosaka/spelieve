@@ -1,39 +1,39 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { setStringAsync } from 'expo-clipboard';
 import React, { useContext } from 'react';
-import { ScrollView, ActivityIndicator, View } from 'react-native';
-import { Headline, Button } from 'react-native-paper';
+import { ScrollView, ActivityIndicator, View, Pressable, Image } from 'react-native';
+import { Headline, Button, Text, TextInput } from 'react-native-paper';
 
 import { IPA001ItineraryEditController } from './ItineraryEditController';
 import { styles } from './ItineraryEditStyle';
 
-import { BottomTabParamList } from '@/App';
+import { CCO003DateTimePicker } from '@/Common/Components/CCO003DateTimePicker';
+import { CCO007GoogleBannerAd } from '@/Common/Components/CCO007GoogleBannerAd/GoogleBannerAd';
 import i18n from '@/Common/Hooks/i18n-js';
+import { ItineraryTopTabScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { ENV } from '@/ENV';
-import { ICT011ItineraryOne } from '@/Itinerary/Models/IDB01Itineraries/Contexts/ICT011ItineraryOne';
-import { ICT021PlanGroupsList } from '@/Itinerary/Models/IDB02PlanGroups/Contexts/ICT021PlanGroupsList';
-import { ICT031PlansMap } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap';
-import { IMC03103PlanGroupsEdit } from '@/Itinerary/Models/IDB03Plans/Contexts/ICT031PlansMap/ModelComponents/IMC03103PlanGroupEdit';
+import { ICT011ItineraryOne } from '@/Itinerary/Contexts/ICT011ItineraryOne';
+import { ICT021PlanGroupsList } from '@/Itinerary/Contexts/ICT021PlanGroupsList';
+import { ICT031PlansMap } from '@/Itinerary/Contexts/ICT031PlansMap';
+import { IMC03103PlanGroupsEdit } from '@/Itinerary/Contexts/ICT031PlansMap/ModelComponents/IMC03103PlanGroupEdit';
 
-export const IPA001ItineraryEdit = ({
-	route,
-	navigation,
-}: NativeStackScreenProps<BottomTabParamList, 'ItineraryEdit'>) => {
+export const IPA001ItineraryEdit = ({ route, navigation }: ItineraryTopTabScreenProps<'ItineraryEdit'>) => {
 	const { itineraryDocSnap } = useContext(ICT011ItineraryOne);
 	const { isPlansLoading } = useContext(ICT031PlansMap);
 	const { planGroupsQSnap, createPlanGroup } = useContext(ICT021PlanGroupsList);
 
-	IPA001ItineraryEditController({
-		route,
-		navigation,
-	});
+	const { pageItinerary, onPressThumbnail, setPageItinerary, handleOnChange, updateItinerary, onPlanPress } =
+		IPA001ItineraryEditController({
+			route,
+			navigation,
+		});
 
 	if (
 		!route.params.itineraryID ||
 		!itineraryDocSnap ||
 		!itineraryDocSnap.exists() ||
 		isPlansLoading ||
-		!planGroupsQSnap
+		!planGroupsQSnap ||
+		!pageItinerary
 	) {
 		return <ActivityIndicator animating />;
 	}
@@ -43,6 +43,34 @@ export const IPA001ItineraryEdit = ({
 
 	return (
 		<ScrollView>
+			<CCO007GoogleBannerAd />
+			<Pressable onPress={onPressThumbnail}>
+				<Image source={{ uri: pageItinerary.imageUrl }} resizeMode="cover" style={styles.image} />
+			</Pressable>
+			<View>
+				<View style={styles.startDateComtainer}>
+					<Text style={styles.startDateLabel}>{i18n.t('Start date')}</Text>
+					<CCO003DateTimePicker
+						value={pageItinerary.startDate}
+						onChange={(event, date) => {
+							if (event.type === 'set') {
+								setPageItinerary({ ...pageItinerary, startDate: date! });
+							}
+						}}
+						style={styles.startDateTimePicker}
+					/>
+				</View>
+				<TextInput
+					mode="outlined"
+					label={i18n.t('Description')}
+					value={pageItinerary.caption}
+					onChange={handleOnChange('caption')}
+					onBlur={updateItinerary}
+					multiline
+					style={styles.captionTextInput}
+				/>
+			</View>
+
 			{planGroupsQSnap?.docs.map((planGroupsDoc) => {
 				const planGroup = planGroupsDoc.data();
 				isAnotherDay = prevDateNumber !== planGroup.dayNumber;
@@ -55,7 +83,7 @@ export const IPA001ItineraryEdit = ({
 								{i18n.t('日目')}
 							</Headline>
 						)}
-						<IMC03103PlanGroupsEdit planGroupsDoc={planGroupsDoc} />
+						<IMC03103PlanGroupsEdit planGroupsDoc={planGroupsDoc} onPlanPress={onPlanPress} />
 					</View>
 				);
 			})}
@@ -80,6 +108,7 @@ export const IPA001ItineraryEdit = ({
 				}}>
 				{i18n.t('copy Share URL')}
 			</Button>
+			<CCO007GoogleBannerAd />
 		</ScrollView>
 	);
 };

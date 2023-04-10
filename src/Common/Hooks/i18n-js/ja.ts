@@ -5,8 +5,14 @@ const ja: typeof Lang = {
 	Itinerary: 'しおり',
 	Place: '場所',
 
+	// NotFoundScreen.tsx
+	'Go to home screen!': 'ホームに戻る',
+
+	// Utils
+	'Advertisement Area': 'Advertisement Area',
+
 	// HelloSpelieve.tsx
-	'あなたの旅行もっと「楽」に': 'あなたの旅行もっと「楽」に',
+	'あなたの旅行もっと「楽」に': 'あなたの旅行をもっと「楽」に',
 	'素晴らしい「思い出」に': '素晴らしい「思い出」に',
 	新しく始める: '新しく始める',
 	特徴1: '特徴1',
@@ -19,12 +25,11 @@ const ja: typeof Lang = {
 	特徴4: '特徴4',
 	思い出化: '思い出化',
 	最近作成した旅行プラン: '最近作成した旅行プラン',
-	'no title': 'タイトルなし',
-	'no sub title': 'サブタイトルなし',
+	'No Thumbnail': 'サムネイル画像なし',
 	お問い合わせ: 'お問い合わせ',
 	フィードバック: 'フィードバック',
 	'Copyright © Spelieve ': 'Copyright © Spelieve ',
-	'開発者用 Itinerary で始める': '開発者用 Itinerary で始める',
+	開発者用: '開発者用',
 
 	// ImagePickerCOntroller.ts
 	'Upload failed, sorry :(': 'アップロードに失敗しました',
@@ -42,17 +47,12 @@ const ja: typeof Lang = {
 	Preview: 'プレビュー',
 
 	// ItineraryPageNavigator
-	'Itinerary setting': 'しおり設定',
 	'Plan setting': 'プラン設定',
 
 	// IPA001ItineraryEdit
 	'Add Plan group': 'プラングループ追加',
 	日目: '日目',
 	'copy Share URL': 'URL をコピー',
-
-	// IPA002ItineraryCover
-	'Itinerary Title': 'しおりタイトル',
-	'Itinerary SubTitle': 'しおりサブタイトル',
 	'Add Tag': 'タグ追加',
 	'Start date': '開始日',
 	Description: '説明',
@@ -99,5 +99,29 @@ const ja: typeof Lang = {
 
 	// PPA002Place
 	'Place Not Found': '場所が見つかりませんでした',
+
+	// Thumbnail
+	'Border Color': 'Border Color',
+	Cancel: 'キャンセル',
+	Save: '保存',
+	Color: 'Color',
+	テキスト入力: 'テキスト入力',
+	EditText: 'EditText',
+	Replace: 'Replace',
+	Mask: 'Mask',
+	Order: 'Order',
+	Duplication: 'Duplication',
+	Delete: 'Delete',
+	'Dummy Text': 'テキスト',
+	テキストを入力してください: 'テキストを入力してください',
+	'Discard Thumbnail?': 'サムネイルを破棄しますか?',
+	'変更を保存せずに戻りますか？': '変更を保存せずに戻りますか？',
+	Discard: '破棄',
+	'go to select template': 'サムネイルテンプレートを選択する',
+	'Bring to Front': '最前面へ',
+	'Bring Forward': '前面へ',
+	'Send Backward': '背面へ',
+	'Send to Back': '最背面へ',
+	サムネイルテンプレート選択: 'サムネイルテンプレート選択',
 };
 export default ja;

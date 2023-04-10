@@ -6,7 +6,8 @@ export default ({ config }: ConfigContext) => {
 			name: 'Spelieve ~旅のしおり簡単作成アプリ~',
 			owner: 'spelieve',
 			slug: 'Spelieve',
-			version: '2.0.0',
+			scheme: 'spelieve',
+			version: '2.1.0',
 			orientation: 'portrait',
 			icon: './assets/square-icon.png',
 			userInterfaceStyle: 'light',
@@ -26,7 +27,8 @@ export default ({ config }: ConfigContext) => {
 				config: {
 					googleMapsApiKey: process.env.GCP_API_KEY_IOS,
 				},
-				buildNumber: '2'
+				buildNumber: '3',
+				googleServicesFile: './GoogleService-Info.plist',
 			},
 			android: {
 				adaptiveIcon: {
@@ -39,8 +41,9 @@ export default ({ config }: ConfigContext) => {
 						apiKey: process.env.GCP_API_KEY_ANDROID,
 					},
 				},
-				versionCode: 5, // TODO: 毎submitで変更の必要あり
+				versionCode: 6, // TODO: 毎submitで変更の必要あり
 				permissions: [],
+				googleServicesFile: './google-services.json',
 			},
 			web: {
 				shortName: 'Spelieve',
@@ -56,6 +59,18 @@ export default ({ config }: ConfigContext) => {
 						cameraPermission: 'Allow $(PRODUCT_NAME) to access your camera',
 					},
 				],
+				[
+					'expo-build-properties',
+					{
+						ios: {
+							useFrameworks: 'static',
+						},
+					},
+				],
+				'@react-native-firebase/app',
+				'@react-native-firebase/perf',
+				'@react-native-firebase/crashlytics',
+				'./bin/react-native-maps-plugin',
 			],
 			extra: {
 				eas: {

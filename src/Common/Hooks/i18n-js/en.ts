@@ -5,6 +5,12 @@ const en: typeof Lang = {
 	Itinerary: 'Itinerary',
 	Place: 'Place',
 
+	// NotFoundScreen.tsx
+	'Go to home screen!': 'Go to home screen!',
+
+	// Utils
+	'Advertisement Area': 'Advertisement Area',
+
 	// HelloSpelieve.tsx
 	'あなたの旅行もっと「楽」に': 'Make your trip more Enjoynable',
 	'素晴らしい「思い出」に': 'more wonderful memory',
@@ -19,12 +25,11 @@ const en: typeof Lang = {
 	特徴4: 'Advantage4',
 	思い出化: 'memorization',
 	最近作成した旅行プラン: 'Recently Itinerary',
-	'no title': 'no title',
-	'no sub title': 'no sub title',
+	'No Thumbnail': 'No Thumbnail',
 	お問い合わせ: 'Contact',
 	フィードバック: 'Feedback',
 	'Copyright © Spelieve ': 'Copyright © Spelieve ',
-	'開発者用 Itinerary で始める': '開発者用 Itinerary で始める',
+	開発者用: '開発者用',
 
 	// ImagePickerCOntroller.ts
 	'Upload failed, sorry :(': 'Upload failed, sorry :(',
@@ -42,17 +47,12 @@ const en: typeof Lang = {
 	Preview: 'Preview',
 
 	// ItineraryPageNavigator
-	'Itinerary setting': 'Itinerary setting',
 	'Plan setting': 'Plan setting',
 
 	// IPA001ItineraryEdit
 	'Add Plan group': 'Add Plan group',
 	日目: 'Day',
 	'copy Share URL': 'copy Share URL',
-
-	// IPA002ItineraryCover
-	'Itinerary Title': 'Itinerary Title',
-	'Itinerary SubTitle': 'Itinerary SubTitle',
 	'Add Tag': 'Add Tag',
 	'Start date': 'Start date',
 	Description: 'Description',
@@ -99,5 +99,29 @@ const en: typeof Lang = {
 
 	// PPA002Place
 	'Place Not Found': 'Place Not Found',
+
+	// Thumbnail
+	'Border Color': 'Border Color',
+	Cancel: 'Cancel',
+	Save: 'Save',
+	Color: 'Color',
+	テキスト入力: 'Enter text',
+	EditText: 'EditText',
+	Replace: 'Replace',
+	Mask: 'Mask',
+	Order: 'Order',
+	Duplication: 'Duplication',
+	Delete: 'Delete',
+	'Dummy Text': 'Text',
+	テキストを入力してください: 'Enter text',
+	'Discard Thumbnail?': 'Discard Thumbnail?',
+	'変更を保存せずに戻りますか？': 'Are you sure you want to leave without save your change?',
+	Discard: 'Discard',
+	'go to select template': 'Select template',
+	'Bring to Front': 'Bring to Front',
+	'Bring Forward': 'Bring Forward',
+	'Send Backward': 'Send Backward',
+	'Send to Back': 'Send to Back',
+	サムネイルテンプレート選択: 'Select Thumbnail',
 };
 export default en;

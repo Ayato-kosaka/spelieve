@@ -14,12 +14,10 @@ export const CCO006ImagePicker = ({
 	style,
 }: ImagePickerPropsInterface) => {
 	const { pickImage } = CCO006ImagePickerController({
-		children,
 		onPickImage,
 		imagePickerOptions,
 		imageManipulatorActions,
 		storage,
-		style,
 	});
 
 	return (
