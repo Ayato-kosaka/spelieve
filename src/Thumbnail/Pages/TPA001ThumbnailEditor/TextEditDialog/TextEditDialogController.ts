@@ -55,13 +55,15 @@ export const TPA001TextEditDialogController = ({
 					[textMapKey]: text,
 				},
 			}));
-			setDecorationsMap((v) => ({
-				...v,
-				[activeDecorationID]: {
-					...activeDecoration,
-					fontFamily,
-				},
-			}));
+			if (fontFamily) {
+				setDecorationsMap((v) => ({
+					...v,
+					[activeDecorationID]: {
+						...activeDecoration,
+						fontFamily,
+					},
+				}));
+			}
 		} else {
 			// 空文字に設定した場合は、Decoration を削除する。
 			const targetID = Object.keys(decorationsMap).find((id) => decorationsMap[id]!.key === textEditDialog.key);

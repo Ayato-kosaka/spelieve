@@ -1,7 +1,6 @@
 import React, { useContext, useMemo } from 'react';
 import { Pressable, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import { Card, Chip, Text } from 'react-native-paper';
+import { Card, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
@@ -10,7 +9,6 @@ import { ICT031PlansMap } from '../..';
 
 import { IMC03101PlanEditController } from './PlanEditController';
 import { PlanEditPropsInterface } from './PlanEditPropsInterface';
-import { styles } from './PlanEditStyle';
 
 import { paperTheme } from '@/ThemeProvider';
 
@@ -59,17 +57,6 @@ export const IMC03101PlanEdit = ({
 									? `~${DateUtils.formatToHHMM(plan.placeEndTime)}`
 									: ''}
 							</Text>
-							<ScrollView horizontal>
-								{plan.tags.map((tag, index) => (
-									<Chip
-										key={`${tag}${index.toString()}`}
-										mode="outlined"
-										style={styles.tagsChip}
-										textStyle={styles.tagsChipText}>
-										{tag}
-									</Chip>
-								))}
-							</ScrollView>
 						</View>
 					</View>
 					<View style={{ flex: 1, alignItems: 'center' }}>

@@ -22,17 +22,17 @@ https://docs.google.com/spreadsheets/d/1BPeKHqCv-_5kgNvtpAC83pegNnN0g19VU8vYzMKi
 +--------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
 | Figure |          |         |  TRUE | TRUE |     TRUE    |  TRUE |    TRUE   |  TRUE  |     TRUE    |  TRUE  |   TRUE  |    TRUE   |  TRUE  |
 +--------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
-| Text   |   TRUE   |         |  TRUE |      |             |  TRUE |    TRUE   |  TRUE  |     TRUE    |  TRUE  |   TRUE  |           |  TRUE  |
+| Text   |   TRUE   |         |  TRUE |      |             |  TRUE |    TRUE   |  TRUE  |     TRUE    |  TRUE  |   TRUE  |    TRUE   |  TRUE  |
 +--------+----------+---------+-------+------+-------------+-------+-----------+--------+-------------+--------+---------+-----------+--------+
 */
 const FooterDisplay = () =>
 	({
 		Video: {
-			EditText: false,
+			EditText: null,
 			Replace: true,
-			Color: false,
+			Color: null,
 			Mask: true,
-			AspectRatio: false,
+			AspectRatio: null,
 			Order: true,
 			Animation: true,
 			Border: true,
@@ -43,11 +43,11 @@ const FooterDisplay = () =>
 			Delete: true,
 		},
 		Image: {
-			EditText: false,
+			EditText: null,
 			Replace: true,
-			Color: false,
+			Color: null,
 			Mask: true,
-			AspectRatio: false,
+			AspectRatio: null,
 			Order: true,
 			Animation: true,
 			Border: true,
@@ -58,8 +58,8 @@ const FooterDisplay = () =>
 			Delete: true,
 		},
 		Figure: {
-			EditText: false,
-			Replace: false,
+			EditText: null,
+			Replace: null,
 			Color: true,
 			Mask: true,
 			AspectRatio: true,
@@ -74,17 +74,17 @@ const FooterDisplay = () =>
 		},
 		Text: {
 			EditText: true,
-			Replace: false,
+			Replace: null,
 			Color: true,
-			Mask: false,
-			AspectRatio: false,
+			Mask: null,
+			AspectRatio: null,
 			Order: true,
 			Animation: true,
 			Border: true,
 			BorderColor: true,
 			Shadow: true,
 			Opacity: true,
-			Duplicate: false,
+			Duplicate: true,
 			Delete: true,
 		},
 	} as const);

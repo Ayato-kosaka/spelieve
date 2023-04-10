@@ -4,9 +4,9 @@ import { materialColors } from '@/ThemeProvider';
 
 export const styles = StyleSheet.create({
 	image: {
-		paddingTop: '56.25%',
+		aspectRatio: 16 / 9,
 		backgroundColor: materialColors.grey[300],
-		height: 150,
+		width: '100%',
 	},
 	memoTextInput: {
 		backgroundColor: '#fff',

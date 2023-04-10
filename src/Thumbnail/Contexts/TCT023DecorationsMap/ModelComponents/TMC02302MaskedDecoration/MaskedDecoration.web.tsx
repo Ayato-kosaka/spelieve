@@ -5,13 +5,11 @@ import { TCT023DecorationsMap } from '../../DecorationsMap';
 
 import { MaskedDecorationPropsInterface } from './MaskedDecorationInterface';
 
-import { TCO003OutlineTextBorder } from '@/Thumbnail/Components/TCO003OutlineTextBorder/OutlineTextBorder';
-
 export const TMC02302MaskedDecoration = ({
 	decorationID,
 	value,
 	onSourceLoad,
-	width,
+	containerSize,
 }: MaskedDecorationPropsInterface) => {
 	const { decorationsMap } = useContext(TCT023DecorationsMap);
 	const decoration = decorationsMap[decorationID];
@@ -25,15 +23,15 @@ export const TMC02302MaskedDecoration = ({
 		if (!decoration?.maskUri) return;
 		maskRef.current.style.webkitMaskImage = `url(${decoration.maskUri})`;
 		maskRef.current.style.maskImage = `url(${decoration.maskUri})`;
-		maskRef.current.style.maskPosition = `${decoration.maskTransform.translateX * width}px ${
-			(decoration.maskTransform.translateY * width) / decoration.aspectRatio
+		maskRef.current.style.maskPosition = `${decoration.maskTransform.translateX * containerSize.width}px ${
+			decoration.maskTransform.translateY * containerSize.height
 		}px`;
-		maskRef.current.style.webkitMaskPosition = `${decoration.maskTransform.translateX * width}px ${
-			(decoration.maskTransform.translateY * width) / decoration.aspectRatio
+		maskRef.current.style.webkitMaskPosition = `${decoration.maskTransform.translateX * containerSize.width}px ${
+			decoration.maskTransform.translateY * containerSize.height
 		}px`;
 		maskRef.current.style.webkitMaskSize = 'auto 100%';
 		maskRef.current.style.maskSize = 'auto 100%';
-	}, [decoration?.aspectRatio, decoration?.maskTransform, decoration?.maskUri, width]);
+	}, [containerSize.height, containerSize.width, decoration?.maskTransform, decoration?.maskUri]);
 	useEffect(() => {
 		if (!decoration) return;
 		if (decoration.decorationType === 'Image') {
@@ -58,7 +56,7 @@ export const TMC02302MaskedDecoration = ({
 			{decoration.decorationType === 'Figure' && (
 				<div
 					style={{
-						width,
+						width: containerSize.width,
 						aspectRatio: decoration.aspectRatio,
 						backgroundColor: decoration.color,
 						borderWidth: 1,
@@ -68,27 +66,12 @@ export const TMC02302MaskedDecoration = ({
 					ref={maskRef}
 				/>
 			)}
-			{decoration.decorationType === 'Text' && decoration.key && (
-				<TCO003OutlineTextBorder
-					stroke={2}
-					textShadowColor={decoration.borderColor}
-					text={value || 'Dummy Text'}
-					textProps={{
-						style: {
-							fontSize: 64,
-							color: decoration.color,
-							width: '100%',
-							fontFamily: decoration.fontFamily,
-						},
-					}}
-				/>
-			)}
 			{decoration.decorationType === 'Image' && (
 				<img
 					src={value}
 					alt="decoration"
 					style={{
-						width,
+						width: containerSize.width,
 						objectFit: 'cover',
 						borderWidth: 1,
 						borderColor: decoration.borderColor,

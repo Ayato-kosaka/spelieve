@@ -201,11 +201,12 @@ export const IMC03102TrafficMovementEditController = ({
 			placeSpan: DateUtils.initialDate(),
 			placeStartTime: plan.transportationArrivalTime || plan.placeEndTime,
 			placeEndTime: plan.transportationArrivalTime || plan.placeEndTime,
-			tags: [],
 			transportationSpan: DateUtils.initialDate(),
 			avoid: plan.avoid,
 			transitModes: plan.transitModes,
 			transitRoutingPreference: plan.transitRoutingPreference,
+			textMap: {},
+			storeUrlMap: {},
 			createdAt: new Date(),
 			updatedAt: new Date(),
 		});

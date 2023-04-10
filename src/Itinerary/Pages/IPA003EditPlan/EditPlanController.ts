@@ -2,14 +2,14 @@ import { PlaceAutocompleteResult } from '@googlemaps/google-maps-services-js';
 import { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { setDoc } from 'firebase/firestore';
 import { useContext, useEffect, useMemo, useCallback, useState, useRef } from 'react';
-import { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
+import { TextInputChangeEventData } from 'react-native';
 
-import { PlansMapInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT031';
-
+import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
 import { ItineraryStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { ICT011ItineraryOne } from '@/Itinerary/Contexts/ICT011ItineraryOne';
 import { ICT021PlanGroupsList } from '@/Itinerary/Contexts/ICT021PlanGroupsList';
 import { ICT031PlansMap } from '@/Itinerary/Contexts/ICT031PlansMap';
+import { PlansMapInterface } from '@/Itinerary/Contexts/ICT031PlansMap/PlansMapInterface';
 import { PCT012MPlaceOne } from '@/Place/Contexts/PCT012MPlaceOne';
 
 export const IPA003EditPlanController = ({ route, navigation }: ItineraryStackScreenProps<'EditPlan'>) => {
@@ -30,7 +30,6 @@ export const IPA003EditPlanController = ({ route, navigation }: ItineraryStackSc
 	const prevPlaceRef = useRef<typeof place>(undefined);
 
 	const [pagePlan, setPagePlan] = useState<PlansMapInterface | undefined>(undefined);
-	const [tagSearchText, setTagSearchText] = useState<string>('');
 
 	// アンマウント時に、PlaceID を undefined で初期化する
 	useEffect(
@@ -114,18 +113,38 @@ export const IPA003EditPlanController = ({ route, navigation }: ItineraryStackSc
 		setDoc(planDocSnap!.ref, { ...pagePlan });
 	}, [pagePlan, planDocSnap]);
 
-	const onChangeImage = useCallback(
-		(imageUrl: string) => {
-			setPagePlan({ ...pagePlan!, imageUrl });
-			// eslint-disable-next-line @typescript-eslint/no-floating-promises
-			setDoc(planDocSnap!.ref, { imageUrl }, { merge: true });
-		},
-		[pagePlan, planDocSnap],
-	);
-
-	const onChangeSearchPlace: (e: NativeSyntheticEvent<TextInputChangeEventData>) => void = (e) => {
-		setPagePlan({ ...pagePlan!, title: e.nativeEvent.text });
-	};
+	const { setThumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
+	const onPressThumbnail = useCallback(() => {
+		if (!pagePlan) {
+			return;
+		}
+		setThumbnailItemMapper({
+			aspectRatio: 16 / 9,
+			textMap: pagePlan.textMap,
+			storeUrlMap: pagePlan.storeUrlMap,
+			onBack(thumbnailID, thumbnailItemMapper, imageUrl) {
+				if (planDocSnap) {
+					// eslint-disable-next-line @typescript-eslint/no-floating-promises
+					setDoc<PlansMapInterface>(
+						planDocSnap.ref,
+						{
+							thumbnailID,
+							imageUrl,
+							textMap: thumbnailItemMapper.textMap,
+							storeUrlMap: thumbnailItemMapper.storeUrlMap,
+						},
+						{ merge: true },
+					);
+				}
+			},
+		});
+		navigation.navigate('ThumbnailPageNavigator', {
+			screen: 'TPA001ThumbnailEditor',
+			params: {
+				fromThumbnailID: pagePlan?.thumbnailID,
+			},
+		});
+	}, [navigation, pagePlan, planDocSnap, setThumbnailItemMapper]);
 
 	const onChangeMemo: ({ nativeEvent }: { nativeEvent: TextInputChangeEventData }) => void = useCallback(
 		({ nativeEvent }) => {
@@ -147,34 +166,6 @@ export const IPA003EditPlanController = ({ route, navigation }: ItineraryStackSc
 			);
 		},
 		[planDocSnap],
-	);
-
-	const onTagSearchTextChanged = useCallback((e: NativeSyntheticEvent<TextInputChangeEventData>): void => {
-		setTagSearchText(e.nativeEvent.text);
-	}, []);
-
-	const onTagSearchTextBlur = useCallback(() => {
-		if (!planDocSnap || !plan || tagSearchText === '') {
-			return;
-		}
-		const newTags: string[] = [...plan.tags];
-		newTags.push(tagSearchText);
-		setTagSearchText('');
-		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		setDoc(planDocSnap.ref, { tags: newTags }, { merge: true });
-	}, [plan, planDocSnap, tagSearchText]);
-
-	const deleteTag = useCallback(
-		(index: number): void => {
-			if (!planDocSnap || !plan) {
-				return;
-			}
-			const newTags: string[] = [...plan.tags];
-			newTags.splice(index, 1);
-			// eslint-disable-next-line @typescript-eslint/no-floating-promises
-			setDoc(planDocSnap.ref, { tags: newTags }, { merge: true });
-		},
-		[plan, planDocSnap],
 	);
 
 	const setPlanToRepresentativePlan = useCallback(() => {
@@ -218,14 +209,9 @@ export const IPA003EditPlanController = ({ route, navigation }: ItineraryStackSc
 		isNeedToNavigateToItineraryEdit,
 		navigateToItineraryEdit,
 		updatePlan,
-		tagSearchText,
-		onTagSearchTextChanged,
-		onTagSearchTextBlur,
-		deleteTag,
-		onChangeImage,
+		onPressThumbnail,
 		updateRepresentativeStartDateTime,
 		setPlanToRepresentativePlan,
-		onChangeSearchPlace,
 		onAutocompleteClicked,
 		onChangeMemo,
 	};

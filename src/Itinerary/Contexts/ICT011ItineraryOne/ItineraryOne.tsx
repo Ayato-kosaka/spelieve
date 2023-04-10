@@ -1,9 +1,10 @@
 import { onSnapshot, DocumentSnapshot, collection, doc } from 'firebase/firestore';
 import { useState, createContext, useEffect, ReactNode, useMemo } from 'react';
 
-import { ItineraryOneInterface, ItineraryOneValInterface } from 'spelieve-common/lib/Interfaces/Itinerary';
 import { Itineraries } from 'spelieve-common/lib/Models/Itinerary/IDB01/Itineraries';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
+
+import { ItineraryOneInterface, ItineraryOneValInterface } from './ItineraryOneIntereface';
 
 import { Error, Logger } from '@/Common/Hooks/CHK001Utils';
 import { storeRecentItinerary } from '@/Common/Pages/CPA001HelloSpelieve/HelloSpelieveRecentItineraryHook';

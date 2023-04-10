@@ -1,7 +1,7 @@
 import { QueryDocumentSnapshot } from 'firebase/firestore';
 import { useEffect, useMemo, useState } from 'react';
 
-import { PlanGroupsListInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT021';
+import { PlanGroupsListInterface } from '@/Itinerary/Contexts/ICT021PlanGroupsList/PlanGroupsListInterface';
 
 export const IMC03103PlanGroupsEditController = ({
 	planGroupsDoc,

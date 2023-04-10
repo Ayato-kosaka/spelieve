@@ -12,7 +12,7 @@ export const TPA001MaskDecoration = ({
 	maskUri,
 	maskTransform,
 	onEndMaskGesture,
-	componentSize,
+	canvasSize,
 }: MaskDecorationPropsInterface) => {
 	const translateX = useSharedValue(maskTransform.translateX);
 	const translateY = useSharedValue(maskTransform.translateY);
@@ -75,7 +75,7 @@ export const TPA001MaskDecoration = ({
 		<TCO001GestureProvider
 			gesture={{ translateX, translateY, scale, rotateZ }}
 			onEndGesture={onEndMaskGesture}
-			componentSize={componentSize}>
+			canvasSize={canvasSize}>
 			<View>
 				{decoration.decorationType === 'Figure' && (
 					<div

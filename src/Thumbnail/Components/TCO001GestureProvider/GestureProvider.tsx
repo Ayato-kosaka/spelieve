@@ -12,7 +12,7 @@ export const TCO001GestureProvider = ({
 	onEndGesture,
 	onSingleTapFinalize,
 	children,
-	componentSize,
+	canvasSize,
 }: GestureProviderPropsInterface) => {
 	/**
 	 * translateX -> style に反映される translateX
@@ -43,8 +43,8 @@ export const TCO001GestureProvider = ({
 			isPanGesturing.value = true;
 		})
 		.onUpdate((e) => {
-			translateX.value = savedTranslateX.value + e.translationX / componentSize.width;
-			translateY.value = savedTranslateY.value + e.translationY / componentSize.height;
+			translateX.value = savedTranslateX.value + e.translationX / canvasSize.width;
+			translateY.value = savedTranslateY.value + e.translationY / canvasSize.height;
 		})
 		.onEnd(() => {
 			savedTranslateX.value = translateX.value;

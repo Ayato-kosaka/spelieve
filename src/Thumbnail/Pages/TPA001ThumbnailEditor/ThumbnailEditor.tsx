@@ -22,6 +22,7 @@ import { TCT011MThumbnailOne } from '@/Thumbnail/Contexts/TCT011MThumbnailOne/Th
 import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
 import { DecorationsMapInterface } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMapInterface';
 import { TMC02301Decoration } from '@/Thumbnail/Contexts/TCT023DecorationsMap/ModelComponents/TMC02301Decoration/Decoration';
+import { THK001UseFonts } from '@/Thumbnail/Hooks/THK001UseFonts';
 import { ThumnailRule } from '@/Thumbnail/Hooks/ThumbnailRule';
 
 export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScreenProps<'TPA001ThumbnailEditor'>) => {
@@ -103,6 +104,8 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		imageManipulatorActions,
 	});
 
+	const { fontsLoaded } = THK001UseFonts();
+
 	const headerRight = useCallback(
 		() => (
 			<View style={{ flexDirection: 'row' }}>
@@ -129,13 +132,12 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		});
 	}, [headerLeft, headerRight, navigation]);
 
-	if (isLoading) {
+	if (isLoading || fontsLoaded === false) {
 		return <ActivityIndicator animating />;
 	}
 
 	return (
-		<>
-			<SafeAreaView />
+		<SafeAreaView>
 			<TPA001MaskDialog selectedFooterMenu={selectedFooterMenu} setSelectedFooterMenu={setSelectedFooterMenu} />
 			<TPA001ColorPickerDialog selectedFooterMenu={selectedFooterMenu} setSelectedFooterMenu={setSelectedFooterMenu} />
 			<TPA001BorderColorPickerDialog
@@ -174,7 +176,9 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 				<Button
 					onPress={() => {
 						navigation.navigate('TPA002ThumbnailTemplate', {});
-					}}>
+					}}
+					color="black"
+					style={{ height: 80 }}>
 					{i18n.t('go to select template')}
 				</Button>
 
@@ -202,13 +206,14 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 				</ViewShot>
 
 				{/* フッター */}
-				<View>
+				<View style={{ minHeight: 80 }}>
 					{/* フッター大分類 */}
 					<ScrollView horizontal>
 						{footerMenuList
 							.filter(
 								(footerMenu) =>
-									activeDecoration && ThumnailRule.FooterDisplay()[activeDecoration.decorationType][footerMenu.key],
+									activeDecoration &&
+									ThumnailRule.FooterDisplay()[activeDecoration.decorationType][footerMenu.key] === true,
 							)
 							.map((footerMenu, index) => (
 								<Pressable
@@ -244,6 +249,6 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 					)}
 				</View>
 			</View>
-		</>
+		</SafeAreaView>
 	);
 };

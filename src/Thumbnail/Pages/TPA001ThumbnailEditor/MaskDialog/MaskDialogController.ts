@@ -83,7 +83,7 @@ export const TPA001MaskDialogController = ({
 		hideMaskDialog();
 	}, [hideMaskDialog, maskDialog.decorationID, maskDialog.maskTransform, maskDialog.maskUri, setDecorationsMap]);
 
-	const [componentSize, setComponentSize] = useState<MaskDecorationPropsInterface['componentSize']>({
+	const [componentSize, setComponentSize] = useState<MaskDecorationPropsInterface['canvasSize']>({
 		width: 0,
 		height: 0,
 	});

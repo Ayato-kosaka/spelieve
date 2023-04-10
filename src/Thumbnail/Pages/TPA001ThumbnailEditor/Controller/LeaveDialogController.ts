@@ -76,14 +76,13 @@ export const TPA001LeaveDialogController = ({
 		const decorations = Object.keys(decorationsMap).map((dKey) => decorationsMap[dKey]!);
 		const dummyStoreUrlMap = Object.keys(thumbnailItemMapper.storeUrlMap).reduce((prev, key) => {
 			if (decorations.some((d) => d.key === key)) {
-				// TODO: 修正する
-				prev[key] = 'https://thumb.photo-ac.com/15/1527a37a819426cf6ac7a8761eb4bf67_t.jpeg';
+				prev[key] =
+					'https://firebasestorage.googleapis.com/v0/b/itinerary-4aee3.appspot.com/o/MThumbnail%2Feugene-a6jaMBfDeoo-unsplash.jpg?alt=media&token=b137c75a-3ec4-49c1-85b6-3d993e3b6d2c';
 			}
 			return prev;
 		}, {} as typeof thumbnailItemMapper.storeUrlMap);
 		const dummyTextMap = Object.keys(thumbnailItemMapper.textMap).reduce((prev, key) => {
 			if (decorations.some((d) => d.key === key)) {
-				// TODO: 修正する
 				prev[key] = i18n.t('Dummy Text');
 			}
 			return prev;

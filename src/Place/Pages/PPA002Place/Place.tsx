@@ -6,6 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { PPA002PlaceController } from './PlaceController';
 import { styles } from './PlaceStyle';
 
+import { CCO007GoogleBannerAd } from '@/Common/Components/CCO007GoogleBannerAd/GoogleBannerAd';
 import i18n from '@/Common/Hooks/i18n-js';
 import { PlaceStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { PMC01201GoogleMapPlaceOne } from '@/Place/Contexts/PCT012MPlaceOne/ModelComponents/PMC01201GoogleMapPlaceOne/GoogleMapPlaceOne';
@@ -41,9 +42,11 @@ export const PPA002Place = ({ route, navigation }: PlaceStackScreenProps<'PPA002
 	return (
 		<ScrollView>
 			<View style={styles.container}>
+				<CCO007GoogleBannerAd />
 				<PMC01201GoogleMapPlaceOne />
 				<Image source={{ uri: place.imageUrl }} style={styles.image} />
 				<PMC01202PlaceInformation />
+				<CCO007GoogleBannerAd />
 			</View>
 		</ScrollView>
 	);
