@@ -2,7 +2,7 @@
 name: issue template
 about: Describe this issue template's purpose here.
 title: ''
-labels: ':stop_sign: issue'
+labels: ":stop_sign: issue"
 assignees: Ayato-kosaka, Takapy1
 
 ---
