@@ -16,26 +16,26 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: '16'
 
       - name: Setup Expo
-        uses: expo/expo-github-action@v7
+        uses: expo/expo-github-action@v8
         with:
           expo-version: 4.x
           token: ${{ secrets.EXPO_TOKEN }}
           expo-cache: true
-          
+
       - name: Checkout spelieve-secret
         uses: actions/checkout@v3
         with:
           repository: Ayato-kosaka/spelieve-secret
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           path: spelieve-secret
-          
+
       - run: 'mv ./spelieve-secret/spelieve-frontend/production/ENV.ts ./src'
       - run: 'mv ./spelieve-secret/spelieve-frontend/production/GoogleService-Info.plist ./'
       - run: 'mv ./spelieve-secret/spelieve-frontend/production/google-services.json ./'
-      
+
       - run: 'rm -rf spelieve-secret/'
 
       - name: Install dependencies
