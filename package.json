@@ -79,7 +79,7 @@
 		"spelieve-common": "^1.1.158"
 	},
 	"devDependencies": {
-		"@babel/core": "7.20.12",
+		"@babel/core": "7.21.8",
 		"@types/googlemaps": "^3.43.3",
 		"@types/i18n-js": "3.8.4",
 		"@types/react": "18.0.26",
