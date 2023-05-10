@@ -9,7 +9,7 @@ export default ({ config }: ConfigContext) => {
 			scheme: 'spelieve',
 			version: '2.1.0',
 			orientation: 'portrait',
-			icon: './assets/square-icon.png',
+			icon: './assets/favicon.png',
 			userInterfaceStyle: 'light',
 			splash: {
 				image: './assets/splash.png',
@@ -32,7 +32,7 @@ export default ({ config }: ConfigContext) => {
 			},
 			android: {
 				adaptiveIcon: {
-					foregroundImage: './assets/square-icon.png',
+					foregroundImage: './assets/favicon.png',
 					backgroundColor: '#FFFFFF',
 				},
 				package: 'com.spelieve',
@@ -48,7 +48,7 @@ export default ({ config }: ConfigContext) => {
 			web: {
 				shortName: 'Spelieve',
 				backgroundColor: '#fafafa',
-				favicon: './assets/square-icon.png',
+				favicon: './assets/favicon.png',
 				lang: 'ja',
 			},
 			plugins: [
