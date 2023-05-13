@@ -6,7 +6,7 @@ import uuid from 'react-native-uuid';
 
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
 import { CCO006ImagePickerController } from '@/Common/Components/CCO006ImagePicker/ImagePickerController';
-import { Error } from '@/Common/Hooks/CHK001Utils';
+import { consoleError } from '@/Common/Hooks/CHK001Utils';
 import i18n from '@/Common/Hooks/i18n-js';
 import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
 import { DecorationsMapInterface } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMapInterface';
@@ -200,7 +200,7 @@ export const TPA001FooterMenuController = ({
 			return;
 		}
 		if (activeDecoration.decorationType === 'Image') {
-			pickImage().catch((e) => Error('TPA001FooterMenuController', 'onPressReplace', e));
+			pickImage().catch((e) => consoleError('TPA001FooterMenuController', 'onPressReplace', e));
 		}
 	}, [activeDecoration, pickImage]);
 

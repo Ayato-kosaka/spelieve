@@ -22,7 +22,7 @@ export const Logger = (funcNm: string, variantNm: string, value: any) => {
 	}
 };
 
-export const Error = (funcNm: string, variantNm: string, value: any) => {
+export const consoleError = (funcNm: string, variantNm: string, value: any) => {
 	if (ENV.LOGGER) {
 		// eslint-disable-next-line no-console
 		console.log('error', funcNm, variantNm, value); // JSON.stringify(value, null, '\t') は コンソールが見にくくなる

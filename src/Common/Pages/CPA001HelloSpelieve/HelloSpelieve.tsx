@@ -6,7 +6,7 @@ import { Headline, Text, Button, Title } from 'react-native-paper';
 import { RecentItinerariesInterface, getRecentItineraries } from './HelloSpelieveRecentItineraryHook';
 
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
-import { Error, getWindowWidth } from '@/Common/Hooks/CHK001Utils';
+import { consoleError, getWindowWidth } from '@/Common/Hooks/CHK001Utils';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ItineraryStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { ENV } from '@/ENV';
@@ -21,7 +21,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 				setRecentItineraries(
 					(await getRecentItineraries()).sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime()),
 				);
-			})().catch((e) => Error('CPA001HelloSpelieve', 'setRecentItineraries', e));
+			})().catch((e) => consoleError('CPA001HelloSpelieve', 'setRecentItineraries', e));
 		});
 		return unsubscribe;
 	}, [navigation]);
