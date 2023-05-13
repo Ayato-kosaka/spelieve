@@ -1,3 +1,5 @@
+import { FirebaseAnalyticsTypes } from '@react-native-firebase/analytics';
+
 export interface GoogleAnalyticsInterface {
 	sendAnalyticsLogEvent: (
 		event: string,
@@ -5,4 +7,5 @@ export interface GoogleAnalyticsInterface {
 			[key: string]: string | number | boolean;
 		},
 	) => void;
+	getAppInstanceId: FirebaseAnalyticsTypes.Module['getAppInstanceId'];
 }

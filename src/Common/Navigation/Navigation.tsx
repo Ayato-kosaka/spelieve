@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
+import perf from '@react-native-firebase/perf';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useRef } from 'react';
+import { Platform } from 'react-native';
 
 import { CCO001GlobalContext } from '../Components/CCO001GlobalContext/GlobalContext';
+import { consoleError } from '../Hooks/CHK001Utils';
 import i18n from '../Hooks/i18n-js';
 import { ModalScreen } from '../Pages/ModalScreen';
 import { NotFoundScreen } from '../Pages/NotFoundScreen';
@@ -22,17 +25,28 @@ export const Navigation = () => {
 	const navigationRef = useNavigationContainerRef<RootStackParamList>();
 	const routeNameRef = useRef<string | undefined>('');
 
-	const handlePageChanged = () => {
+	const onStateChange = () => {
 		const previousRouteName: string | undefined = routeNameRef.current;
 		const currentRouteName: string | undefined = navigationRef.current?.getCurrentRoute()?.name;
+
+		const trackScreenView = async (screenName: string) => {
+			CHK006GoogleAnalytics.sendAnalyticsLogEvent('screen_view', {
+				firebase_screen: screenName,
+				firebase_screen_class: screenName,
+			});
+
+			// Screen Rendering Performance Monitoring
+			if (Platform.OS === 'android') {
+				const trace = perf().newScreenTrace(screenName);
+				await trace.start();
+				await trace.stop();
+			}
+		};
 
 		if (previousRouteName !== currentRouteName && currentRouteName) {
 			routeNameRef.current = currentRouteName;
 			if (currentRouteName) {
-				CHK006GoogleAnalytics.sendAnalyticsLogEvent('screen_view', {
-					firebase_screen: currentRouteName,
-					firebase_screen_class: currentRouteName,
-				});
+				trackScreenView(currentRouteName).catch((e) => consoleError('Navigation', 'onStateChange.trackScreenView', e));
 			}
 		}
 	};
@@ -48,7 +62,7 @@ export const Navigation = () => {
 			onReady={() => {
 				routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
 			}}
-			onStateChange={() => handlePageChanged()}>
+			onStateChange={() => onStateChange()}>
 			<RootNavigator />
 		</NavigationContainer>
 	);

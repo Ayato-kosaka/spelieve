@@ -1,9 +1,9 @@
 import analytics from '@react-native-firebase/analytics';
 
-import { consoleError } from '../CHK001Utils';
-
 import { GoogleAnalyticsInterface } from './GoogleAnalyticsInterface';
 
+// react-native-maps と、expo-firebase-analytics を一緒に使うと、エラーになるため、
+// このファイルを作成し、react-native-firebase/analytics を使うようにする。
 export const CHK006GoogleAnalytics: GoogleAnalyticsInterface = {
 	sendAnalyticsLogEvent: (
 		event: string,
@@ -13,6 +13,9 @@ export const CHK006GoogleAnalytics: GoogleAnalyticsInterface = {
 	) => {
 		analytics()
 			.logEvent(event, params)
-			.catch((e) => consoleError('CHK006GoogleAnalytics', 'sendAnalyticsLogEvent', e));
+			// Dependency cycle となるため、例外的に console.error を使う
+			// eslint-disable-next-line no-console
+			.catch((e) => console.error('CHK006GoogleAnalytics', 'sendAnalyticsLogEvent', e));
 	},
+	getAppInstanceId: () => analytics().getAppInstanceId(),
 };
