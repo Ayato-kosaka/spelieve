@@ -27,11 +27,14 @@ export const Navigation = () => {
 		const currentRouteName: string | undefined = navigationRef.current?.getCurrentRoute()?.name;
 
 		if (previousRouteName !== currentRouteName && currentRouteName) {
-			CHK006GoogleAnalytics.sendAnalyticsLogEvent(currentRouteName, {
-				screen_class: currentRouteName,
-			});
+			routeNameRef.current = currentRouteName;
+			if (currentRouteName) {
+				CHK006GoogleAnalytics.sendAnalyticsLogEvent('screen_view', {
+					firebase_screen: currentRouteName,
+					firebase_screen_class: currentRouteName,
+				});
+			}
 		}
-		routeNameRef.current = currentRouteName;
 	};
 
 	return (

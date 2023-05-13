@@ -1,5 +1,7 @@
 import analytics from '@react-native-firebase/analytics';
 
+import { consoleError } from '../CHK001Utils';
+
 import { GoogleAnalyticsInterface } from './GoogleAnalyticsInterface';
 
 export const CHK006GoogleAnalytics: GoogleAnalyticsInterface = {
@@ -11,7 +13,6 @@ export const CHK006GoogleAnalytics: GoogleAnalyticsInterface = {
 	) => {
 		analytics()
 			.logEvent(event, params)
-			// eslint-disable-next-line no-console
-			.catch((e) => console.error(e));
+			.catch((e) => consoleError('CHK006GoogleAnalytics', 'sendAnalyticsLogEvent', e));
 	},
 };
