@@ -22,7 +22,7 @@ export const Logger = (funcNm: string, variantNm: string, value: any) => {
 		// eslint-disable-next-line no-console
 		console.log('debug', funcNm, variantNm, value); // JSON.stringify(value, null, '\t') は コンソールが見にくくなる
 	}
-	CHK006GoogleAnalytics.sendAnalyticsLogEvent('CHK001Utils.Logger', { funcNm, variantNm });
+	CHK006GoogleAnalytics.sendAnalyticsLogEvent('CHK001Utils_Logger', { funcNm, variantNm });
 };
 
 export const consoleError = (funcNm: string, variantNm: string, value: any) => {

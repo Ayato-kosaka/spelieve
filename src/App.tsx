@@ -1,6 +1,6 @@
-import crashlytics from '@react-native-firebase/crashlytics';
 import 'expo-dev-client';
 
+import crashlytics from '@react-native-firebase/crashlytics';
 import registerRootComponent from 'expo/build/launch/registerRootComponent';
 import { useEffect } from 'react';
 import { Provider as PaperProvider } from 'react-native-paper';
