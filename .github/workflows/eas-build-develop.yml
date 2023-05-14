@@ -13,16 +13,16 @@ on:
         default: true
         required: false
         options:
-          - "true"
-          - "false"
+          - 'true'
+          - 'false'
       eas-cache:
         type: choice
         description: 'Whether to use EAS cache'
         default: true
         required: false
         options:
-          - "true"
-          - "false"
+          - 'true'
+          - 'false'
       eas-build-command:
         description: 'EAS build command'
         required: false
@@ -41,7 +41,7 @@ jobs:
           node-version: '16'
 
       - name: Setup Expo
-        uses: expo/expo-github-action@v7
+        uses: expo/expo-github-action@v8
         with:
           expo-version: 4.x
           token: ${{ secrets.EXPO_TOKEN }}
