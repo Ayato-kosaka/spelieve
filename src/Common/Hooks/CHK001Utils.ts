@@ -9,6 +9,8 @@
 import { useEffect, useState } from 'react';
 import { Dimensions, Image, Platform } from 'react-native';
 
+import { CHK006GoogleAnalytics } from './CHK006GoogleAnalytics/GoogleAnalytics';
+
 import { ENV } from '@/ENV';
 
 /** **********************************************************************************************
@@ -20,9 +22,10 @@ export const Logger = (funcNm: string, variantNm: string, value: any) => {
 		// eslint-disable-next-line no-console
 		console.log('debug', funcNm, variantNm, value); // JSON.stringify(value, null, '\t') は コンソールが見にくくなる
 	}
+	CHK006GoogleAnalytics.sendAnalyticsLogEvent('CHK001Utils_Logger', { funcNm, variantNm });
 };
 
-export const Error = (funcNm: string, variantNm: string, value: any) => {
+export const consoleError = (funcNm: string, variantNm: string, value: any) => {
 	if (ENV.LOGGER) {
 		// eslint-disable-next-line no-console
 		console.log('error', funcNm, variantNm, value); // JSON.stringify(value, null, '\t') は コンソールが見にくくなる

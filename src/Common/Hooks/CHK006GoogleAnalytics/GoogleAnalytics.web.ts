@@ -15,4 +15,6 @@ export const CHK006GoogleAnalytics: GoogleAnalyticsInterface = {
 	) => {
 		logEvent(webAnalytics, event, params);
 	},
+	// web では、セッションで一意になる値を取得することはできないため、空文字を返す。
+	getAppInstanceId: () => Promise.resolve(''),
 };
