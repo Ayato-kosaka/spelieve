@@ -12,13 +12,12 @@ export const IPA004ItineraryPreviewController = ({
 	route,
 	navigation,
 }: ItineraryTopTabScreenProps<'ItineraryPreview'>) => {
-	const { itineraryDocSnap } = useContext(ICT011ItineraryOne);
+	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
 	const itinerary: ItineraryOneInterface | undefined = useMemo(() => itineraryDocSnap?.data(), [itineraryDocSnap]);
 
 	const { planGroupsQSnap } = useContext(ICT021PlanGroupsList);
 	const planGroups = useMemo(() => planGroupsQSnap?.docs?.map((doc) => doc.data()), [planGroupsQSnap]);
-
-	const { itineraryID } = route.params;
+	const itineraryID = useMemo(() => itineraryDocSnap?.id, [itineraryDocSnap])
 
 	useEffect(() => {
 		if ((!itineraryDocSnap && !itineraryID) || (itineraryDocSnap && !itineraryDocSnap.exists())) {
@@ -26,6 +25,13 @@ export const IPA004ItineraryPreviewController = ({
 			navigation.navigate('HelloSpelieve', {});
 		}
 	}, [itineraryDocSnap, itineraryID, navigation]);
+
+	useEffect(() => {
+		if (itineraryID) {
+			setItineraryID(itineraryID);
+			navigation.setParams({ itineraryID });
+		}
+	}, [itineraryID]);
 
 	const { plansDocSnapMap, isPlansLoading } = useContext(ICT031PlansMap);
 	const plans = useMemo(() => {
