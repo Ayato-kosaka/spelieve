@@ -17,7 +17,7 @@ export const IPA004ItineraryPreviewController = ({
 
 	const { planGroupsQSnap } = useContext(ICT021PlanGroupsList);
 	const planGroups = useMemo(() => planGroupsQSnap?.docs?.map((doc) => doc.data()), [planGroupsQSnap]);
-	const itineraryID = useMemo(() => itineraryDocSnap?.id, [itineraryDocSnap])
+	const itineraryID = useMemo(() => itineraryDocSnap?.id, [itineraryDocSnap]);
 
 	useEffect(() => {
 		if ((!itineraryDocSnap && !itineraryID) || (itineraryDocSnap && !itineraryDocSnap.exists())) {
@@ -31,7 +31,7 @@ export const IPA004ItineraryPreviewController = ({
 			setItineraryID(itineraryID);
 			navigation.setParams({ itineraryID });
 		}
-	}, [itineraryID]);
+	}, [itineraryID, navigation, setItineraryID]);
 
 	const { plansDocSnapMap, isPlansLoading } = useContext(ICT031PlansMap);
 	const plans = useMemo(() => {
