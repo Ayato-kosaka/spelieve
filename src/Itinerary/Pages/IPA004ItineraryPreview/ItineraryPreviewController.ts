@@ -20,18 +20,17 @@ export const IPA004ItineraryPreviewController = ({
 	const itineraryID = useMemo(() => itineraryDocSnap?.id, [itineraryDocSnap]);
 
 	useEffect(() => {
-		if ((!itineraryDocSnap && !itineraryID) || (itineraryDocSnap && !itineraryDocSnap.exists())) {
+		if (route.params.itineraryID) {
+			if (!itineraryID) {
+				setItineraryID(route.params.itineraryID);
+			}
+		} else if (itineraryID) {
+			navigation.setParams({ itineraryID });
+		} else {
 			// TODO: https://github.com/Ayato-kosaka/spelieve/issues/361 navigation.navigate が動かない
 			navigation.navigate('HelloSpelieve', {});
 		}
-	}, [itineraryDocSnap, itineraryID, navigation]);
-
-	useEffect(() => {
-		if (itineraryID) {
-			setItineraryID(itineraryID);
-			navigation.setParams({ itineraryID });
-		}
-	}, [itineraryID, navigation, setItineraryID]);
+	}, [itineraryID, navigation, route.params.itineraryID, setItineraryID]);
 
 	const { plansDocSnapMap, isPlansLoading } = useContext(ICT031PlansMap);
 	const plans = useMemo(() => {
