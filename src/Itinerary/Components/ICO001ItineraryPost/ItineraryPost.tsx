@@ -52,10 +52,7 @@ export const ICO001ItineraryPost = ({ itinerary, planGroups, plans }: ItineraryP
 															size={20}
 														/>
 														<Text>
-															{plan.transportationSpan.toLocaleTimeString(undefined, {
-																hour: '2-digit',
-																minute: '2-digit',
-															})}
+															{dateToHourMinString(plan.transportationSpan)}
 														</Text>
 													</View>
 												)}
