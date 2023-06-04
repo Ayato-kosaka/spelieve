@@ -8,6 +8,7 @@ import { ItineraryOneInterface } from '@/Itinerary/Contexts/ICT011ItineraryOne/I
 import { PlanGroupsListInterface } from '@/Itinerary/Contexts/ICT021PlanGroupsList/PlanGroupsListInterface';
 import { PlansMapInterface } from '@/Itinerary/Contexts/ICT031PlansMap/PlansMapInterface';
 import { travelModeConverter } from '@/Place/Hooks/PHK001GooglePlaceAPI';
+import { dateToHourMinString } from '@/Common/Hooks/CHK007DateUtils';
 
 interface ItineraryPostPropsInterface {
 	itinerary: ItineraryOneInterface;
@@ -38,8 +39,8 @@ export const ICO001ItineraryPost = ({ itinerary, planGroups, plans }: ItineraryP
 												<Image source={{ uri: plan.imageUrl }} style={styles.planImage} />
 												{plan.title !== '' && <Text style={styles.planTitle}>{plan.title}</Text>}
 												<Text style={styles.planTime}>
-													{plan.placeStartTime.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}~
-													{plan.placeEndTime.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
+													{dateToHourMinString(plan.placeStartTime)}~
+													{dateToHourMinString(plan.placeEndTime)}
 												</Text>
 											</View>
 											<View style={styles.transportationSpanContainer}>
@@ -51,10 +52,7 @@ export const ICO001ItineraryPost = ({ itinerary, planGroups, plans }: ItineraryP
 															size={20}
 														/>
 														<Text>
-															{plan.transportationSpan.toLocaleTimeString(undefined, {
-																hour: '2-digit',
-																minute: '2-digit',
-															})}
+															{dateToHourMinString(plan.transportationSpan)}
 														</Text>
 													</View>
 												)}
