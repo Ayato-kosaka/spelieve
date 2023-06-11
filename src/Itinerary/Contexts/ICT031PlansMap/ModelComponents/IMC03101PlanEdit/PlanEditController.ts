@@ -235,5 +235,38 @@ export const IMC03101PlanEditController = ({
 		await deleteDoc(doc(plansCRef!, planID));
 	}, [planGroup, plansIndex, plansCRef, planID, planGroupsDoc.ref, plansDocSnapMap]);
 
-	return { deletePlan };
+	const onSelectPlanMenu = useCallback((val) => {
+		if (val.command === 'delete') {
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			deletePlan();
+		} else {
+			replacePlan(val.command, val.planIndex);
+		}
+	}, []);
+
+	const replacePlan = useCallback(async (direction: string, planIndex: number) => {
+		const newPlanGroup = { ...planGroup };
+
+		if (newPlanGroup.plans.length !== 0) {
+			if (direction === 'up') {
+				if (!newPlanGroup.plans[planIndex - 1]) {
+					return;
+				}
+				const previousPlanID = newPlanGroup.plans[planIndex - 1];
+				const currentPlanID = newPlanGroup.plans[planIndex];
+				newPlanGroup.plans[planIndex - 1] = currentPlanID;
+				newPlanGroup.plans[planIndex] = previousPlanID;
+			} else if (direction === 'down') {
+				if (!newPlanGroup.plans[planIndex + 1]) {
+					return;
+				}
+				const nextPlan = newPlanGroup.plans[planIndex + 1];
+				newPlanGroup.plans[planIndex + 1] = newPlanGroup.plans[planIndex];
+				newPlanGroup.plans[planIndex] = nextPlan;
+			}
+			await setDoc(planGroupsDoc.ref, { ...newPlanGroup });
+		}
+	}, []);
+
+	return { onSelectPlanMenu };
 };

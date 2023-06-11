@@ -1,6 +1,7 @@
 import React, { useContext, useMemo } from 'react';
 import { Pressable, View } from 'react-native';
 import { Card, Text } from 'react-native-paper';
+import { Menu, MenuOption, MenuOptions, MenuProvider, MenuTrigger } from 'react-native-popup-menu';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
@@ -18,13 +19,15 @@ export const IMC03101PlanEdit = ({
 	planGroupsDoc,
 	dependentPlanID,
 	isPlanGroupMounted,
+	index,
 	onPlanPress,
 }: PlanEditPropsInterface) => {
 	const { plansDocSnapMap } = useContext(ICT031PlansMap);
 	const planDocSnap = useMemo(() => plansDocSnapMap[planID], [planID, plansDocSnapMap]);
 	const plan = useMemo(() => planDocSnap.data(), [planDocSnap]);
+	const planIndex = plansDocSnapMap;
 
-	const { deletePlan } = IMC03101PlanEditController({
+	const { onSelectPlanMenu } = IMC03101PlanEditController({
 		planID,
 		beforeAfterRepresentativeType,
 		dependentPlanID,
@@ -59,7 +62,20 @@ export const IMC03101PlanEdit = ({
 							</Text>
 						</View>
 					</View>
-					<View style={{ flex: 1, alignItems: 'center' }}>
+
+					<View>
+						<MenuProvider style={{ flexDirection: 'column', padding: 30 }}>
+							<Menu onSelect={onSelectPlanMenu}>
+								<MenuTrigger text="・・・" />
+								<MenuOptions>
+									<MenuOption value={{ command: 'up', planIndex: index, planID }} text="上へ" />
+									<MenuOption value={{ command: 'down', planIndex: index, planID }} text="下へ" />
+									<MenuOption value={{ command: 'delete' }} text="削除" />
+								</MenuOptions>
+							</Menu>
+						</MenuProvider>
+					</View>
+					{/* <View style={{ flex: 1, alignItems: 'center' }}>
 						<MaterialCommunityIcons
 							name="delete"
 							size={20}
@@ -68,7 +84,7 @@ export const IMC03101PlanEdit = ({
 								deletePlan();
 							}}
 						/>
-					</View>
+					</View> */}
 				</Pressable>
 			</Card.Content>
 		</Card>

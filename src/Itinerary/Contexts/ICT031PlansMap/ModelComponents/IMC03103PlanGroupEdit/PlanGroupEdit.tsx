@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { View } from 'react-native';
 import { Card } from 'react-native-paper';
 
@@ -9,7 +10,7 @@ import { IMC03102TrafficMovementEdit } from '@/Itinerary/Contexts/ICT031PlansMap
 import { materialColors, primaryColorNm } from '@/ThemeProvider';
 
 export const IMC03103PlanGroupsEdit = ({ planGroupsDoc, onPlanPress }: PlanGroupsEditPropsInterface) => {
-	const planGroups = planGroupsDoc.data();
+	const planGroups = useMemo(() => planGroupsDoc.data(), [planGroupsDoc]);
 
 	// TODO: https://github.com/Ayato-kosaka/spelieve/issues/343 itinerary Plan のドラッグアンドドロップ
 
@@ -27,6 +28,7 @@ export const IMC03103PlanGroupsEdit = ({ planGroupsDoc, onPlanPress }: PlanGroup
 							dependentPlanID={dependentPlanID}
 							planGroupsDoc={planGroupsDoc}
 							isPlanGroupMounted={isMounted}
+							index={index}
 							onPlanPress={onPlanPress}
 						/>
 						<IMC03102TrafficMovementEdit
