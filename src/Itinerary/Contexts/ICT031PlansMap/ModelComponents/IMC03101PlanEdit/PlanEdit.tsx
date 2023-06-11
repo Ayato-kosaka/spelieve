@@ -11,8 +11,8 @@ import { ICT031PlansMap } from '../..';
 import { IMC03101PlanEditController } from './PlanEditController';
 import { PlanEditPropsInterface } from './PlanEditPropsInterface';
 
-import { paperTheme } from '@/ThemeProvider';
 import i18n from '@/Common/Hooks/i18n-js';
+import { paperTheme } from '@/ThemeProvider';
 
 export const IMC03101PlanEdit = ({
 	planID,
@@ -67,11 +67,11 @@ export const IMC03101PlanEdit = ({
 					<View>
 						<MenuProvider style={{ flexDirection: 'column', padding: 50 }}>
 							<Menu onSelect={onSelectPlanMenu}>
-								<MenuTrigger children={<MaterialCommunityIcons name="dots-horizontal" size={30} />} />
-								<MenuOptions>
-									<MenuOption value={{ command: 'up', planIndex }} text={i18n.t("上へ")} />
-									<MenuOption value={{ command: 'down', planIndex }} text={i18n.t("下へ")} />
-									<MenuOption value={{ command: 'delete' }} text={i18n.t("削除")} />
+								<MenuTrigger><MaterialCommunityIcons name="dots-horizontal" size={30} /></MenuTrigger>
+								<MenuOptions customStyles={{ optionsWrapper: { backgroundColor: '#F8F8FF' } }}>
+									<MenuOption value={{ command: 'up', planIndex }} text={i18n.t('上へ')} />
+									<MenuOption value={{ command: 'down', planIndex }} text={i18n.t('下へ')} />
+									<MenuOption value={{ command: 'delete' }} text={i18n.t('削除')} />
 								</MenuOptions>
 							</Menu>
 						</MenuProvider>

@@ -123,5 +123,10 @@ const en: typeof Lang = {
 	'Send Backward': 'Send Backward',
 	'Send to Back': 'Send to Back',
 	サムネイルテンプレート選択: 'Select Thumbnail',
+
+	// IMC03101PlanEdit
+	'上へ': 'Up',
+	'下へ': 'Down',
+	'削除': 'Delete'
 };
 export default en;
