@@ -8,6 +8,7 @@ import { styles } from './ItineraryEditStyle';
 
 import { CCO003DateTimePicker } from '@/Common/Components/CCO003DateTimePicker';
 import { CCO007GoogleBannerAd } from '@/Common/Components/CCO007GoogleBannerAd/GoogleBannerAd';
+import { getDayCountString } from '@/Common/Hooks/CHK001Utils';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ItineraryTopTabScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { ENV } from '@/ENV';
@@ -77,12 +78,7 @@ export const IPA001ItineraryEdit = ({ route, navigation }: ItineraryTopTabScreen
 				prevDateNumber = planGroup.dayNumber;
 				return (
 					<View key={planGroupsDoc.id}>
-						{isAnotherDay && (
-							<Headline>
-								{planGroup.dayNumber}
-								{i18n.t('日目')}
-							</Headline>
-						)}
+						{isAnotherDay && <Headline>{getDayCountString(planGroup.dayNumber)}</Headline>}
 						<IMC03103PlanGroupsEdit planGroupsDoc={planGroupsDoc} onPlanPress={onPlanPress} />
 					</View>
 				);

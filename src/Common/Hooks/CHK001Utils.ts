@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { Dimensions, Image, Platform } from 'react-native';
 
 import { CHK006GoogleAnalytics } from './CHK006GoogleAnalytics/GoogleAnalytics';
+import i18n from './i18n-js';
 
 import { ENV } from '@/ENV';
 
@@ -60,4 +61,15 @@ export const getWindowWidth = () => {
 		return Dimensions.get('window').width < 450 ? Dimensions.get('window').width : 450;
 	}
 	return Dimensions.get('window').width;
+};
+
+export const getDayCountString = (day: number): string => {
+	switch (i18n.locale) {
+		case 'en':
+			return `Day ${day}`;
+		case 'ja':
+			return `${day}日目`;
+		default:
+			return '';
+	}
 };
