@@ -235,15 +235,7 @@ export const IMC03101PlanEditController = ({
 		await deleteDoc(doc(plansCRef!, planID));
 	}, [planGroup, plansIndex, plansCRef, planID, planGroupsDoc.ref, plansDocSnapMap]);
 
-	const onSelectPlanMenu = useCallback((val) => {
-		if (val.command === 'delete') {
-			// eslint-disable-next-line @typescript-eslint/no-floating-promises
-			deletePlan();
-		} else {
-			replacePlan(val.command, val.planIndex);
-		}
-	}, []);
-
+	
 	const replacePlan = useCallback(async (direction: string, planIndex: number) => {
 		const newPlanGroup = { ...planGroup };
 
@@ -266,7 +258,16 @@ export const IMC03101PlanEditController = ({
 			}
 			await setDoc(planGroupsDoc.ref, { ...newPlanGroup });
 		}
-	}, []);
+	}, [planGroup]);
+
+	const onSelectPlanMenu = useCallback(async (val) => {
+		if (val.command === 'delete') {
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			await deletePlan();
+		} else {
+			await replacePlan(val.command, val.planIndex);
+		}
+	}, [deletePlan, replacePlan]);
 
 	return { onSelectPlanMenu };
 };
