@@ -28,7 +28,7 @@ export const IMC03103PlanGroupsEdit = ({ planGroupsDoc, onPlanPress }: PlanGroup
 							dependentPlanID={dependentPlanID}
 							planGroupsDoc={planGroupsDoc}
 							isPlanGroupMounted={isMounted}
-							index={index}
+							planIndex={index}
 							onPlanPress={onPlanPress}
 						/>
 						<IMC03102TrafficMovementEdit

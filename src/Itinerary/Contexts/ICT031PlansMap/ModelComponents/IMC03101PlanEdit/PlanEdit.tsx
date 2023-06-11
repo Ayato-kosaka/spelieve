@@ -12,6 +12,7 @@ import { IMC03101PlanEditController } from './PlanEditController';
 import { PlanEditPropsInterface } from './PlanEditPropsInterface';
 
 import { paperTheme } from '@/ThemeProvider';
+import i18n from '@/Common/Hooks/i18n-js';
 
 export const IMC03101PlanEdit = ({
 	planID,
@@ -19,13 +20,12 @@ export const IMC03101PlanEdit = ({
 	planGroupsDoc,
 	dependentPlanID,
 	isPlanGroupMounted,
-	index,
+	planIndex,
 	onPlanPress,
 }: PlanEditPropsInterface) => {
 	const { plansDocSnapMap } = useContext(ICT031PlansMap);
 	const planDocSnap = useMemo(() => plansDocSnapMap[planID], [planID, plansDocSnapMap]);
 	const plan = useMemo(() => planDocSnap.data(), [planDocSnap]);
-	const planIndex = plansDocSnapMap;
 
 	const { onSelectPlanMenu } = IMC03101PlanEditController({
 		planID,
@@ -33,6 +33,7 @@ export const IMC03101PlanEdit = ({
 		dependentPlanID,
 		planGroupsDoc,
 		isPlanGroupMounted,
+		planIndex,
 	});
 
 	return (
@@ -64,27 +65,17 @@ export const IMC03101PlanEdit = ({
 					</View>
 
 					<View>
-						<MenuProvider style={{ flexDirection: 'column', padding: 30 }}>
+						<MenuProvider style={{ flexDirection: 'column', padding: 50 }}>
 							<Menu onSelect={onSelectPlanMenu}>
-								<MenuTrigger text="・・・" />
+								<MenuTrigger children={<MaterialCommunityIcons name="dots-horizontal" size={30} />} />
 								<MenuOptions>
-									<MenuOption value={{ command: 'up', planIndex: index, planID }} text="上へ" />
-									<MenuOption value={{ command: 'down', planIndex: index, planID }} text="下へ" />
-									<MenuOption value={{ command: 'delete' }} text="削除" />
+									<MenuOption value={{ command: 'up', planIndex }} text={i18n.t("上へ")} />
+									<MenuOption value={{ command: 'down', planIndex }} text={i18n.t("下へ")} />
+									<MenuOption value={{ command: 'delete' }} text={i18n.t("削除")} />
 								</MenuOptions>
 							</Menu>
 						</MenuProvider>
 					</View>
-					{/* <View style={{ flex: 1, alignItems: 'center' }}>
-						<MaterialCommunityIcons
-							name="delete"
-							size={20}
-							onPress={() => {
-								// eslint-disable-next-line @typescript-eslint/no-floating-promises
-								deletePlan();
-							}}
-						/>
-					</View> */}
 				</Pressable>
 			</Card.Content>
 		</Card>

@@ -16,6 +16,7 @@ export const IMC03101PlanEditController = ({
 	dependentPlanID,
 	planGroupsDoc,
 	isPlanGroupMounted,
+	planIndex,
 }: Omit<PlanEditPropsInterface, 'onPlanPress'>) => {
 	const { planGroupsQSnap } = useContext(ICT021PlanGroupsList);
 	const { plansCRef, plansDocSnapMap } = useContext(ICT031PlansMap);
@@ -235,39 +236,44 @@ export const IMC03101PlanEditController = ({
 		await deleteDoc(doc(plansCRef!, planID));
 	}, [planGroup, plansIndex, plansCRef, planID, planGroupsDoc.ref, plansDocSnapMap]);
 
-	
-	const replacePlan = useCallback(async (direction: string, planIndex: number) => {
-		const newPlanGroup = { ...planGroup };
+	const replacePlan = useCallback(
+		async (direction: string, selectedPlanIndex: number) => {
+			const newPlanGroup = { ...planGroup };
 
-		if (newPlanGroup.plans.length !== 0) {
-			if (direction === 'up') {
-				if (!newPlanGroup.plans[planIndex - 1]) {
-					return;
+			if (newPlanGroup.plans.length !== 0) {
+				if (direction === 'up') {
+					if (!newPlanGroup.plans[selectedPlanIndex - 1]) {
+						return;
+					}
+					const previousPlanID = newPlanGroup.plans[selectedPlanIndex - 1];
+					const currentPlanID = newPlanGroup.plans[selectedPlanIndex];
+					newPlanGroup.plans[selectedPlanIndex - 1] = currentPlanID;
+					newPlanGroup.plans[selectedPlanIndex] = previousPlanID;
+				} else if (direction === 'down') {
+					if (!newPlanGroup.plans[selectedPlanIndex + 1]) {
+						return;
+					}
+					const nextPlan = newPlanGroup.plans[selectedPlanIndex + 1];
+					newPlanGroup.plans[selectedPlanIndex + 1] = newPlanGroup.plans[selectedPlanIndex];
+					newPlanGroup.plans[selectedPlanIndex] = nextPlan;
 				}
-				const previousPlanID = newPlanGroup.plans[planIndex - 1];
-				const currentPlanID = newPlanGroup.plans[planIndex];
-				newPlanGroup.plans[planIndex - 1] = currentPlanID;
-				newPlanGroup.plans[planIndex] = previousPlanID;
-			} else if (direction === 'down') {
-				if (!newPlanGroup.plans[planIndex + 1]) {
-					return;
-				}
-				const nextPlan = newPlanGroup.plans[planIndex + 1];
-				newPlanGroup.plans[planIndex + 1] = newPlanGroup.plans[planIndex];
-				newPlanGroup.plans[planIndex] = nextPlan;
+				await setDoc(planGroupsDoc.ref, { ...newPlanGroup });
 			}
-			await setDoc(planGroupsDoc.ref, { ...newPlanGroup });
-		}
-	}, [planGroup]);
+		},
+		[planGroup, planGroupsDoc.ref],
+	);
 
-	const onSelectPlanMenu = useCallback(async (val) => {
-		if (val.command === 'delete') {
-			// eslint-disable-next-line @typescript-eslint/no-floating-promises
-			await deletePlan();
-		} else {
-			await replacePlan(val.command, val.planIndex);
-		}
-	}, [deletePlan, replacePlan]);
+	const onSelectPlanMenu = useCallback(
+		async (params: { command: string; planIndex: number }) => {
+			if (params.command === 'delete') {
+				// eslint-disable-next-line @typescript-eslint/no-floating-promises
+				await deletePlan();
+			} else {
+				await replacePlan(params.command, params.planIndex);
+			}
+		},
+		[deletePlan, replacePlan],
+	);
 
 	return { onSelectPlanMenu };
 };
