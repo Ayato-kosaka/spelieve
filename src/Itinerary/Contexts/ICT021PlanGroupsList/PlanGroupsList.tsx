@@ -95,14 +95,12 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 			}
 			const planGroup1 = planGroupsQDSnap[index1.planGroup].data();
 			const planGroup2 = planGroupsQDSnap[index2.planGroup].data();
-			if (
-				index1.plan < 0 ||
-				index1.plan >= planGroup1.plans.length ||
-				index2.plan < 0 ||
-				index2.plan >= planGroup2.plans.length
-			) {
+			if (planGroup1?.plans?.at(index1.plan) === undefined || planGroup2?.plans?.at(index2.plan) === undefined) {
 				throw new Error('index out of range');
 			}
+			// planIndex が負の場合は末尾からのインデックスとして扱う
+			if (index1.plan < 0) index1.plan += planGroup1.plans.length;
+			if (index2.plan < 0) index2.plan += planGroup2.plans.length;
 			[planGroup1.plans[index1.plan], planGroup2.plans[index2.plan]] = [
 				planGroup2.plans[index2.plan],
 				planGroup1.plans[index1.plan],
