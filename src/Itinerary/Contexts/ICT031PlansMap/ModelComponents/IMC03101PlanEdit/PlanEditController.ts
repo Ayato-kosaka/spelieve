@@ -236,7 +236,7 @@ export const IMC03101PlanEditController = ({
 		await deleteDoc(doc(plansCRef!, planID));
 	}, [planGroup, plansIndex, plansCRef, planID, planGroupsDoc.ref, plansDocSnapMap]);
 
-	const replacePlan = useCallback(
+	const movePlanUpAndDown = useCallback(
 		async (direction: string, selectedPlanIndex: number) => {
 			const newPlanGroup = { ...planGroup };
 
