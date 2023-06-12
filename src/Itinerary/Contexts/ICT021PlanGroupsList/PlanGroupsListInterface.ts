@@ -12,14 +12,4 @@ export interface PlanGroupsListValInterface {
 	planGroupsQSnap?: QuerySnapshot<PlanGroupsListInterface>;
 	planGroupsCRef?: CollectionReference<PlanGroupsListInterface>;
 	createPlanGroup: (plan?: Partial<PlansMapInterface>) => Promise<void>;
-	swapPlanOrder: (
-		index1: {
-			planGroup: number;
-			plan: number;
-		},
-		index2: {
-			planGroup: number;
-			plan: number;
-		},
-	) => Promise<void>;
 }
