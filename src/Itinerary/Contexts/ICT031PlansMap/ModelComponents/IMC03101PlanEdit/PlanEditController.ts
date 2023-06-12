@@ -18,7 +18,7 @@ export const IMC03101PlanEditController = ({
 	isPlanGroupMounted,
 	planIndex,
 }: Omit<PlanEditPropsInterface, 'onPlanPress'>) => {
-	const { planGroupsQSnap } = useContext(ICT021PlanGroupsList);
+	const { swapPlanOrder } = useContext(ICT021PlanGroupsList);
 	const { plansCRef, plansDocSnapMap } = useContext(ICT031PlansMap);
 	const planDocSnap = useMemo(() => plansDocSnapMap[planID], [planID, plansDocSnapMap]);
 	const plan = useMemo(() => planDocSnap.data(), [planDocSnap]);
@@ -236,6 +236,7 @@ export const IMC03101PlanEditController = ({
 		await deleteDoc(doc(plansCRef!, planID));
 	}, [planGroup, plansIndex, plansCRef, planID, planGroupsDoc.ref, plansDocSnapMap]);
 
+<<<<<<< Updated upstream
 	const replacePlan = useCallback(
 		async (direction: string, selectedPlanIndex: number) => {
 			const newPlanGroup = { ...planGroup };
@@ -276,4 +277,58 @@ export const IMC03101PlanEditController = ({
 	);
 
 	return { onSelectPlanMenu };
+=======
+	const planGroupIndex: number = new Date().getTime();
+	const movePlanUpAndDown = useCallback(
+		async (direction: 'up' | 'down', selectedPlanIndex: number) => {
+			const index1 = {
+				planGroup: planGroupIndex,
+				plan: selectedPlanIndex,
+			};
+			if (direction === 'up') {
+				if (selectedPlanIndex > 0) {
+					// 同じ PlanGroup 内で一つ上に移動
+					await swapPlanOrder(index1, {
+						planGroup: planGroupIndex,
+						plan: selectedPlanIndex - 1,
+					});
+				} else {
+					// 前の PlanGroup の一番下に移動
+					await swapPlanOrder(index1, {
+						planGroup: planGroupIndex - 1,
+						plan: -1,
+					});
+				}
+			} else if (direction === 'down') {
+				if (selectedPlanIndex < planGroup.plans.length - 1) {
+					// 同じ PlanGroup 内で一つ下に移動
+					await swapPlanOrder(index1, {
+						planGroup: planGroupIndex,
+						plan: selectedPlanIndex + 1,
+					});
+				} else {
+					// 次の PlanGroup の一番上に移動
+					await swapPlanOrder(index1, {
+						planGroup: planGroupIndex + 1,
+						plan: 0,
+					});
+				}
+			}
+		},
+		[planGroup.plans.length, planGroupIndex, swapPlanOrder],
+	);
+
+	const onSelectPlanMenu = useCallback(
+		async (params: { command: 'up' | 'down' | 'delete'; planIndex: number }) => {
+			if (params.command === 'delete') {
+				await deletePlan();
+			} else {
+				await movePlanUpAndDown(params.command, params.planIndex);
+			}
+		},
+		[deletePlan, movePlanUpAndDown],
+	);
+
+	return { deletePlan };
+>>>>>>> Stashed changes
 };
