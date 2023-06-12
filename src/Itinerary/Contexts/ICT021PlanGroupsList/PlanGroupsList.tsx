@@ -1,5 +1,5 @@
 import { TransitMode, TransitRoutingPreference } from '@googlemaps/google-maps-services-js';
-import { collection, query, QuerySnapshot, onSnapshot, addDoc, orderBy } from 'firebase/firestore';
+import { collection, query, QuerySnapshot, onSnapshot, addDoc, orderBy, setDoc } from 'firebase/firestore';
 import { useState, createContext, useEffect, useContext, useMemo, ReactNode, useCallback } from 'react';
 
 import { PlanGroups } from 'spelieve-common/lib/Models/Itinerary/IDB02/PlanGroups';
@@ -48,7 +48,7 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 	const createPlanGroup = useCallback(
 		async (plan?: Partial<Plans>) => {
 			if (!plansCRef || !planGroupsCRef || !itinerary) {
-				return;
+				throw new Error('not initialized');
 			}
 			const newPlan: Plans = {
 				title: '',
@@ -78,6 +78,41 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 		[itinerary, planGroupsCRef, plansCRef],
 	);
 
+	const swapPlanOrder = useCallback(
+		async (
+			index1: {
+				planGroup: number;
+				plan: number;
+			},
+			index2: {
+				planGroup: number;
+				plan: number;
+			},
+		) => {
+			const planGroupsQDSnap = planGroupsQSnap?.docs;
+			if (!plansCRef || !planGroupsCRef || !itinerary || !planGroupsQDSnap) {
+				throw new Error('not initialized');
+			}
+			const planGroup1 = planGroupsQDSnap[index1.planGroup].data();
+			const planGroup2 = planGroupsQDSnap[index2.planGroup].data();
+			if (
+				index1.plan < 0 ||
+				index1.plan >= planGroup1.plans.length ||
+				index2.plan < 0 ||
+				index2.plan >= planGroup2.plans.length
+			) {
+				throw new Error('index out of range');
+			}
+			[planGroup1.plans[index1.plan], planGroup2.plans[index2.plan]] = [
+				planGroup2.plans[index2.plan],
+				planGroup1.plans[index1.plan],
+			];
+			await setDoc(planGroupsQDSnap[index1.planGroup].ref, { ...planGroup1 });
+			await setDoc(planGroupsQDSnap[index2.planGroup].ref, { ...planGroup2 });
+		},
+		[itinerary, planGroupsCRef, planGroupsQSnap?.docs, plansCRef],
+	);
+
 	useEffect(() => {
 		if (!planGroupsCRef || !plansCRef || !itinerary) {
 			setPlanGroupsQSnap(undefined);
@@ -97,8 +132,9 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 			planGroupsQSnap,
 			planGroupsCRef,
 			createPlanGroup,
+			swapPlanOrder,
 		}),
-		[planGroupsQSnap, planGroupsCRef, createPlanGroup],
+		[planGroupsQSnap, planGroupsCRef, createPlanGroup, swapPlanOrder],
 	);
 	return <ICT021PlanGroupsList.Provider value={value}>{children}</ICT021PlanGroupsList.Provider>;
 };
