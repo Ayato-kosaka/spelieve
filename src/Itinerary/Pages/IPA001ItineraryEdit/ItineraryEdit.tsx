@@ -77,12 +77,7 @@ export const IPA001ItineraryEdit = ({ route, navigation }: ItineraryTopTabScreen
 				prevDateNumber = planGroup.dayNumber;
 				return (
 					<View key={planGroupsDoc.id}>
-						{isAnotherDay && (
-							<Headline>
-								{planGroup.dayNumber}
-								{i18n.t('日目')}
-							</Headline>
-						)}
+						{isAnotherDay && <Headline>{i18n.t('day N', { count: planGroup.dayNumber })}</Headline>}
 						<IMC03103PlanGroupsEdit planGroupsDoc={planGroupsDoc} onPlanPress={onPlanPress} />
 					</View>
 				);
