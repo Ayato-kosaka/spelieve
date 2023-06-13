@@ -67,7 +67,9 @@ export const IMC03101PlanEdit = ({
 					<View>
 						<MenuProvider style={{ flexDirection: 'column', padding: 50 }}>
 							<Menu onSelect={onSelectPlanMenu}>
-								<MenuTrigger><MaterialCommunityIcons name="dots-horizontal" size={30} /></MenuTrigger>
+								<MenuTrigger>
+									<MaterialCommunityIcons name="dots-horizontal" size={30} />
+								</MenuTrigger>
 								<MenuOptions customStyles={{ optionsWrapper: { backgroundColor: '#F8F8FF' } }}>
 									<MenuOption value={{ command: 'up', planIndex }} text={i18n.t('上へ')} />
 									<MenuOption value={{ command: 'down', planIndex }} text={i18n.t('下へ')} />

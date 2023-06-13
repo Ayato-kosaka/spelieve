@@ -4,11 +4,11 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import { styles } from './ItineraryPostStyle';
 
+import { dateToHourMinString } from '@/Common/Hooks/CHK007DateUtils';
 import { ItineraryOneInterface } from '@/Itinerary/Contexts/ICT011ItineraryOne/ItineraryOneIntereface';
 import { PlanGroupsListInterface } from '@/Itinerary/Contexts/ICT021PlanGroupsList/PlanGroupsListInterface';
 import { PlansMapInterface } from '@/Itinerary/Contexts/ICT031PlansMap/PlansMapInterface';
 import { travelModeConverter } from '@/Place/Hooks/PHK001GooglePlaceAPI';
-import { dateToHourMinString } from '@/Common/Hooks/CHK007DateUtils';
 
 interface ItineraryPostPropsInterface {
 	itinerary: ItineraryOneInterface;
@@ -39,8 +39,7 @@ export const ICO001ItineraryPost = ({ itinerary, planGroups, plans }: ItineraryP
 												<Image source={{ uri: plan.imageUrl }} style={styles.planImage} />
 												{plan.title !== '' && <Text style={styles.planTitle}>{plan.title}</Text>}
 												<Text style={styles.planTime}>
-													{dateToHourMinString(plan.placeStartTime)}~
-													{dateToHourMinString(plan.placeEndTime)}
+													{dateToHourMinString(plan.placeStartTime)}~{dateToHourMinString(plan.placeEndTime)}
 												</Text>
 											</View>
 											<View style={styles.transportationSpanContainer}>
@@ -51,9 +50,7 @@ export const ICO001ItineraryPost = ({ itinerary, planGroups, plans }: ItineraryP
 															name={travelModeConverter[plan.transportationMode].iconName}
 															size={20}
 														/>
-														<Text>
-															{dateToHourMinString(plan.transportationSpan)}
-														</Text>
+														<Text>{dateToHourMinString(plan.transportationSpan)}</Text>
 													</View>
 												)}
 											</View>

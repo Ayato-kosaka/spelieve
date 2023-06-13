@@ -16,15 +16,16 @@ export const IMC03101PlanEditController = ({
 	dependentPlanID,
 	planGroupsDoc,
 	isPlanGroupMounted,
-	planIndex,
 }: Omit<PlanEditPropsInterface, 'onPlanPress'>) => {
 	const { planGroupsQSnap } = useContext(ICT021PlanGroupsList);
 	const { plansCRef, plansDocSnapMap } = useContext(ICT031PlansMap);
+	const { swapPlanOrder } = useContext(ICT021PlanGroupsList);
 	const planDocSnap = useMemo(() => plansDocSnapMap[planID], [planID, plansDocSnapMap]);
 	const plan = useMemo(() => planDocSnap.data(), [planDocSnap]);
 	const planGroup = useMemo(() => planGroupsDoc.data(), [planGroupsDoc]);
 	const plansIndex = useMemo(() => planGroup.plans.indexOf(planID), [planGroup, planID]);
 	const dependentPlan = useMemo(() => plansDocSnapMap[dependentPlanID].data(), [dependentPlanID, plansDocSnapMap]);
+	const planGroupIndex = planGroupsQSnap?.docs.indexOf(planGroupsDoc)!;
 
 	/** **********************************************************************************************
 	 * before の PlaceStartTime を設定する
@@ -237,42 +238,54 @@ export const IMC03101PlanEditController = ({
 	}, [planGroup, plansIndex, plansCRef, planID, planGroupsDoc.ref, plansDocSnapMap]);
 
 	const movePlanUpAndDown = useCallback(
-		async (direction: string, selectedPlanIndex: number) => {
-			const newPlanGroup = { ...planGroup };
-
-			if (newPlanGroup.plans.length !== 0) {
-				if (direction === 'up') {
-					if (!newPlanGroup.plans[selectedPlanIndex - 1]) {
-						return;
-					}
-					const previousPlanID = newPlanGroup.plans[selectedPlanIndex - 1];
-					const currentPlanID = newPlanGroup.plans[selectedPlanIndex];
-					newPlanGroup.plans[selectedPlanIndex - 1] = currentPlanID;
-					newPlanGroup.plans[selectedPlanIndex] = previousPlanID;
-				} else if (direction === 'down') {
-					if (!newPlanGroup.plans[selectedPlanIndex + 1]) {
-						return;
-					}
-					const nextPlan = newPlanGroup.plans[selectedPlanIndex + 1];
-					newPlanGroup.plans[selectedPlanIndex + 1] = newPlanGroup.plans[selectedPlanIndex];
-					newPlanGroup.plans[selectedPlanIndex] = nextPlan;
+		async (direction: 'up' | 'down', selectedPlanIndex: number) => {
+			const selectedIndex = {
+				planGroup: planGroupIndex,
+				plan: selectedPlanIndex,
+			};
+			if (direction === 'up') {
+				if (selectedPlanIndex > 0) {
+					// 同じ PlanGroup 内で一つ上に移動
+					await swapPlanOrder(selectedIndex, {
+						planGroup: planGroupIndex,
+						plan: selectedPlanIndex - 1,
+					});
+				} else {
+					// 前の PlanGroup の一番下に移動
+					await swapPlanOrder(selectedIndex, {
+						planGroup: planGroupIndex - 1,
+						plan: -1,
+					});
 				}
-				await setDoc(planGroupsDoc.ref, { ...newPlanGroup });
+			} else if (direction === 'down') {
+				if (selectedPlanIndex < planGroup.plans.length - 1) {
+					// 同じ PlanGroup 内で一つ下に移動
+					await swapPlanOrder(selectedIndex, {
+						planGroup: planGroupIndex,
+						plan: selectedPlanIndex + 1,
+					});
+				} else {
+					// 次の PlanGroup の一番上に移動
+					await swapPlanOrder(selectedIndex, {
+						planGroup: planGroupIndex + 1,
+						plan: 0,
+					});
+				}
 			}
 		},
-		[planGroup, planGroupsDoc.ref],
+		[planGroup.plans.length, planGroupIndex, swapPlanOrder],
 	);
 
 	const onSelectPlanMenu = useCallback(
-		async (params: { command: string; planIndex: number }) => {
+		async (params: { command: 'up' | 'down' | 'delete'; planIndex: number }) => {
 			if (params.command === 'delete') {
 				// eslint-disable-next-line @typescript-eslint/no-floating-promises
 				await deletePlan();
 			} else {
-				await replacePlan(params.command, params.planIndex);
+				await movePlanUpAndDown(params.command, params.planIndex);
 			}
 		},
-		[deletePlan, replacePlan],
+		[deletePlan, movePlanUpAndDown],
 	);
 
 	return { onSelectPlanMenu };

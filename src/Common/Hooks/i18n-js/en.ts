@@ -125,8 +125,8 @@ const en: typeof Lang = {
 	サムネイルテンプレート選択: 'Select Thumbnail',
 
 	// IMC03101PlanEdit
-	'上へ': 'Up',
-	'下へ': 'Down',
-	'削除': 'Delete'
+	上へ: 'Up',
+	下へ: 'Down',
+	削除: 'Delete',
 };
 export default en;
