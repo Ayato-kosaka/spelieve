@@ -51,7 +51,7 @@ const en: typeof Lang = {
 
 	// IPA001ItineraryEdit
 	'Add Plan group': 'Add Plan group',
-	日目: 'Day',
+	'day N': 'Day %{count}',
 	'copy Share URL': 'copy Share URL',
 	'Add Tag': 'Add Tag',
 	'Start date': 'Start date',

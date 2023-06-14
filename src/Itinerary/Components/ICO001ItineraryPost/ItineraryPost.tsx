@@ -5,6 +5,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { styles } from './ItineraryPostStyle';
 
 import { dateToHourMinString } from '@/Common/Hooks/CHK007DateUtils';
+import i18n from '@/Common/Hooks/i18n-js';
 import { ItineraryOneInterface } from '@/Itinerary/Contexts/ICT011ItineraryOne/ItineraryOneIntereface';
 import { PlanGroupsListInterface } from '@/Itinerary/Contexts/ICT021PlanGroupsList/PlanGroupsListInterface';
 import { PlansMapInterface } from '@/Itinerary/Contexts/ICT031PlansMap/PlansMapInterface';
@@ -30,7 +31,7 @@ export const ICO001ItineraryPost = ({ itinerary, planGroups, plans }: ItineraryP
 						prevDateNumber = planGroup.dayNumber;
 						return (
 							<View key={planGroup.representativePlanID}>
-								{isAnotherDay && <Subheading>{planGroup.dayNumber}日目</Subheading>}
+								{isAnotherDay && <Subheading>{i18n.t('day N', { count: planGroup.dayNumber })}</Subheading>}
 								{planGroup.plans.map((planId) => {
 									const plan = plans[planId];
 									return (
