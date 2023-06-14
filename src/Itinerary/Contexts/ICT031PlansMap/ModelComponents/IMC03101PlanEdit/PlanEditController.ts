@@ -25,7 +25,7 @@ export const IMC03101PlanEditController = ({
 	const planGroup = useMemo(() => planGroupsDoc.data(), [planGroupsDoc]);
 	const plansIndex = useMemo(() => planGroup.plans.indexOf(planID), [planGroup, planID]);
 	const dependentPlan = useMemo(() => plansDocSnapMap[dependentPlanID].data(), [dependentPlanID, plansDocSnapMap]);
-	const planGroupIndex = planGroupsQSnap?.docs.indexOf(planGroupsDoc)!;
+	const planGroupIndex: number | undefined = planGroupsQSnap?.docs.indexOf(planGroupsDoc);
 
 	/** **********************************************************************************************
 	 * before の PlaceStartTime を設定する
@@ -239,6 +239,7 @@ export const IMC03101PlanEditController = ({
 
 	const movePlanUpAndDown = useCallback(
 		async (direction: 'up' | 'down', selectedPlanIndex: number) => {
+			if (!planGroupIndex) throw new Error('planGroupIndex is undefined');
 			const selectedIndex = {
 				planGroup: planGroupIndex,
 				plan: selectedPlanIndex,
@@ -279,7 +280,6 @@ export const IMC03101PlanEditController = ({
 	const onSelectPlanMenu = useCallback(
 		async (params: { command: 'up' | 'down' | 'delete'; planIndex: number }) => {
 			if (params.command === 'delete') {
-				// eslint-disable-next-line @typescript-eslint/no-floating-promises
 				await deletePlan();
 			} else {
 				await movePlanUpAndDown(params.command, params.planIndex);
