@@ -1,5 +1,5 @@
 import { TransitMode, TransitRoutingPreference } from '@googlemaps/google-maps-services-js';
-import { collection, query, QuerySnapshot, onSnapshot, addDoc, orderBy, setDoc } from 'firebase/firestore';
+import { collection, query, QuerySnapshot, onSnapshot, addDoc, orderBy, setDoc, deleteDoc } from 'firebase/firestore';
 import { useState, createContext, useEffect, useContext, useMemo, ReactNode, useCallback } from 'react';
 
 import { PlanGroups } from 'spelieve-common/lib/Models/Itinerary/IDB02/PlanGroups';
@@ -18,7 +18,7 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 	const [planGroupsQSnap, setPlanGroupsQSnap] = useState<QuerySnapshot<PlanGroupsListInterface> | undefined>(undefined);
 
 	const { itineraryDocSnap } = useContext(ICT011ItineraryOne);
-	const { plansCRef } = useContext(ICT031PlansMap);
+	const { plansCRef, plansDocSnapMap } = useContext(ICT031PlansMap);
 
 	const itinerary = useMemo(() => itineraryDocSnap?.data(), [itineraryDocSnap]);
 
@@ -78,37 +78,56 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 		[itinerary, planGroupsCRef, plansCRef],
 	);
 
-	const swapPlanOrder = useCallback(
+	const movePlan = useCallback(
 		async (
-			index1: {
-				planGroup: number;
-				plan: number;
+			from: {
+				planGroupIndex: number;
+				planIndex: number;
 			},
-			index2: {
-				planGroup: number;
-				plan: number;
+			to: {
+				planGroupIndex: number;
+				planIndex: number;
 			},
 		) => {
 			const planGroupsQDSnap = planGroupsQSnap?.docs;
 			if (!plansCRef || !planGroupsCRef || !itinerary || !planGroupsQDSnap) {
 				throw new Error('not initialized');
 			}
-			const planGroup1 = planGroupsQDSnap[index1.planGroup].data();
-			const planGroup2 = planGroupsQDSnap[index2.planGroup].data();
-			if (planGroup1?.plans?.at(index1.plan) === undefined || planGroup2?.plans?.at(index2.plan) === undefined) {
-				throw new Error('index out of range');
+			const fromPlanGroup = planGroupsQDSnap[from.planGroupIndex].data();
+			const toPlanGroup = planGroupsQDSnap[to.planGroupIndex].data();
+			if (from.planGroupIndex === to.planGroupIndex) {
+				if (from.planIndex === to.planIndex) {
+					return;
+				}
+				if (fromPlanGroup?.plans?.[from.planIndex] === undefined || toPlanGroup?.plans?.[to.planIndex] === undefined) {
+					throw new Error('index out of range');
+				}
+				[fromPlanGroup.plans[from.planIndex], fromPlanGroup.plans[to.planIndex]] = [
+					fromPlanGroup.plans[to.planIndex],
+					fromPlanGroup.plans[from.planIndex],
+				];
+				await setDoc(planGroupsQDSnap[from.planGroupIndex].ref, { ...fromPlanGroup });
+			} else {
+				const targetPlanID = fromPlanGroup.plans.splice(from.planIndex, 1)[0];
+				if (!targetPlanID) {
+					throw new Error('index out of range');
+				}
+				toPlanGroup.plans.splice(to.planIndex, 0, targetPlanID);
+				if (fromPlanGroup.plans.length === 0) {
+					await deleteDoc(planGroupsQDSnap[from.planGroupIndex].ref);
+				} else {
+					// targetPlanID が代表プランである場合、先頭プランを代表プランにする
+					if (fromPlanGroup.representativePlanID === targetPlanID) {
+						[fromPlanGroup.representativePlanID] = fromPlanGroup.plans;
+						fromPlanGroup.representativeStartDateTime =
+							plansDocSnapMap[fromPlanGroup.representativePlanID]?.data().placeStartTime;
+					}
+					await setDoc(planGroupsQDSnap[from.planGroupIndex].ref, { ...fromPlanGroup });
+				}
+				await setDoc(planGroupsQDSnap[to.planGroupIndex].ref, { ...toPlanGroup });
 			}
-			// planIndex が負の場合は末尾からのインデックスとして扱う
-			if (index1.plan < 0) index1.plan += planGroup1.plans.length;
-			if (index2.plan < 0) index2.plan += planGroup2.plans.length;
-			[planGroup1.plans[index1.plan], planGroup2.plans[index2.plan]] = [
-				planGroup2.plans[index2.plan],
-				planGroup1.plans[index1.plan],
-			];
-			await setDoc(planGroupsQDSnap[index1.planGroup].ref, { ...planGroup1 });
-			await setDoc(planGroupsQDSnap[index2.planGroup].ref, { ...planGroup2 });
 		},
-		[itinerary, planGroupsCRef, planGroupsQSnap?.docs, plansCRef],
+		[itinerary, planGroupsCRef, planGroupsQSnap?.docs, plansCRef, plansDocSnapMap],
 	);
 
 	useEffect(() => {
@@ -130,9 +149,9 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 			planGroupsQSnap,
 			planGroupsCRef,
 			createPlanGroup,
-			swapPlanOrder,
+			movePlan,
 		}),
-		[planGroupsQSnap, planGroupsCRef, createPlanGroup, swapPlanOrder],
+		[planGroupsQSnap, planGroupsCRef, createPlanGroup, movePlan],
 	);
 	return <ICT021PlanGroupsList.Provider value={value}>{children}</ICT021PlanGroupsList.Provider>;
 };

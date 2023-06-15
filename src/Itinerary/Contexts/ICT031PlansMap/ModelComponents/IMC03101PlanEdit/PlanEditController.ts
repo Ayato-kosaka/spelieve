@@ -17,15 +17,13 @@ export const IMC03101PlanEditController = ({
 	planGroupsDoc,
 	isPlanGroupMounted,
 }: Omit<PlanEditPropsInterface, 'onPlanPress'>) => {
-	const { planGroupsQSnap } = useContext(ICT021PlanGroupsList);
+	const { planGroupsQSnap, movePlan } = useContext(ICT021PlanGroupsList);
 	const { plansCRef, plansDocSnapMap } = useContext(ICT031PlansMap);
-	const { swapPlanOrder } = useContext(ICT021PlanGroupsList);
 	const planDocSnap = useMemo(() => plansDocSnapMap[planID], [planID, plansDocSnapMap]);
 	const plan = useMemo(() => planDocSnap.data(), [planDocSnap]);
 	const planGroup = useMemo(() => planGroupsDoc.data(), [planGroupsDoc]);
 	const plansIndex = useMemo(() => planGroup.plans.indexOf(planID), [planGroup, planID]);
 	const dependentPlan = useMemo(() => plansDocSnapMap[dependentPlanID].data(), [dependentPlanID, plansDocSnapMap]);
-	const planGroupIndex: number | undefined = planGroupsQSnap?.docs.indexOf(planGroupsDoc);
 
 	/** **********************************************************************************************
 	 * before の PlaceStartTime を設定する
@@ -239,42 +237,60 @@ export const IMC03101PlanEditController = ({
 
 	const movePlanUpAndDown = useCallback(
 		async (direction: 'up' | 'down', selectedPlanIndex: number) => {
-			if (!planGroupIndex) throw new Error('planGroupIndex is undefined');
-			const selectedIndex = {
-				planGroup: planGroupIndex,
-				plan: selectedPlanIndex,
-			};
+			if (!planGroupsQSnap) throw new Error('planGroupsQSnap is undefined');
+			const planGroupIndex = planGroupsQSnap.docs.map((d) => d.id).indexOf(planGroupsDoc.id);
+			if (planGroupIndex === undefined) throw new Error('planGroupIndex is undefined');
 			if (direction === 'up') {
 				if (selectedPlanIndex > 0) {
 					// 同じ PlanGroup 内で一つ上に移動
-					await swapPlanOrder(selectedIndex, {
-						planGroup: planGroupIndex,
-						plan: selectedPlanIndex - 1,
-					});
+					const newPlanGroup = { ...planGroup };
+					[newPlanGroup.plans[selectedPlanIndex], newPlanGroup.plans[selectedPlanIndex - 1]] = [
+						newPlanGroup.plans[selectedPlanIndex - 1],
+						newPlanGroup.plans[selectedPlanIndex],
+					];
+					await setDoc(planGroupsDoc.ref, { ...newPlanGroup });
 				} else {
 					// 前の PlanGroup の一番下に移動
-					await swapPlanOrder(selectedIndex, {
-						planGroup: planGroupIndex - 1,
-						plan: -1,
-					});
+					const beforePlanGroup = planGroupsQSnap.docs[planGroupIndex - 1];
+					if (!beforePlanGroup) throw new Error('beforePlanGroup is undefined');
+					await movePlan(
+						{
+							planGroupIndex,
+							planIndex: selectedPlanIndex,
+						},
+						{
+							planGroupIndex: planGroupIndex - 1,
+							planIndex: beforePlanGroup.data().plans.length,
+						},
+					);
 				}
 			} else if (direction === 'down') {
 				if (selectedPlanIndex < planGroup.plans.length - 1) {
 					// 同じ PlanGroup 内で一つ下に移動
-					await swapPlanOrder(selectedIndex, {
-						planGroup: planGroupIndex,
-						plan: selectedPlanIndex + 1,
-					});
+					const newPlanGroup = { ...planGroup };
+					[newPlanGroup.plans[selectedPlanIndex], newPlanGroup.plans[selectedPlanIndex + 1]] = [
+						newPlanGroup.plans[selectedPlanIndex + 1],
+						newPlanGroup.plans[selectedPlanIndex],
+					];
+					await setDoc(planGroupsDoc.ref, { ...newPlanGroup });
 				} else {
 					// 次の PlanGroup の一番上に移動
-					await swapPlanOrder(selectedIndex, {
-						planGroup: planGroupIndex + 1,
-						plan: 0,
-					});
+					const nextPlanGroup = planGroupsQSnap.docs[planGroupIndex + 1];
+					if (!nextPlanGroup) throw new Error('nextPlanGroup is undefined');
+					await movePlan(
+						{
+							planGroupIndex,
+							planIndex: selectedPlanIndex,
+						},
+						{
+							planGroupIndex: planGroupIndex + 1,
+							planIndex: 0,
+						},
+					);
 				}
 			}
 		},
-		[planGroup.plans.length, planGroupIndex, swapPlanOrder],
+		[movePlan, planGroup, planGroupsDoc.id, planGroupsDoc.ref, planGroupsQSnap],
 	);
 
 	const onSelectPlanMenu = useCallback(
