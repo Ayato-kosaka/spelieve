@@ -96,6 +96,7 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 			const fromPlanGroup = planGroupsQDSnap[from.planGroupIndex].data();
 			const toPlanGroup = planGroupsQDSnap[to.planGroupIndex].data();
 			if (from.planGroupIndex === to.planGroupIndex) {
+				// 同じプラングループ内での移動
 				if (from.planIndex === to.planIndex) {
 					return;
 				}
@@ -108,9 +109,10 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 				];
 				await setDoc(planGroupsQDSnap[from.planGroupIndex].ref, { ...fromPlanGroup });
 			} else {
+				// 異なるプラングループ間での移動
 				const targetPlanID = fromPlanGroup.plans.splice(from.planIndex, 1)[0];
 				if (!targetPlanID) {
-					throw new Error('index out of range');
+					throw new Error('target plan not found');
 				}
 				toPlanGroup.plans.splice(to.planIndex, 0, targetPlanID);
 				if (fromPlanGroup.plans.length === 0) {
