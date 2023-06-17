@@ -27,6 +27,7 @@ export const TCO003OutlineTextBorder = ({
 						},
 						textShadowColor: textShadowColor || 'transparent',
 						textShadowRadius: 1,
+						whiteSpace: 'nowrap',
 					},
 				],
 			};
