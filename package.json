@@ -77,6 +77,7 @@
 		"react-native-web": "0.18.10",
 		"react-native-wheel-color-picker": "^1.2.0",
 		"react-spring-bottom-sheet": "^3.4.1",
+		"setimmediate": "^1.0.5",
 		"spelieve-common": "^1.1.158"
 	},
 	"devDependencies": {
