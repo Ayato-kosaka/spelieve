@@ -1,5 +1,5 @@
 import 'expo-dev-client';
-
+import 'setimmediate';
 import registerRootComponent from 'expo/build/launch/registerRootComponent';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
