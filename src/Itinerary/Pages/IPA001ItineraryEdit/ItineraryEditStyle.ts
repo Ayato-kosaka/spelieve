@@ -16,4 +16,11 @@ export const styles = StyleSheet.create({
 		height: 300,
 		backgroundColor: '#fff',
 	},
+	materialCommunityIcons: {
+		position: 'absolute',
+		top: '50%',
+		left: '50%',
+		transform: [{ translateY: -50 }, { translateX: -50 }],
+		zIndex: 1,
+	},
 });

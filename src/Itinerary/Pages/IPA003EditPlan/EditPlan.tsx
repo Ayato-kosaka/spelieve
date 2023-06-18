@@ -1,6 +1,7 @@
 import { setDoc } from 'firebase/firestore';
 import { ActivityIndicator, Image, Pressable, ScrollView, View } from 'react-native';
 import { Text, TextInput, Button } from 'react-native-paper';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { IPA003EditPlanController } from './EditPlanController';
 import { styles } from './EditPlanStyle';
@@ -43,6 +44,12 @@ export const IPA003EditPlan = ({ route, navigation }: ItineraryStackScreenProps<
 		<ScrollView>
 			<CCO007GoogleBannerAd />
 			<Pressable onPress={onPressThumbnail}>
+				<MaterialCommunityIcons
+					name="camera-outline"
+					size={100}
+					color="rgba(0,0,0,0.5)"
+					style={styles.materialCommunityIcons}
+				/>
 				<Image source={{ uri: pagePlan.imageUrl }} resizeMode="cover" style={styles.image} />
 			</Pressable>
 			<PCO002GooglePlacesAutocomplete
