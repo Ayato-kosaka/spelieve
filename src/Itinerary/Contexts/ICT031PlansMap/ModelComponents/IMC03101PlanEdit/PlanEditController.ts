@@ -217,7 +217,7 @@ export const IMC03101PlanEditController = ({
 			);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [plan.transportationSpan.getTime(), beforeAfterRepresentativeType]);
+	}, [plan.transportationSpan.getTime(), beforeAfterRepresentativeType, plan.transportationDepartureTime?.getTime()]);
 
 	const deletePlan = useCallback(async () => {
 		const newPlanGroup = { ...planGroup };
