@@ -8,5 +8,6 @@ export interface PlanEditPropsInterface {
 	planGroupsDoc: QueryDocumentSnapshot<PlanGroupsListInterface>;
 	dependentPlanID: string;
 	isPlanGroupMounted: boolean;
+	planIndex: number;
 	onPlanPress: (planGroupID: string, planID: string) => void;
 }

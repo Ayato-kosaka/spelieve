@@ -1,7 +1,9 @@
 import 'expo-dev-client';
 import 'setimmediate';
 import registerRootComponent from 'expo/build/launch/registerRootComponent';
+import React from 'react';
 import { Provider as PaperProvider } from 'react-native-paper';
+import { MenuProvider } from 'react-native-popup-menu';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { AppProvider } from './AppProvider';
@@ -13,7 +15,9 @@ export const App = () => (
 	<SafeAreaProvider>
 		<PaperProvider theme={paperTheme}>
 			<AppProvider>
-				<Navigation />
+				<MenuProvider>
+					<Navigation />
+				</MenuProvider>
 			</AppProvider>
 		</PaperProvider>
 	</SafeAreaProvider>
