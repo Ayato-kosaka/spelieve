@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from 'react';
 import { Pressable, View } from 'react-native';
 import { Card, Text } from 'react-native-paper';
-import { Menu, MenuOption, MenuOptions, MenuProvider, MenuTrigger } from 'react-native-popup-menu';
+import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
@@ -64,20 +64,16 @@ export const IMC03101PlanEdit = ({
 						</View>
 					</View>
 
-					<View>
-						<MenuProvider style={{ flexDirection: 'column', padding: 50 }}>
-							<Menu onSelect={onSelectPlanMenu}>
-								<MenuTrigger>
-									<MaterialCommunityIcons name="dots-horizontal" size={30} />
-								</MenuTrigger>
-								<MenuOptions customStyles={{ optionsWrapper: { backgroundColor: '#F8F8FF' } }}>
-									<MenuOption value={{ command: 'up', planIndex }} text={i18n.t('上へ')} />
-									<MenuOption value={{ command: 'down', planIndex }} text={i18n.t('下へ')} />
-									<MenuOption value={{ command: 'delete' }} text={i18n.t('削除')} />
-								</MenuOptions>
-							</Menu>
-						</MenuProvider>
-					</View>
+					<Menu onSelect={onSelectPlanMenu}>
+						<MenuTrigger>
+							<MaterialCommunityIcons name="dots-horizontal" size={30} />
+						</MenuTrigger>
+						<MenuOptions customStyles={{ optionsWrapper: { backgroundColor: '#F8F8FF' } }}>
+							<MenuOption value={{ command: 'up', planIndex }} text={i18n.t('上へ')} />
+							<MenuOption value={{ command: 'down', planIndex }} text={i18n.t('下へ')} />
+							<MenuOption value={{ command: 'delete' }} text={i18n.t('削除')} />
+						</MenuOptions>
+					</Menu>
 				</Pressable>
 			</Card.Content>
 		</Card>
