@@ -193,7 +193,7 @@ export const IMC03101PlanEditController = ({
 
 	/** **********************************************************************************************
 	 * representative, after の transportationArrivalTime を設定する
-	 * 自分の予定の transportationSpan を監視し、
+	 * 自分の予定の transportationDepartureTime, transportationSpan を監視し、
 	 * transportationArrivalTime = current.transportationDepartureTime + current.transportationSpan で計算する
 	 *********************************************************************************************** */
 	useEffect(() => {
