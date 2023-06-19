@@ -2,6 +2,7 @@ import { setStringAsync } from 'expo-clipboard';
 import React, { useContext } from 'react';
 import { ScrollView, ActivityIndicator, View, Pressable, Image } from 'react-native';
 import { Headline, Button, Text, TextInput } from 'react-native-paper';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { IPA001ItineraryEditController } from './ItineraryEditController';
 import { styles } from './ItineraryEditStyle';
@@ -45,6 +46,12 @@ export const IPA001ItineraryEdit = ({ route, navigation }: ItineraryTopTabScreen
 		<ScrollView>
 			<CCO007GoogleBannerAd />
 			<Pressable onPress={onPressThumbnail}>
+				<MaterialCommunityIcons
+					name="camera-outline"
+					size={100}
+					color="rgba(0,0,0,0.5)"
+					style={styles.materialCommunityIcons}
+				/>
 				<Image source={{ uri: pageItinerary.imageUrl }} resizeMode="cover" style={styles.image} />
 			</Pressable>
 			<View>
