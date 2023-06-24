@@ -47,7 +47,7 @@ export const IPA001ItineraryEdit = ({ route, navigation }: ItineraryTopTabScreen
 			<CCO007GoogleBannerAd />
 			<Pressable onPress={onPressThumbnail}>
 				<MaterialCommunityIcons
-					name="camera-outline"
+					name="square-edit-outline"
 					size={100}
 					color="rgba(0,0,0,0.5)"
 					style={styles.materialCommunityIcons}
