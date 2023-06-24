@@ -5,6 +5,7 @@ import { useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 import { MaskDecorationPropsInterface } from './MaskDecorationInterface';
 
 import { TCO001GestureProvider } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProvider';
+import { TCO001CalcAnimatedGesture } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderController';
 
 export const TPA001MaskDecoration = ({
 	decoration,
@@ -19,21 +20,43 @@ export const TPA001MaskDecoration = ({
 	const scale = useSharedValue(maskTransform.scale);
 	const rotateZ = useSharedValue(maskTransform.rotateZ);
 
+	const { getTranslateX, getTranslateY, getScale } = TCO001CalcAnimatedGesture({
+		canvasSize,
+		componentSize: {
+			// mask 画像のサイズは、canvasSize の小さい方に合わせた正方形とする
+			// maskTransform.scale によって、mask 画像のサイズが変わる
+			width: Math.min(canvasSize.width, canvasSize.height) * (decoration?.maskTransform.scale || 0),
+			height: Math.min(canvasSize.width, canvasSize.height) * (decoration?.maskTransform.scale || 0),
+		},
+	});
+
 	const maskRef = useRef<HTMLImageElement>(null);
+
+	// ******************************************************
+	// * maskRef を初期化する
+	// ******************************************************
 	const initMasRef = useCallback(() => {
 		if (!maskRef.current) return;
 		if (!maskUri) return;
-		// for more infomation about css_mask_image read https://www.webdesignleaves.com/pr/css/css_mask_image.html
-		maskRef.current.style.webkitMaskImage = `url(${maskUri})`;
-		maskRef.current.style.maskImage = `url(${maskUri})`;
-		maskRef.current.style.maskPosition = `${maskTransform.translateX}px ${maskTransform.translateY}px`;
-		maskRef.current.style.webkitMaskPosition = `${maskTransform.translateX}px ${maskTransform.translateY}px`;
-		maskRef.current.style.webkitMaskSize = 'auto 100%';
-		maskRef.current.style.maskSize = 'auto 100%';
+		// for more infomation about css_mask_image
+		// @see{https://developer.mozilla.org/ja/docs/Web/CSS/mask}
+		const maskImage = `url(${maskUri})`;
+		const maskPosition = `${getTranslateX(translateX.value)}px ${getTranslateY(translateY.value)}px`;
+		const maskSize = `auto ${getScale(scale.value) * 100}%`;
+		maskRef.current.style.maskImage = maskImage;
+		maskRef.current.style.webkitMaskImage = maskImage;
+		maskRef.current.style.maskPosition = maskPosition;
+		maskRef.current.style.webkitMaskPosition = maskPosition;
+		maskRef.current.style.webkitMaskSize = maskSize;
+		maskRef.current.style.maskSize = maskSize;
 		maskRef.current.style.webkitMaskRepeat = 'no-repeat';
 		maskRef.current.style.maskRepeat = 'no-repeat';
 		maskRef.current.draggable = false;
-	}, [maskTransform.translateX, maskTransform.translateY, maskUri]);
+	}, [maskUri, getTranslateX, translateX, getTranslateY, translateY, getScale, scale]);
+
+	// ******************************************************
+	// * maskUri が変更されたら、maskRef を初期化する
+	// ******************************************************
 	useEffect(() => {
 		if (!decoration) return;
 		if (decoration.decorationType === 'Image') {
@@ -47,8 +70,12 @@ export const TPA001MaskDecoration = ({
 		if (decoration.decorationType === 'Figure') {
 			initMasRef();
 		}
-	}, [decoration, decoration?.maskUri, imageURI, initMasRef]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [imageURI, maskUri]);
 
+	// ******************************************************
+	// * gesture による変更を反映する
+	// ******************************************************
 	useAnimatedReaction(
 		() => ({
 			translateX: translateX.value,
@@ -57,15 +84,17 @@ export const TPA001MaskDecoration = ({
 			rotateZ: rotateZ.value,
 		}),
 		(prepareResult, preparePreviousResult) => {
+			const maskPosition = `${getTranslateX(prepareResult.translateX)}px ${getTranslateY(prepareResult.translateY)}px`;
+			const maskSize = `auto ${getScale(prepareResult.scale) * 100}%`;
 			if (maskRef.current) {
-				maskRef.current.style.maskPosition = `${prepareResult.translateX}px ${prepareResult.translateY}px`;
-				maskRef.current.style.webkitMaskPosition = `${prepareResult.translateX}px ${prepareResult.translateY}px`;
-				maskRef.current.style.webkitMaskSize = 'auto 100%';
-				maskRef.current.style.maskSize = 'auto 100%';
+				maskRef.current.style.maskPosition = maskPosition;
+				maskRef.current.style.webkitMaskPosition = maskPosition;
+				maskRef.current.style.webkitMaskSize = maskSize;
+				maskRef.current.style.maskSize = maskSize;
 				// TODO: rotate は、div.mask を分ける必要ある
 			}
 		},
-		[translateX, translateY, scale, rotateZ],
+		[translateX, translateY, scale, rotateZ, canvasSize],
 	);
 
 	if (!decoration) {

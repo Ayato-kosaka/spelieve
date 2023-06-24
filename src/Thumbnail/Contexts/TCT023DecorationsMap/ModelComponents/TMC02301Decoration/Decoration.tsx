@@ -92,7 +92,8 @@ export const TMC02301Decoration = ({ decorationID, onLoad, canvasSize }: Decorat
 	/*
 	 * デコレーションのサイズを取得する
 	 * Text の場合、FontSize を固定したいため、 onLayout を使用する。
-	 * Image, Figure の場合、 width を固定したいため、canvasSize と aspectRatio を使用する。
+	 * Image, Figure の場合、 canvasSize.width が decorationSize.width となる。
+	 * decorationSize.height は、 decoration.aspectRatio から計算する。
 	 */
 	const [decorationSize, setDecorationSize] = useState<
 		| {

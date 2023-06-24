@@ -24,6 +24,8 @@ export const TCT023DecorationsMapProvider = ({ children }: { children: ReactNode
 				Decorations,
 				(model) => {
 					const decorationType = model.decorationType as DecorationsMapInterface['decorationType'];
+					model.maskTransform.translateX = 0.5;
+					model.maskTransform.translateY = 0.5;
 					return {
 						...model,
 						decorationType,

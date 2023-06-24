@@ -36,8 +36,8 @@ export const TPA001CreateDecorationController = ({
 				scale: 1 / 3,
 			},
 			maskTransform: {
-				translateX: 0,
-				translateY: 0,
+				translateX: 0.5,
+				translateY: 0.5,
 				rotateZ: 0,
 				scale: 1,
 			},
@@ -46,7 +46,7 @@ export const TPA001CreateDecorationController = ({
 			aspectRatio: 1,
 		}),
 		[],
-	); // TODO: 要修正 translateX, translateY は 中央に
+	);
 
 	const onPickImage: ImagePickerPropsInterface['onPickImage'] = useCallback(
 		(imageUrl) => {
