@@ -40,6 +40,7 @@ export const IMC03101PlanEdit = ({
 		<Card style={{}}>
 			<Card.Content>
 				<Pressable
+					testID="planPressable"
 					onPress={() => onPlanPress(planGroupsDoc.id, planID)}
 					style={{
 						flexDirection: 'row',

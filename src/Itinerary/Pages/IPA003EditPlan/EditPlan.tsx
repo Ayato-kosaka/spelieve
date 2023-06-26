@@ -43,7 +43,7 @@ export const IPA003EditPlan = ({ route, navigation }: ItineraryStackScreenProps<
 	return (
 		<ScrollView>
 			<CCO007GoogleBannerAd />
-			<Pressable onPress={onPressThumbnail}>
+			<Pressable testID="planThumbnailPressable" onPress={onPressThumbnail}>
 				<MaterialCommunityIcons
 					name="square-edit-outline"
 					size={100}
