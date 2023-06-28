@@ -1,6 +1,6 @@
 import { setStringAsync } from 'expo-clipboard';
 import React, { useContext } from 'react';
-import { ScrollView, ActivityIndicator, View, Pressable, Image } from 'react-native';
+import { ScrollView, ActivityIndicator, View, Pressable, Image, Platform } from 'react-native';
 import { Headline, Button, Text, TextInput } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -16,6 +16,7 @@ import { ICT011ItineraryOne } from '@/Itinerary/Contexts/ICT011ItineraryOne';
 import { ICT021PlanGroupsList } from '@/Itinerary/Contexts/ICT021PlanGroupsList';
 import { ICT031PlansMap } from '@/Itinerary/Contexts/ICT031PlansMap';
 import { IMC03103PlanGroupsEdit } from '@/Itinerary/Contexts/ICT031PlansMap/ModelComponents/IMC03103PlanGroupEdit';
+import { buildItineraryPreviewDL } from '@/Common/Hooks/CHK008DynamicLink';
 
 export const IPA001ItineraryEdit = ({ route, navigation }: ItineraryTopTabScreenProps<'ItineraryEdit'>) => {
 	const { itineraryDocSnap } = useContext(ICT011ItineraryOne);
@@ -103,10 +104,12 @@ export const IPA001ItineraryEdit = ({ route, navigation }: ItineraryTopTabScreen
 				mode="outlined"
 				style={styles.button}
 				labelStyle={{ color: 'black' }}
-				onPress={() => {
+				onPress={async () => {
 					// TODO: https://github.com/Ayato-kosaka/spelieve/issues/461 React Navigation を見直す
 					// eslint-disable-next-line @typescript-eslint/no-floating-promises
-					setStringAsync(`${ENV.HOST_NAME_WEB}/Itinerary/TopTab/ItineraryEdit?itineraryID=${itineraryDocSnap.id}`);
+					const url = Platform.OS !== 'web' ? await buildItineraryPreviewDL(itineraryDocSnap.id) : `${ENV.HOST_NAME_WEB}/Itinerary/TopTab/ItineraryEdit?itineraryID=${itineraryDocSnap.id}`
+					// const dynamicLink: string = ;
+					setStringAsync(url);
 				}}>
 				{i18n.t('copy Share URL')}
 			</Button>
@@ -114,3 +117,4 @@ export const IPA001ItineraryEdit = ({ route, navigation }: ItineraryTopTabScreen
 		</ScrollView>
 	);
 };
+
