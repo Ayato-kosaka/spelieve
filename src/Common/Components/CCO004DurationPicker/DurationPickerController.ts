@@ -1,20 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
 import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native';
 
-import {
-	DurationPickerControllerInterface,
-	DurationPickerPropsInterface,
-	DurationPickerTimeInterface,
-} from 'spelieve-common/lib/Interfaces';
+import { DurationPickerPropsInterface } from './DurationPickerInterface';
 
 import * as CHK004NumberUtils from '@/Common/Hooks/CHK004NumberUtils';
 
-export const CCO004DurationPickerController = ({
-	value,
-	onBlur,
-}: DurationPickerPropsInterface): DurationPickerControllerInterface => {
+export const CCO004DurationPickerController = ({ value, onBlur }: DurationPickerPropsInterface) => {
 	const [isFocused, setIsFocused] = useState<boolean>(false);
-	const [time, setTime] = useState<DurationPickerTimeInterface>({ hour: 0, min: 0 });
+	const [time, setTime] = useState<{
+		hour: number;
+		min: number;
+	}>({ hour: 0, min: 0 });
 
 	useEffect(() => {
 		setTime({

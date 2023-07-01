@@ -33,7 +33,7 @@ export const IPA001ItineraryEditController = ({ route, navigation }: ItineraryTo
 				textMap: {},
 				storeUrlMap: {},
 				caption: '',
-				isUpdatable: true,
+				isImmutable: false,
 				createdAt: new Date(),
 				updatedAt: new Date(),
 			});

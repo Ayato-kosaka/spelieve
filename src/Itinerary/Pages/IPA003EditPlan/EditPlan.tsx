@@ -7,7 +7,7 @@ import { IPA003EditPlanController } from './EditPlanController';
 import { styles } from './EditPlanStyle';
 
 import { CCO003DateTimePicker } from '@/Common/Components/CCO003DateTimePicker';
-import { CCO004DurationPicker } from '@/Common/Components/CCO004DurationPicker';
+import { CCO004DurationPicker } from '@/Common/Components/CCO004DurationPicker/DurationPicker';
 import { CCO007GoogleBannerAd } from '@/Common/Components/CCO007GoogleBannerAd/GoogleBannerAd';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ItineraryStackScreenProps } from '@/Common/Navigation/NavigationInterface';
