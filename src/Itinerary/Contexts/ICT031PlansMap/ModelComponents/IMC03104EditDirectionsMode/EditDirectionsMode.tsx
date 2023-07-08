@@ -8,9 +8,8 @@ import { Pressable, View } from 'react-native';
 import { Checkbox, Divider, Text, Button } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { EditDirectionsModePropsInterface } from 'spelieve-common/lib/Interfaces/Itinerary/IMC03104';
-
 import { IMC03104EditDirectionsModeController } from './EditDirectionsModeController';
+import { EditDirectionsModePropsInterface } from './EditDirectionsModePropsInterface';
 import { styles } from './EditDirectionsModeStyle';
 
 import { CCO005BottomSheet } from '@/Common/Components/CCO005BottomSheet/BottomSheet';

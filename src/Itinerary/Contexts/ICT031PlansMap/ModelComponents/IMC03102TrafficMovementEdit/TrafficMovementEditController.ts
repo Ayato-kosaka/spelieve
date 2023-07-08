@@ -2,14 +2,12 @@ import { DirectionsRequest, DirectionsResponse, TrafficModel, TravelMode } from 
 import { addDoc, setDoc } from 'firebase/firestore';
 import { useCallback, useContext, useMemo, useState, useEffect } from 'react';
 
-import {
-	PlansMapInterface,
-	TrafficMovementEditControllerInterface,
-	TrafficMovementEditPropsInterface,
-} from 'spelieve-common/lib/Interfaces';
+import { PlansMapInterface, TrafficMovementEditControllerInterface } from 'spelieve-common/lib/Interfaces';
 import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 
 import { ICT031PlansMap } from '../..';
+
+import { TrafficMovementEditPropsInterface } from './TrafficMovementEditInterface';
 
 import { Logger } from '@/Common/Hooks/CHK001Utils';
 import i18n from '@/Common/Hooks/i18n-js';
