@@ -1,253 +1,286 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Linking, Pressable, SafeAreaView, View, Image } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { SafeAreaView, View, Image, Pressable } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Headline, Text, Button, Title } from 'react-native-paper';
+import { Button, Card, Headline, Text } from 'react-native-paper';
+import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { RecentItinerariesInterface, getRecentItineraries } from './HelloSpelieveRecentItineraryHook';
+import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 
-import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
-import { consoleError, getWindowWidth } from '@/Common/Hooks/CHK001Utils';
+import { getWindowWidth } from '@/Common/Hooks/CHK001Utils';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ItineraryStackScreenProps } from '@/Common/Navigation/NavigationInterface';
-import { ENV } from '@/ENV';
-import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001GooglePlaceAPI';
-import { customColors, materialColors } from '@/ThemeProvider';
+import { materialColors, primaryColorNm } from '@/ThemeProvider';
 
 export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenProps<'HelloSpelieve'>) => {
-	const [recentItineraries, setRecentItineraries] = useState<RecentItinerariesInterface | undefined>(undefined);
-	useEffect(() => {
-		const unsubscribe = navigation.addListener('focus', () => {
-			(async () => {
-				setRecentItineraries(
-					(await getRecentItineraries()).sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime()),
-				);
-			})().catch((e) => consoleError('CPA001HelloSpelieve', 'setRecentItineraries', e));
-		});
-		return unsubscribe;
-	}, [navigation]);
+	const MTilmelines = useMemo(
+		() => [
+			{
+				title: 'root',
+				image: 'https://cdn.inmemoriam.com/images/LifeTimeLine-Slide-Bubble-V01-Vertical-FB-Preview.png',
+				parentTimelineTitle: '',
+			},
+			{
+				title: '2020',
+				image: 'https://www.photock.jp/photo/big/photo0000-1634.jpg',
+				parentTimelineTitle: 'root',
+				plans: [
+					{
+						title: 'plan1',
+						placeStartTime: new Date(2022, 9, 1, 10, 0),
+						placeEndTime: new Date(2022, 9, 1, 11, 0),
+					},
+					{
+						title: 'plan2',
+						placeStartTime: new Date(2022, 9, 1, 11, 0),
+						placeEndTime: new Date(2022, 9, 1, 12, 0),
+					},
+				],
+			},
+			{
+				title: '2021',
+				image: 'https://www.photock.jp/photo/big/photo0000-1642.jpg',
+				parentTimelineTitle: 'root',
+				plans: [
+					{
+						title: 'plan1',
+						placeStartTime: new Date(2022, 9, 1, 10, 0),
+						placeEndTime: new Date(2022, 9, 1, 11, 0),
+					},
+					{
+						title: 'plan2',
+						placeStartTime: new Date(2022, 9, 1, 11, 0),
+						placeEndTime: new Date(2022, 9, 1, 12, 0),
+					},
+				],
+			},
+			{
+				title: '2022',
+				image: 'https://www.photock.jp/photo/big/photo0000-0328.jpg',
+				parentTimelineTitle: 'root',
+				plans: [
+					{
+						title: 'plan1',
+						placeStartTime: new Date(2022, 9, 1, 10, 0),
+						placeEndTime: new Date(2022, 9, 1, 11, 0),
+					},
+					{
+						title: 'plan2',
+						placeStartTime: new Date(2022, 9, 1, 11, 0),
+						placeEndTime: new Date(2022, 9, 1, 12, 0),
+					},
+				],
+			},
+		],
+		[],
+	);
 
-	const { setThumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
+	const [timeline, setTimeline] = useState({} as (typeof MTilmelines)[0]);
+	const [timelines, setTimelines] = useState<typeof MTilmelines>([]);
+	const [timelineID, setTimelineID] = useState<string>('root');
+
+	const fetchTimeline = useCallback(
+		() =>{
+			const ret = MTilmelines.find(
+				(t) =>
+					// 本来であれば、url から取得したい
+					t.title === timelineID,
+			)
+			if(!ret){
+				throw new Error('timeline not found')
+			}
+			return ret
+		}
+		[MTilmelines, timelineID],
+	);
+
+	const fetchTimelines = useCallback(
+		() =>
+			MTilmelines.filter(
+				(t) =>
+					// 本来であれば、url から取得したい
+					t.parentTimelineTitle === timelineID,
+			),
+		[MTilmelines, timelineID],
+	);
+
+	useEffect(() => {
+		setTimeline(fetchTimeline());
+		setTimelines(fetchTimelines());
+	}, [fetchTimeline, fetchTimelines]);
+
+	// 親タイムラインを開くことで、タイムラインリストに子タイムラインを追加する
+	const openTimeline = useCallback(
+		(timelineTitle: string) => {
+			setTimelines((val) => {
+				const childTimelines = MTilmelines.filter((t) => t.parentTimelineTitle === timelineTitle);
+				const index = val.findIndex((t) => t.title === timelineTitle);
+				// 子タイムラインがないか、タイムラインが見つからない場合は何もしない
+				if (childTimelines.length === 0 || index === -1) {
+					return val;
+				}
+				return [...val.slice(0, index), ...childTimelines, ...val.slice(index + 1)];
+			});
+		},
+		[MTilmelines],
+	);
+
+	// 子タイムラインを閉じることで、タイムラインリストから兄弟タイムラインを削除し、親タイムラインを表示する
+	// root が見えてしまう。兄弟タイムラインが開いている可能性がある。
+	// 等の理由から、実装を保留する。
+	// const closeTimeline = useCallback(
+	// 	(parentTimelineTitle: string) =>
+	// 		setTimelines((val) => {
+	// 			const parentTimeline = MTilmelines.find((timeline) => timeline.title === parentTimelineTitle);
+	// 			const index = val.findIndex((timeline) => timeline.parentTimelineTitle === parentTimelineTitle);
+	// 			console.log({
+	// 				parentTimelineTitle,
+	// 				MTilmelines,
+	// 				parentTimeline,
+	// 				index,
+	// 			});
+	// 			// 親タイムラインがないか、タイムラインが見つからない場合はエラーを出す
+	// 			if (!parentTimeline || index === -1) {
+	// 				throw new Error('parentTimeline not found');
+	// 			}
+	// 			const newVal = val.filter((timeline) => timeline.parentTimelineTitle !== parentTimelineTitle);
+	// 			newVal.splice(index, 0, parentTimeline);
+	// 			return newVal;
+	// 		}),
+	// 	[MTilmelines],
+	// );
+
+	// 新規 Timeline を登録する
+	const createNewTimeline = useCallback(() => {
+		// 新規 Timeline を登録する画面に遷移する
+		// 遷移された画面では、Plan は初期で一つ出来ている。
+		// Itinerary/TopTab/ItineraryEdit
+		console.log('createNewTimeline');
+	}, []);
+
+	// Timeline を投稿済みにする
+	// 子 Timeline を再帰的に投稿済みする
+	const setTimelinePosted = () => {
+		// firestore の posted に true を設定する
+	};
 
 	const windowWidth = getWindowWidth();
 
 	return (
-		// TODO: https://github.com/Ayato-kosaka/spelieve/issues/156 LP作成計画検討
 		<>
 			<SafeAreaView />
 			<ScrollView>
-				<View>
-					<Image
-						// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
-						source={require('@assets/adaptive-icon.png')}
-						style={{
-							width: '100%',
-							height: windowWidth * (351 / 586),
-						}}
-						resizeMode="cover"
-					/>
+				{/* Screen Header */}
+				<View
+					style={{
+						flexDirection: 'row',
+						justifyContent: 'space-between',
+						alignItems: 'center',
+						marginHorizontal: '2%',
+						marginVertical: '2%',
+					}}>
+					<Button onPress={createNewTimeline}>createNewTimeline</Button>
 				</View>
-				<View style={{ marginHorizontal: 16, marginVertical: 32 }}>
-					<Headline>{`${i18n.t('あなたの旅行もっと「楽」に')}\n${i18n.t('素晴らしい「思い出」に')}`}</Headline>
-					<Button
-						testID="createItineraryButton"
-						mode="contained"
-						labelStyle={{ color: 'white', fontSize: 16 }}
-						style={{ marginVertical: 32, paddingVertical: 8 }}
-						onPress={() =>
-							navigation.navigate('ItineraryTopTabNavigator', {
-								screen: 'ItineraryEdit',
-								params: { itineraryID: undefined },
-							})
-						}>
-						{i18n.t('新しく始める')}
-					</Button>
-					<Image
-						source={
-							// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-							GooglePlaceLanguageTagFromIETFLanguageTag[i18n.locale] === 'ja'
-								? // eslint-disable-next-line global-require
-								  require('@assets/JP-sol.png')
-								: // eslint-disable-next-line global-require
-								  require('@assets/EN-sol.png')
-						}
-						style={{ width: '100%', height: 200 }}
-						resizeMode="contain"
-					/>
-					<View style={{ flex: 1, width: '100%' }}>
-						<View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', marginVertical: 10 }}>
-							<View
-								style={{
-									backgroundColor: materialColors.grey[200],
-									flex: 0.5,
-									alignItems: 'center',
-									justifyContent: 'center',
-									height: 150,
-									marginHorizontal: 12,
-									borderRadius: 10,
-								}}>
-								<Text>{i18n.t('特徴1')}</Text>
-								<Title>{i18n.t('しおり簡単作成')}</Title>
-							</View>
-							<View
-								style={{
-									backgroundColor: materialColors.grey[200],
-									flex: 0.5,
-									alignItems: 'center',
-									justifyContent: 'center',
-									height: 150,
-									marginHorizontal: 12,
-									borderRadius: 10,
-								}}>
-								<Text>{i18n.t('特徴2')}</Text>
-								<Title>{`${i18n.t('移動時間')}\n${i18n.t('自動計算')}`}</Title>
-							</View>
-						</View>
-						<View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', marginVertical: 10 }}>
-							<View
-								style={{
-									backgroundColor: materialColors.grey[200],
-									flex: 0.5,
-									alignItems: 'center',
-									justifyContent: 'center',
-									height: 150,
-									marginHorizontal: 12,
-									borderRadius: 10,
-								}}>
-								<Text>{i18n.t('特徴3')}</Text>
-								<Title>{i18n.t('マップ検索')}</Title>
-							</View>
-							<View
-								style={{
-									backgroundColor: materialColors.grey[200],
-									flex: 0.5,
-									alignItems: 'center',
-									justifyContent: 'center',
-									height: 150,
-									marginHorizontal: 12,
-									borderRadius: 10,
-								}}>
-								<Text>{i18n.t('特徴4')}</Text>
-								<Title>{i18n.t('思い出化')}</Title>
-							</View>
-						</View>
-					</View>
-					{recentItineraries && recentItineraries.length > 0 && (
-						<View style={{ marginVertical: 64 }}>
-							<Headline style={{ textAlign: 'center' }}>{i18n.t('最近作成した旅行プラン')}</Headline>
-							<ScrollView style={{ maxHeight: 700 }} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-								{recentItineraries.map((recentItinerary) => (
-									<Pressable
-										key={recentItinerary.itineraryID}
-										onPress={() => {
-											navigation.navigate('ItineraryTopTabNavigator', {
-												screen: 'ItineraryEdit',
-												params: {
-													itineraryID: recentItinerary.itineraryID,
-												},
-											});
-										}}
-										style={{
-											width: '50%',
-										}}>
-										<View
-											style={{
-												borderWidth: 1,
-												borderColor: materialColors.grey[400],
-												borderRadius: 4,
-												margin: 8,
-											}}>
-											{recentItinerary.imageUrl ? (
-												<Image
-													source={{ uri: recentItinerary.imageUrl }}
-													style={{
-														paddingTop: '100%',
-														width: '100%',
-													}}
-												/>
-											) : (
-												<View
-													style={{
-														paddingTop: '100%',
-														width: '100%',
-														position: 'relative',
-														overflow: 'hidden',
-													}}>
-													<View
-														style={{
-															position: 'absolute',
-															width: '100%',
-															top: 0,
-															bottom: 0,
-															justifyContent: 'center',
-														}}>
-														<Text
-															style={{
-																textAlign: 'center',
-																flexWrap: 'wrap',
-															}}>
-															{i18n.t('No Thumbnail')}
+
+				<Pressable
+					style={{
+						flexDirection: 'row',
+						flexWrap: 'wrap',
+						width: '100%',
+						justifyContent: 'center',
+					}}
+					onPress={() => openTimeline(timeline.title)}>
+					<Image source={{ uri: timeline.image }} style={{ width: windowWidth * 0.6, height: windowWidth * 0.6 }} />
+				</Pressable>
+
+				{timelines.map((timeline, index) => (
+					<Card
+						key={timeline.title}
+						style={{
+							marginVertical: '2%',
+							marginHorizontal: '1%',
+							backgroundColor: materialColors[primaryColorNm]['50'],
+						}}>
+						{timeline.plans ? (
+							// timeline.plans がある場合は、PlanGroup として表示する
+							<Card.Content>
+								{timeline.plans.map((plan, planIndex) => (
+									<Card key={plan.title}>
+										<Card.Content>
+											<Pressable
+												testID="planPressable"
+												onPress={() => console.log('onPlanPress()')}
+												style={{
+													flexDirection: 'row',
+													alignItems: 'center',
+												}}>
+												<View style={{ flex: 1, alignItems: 'center' }}>
+													<MaterialCommunityIcons name="map-marker" size={20} color="black" />
+												</View>
+												<View style={{ flex: 13 }}>
+													<Text>{plan.title || ' '}</Text>
+													<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+														<Text>
+															{DateUtils.formatToHHMM(plan.placeStartTime)}
+															{plan.placeStartTime.getTime() !== plan.placeEndTime.getTime()
+																? `~${DateUtils.formatToHHMM(plan.placeEndTime)}`
+																: ''}
 														</Text>
 													</View>
 												</View>
-											)}
-										</View>
-									</Pressable>
+
+												<Menu>
+													<MenuTrigger>
+														<MaterialCommunityIcons name="dots-horizontal" size={30} />
+													</MenuTrigger>
+													<MenuOptions customStyles={{ optionsWrapper: { backgroundColor: '#F8F8FF' } }}>
+														<MenuOption value={{ command: 'up', planIndex }} text={i18n.t('上へ')} />
+														<MenuOption value={{ command: 'down', planIndex }} text={i18n.t('下へ')} />
+														<MenuOption value={{ command: 'delete' }} text={i18n.t('削除')} />
+													</MenuOptions>
+												</Menu>
+											</Pressable>
+										</Card.Content>
+									</Card>
 								))}
-							</ScrollView>
-						</View>
-					)}
-				</View>
-				<View style={{ backgroundColor: customColors.midnight, paddingTop: 40 }}>
-					<Button
-						color="white"
-						// eslint-disable-next-line @typescript-eslint/no-misused-promises
-						onPress={() =>
-							Linking.openURL(
-								'https://docs.google.com/forms/d/e/1FAIpQLSc0f-CYZAb6kBsWlMZ_5W4c0CMipNSbo-zEivUMa_jrMy4UFA/viewform?usp=sf_link',
-							)
-						}>
-						{i18n.t('お問い合わせ')}
-					</Button>
-					<Button
-						color="white"
-						// eslint-disable-next-line @typescript-eslint/no-misused-promises
-						onPress={() =>
-							Linking.openURL(
-								'https://docs.google.com/forms/d/e/1FAIpQLSc5tuLbjx5CZX2pBr3wz9rcpdX710y6Ov2wVu2LObhIwFD5vQ/viewform?usp=sf_link',
-							)
-						}>
-						{i18n.t('フィードバック')}
-					</Button>
-					<Text style={{ color: 'white', textAlign: 'center', paddingVertical: 32 }}>
-						{i18n.t('Copyright © Spelieve ') + new Date().getFullYear().toString()}
-					</Text>
-				</View>
-				{ENV.LOGGER && (
-					<Button
-						mode="contained"
-						onPress={() => {
-							setThumbnailItemMapper({
-								aspectRatio: 1,
-								textMap: { xxx: 'サンプル横浜行くぞい！' },
-								storeUrlMap: {
-									'b87e0c4d-bb1f-48a9-a304-80ce4728f2a7':
-										'https://firebasestorage.googleapis.com/v0/b/spelieve-dev.appspot.com/o/12373bcd-013b-43d3-bbcf-f95c3d991edc?alt=media&token=91171ed7-7a92-439b-9c4b-a675cabe49bc',
-								},
-								onBack(thumbnailID, thumbnailItemMapper, uri) {
-									// eslint-disable-next-line no-console
-									console.log('onBack', { thumbnailID, thumbnailItemMapper, uri });
-								},
-							});
-							navigation.navigate('ThumbnailPageNavigator', {
-								screen: 'TPA001ThumbnailEditor',
-								params: {
-									fromThumbnailID: 'HVClefrb102gUdcTp2Cu',
-								},
-							});
-						}}>
-						{i18n.t('開発者用')}
-					</Button>
-				)}
+							</Card.Content>
+						) : (
+							// timeline.plans がない場合は、Timeline として表示する
+							// Ver 2.4 では、孫階層の Timeline を作成出来ないため、デッドロジックとなる。
+							<Card.Content>
+								<View
+									style={{
+										flexDirection: 'row',
+										justifyContent: 'space-between',
+										width: '100%',
+									}}>
+									<Headline>{timeline.title}</Headline>
+									<Menu>
+										<MenuTrigger>
+											<MaterialCommunityIcons name="dots-horizontal" size={30} />
+										</MenuTrigger>
+										<MenuOptions customStyles={{ optionsWrapper: { backgroundColor: '#F8F8FF' } }}>
+											<MenuOption onSelect={() => {}} text="closeTimeline" />
+										</MenuOptions>
+									</Menu>
+								</View>
+								<Pressable
+									style={{
+										flexDirection: 'row',
+										flexWrap: 'wrap',
+										width: '100%',
+										justifyContent: 'center',
+									}}
+									onPress={() => openTimeline(timeline.title)}>
+									<Image
+										source={{ uri: timeline.image }}
+										style={{ width: windowWidth * 0.6, height: windowWidth * 0.6 }}
+									/>
+								</Pressable>
+							</Card.Content>
+						)}
+					</Card>
+				))}
 			</ScrollView>
 		</>
 	);
