@@ -1,12 +1,15 @@
+import { setStringAsync } from 'expo-clipboard';
 import { addDoc, setDoc } from 'firebase/firestore';
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { TextInputChangeEventData } from 'react-native';
+import { Platform, TextInputChangeEventData } from 'react-native';
 
 import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
 import { Logger } from '@/Common/Hooks/CHK001Utils';
+import { buildItineraryPreviewDL } from '@/Common/Hooks/CHK008DynamicLink';
 import { ItineraryTopTabScreenProps } from '@/Common/Navigation/NavigationInterface';
+import { ENV } from '@/ENV';
 import { ICT011ItineraryOne } from '@/Itinerary/Contexts/ICT011ItineraryOne';
 import { ItineraryOneInterface } from '@/Itinerary/Contexts/ICT011ItineraryOne/ItineraryOneIntereface';
 import { ICT021PlanGroupsList } from '@/Itinerary/Contexts/ICT021PlanGroupsList';
@@ -162,6 +165,16 @@ export const IPA001ItineraryEditController = ({ route, navigation }: ItineraryTo
 		[navigation, itineraryID],
 	);
 
+	const buildCopyItineraryPreviewDL = async () => {
+		if (!itineraryID) return;
+
+		const url =
+			Platform.OS !== 'web'
+				? await buildItineraryPreviewDL(itineraryID)
+				: `${ENV.HOST_NAME_WEB}/Itinerary/TopTab/ItineraryEdit?itineraryID=${itineraryID}`;
+		await setStringAsync(url);
+	};
+
 	return {
 		pageItinerary,
 		onPressThumbnail,
@@ -169,5 +182,6 @@ export const IPA001ItineraryEditController = ({ route, navigation }: ItineraryTo
 		handleOnChange,
 		updateItinerary,
 		onPlanPress,
+		buildCopyItineraryPreviewDL,
 	};
 };

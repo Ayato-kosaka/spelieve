@@ -3,8 +3,8 @@ import perf from '@react-native-firebase/perf';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useCallback, useEffect, useRef } from 'react';
-import { Linking, Platform } from 'react-native';
+import { useRef } from 'react';
+import { Platform } from 'react-native';
 
 import { CCO001GlobalContext } from '../Components/CCO001GlobalContext/GlobalContext';
 import { consoleError } from '../Hooks/CHK001Utils';
@@ -20,7 +20,6 @@ import { ItineraryPageNavigator } from '@/Itinerary/Pages/ItineraryPageNavigator
 import { PlacePageNavigator } from '@/Place/Pages/PlacePageNavigator/PlacePageNavigator';
 import { navigationTheme } from '@/ThemeProvider';
 import { ThumbnailPageNavigator } from '@/Thumbnail/Pages/ThumbnailPageNavigator';
-import dynamicLinks from '@react-native-firebase/dynamic-links';
 
 export const Navigation = () => {
 	const navigationRef = useNavigationContainerRef<RootStackParamList>();
@@ -51,19 +50,6 @@ export const Navigation = () => {
 			}
 		}
 	};
-
-	const handleDynmicLink = useCallback(async (link) => {
-		if (link.url) {
-			navigationRef.navigate(link.url);
-		}
-	}, [],);
-
-	useEffect(() => {
-		if (Platform.OS !== 'web') {
-			const unSubscribe = dynamicLinks().onLink(handleDynmicLink);
-			return () => unSubscribe();
-		}
-	}, [handleDynmicLink])
 
 	return (
 		<NavigationContainer

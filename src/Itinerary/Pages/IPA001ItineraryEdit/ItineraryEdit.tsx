@@ -1,6 +1,5 @@
-import { setStringAsync } from 'expo-clipboard';
 import React, { useContext } from 'react';
-import { ScrollView, ActivityIndicator, View, Pressable, Image, Platform } from 'react-native';
+import { ScrollView, ActivityIndicator, View, Pressable, Image } from 'react-native';
 import { Headline, Button, Text, TextInput } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -11,23 +10,28 @@ import { CCO003DateTimePicker } from '@/Common/Components/CCO003DateTimePicker';
 import { CCO007GoogleBannerAd } from '@/Common/Components/CCO007GoogleBannerAd/GoogleBannerAd';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ItineraryTopTabScreenProps } from '@/Common/Navigation/NavigationInterface';
-import { ENV } from '@/ENV';
 import { ICT011ItineraryOne } from '@/Itinerary/Contexts/ICT011ItineraryOne';
 import { ICT021PlanGroupsList } from '@/Itinerary/Contexts/ICT021PlanGroupsList';
 import { ICT031PlansMap } from '@/Itinerary/Contexts/ICT031PlansMap';
 import { IMC03103PlanGroupsEdit } from '@/Itinerary/Contexts/ICT031PlansMap/ModelComponents/IMC03103PlanGroupEdit';
-import { buildItineraryPreviewDL } from '@/Common/Hooks/CHK008DynamicLink';
 
 export const IPA001ItineraryEdit = ({ route, navigation }: ItineraryTopTabScreenProps<'ItineraryEdit'>) => {
 	const { itineraryDocSnap } = useContext(ICT011ItineraryOne);
 	const { isPlansLoading } = useContext(ICT031PlansMap);
 	const { planGroupsQSnap, createPlanGroup } = useContext(ICT021PlanGroupsList);
 
-	const { pageItinerary, onPressThumbnail, setPageItinerary, handleOnChange, updateItinerary, onPlanPress } =
-		IPA001ItineraryEditController({
-			route,
-			navigation,
-		});
+	const {
+		pageItinerary,
+		onPressThumbnail,
+		setPageItinerary,
+		handleOnChange,
+		updateItinerary,
+		onPlanPress,
+		buildCopyItineraryPreviewDL,
+	} = IPA001ItineraryEditController({
+		route,
+		navigation,
+	});
 
 	if (
 		!route.params.itineraryID ||
@@ -104,12 +108,10 @@ export const IPA001ItineraryEdit = ({ route, navigation }: ItineraryTopTabScreen
 				mode="outlined"
 				style={styles.button}
 				labelStyle={{ color: 'black' }}
-				onPress={async () => {
+				onPress={() => {
 					// TODO: https://github.com/Ayato-kosaka/spelieve/issues/461 React Navigation を見直す
 					// eslint-disable-next-line @typescript-eslint/no-floating-promises
-					const url = Platform.OS !== 'web' ? await buildItineraryPreviewDL(itineraryDocSnap.id) : `${ENV.HOST_NAME_WEB}/Itinerary/TopTab/ItineraryEdit?itineraryID=${itineraryDocSnap.id}`
-					// const dynamicLink: string = ;
-					setStringAsync(url);
+					buildCopyItineraryPreviewDL();
 				}}>
 				{i18n.t('copy Share URL')}
 			</Button>
@@ -117,4 +119,3 @@ export const IPA001ItineraryEdit = ({ route, navigation }: ItineraryTopTabScreen
 		</ScrollView>
 	);
 };
-
