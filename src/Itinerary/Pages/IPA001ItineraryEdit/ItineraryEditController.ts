@@ -167,10 +167,10 @@ export const IPA001ItineraryEditController = ({ route, navigation }: ItineraryTo
 
 	const buildCopyItineraryPreviewDL = async () => {
 		if (!itineraryID) return;
-
+		const previewPageLink = `https://www.spelieve.com/ItineraryPreview?itineraryID=${itineraryID}`;
 		const url =
 			Platform.OS !== 'web'
-				? await buildItineraryPreviewDL(itineraryID)
+				? await buildItineraryPreviewDL(previewPageLink)
 				: `${ENV.HOST_NAME_WEB}/Itinerary/TopTab/ItineraryEdit?itineraryID=${itineraryID}`;
 		await setStringAsync(url);
 	};

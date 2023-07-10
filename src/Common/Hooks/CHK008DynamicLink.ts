@@ -1,19 +1,18 @@
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 
-export const buildItineraryPreviewDL = async (itineraryID: string): Promise<string> => {
-	const previewPageLink = `https://www.spelieve.com/ItineraryPreview?itineraryID=${itineraryID}`;
+export const buildItineraryPreviewDL = async (urlLink: string): Promise<string> => {
 	const link: string = await dynamicLinks().buildLink({
-		link: previewPageLink,
+		link: urlLink,
 		// domainUriPrefix is created in your Firebase console
-		domainUriPrefix: 'https://spelieveuser.page.link', // TODO: 自分たちのインスタ投稿の時のdomainURLと別にしてる!!!
+		domainUriPrefix: 'https://spelieveuser.page.link',
 		ios: {
 			bundleId: 'com.spelieve',
 			appStoreId: 'id1660453134',
-			fallbackUrl: previewPageLink,
+			fallbackUrl: urlLink,
 		},
 		android: {
 			packageName: 'com.spelieve',
-			fallbackUrl: previewPageLink,
+			fallbackUrl: urlLink,
 		},
 		navigation: {
 			forcedRedirectEnabled: false, // アプリに直接飛ぶように設定
