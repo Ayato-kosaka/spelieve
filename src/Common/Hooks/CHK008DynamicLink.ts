@@ -1,6 +1,6 @@
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 
-export const buildItineraryPreviewDL = async (urlLink: string): Promise<string> => {
+export const buildDynamicLink = async (urlLink: string): Promise<string> => {
 	const link: string = await dynamicLinks().buildLink({
 		link: urlLink,
 		// domainUriPrefix is created in your Firebase console

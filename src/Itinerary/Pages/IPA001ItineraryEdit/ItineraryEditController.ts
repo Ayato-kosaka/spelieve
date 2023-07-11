@@ -7,7 +7,7 @@ import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
 import { Logger } from '@/Common/Hooks/CHK001Utils';
-import { buildItineraryPreviewDL } from '@/Common/Hooks/CHK008DynamicLink';
+import { buildDynamicLink } from '@/Common/Hooks/CHK008DynamicLink';
 import { ItineraryTopTabScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { ENV } from '@/ENV';
 import { ICT011ItineraryOne } from '@/Itinerary/Contexts/ICT011ItineraryOne';
@@ -167,11 +167,11 @@ export const IPA001ItineraryEditController = ({ route, navigation }: ItineraryTo
 
 	const buildCopyItineraryPreviewDL = async () => {
 		if (!itineraryID) return;
-		const previewPageLink = `https://www.spelieve.com/ItineraryPreview?itineraryID=${itineraryID}`;
+		const previewPageLink = `${ENV.HOST_NAME_WEB}ItineraryPreview?itineraryID=${itineraryID}`;
 		const url =
 			Platform.OS !== 'web'
-				? await buildItineraryPreviewDL(previewPageLink)
-				: `${ENV.HOST_NAME_WEB}ItineraryPreview?itineraryID=${itineraryID}`;
+				? await buildDynamicLink(previewPageLink)
+				: previewPageLink;
 		await setStringAsync(url);
 	};
 
