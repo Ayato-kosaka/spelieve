@@ -171,7 +171,7 @@ export const IPA001ItineraryEditController = ({ route, navigation }: ItineraryTo
 		const url =
 			Platform.OS !== 'web'
 				? await buildItineraryPreviewDL(previewPageLink)
-				: `${ENV.HOST_NAME_WEB}/Itinerary/TopTab/ItineraryEdit?itineraryID=${itineraryID}`;
+				: `${ENV.HOST_NAME_WEB}ItineraryPreview?itineraryID=${itineraryID}`;
 		await setStringAsync(url);
 	};
 
