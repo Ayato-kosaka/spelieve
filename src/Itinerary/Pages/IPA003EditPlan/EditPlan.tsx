@@ -1,12 +1,13 @@
 import { setDoc } from 'firebase/firestore';
 import { ActivityIndicator, Image, Pressable, ScrollView, View } from 'react-native';
 import { Text, TextInput, Button } from 'react-native-paper';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { IPA003EditPlanController } from './EditPlanController';
 import { styles } from './EditPlanStyle';
 
 import { CCO003DateTimePicker } from '@/Common/Components/CCO003DateTimePicker';
-import { CCO004DurationPicker } from '@/Common/Components/CCO004DurationPicker';
+import { CCO004DurationPicker } from '@/Common/Components/CCO004DurationPicker/DurationPicker';
 import { CCO007GoogleBannerAd } from '@/Common/Components/CCO007GoogleBannerAd/GoogleBannerAd';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ItineraryStackScreenProps } from '@/Common/Navigation/NavigationInterface';
@@ -42,7 +43,13 @@ export const IPA003EditPlan = ({ route, navigation }: ItineraryStackScreenProps<
 	return (
 		<ScrollView>
 			<CCO007GoogleBannerAd />
-			<Pressable onPress={onPressThumbnail}>
+			<Pressable testID="planThumbnailPressable" onPress={onPressThumbnail}>
+				<MaterialCommunityIcons
+					name="square-edit-outline"
+					size={100}
+					color="rgba(0,0,0,0.5)"
+					style={styles.materialCommunityIcons}
+				/>
 				<Image source={{ uri: pagePlan.imageUrl }} resizeMode="cover" style={styles.image} />
 			</Pressable>
 			<PCO002GooglePlacesAutocomplete

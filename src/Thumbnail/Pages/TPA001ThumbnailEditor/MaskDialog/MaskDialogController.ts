@@ -6,6 +6,7 @@ import { Decorations } from 'spelieve-common/lib/Models/Thumbnail/TDB02/Decorati
 import { MaskDecorationPropsInterface } from './MaskDecoration/MaskDecorationInterface';
 import { TPA001MaskDialogPropsInterface } from './MaskDialogInterface';
 
+import { Logger } from '@/Common/Hooks/CHK001Utils';
 import { GestureProviderPropsInterface } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderPropsInterface';
 import { TCT023DecorationsMap } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMap';
 import { DecorationsMapInterface } from '@/Thumbnail/Contexts/TCT023DecorationsMap/DecorationsMapInterface';
@@ -89,6 +90,7 @@ export const TPA001MaskDialogController = ({
 	});
 
 	const onLayout = useCallback((event: LayoutChangeEvent) => {
+		Logger('MaskDialogController', 'onLayout', event.nativeEvent.layout);
 		setComponentSize(event.nativeEvent.layout);
 	}, []);
 

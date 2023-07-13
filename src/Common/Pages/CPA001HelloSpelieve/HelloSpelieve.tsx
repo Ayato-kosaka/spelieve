@@ -49,6 +49,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 				<View style={{ marginHorizontal: 16, marginVertical: 32 }}>
 					<Headline>{`${i18n.t('あなたの旅行もっと「楽」に')}\n${i18n.t('素晴らしい「思い出」に')}`}</Headline>
 					<Button
+						testID="createItineraryButton"
 						mode="contained"
 						labelStyle={{ color: 'white', fontSize: 16 }}
 						style={{ marginVertical: 32, paddingVertical: 8 }}

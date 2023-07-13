@@ -51,7 +51,7 @@ const ja: typeof Lang = {
 
 	// IPA001ItineraryEdit
 	'Add Plan group': 'プラングループ追加',
-	日目: '日目',
+	'day N': '%{count} 日目',
 	'copy Share URL': 'URL をコピー',
 	'Add Tag': 'タグ追加',
 	'Start date': '開始日',
@@ -123,5 +123,10 @@ const ja: typeof Lang = {
 	'Send Backward': '背面へ',
 	'Send to Back': '最背面へ',
 	サムネイルテンプレート選択: 'サムネイルテンプレート選択',
+
+	// IMC03101PlanEdit
+	上へ: '上へ',
+	下へ: '下へ',
+	削除: '削除',
 };
 export default ja;

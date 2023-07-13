@@ -1,5 +1,5 @@
 import { TransitMode, TransitRoutingPreference } from '@googlemaps/google-maps-services-js';
-import { collection, query, QuerySnapshot, onSnapshot, addDoc, orderBy } from 'firebase/firestore';
+import { collection, query, QuerySnapshot, onSnapshot, addDoc, orderBy, setDoc, deleteDoc } from 'firebase/firestore';
 import { useState, createContext, useEffect, useContext, useMemo, ReactNode, useCallback } from 'react';
 
 import { PlanGroups } from 'spelieve-common/lib/Models/Itinerary/IDB02/PlanGroups';
@@ -18,7 +18,7 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 	const [planGroupsQSnap, setPlanGroupsQSnap] = useState<QuerySnapshot<PlanGroupsListInterface> | undefined>(undefined);
 
 	const { itineraryDocSnap } = useContext(ICT011ItineraryOne);
-	const { plansCRef } = useContext(ICT031PlansMap);
+	const { plansCRef, plansDocSnapMap } = useContext(ICT031PlansMap);
 
 	const itinerary = useMemo(() => itineraryDocSnap?.data(), [itineraryDocSnap]);
 
@@ -48,7 +48,7 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 	const createPlanGroup = useCallback(
 		async (plan?: Partial<Plans>) => {
 			if (!plansCRef || !planGroupsCRef || !itinerary) {
-				return;
+				throw new Error('not initialized');
 			}
 			const newPlan: Plans = {
 				title: '',
@@ -78,6 +78,60 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 		[itinerary, planGroupsCRef, plansCRef],
 	);
 
+	const movePlan = useCallback(
+		async (
+			from: {
+				planGroupIndex: number;
+				planIndex: number;
+			},
+			to: {
+				planGroupIndex: number;
+				planIndex: number;
+			},
+		) => {
+			const planGroupsQDSnap = planGroupsQSnap?.docs;
+			if (!plansCRef || !planGroupsCRef || !itinerary || !planGroupsQDSnap) {
+				throw new Error('not initialized');
+			}
+			const fromPlanGroup = planGroupsQDSnap[from.planGroupIndex].data();
+			const toPlanGroup = planGroupsQDSnap[to.planGroupIndex].data();
+			if (from.planGroupIndex === to.planGroupIndex) {
+				// 同じプラングループ内での移動
+				if (from.planIndex === to.planIndex) {
+					return;
+				}
+				if (fromPlanGroup?.plans?.[from.planIndex] === undefined || toPlanGroup?.plans?.[to.planIndex] === undefined) {
+					throw new Error('index out of range');
+				}
+				[fromPlanGroup.plans[from.planIndex], fromPlanGroup.plans[to.planIndex]] = [
+					fromPlanGroup.plans[to.planIndex],
+					fromPlanGroup.plans[from.planIndex],
+				];
+				await setDoc(planGroupsQDSnap[from.planGroupIndex].ref, { ...fromPlanGroup });
+			} else {
+				// 異なるプラングループ間での移動
+				const targetPlanID = fromPlanGroup.plans.splice(from.planIndex, 1)[0];
+				if (!targetPlanID) {
+					throw new Error('target plan not found');
+				}
+				toPlanGroup.plans.splice(to.planIndex, 0, targetPlanID);
+				if (fromPlanGroup.plans.length === 0) {
+					await deleteDoc(planGroupsQDSnap[from.planGroupIndex].ref);
+				} else {
+					// targetPlanID が代表プランである場合、先頭プランを代表プランにする
+					if (fromPlanGroup.representativePlanID === targetPlanID) {
+						[fromPlanGroup.representativePlanID] = fromPlanGroup.plans;
+						fromPlanGroup.representativeStartDateTime =
+							plansDocSnapMap[fromPlanGroup.representativePlanID]?.data().placeStartTime;
+					}
+					await setDoc(planGroupsQDSnap[from.planGroupIndex].ref, { ...fromPlanGroup });
+				}
+				await setDoc(planGroupsQDSnap[to.planGroupIndex].ref, { ...toPlanGroup });
+			}
+		},
+		[itinerary, planGroupsCRef, planGroupsQSnap?.docs, plansCRef, plansDocSnapMap],
+	);
+
 	useEffect(() => {
 		if (!planGroupsCRef || !plansCRef || !itinerary) {
 			setPlanGroupsQSnap(undefined);
@@ -97,8 +151,9 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 			planGroupsQSnap,
 			planGroupsCRef,
 			createPlanGroup,
+			movePlan,
 		}),
-		[planGroupsQSnap, planGroupsCRef, createPlanGroup],
+		[planGroupsQSnap, planGroupsCRef, createPlanGroup, movePlan],
 	);
 	return <ICT021PlanGroupsList.Provider value={value}>{children}</ICT021PlanGroupsList.Provider>;
 };

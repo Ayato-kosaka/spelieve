@@ -3,12 +3,12 @@ import { Pressable, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { TrafficMovementEditPropsInterface } from 'spelieve-common/lib/Interfaces';
 import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 
 import { ICT031PlansMap } from '../..';
 
 import { IMC03102TrafficMovementEditController } from './TrafficMovementEditController';
+import { TrafficMovementEditPropsInterface } from './TrafficMovementEditInterface';
 
 import i18n from '@/Common/Hooks/i18n-js';
 import { IMC03104EditDirectionsMode } from '@/Itinerary/Contexts/ICT031PlansMap/ModelComponents/IMC03104EditDirectionsMode';

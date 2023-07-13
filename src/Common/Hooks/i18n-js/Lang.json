@@ -30,7 +30,7 @@
 	"Preview": "Preview",
 	"Start date": "Start date",
 	"Description": "Description",
-	"日目": "日目",
+	"day N": "dayN",
 	"Add Plan group": "Add Plan group",
 	"copy Share URL": "copy Share URL",
 	"Search Place": "Search Place",
@@ -87,5 +87,8 @@
 	"Bring Forward": "Bring Forward",
 	"Send Backward": "Send Backward",
 	"Send to Back": "Send to Back",
-	"サムネイルテンプレート選択": "サムネイルテンプレート選択"
+	"サムネイルテンプレート選択": "サムネイルテンプレート選択",
+	"上へ": "上へ",
+	"下へ": "下へ",
+	"削除": "削除"
 }

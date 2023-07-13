@@ -7,7 +7,7 @@ export default ({ config }: ConfigContext) => {
 			owner: 'spelieve',
 			slug: 'Spelieve',
 			scheme: 'spelieve',
-			version: '2.2.0',
+			version: '2.3.0',
 			orientation: 'portrait',
 			icon: './assets/favicon.png',
 			userInterfaceStyle: 'light',
@@ -27,7 +27,7 @@ export default ({ config }: ConfigContext) => {
 				config: {
 					googleMapsApiKey: process.env.GCP_API_KEY_IOS,
 				},
-				buildNumber: '4',
+				buildNumber: '5',
 				googleServicesFile: './GoogleService-Info.plist',
 			},
 			android: {
@@ -41,7 +41,7 @@ export default ({ config }: ConfigContext) => {
 						apiKey: process.env.GCP_API_KEY_ANDROID,
 					},
 				},
-				versionCode: 7, // TODO: 毎submitで変更の必要あり
+				versionCode: 8, // TODO: 毎submitで変更の必要あり
 				permissions: [],
 				googleServicesFile: './google-services.json',
 			},

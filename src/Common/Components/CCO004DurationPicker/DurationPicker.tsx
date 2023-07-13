@@ -1,9 +1,8 @@
 import { ComponentProps } from 'react';
 import { TextInput } from 'react-native-paper';
 
-import { DurationPickerPropsInterface } from 'spelieve-common/lib/Interfaces';
-
 import { CCO004DurationPickerController } from './DurationPickerController';
+import { DurationPickerPropsInterface } from './DurationPickerInterface';
 
 export const CCO004DurationPicker = ({
 	...props

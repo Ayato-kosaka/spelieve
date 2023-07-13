@@ -17,7 +17,7 @@ export const IMC03101PlanEditController = ({
 	planGroupsDoc,
 	isPlanGroupMounted,
 }: Omit<PlanEditPropsInterface, 'onPlanPress'>) => {
-	const { planGroupsQSnap } = useContext(ICT021PlanGroupsList);
+	const { planGroupsQSnap, movePlan } = useContext(ICT021PlanGroupsList);
 	const { plansCRef, plansDocSnapMap } = useContext(ICT031PlansMap);
 	const planDocSnap = useMemo(() => plansDocSnapMap[planID], [planID, plansDocSnapMap]);
 	const plan = useMemo(() => planDocSnap.data(), [planDocSnap]);
@@ -193,7 +193,7 @@ export const IMC03101PlanEditController = ({
 
 	/** **********************************************************************************************
 	 * representative, after の transportationArrivalTime を設定する
-	 * 自分の予定の transportationSpan を監視し、
+	 * 自分の予定の transportationDepartureTime, transportationSpan を監視し、
 	 * transportationArrivalTime = current.transportationDepartureTime + current.transportationSpan で計算する
 	 *********************************************************************************************** */
 	useEffect(() => {
@@ -217,7 +217,7 @@ export const IMC03101PlanEditController = ({
 			);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [plan.transportationSpan.getTime(), beforeAfterRepresentativeType]);
+	}, [plan.transportationSpan.getTime(), beforeAfterRepresentativeType, plan.transportationDepartureTime?.getTime()]);
 
 	const deletePlan = useCallback(async () => {
 		const newPlanGroup = { ...planGroup };
@@ -235,5 +235,74 @@ export const IMC03101PlanEditController = ({
 		await deleteDoc(doc(plansCRef!, planID));
 	}, [planGroup, plansIndex, plansCRef, planID, planGroupsDoc.ref, plansDocSnapMap]);
 
-	return { deletePlan };
+	const movePlanUpAndDown = useCallback(
+		async (direction: 'up' | 'down', selectedPlanIndex: number) => {
+			if (!planGroupsQSnap) throw new Error('planGroupsQSnap is undefined');
+			const planGroupIndex = planGroupsQSnap.docs.map((d) => d.id).indexOf(planGroupsDoc.id);
+			if (planGroupIndex === undefined) throw new Error('planGroupIndex is undefined');
+			if (direction === 'up') {
+				if (selectedPlanIndex > 0) {
+					// 同じ PlanGroup 内で一つ上に移動
+					const newPlanGroup = { ...planGroup };
+					[newPlanGroup.plans[selectedPlanIndex], newPlanGroup.plans[selectedPlanIndex - 1]] = [
+						newPlanGroup.plans[selectedPlanIndex - 1],
+						newPlanGroup.plans[selectedPlanIndex],
+					];
+					await setDoc(planGroupsDoc.ref, { ...newPlanGroup });
+				} else {
+					// 前の PlanGroup の一番下に移動
+					const beforePlanGroup = planGroupsQSnap.docs[planGroupIndex - 1];
+					if (!beforePlanGroup) throw new Error('beforePlanGroup is undefined');
+					await movePlan(
+						{
+							planGroupIndex,
+							planIndex: selectedPlanIndex,
+						},
+						{
+							planGroupIndex: planGroupIndex - 1,
+							planIndex: beforePlanGroup.data().plans.length,
+						},
+					);
+				}
+			} else if (direction === 'down') {
+				if (selectedPlanIndex < planGroup.plans.length - 1) {
+					// 同じ PlanGroup 内で一つ下に移動
+					const newPlanGroup = { ...planGroup };
+					[newPlanGroup.plans[selectedPlanIndex], newPlanGroup.plans[selectedPlanIndex + 1]] = [
+						newPlanGroup.plans[selectedPlanIndex + 1],
+						newPlanGroup.plans[selectedPlanIndex],
+					];
+					await setDoc(planGroupsDoc.ref, { ...newPlanGroup });
+				} else {
+					// 次の PlanGroup の一番上に移動
+					const nextPlanGroup = planGroupsQSnap.docs[planGroupIndex + 1];
+					if (!nextPlanGroup) throw new Error('nextPlanGroup is undefined');
+					await movePlan(
+						{
+							planGroupIndex,
+							planIndex: selectedPlanIndex,
+						},
+						{
+							planGroupIndex: planGroupIndex + 1,
+							planIndex: 0,
+						},
+					);
+				}
+			}
+		},
+		[movePlan, planGroup, planGroupsDoc.id, planGroupsDoc.ref, planGroupsQSnap],
+	);
+
+	const onSelectPlanMenu = useCallback(
+		async (params: { command: 'up' | 'down' | 'delete'; planIndex: number }) => {
+			if (params.command === 'delete') {
+				await deletePlan();
+			} else {
+				await movePlanUpAndDown(params.command, params.planIndex);
+			}
+		},
+		[deletePlan, movePlanUpAndDown],
+	);
+
+	return { onSelectPlanMenu };
 };
