@@ -167,7 +167,7 @@ export const IPA001ItineraryEditController = ({ route, navigation }: ItineraryTo
 
 	const buildCopyItineraryPreviewDL = async () => {
 		if (!itineraryID) return;
-		const previewPageLink = `${ENV.HOST_NAME_WEB}ItineraryPreview?itineraryID=${itineraryID}`;
+		const previewPageLink = `${ENV.HOST_NAME_WEB}/ItineraryPreview?itineraryID=${itineraryID}`;
 		const url = Platform.OS !== 'web' ? await buildDynamicLink(previewPageLink) : previewPageLink;
 		await setStringAsync(url);
 	};
