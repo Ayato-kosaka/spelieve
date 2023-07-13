@@ -1,4 +1,3 @@
-import { setStringAsync } from 'expo-clipboard';
 import React, { useContext } from 'react';
 import { ScrollView, ActivityIndicator, View, Pressable, Image } from 'react-native';
 import { Headline, Button, Text, TextInput } from 'react-native-paper';
@@ -11,7 +10,6 @@ import { CCO003DateTimePicker } from '@/Common/Components/CCO003DateTimePicker';
 import { CCO007GoogleBannerAd } from '@/Common/Components/CCO007GoogleBannerAd/GoogleBannerAd';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ItineraryTopTabScreenProps } from '@/Common/Navigation/NavigationInterface';
-import { ENV } from '@/ENV';
 import { ICT011ItineraryOne } from '@/Itinerary/Contexts/ICT011ItineraryOne';
 import { ICT021PlanGroupsList } from '@/Itinerary/Contexts/ICT021PlanGroupsList';
 import { ICT031PlansMap } from '@/Itinerary/Contexts/ICT031PlansMap';
@@ -22,11 +20,18 @@ export const IPA001ItineraryEdit = ({ route, navigation }: ItineraryTopTabScreen
 	const { isPlansLoading } = useContext(ICT031PlansMap);
 	const { planGroupsQSnap, createPlanGroup } = useContext(ICT021PlanGroupsList);
 
-	const { pageItinerary, onPressThumbnail, setPageItinerary, handleOnChange, updateItinerary, onPlanPress } =
-		IPA001ItineraryEditController({
-			route,
-			navigation,
-		});
+	const {
+		pageItinerary,
+		onPressThumbnail,
+		setPageItinerary,
+		handleOnChange,
+		updateItinerary,
+		onPlanPress,
+		buildCopyItineraryPreviewDL,
+	} = IPA001ItineraryEditController({
+		route,
+		navigation,
+	});
 
 	if (
 		!route.params.itineraryID ||
@@ -106,7 +111,7 @@ export const IPA001ItineraryEdit = ({ route, navigation }: ItineraryTopTabScreen
 				onPress={() => {
 					// TODO: https://github.com/Ayato-kosaka/spelieve/issues/461 React Navigation を見直す
 					// eslint-disable-next-line @typescript-eslint/no-floating-promises
-					setStringAsync(`${ENV.HOST_NAME_WEB}/Itinerary/TopTab/ItineraryEdit?itineraryID=${itineraryDocSnap.id}`);
+					buildCopyItineraryPreviewDL();
 				}}>
 				{i18n.t('copy Share URL')}
 			</Button>
