@@ -90,12 +90,12 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 				throw new Error('timeline not found')
 			}
 			return ret
-		}
+		},
 		[MTilmelines, timelineID],
 	);
 
 	const fetchTimelines = useCallback(
-		() =>
+		() => 
 			MTilmelines.filter(
 				(t) =>
 					// 本来であれば、url から取得したい
