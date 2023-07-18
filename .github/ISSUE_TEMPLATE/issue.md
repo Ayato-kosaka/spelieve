@@ -2,18 +2,13 @@
 name: issue template
 about: Describe this issue template's purpose here.
 title: ''
-labels: ''
+labels: ":stop_sign: issue"
 assignees: Ayato-kosaka, Takapy1
 
 ---
 
-## Why
+## Description
 
-## What
-
-## (解決策をまとめる)
-
-## 子issue
-- [ ] 
+## Solution
 
 ## 参考

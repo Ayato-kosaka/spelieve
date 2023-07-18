@@ -1,60 +1,27 @@
 import 'expo-dev-client';
-
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { NavigationContainer, NavigatorScreenParams } from '@react-navigation/native';
+import 'setimmediate';
 import registerRootComponent from 'expo/build/launch/registerRootComponent';
+import React from 'react';
 import { Provider as PaperProvider } from 'react-native-paper';
+import { MenuProvider } from 'react-native-popup-menu';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { AppProvider } from './AppProvider';
-import i18n from './Common/Hooks/i18n-js';
-import { ENV } from './ENV';
-import { ItineraryPageNavigator, ItineraryStackParamList } from './Itinerary/Pages/ItineraryPageNavigator';
-import { PlacePageNavigator, PlaceStackParamList } from './Place/Pages/PlacePageNavigator/PlacePageNavigator';
-import { navigationTheme, paperTheme } from './ThemeProvider';
+import { Navigation } from './Common/Navigation/Navigation';
+import { paperTheme } from './ThemeProvider';
 
-export type BottomTabParamList = {
-	Itinerary: NavigatorScreenParams<ItineraryStackParamList>;
-	Place: NavigatorScreenParams<PlaceStackParamList>;
-} & ItineraryStackParamList &
-	PlaceStackParamList;
-
-export const App = () => {
-	const BottomTab = createMaterialBottomTabNavigator<BottomTabParamList>();
-
-	return (
-		<NavigationContainer
-			linking={{
-				prefixes: [ENV.HOST_NAME_WEB],
-			}}
-			theme={navigationTheme}
-			documentTitle={{
-				formatter: (options, route) => 'Spelieve ~旅のしおり簡単作成アプリ~',
-			}}>
-			<PaperProvider theme={paperTheme}>
-				<AppProvider>
-					<BottomTab.Navigator initialRouteName="Itinerary">
-						<BottomTab.Screen
-							name="Itinerary"
-							component={ItineraryPageNavigator}
-							options={{
-								tabBarLabel: i18n.t('Itinerary'),
-								tabBarIcon: 'book',
-							}}
-						/>
-						<BottomTab.Screen
-							name="Place"
-							component={PlacePageNavigator}
-							options={{
-								tabBarLabel: i18n.t('Place'),
-								tabBarIcon: 'map-search',
-							}}
-						/>
-					</BottomTab.Navigator>
-				</AppProvider>
-			</PaperProvider>
-		</NavigationContainer>
-	);
-};
+export const App = () => (
+	// crashlytics を呼び出すと、web でエラーが発生するため、appInstanceId のセットは行わない
+	<SafeAreaProvider>
+		<PaperProvider theme={paperTheme}>
+			<AppProvider>
+				<MenuProvider>
+					<Navigation />
+				</MenuProvider>
+			</AppProvider>
+		</PaperProvider>
+	</SafeAreaProvider>
+);
 export default App;
 
 registerRootComponent(App);

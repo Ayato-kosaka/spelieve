@@ -1,4 +1,3 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useCallback, useContext, useEffect } from 'react';
 import { View, Image, ScrollView } from 'react-native';
 import { Text, ActivityIndicator } from 'react-native-paper';
@@ -7,17 +6,18 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { PPA002PlaceController } from './PlaceController';
 import { styles } from './PlaceStyle';
 
-import { BottomTabParamList } from '@/App';
+import { CCO007GoogleBannerAd } from '@/Common/Components/CCO007GoogleBannerAd/GoogleBannerAd';
 import i18n from '@/Common/Hooks/i18n-js';
-import { PMC01201GoogleMapPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/ModelComponents/PMC01201GoogleMapPlaceOne/GoogleMapPlaceOne';
-import { PMC01202PlaceInformation } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/ModelComponents/PMC01202PlaceInformation/PlaceInformation';
-import { PCT012MPlaceOne } from '@/Place/Models/PDB01MPlace/Contexts/PCT012MPlaceOne/MPlaceOne';
+import { PlaceStackScreenProps } from '@/Common/Navigation/NavigationInterface';
+import { PMC01201GoogleMapPlaceOne } from '@/Place/Contexts/PCT012MPlaceOne/ModelComponents/PMC01201GoogleMapPlaceOne/GoogleMapPlaceOne';
+import { PMC01202PlaceInformation } from '@/Place/Contexts/PCT012MPlaceOne/ModelComponents/PMC01202PlaceInformation/PlaceInformation';
+import { PCT012MPlaceOne } from '@/Place/Contexts/PCT012MPlaceOne/MPlaceOne';
 
-export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<BottomTabParamList, 'PPA002Place'>) => {
+export const PPA002Place = ({ route, navigation }: PlaceStackScreenProps<'PPA002Place'>) => {
 	const { place, isLoading } = useContext(PCT012MPlaceOne);
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	const { place_id } = route.params;
-	const { onCreateItineraryClicked } = PPA002PlaceController(route.params);
+	const { onCreateItineraryClicked } = PPA002PlaceController({ route, navigation });
 
 	const headerRight = useCallback(
 		() => <MaterialCommunityIcons name="book-open-variant" size={30} onPress={() => onCreateItineraryClicked()} />,
@@ -42,9 +42,11 @@ export const PPA002Place = ({ route, navigation }: NativeStackScreenProps<Bottom
 	return (
 		<ScrollView>
 			<View style={styles.container}>
+				<CCO007GoogleBannerAd />
 				<PMC01201GoogleMapPlaceOne />
 				<Image source={{ uri: place.imageUrl }} style={styles.image} />
 				<PMC01202PlaceInformation />
+				<CCO007GoogleBannerAd />
 			</View>
 		</ScrollView>
 	);

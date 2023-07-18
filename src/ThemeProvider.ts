@@ -327,7 +327,7 @@ export const paperTheme = {
 		onSurface: 'green',
 		disabled: materialColors.grey[300],
 		placeholder: materialColors.grey[600],
-		backdrop: 'green',
+		backdrop: hexToRGB(materialColors.grey[900], 0.5),
 		notification: 'blue',
 	},
 };
@@ -337,8 +337,8 @@ export const navigationTheme = {
 	dark: false,
 	colors: {
 		...navigationDefaultTheme.colors,
-		// Bottom Tab background color
-		primary: 'white',
+		// primary color for each Navigators
+		primary: materialColors[secondaryColorNm].a400,
 		// Screen background color
 		background: 'white',
 		// Tob bar background color
