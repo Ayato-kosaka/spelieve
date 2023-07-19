@@ -33,7 +33,7 @@ export const TPA001MaskDialogController = ({
 		visible: false,
 		decorationID: '',
 		maskUri: undefined,
-		maskTransform: { translateX: 0, translateY: 0, scale: 1, rotateZ: 0 },
+		maskTransform: { translateX: 0.5, translateY: 0.5, scale: 1, rotateZ: 0 },
 	});
 	const onSelectMask = useCallback((maskUri: string) => {
 		setMaskDialog((v) => ({ ...v, maskUri }));
@@ -55,7 +55,7 @@ export const TPA001MaskDialogController = ({
 			visible: false,
 			decorationID: '',
 			maskUri: undefined,
-			maskTransform: { translateX: 0, translateY: 0, scale: 1, rotateZ: 0 },
+			maskTransform: { translateX: 0.5, translateY: 0.5, scale: 1, rotateZ: 0 },
 		});
 		setSelectedFooterMenu('');
 	}, [setSelectedFooterMenu]);
