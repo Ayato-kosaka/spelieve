@@ -7,6 +7,8 @@ import { TCT023DecorationsMap } from '../../DecorationsMap';
 
 import { MaskedDecorationPropsInterface } from './MaskedDecorationInterface';
 
+import { TCO001CalcAnimatedGesture } from '@/Thumbnail/Components/TCO001GestureProvider/GestureProviderController';
+
 export const TMC02302MaskedDecoration = ({
 	decorationID,
 	value,
@@ -15,21 +17,30 @@ export const TMC02302MaskedDecoration = ({
 }: MaskedDecorationPropsInterface) => {
 	const { decorationsMap } = useContext(TCT023DecorationsMap);
 	const decoration = decorationsMap[decorationID];
+	const { getTranslateX, getTranslateY, getScale, getRotateZ } = TCO001CalcAnimatedGesture({
+		canvasSize: containerSize,
+		componentSize: {
+			// mask 画像のサイズは、containerSize の小さい方に合わせた正方形とする
+			// View を利用する場合、maskTransform.scale によって、mask 画像のサイズが変わない
+			width: Math.min(containerSize.width, containerSize.height),
+			height: Math.min(containerSize.width, containerSize.height),
+		},
+	});
 	const maskTransform = useMemo(
 		() =>
 			decoration?.maskTransform
 				? [
 						{
-							translateX: decoration.maskTransform.translateX * containerSize.width,
+							translateX: getTranslateX(decoration.maskTransform.translateX),
 						},
 						{
-							translateY: decoration.maskTransform.translateY * containerSize.height,
+							translateY: getTranslateY(decoration.maskTransform.translateY),
 						},
-						{ scale: decoration.maskTransform.scale },
-						{ rotateZ: `${(decoration.maskTransform.rotateZ / Math.PI) * 180}deg` },
+						{ scale: getScale(decoration.maskTransform.scale) },
+						{ rotateZ: getRotateZ(decoration.maskTransform.rotateZ) },
 				  ]
 				: [],
-		[containerSize.height, containerSize.width, decoration?.maskTransform],
+		[decoration?.maskTransform, getRotateZ, getScale, getTranslateX, getTranslateY],
 	);
 
 	if (!decoration) {
