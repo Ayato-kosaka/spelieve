@@ -20,7 +20,7 @@ export const TMC02302MaskedDecoration = ({
 		canvasSize: containerSize,
 		componentSize: {
 			// mask 画像のサイズは、containerSize の小さい方に合わせた正方形とする
-			// maskTransform.scale によって、mask 画像のサイズが変わる
+			// div を利用する場合、maskTransform.scale によって、mask 画像のサイズが変わる
 			width: Math.min(containerSize.width, containerSize.height) * (decoration?.maskTransform.scale || 0),
 			height: Math.min(containerSize.width, containerSize.height) * (decoration?.maskTransform.scale || 0),
 		},

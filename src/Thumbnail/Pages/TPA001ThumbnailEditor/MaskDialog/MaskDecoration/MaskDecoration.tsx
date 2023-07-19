@@ -23,6 +23,12 @@ export const TPA001MaskDecoration = ({
 	const { animatedStyle } = TCO001UseAnimatedStyle({
 		gesture: { translateX, translateY, scale, rotateZ },
 		canvasSize,
+		componentSize: {
+			// mask 画像のサイズは、canvasSize の小さい方に合わせた正方形とする
+			// View を利用する場合、maskTransform.scale によって、mask 画像のサイズが変わない
+			width: Math.min(canvasSize.width, canvasSize.height),
+			height: Math.min(canvasSize.width, canvasSize.height),
+		},
 	});
 
 	if (!decoration) {
