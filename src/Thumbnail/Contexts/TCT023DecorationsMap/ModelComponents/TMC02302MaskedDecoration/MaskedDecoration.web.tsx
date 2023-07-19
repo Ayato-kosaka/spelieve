@@ -34,19 +34,15 @@ export const TMC02302MaskedDecoration = ({
 		if (!decoration?.maskUri) return;
 		maskRef.current.style.webkitMaskImage = `url(${decoration.maskUri})`;
 		maskRef.current.style.maskImage = `url(${decoration.maskUri})`;
-		const maskPosition = `${
-			decoration.maskTransform.translateX * containerSize.width -
-			(Math.min(containerSize.width, containerSize.height) * decoration.maskTransform.scale) / 2
-		}px ${
-			decoration.maskTransform.translateY * containerSize.height -
-			(Math.min(containerSize.width, containerSize.height) * decoration.maskTransform.scale) / 2
-		}px`;
+		const maskPosition = `${getTranslateX(decoration.maskTransform.translateX)}px ${getTranslateY(
+			decoration.maskTransform.translateY,
+		)}px`;
 		maskRef.current.style.maskPosition = maskPosition;
 		maskRef.current.style.webkitMaskPosition = maskPosition;
-		const maskSize = `auto ${decoration.maskTransform.scale * 100}%`;
+		const maskSize = `auto ${getScale(decoration.maskTransform.scale) * 100}%`;
 		maskRef.current.style.webkitMaskSize = maskSize;
 		maskRef.current.style.maskSize = maskSize;
-	}, [containerSize.height, containerSize.width, decoration?.maskTransform, decoration?.maskUri]);
+	}, [decoration?.maskTransform, decoration?.maskUri, getScale, getTranslateX, getTranslateY]);
 	useEffect(() => {
 		if (!decoration) return;
 		if (decoration.decorationType === 'Image') {
