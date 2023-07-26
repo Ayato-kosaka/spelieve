@@ -37,21 +37,17 @@ export const TCO001UseAnimatedStyle = ({
 		height: 0,
 	},
 }: UseAnimatedStyleInterface) => {
-	const { getTranslateX, getTranslateY, getScale, getRotateZ } = TCO001CalcAnimatedGesture({
-		canvasSize,
-		componentSize,
-	});
-
 	const animatedStyle = useAnimatedStyle(() => ({
+		// TCO001CalcAnimatedGesture での計算と同じロジックで実装する
 		transform: [
 			{
-				translateX: getTranslateX(gesture.translateX.value),
+				translateX: gesture.translateX.value * canvasSize.width - componentSize.width / 2,
 			},
 			{
-				translateY: getTranslateY(gesture.translateY.value),
+				translateY: gesture.translateY.value * canvasSize.height - componentSize.height / 2,
 			},
-			{ scale: getScale(gesture.scale.value) },
-			{ rotateZ: getRotateZ(gesture.rotateZ.value) },
+			{ scale: gesture.scale.value },
+			{ rotateZ: `${(gesture.rotateZ.value / Math.PI) * 180}deg` },
 		],
 	}));
 
