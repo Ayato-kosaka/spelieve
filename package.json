@@ -74,7 +74,7 @@
 		"react-native-tab-view": "^3.3.4",
 		"react-native-uuid": "^2.0.1",
 		"react-native-vector-icons": "^9.2.0",
-		"react-native-view-shot": "github:Ayato-kosaka/react-native-view-shot-with-web-support",
+		"react-native-view-shot": "github:Ayato-kosaka/react-native-view-shot-with-web-support#master",
 		"react-native-web": "0.18.10",
 		"react-native-wheel-color-picker": "^1.2.0",
 		"react-spring-bottom-sheet": "^3.4.1",
