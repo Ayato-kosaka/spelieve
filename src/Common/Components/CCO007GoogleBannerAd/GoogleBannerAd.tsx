@@ -13,7 +13,7 @@ const adUnitID = ENV.LOGGER ? TestIds.BANNER : ProductionAdUnitID;
 export const CCO007GoogleBannerAd = () => (
 	<BannerAd
 		unitId={adUnitID}
-		size={BannerAdSize.FULL_BANNER}
+		size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
 		requestOptions={{
 			requestNonPersonalizedAdsOnly: true,
 		}}
