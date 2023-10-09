@@ -27,7 +27,7 @@ export default ({ config }: ConfigContext) => {
 				config: {
 					googleMapsApiKey: process.env.GCP_API_KEY_IOS,
 				},
-				buildNumber: '6',
+				buildNumber: '7',
 				googleServicesFile: './GoogleService-Info.plist',
 			},
 			android: {
@@ -41,7 +41,7 @@ export default ({ config }: ConfigContext) => {
 						apiKey: process.env.GCP_API_KEY_ANDROID,
 					},
 				},
-				versionCode: 9, // TODO: 毎submitで変更の必要あり
+				versionCode: 10, // TODO: 毎submitで変更の必要あり
 				permissions: [],
 				googleServicesFile: './google-services.json',
 			},
