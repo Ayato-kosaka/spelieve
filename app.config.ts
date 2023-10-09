@@ -7,7 +7,7 @@ export default ({ config }: ConfigContext) => {
 			owner: 'spelieve',
 			slug: 'Spelieve',
 			scheme: 'spelieve',
-			version: '2.3.1',
+			version: '2.3.2',
 			orientation: 'portrait',
 			icon: './assets/favicon.png',
 			userInterfaceStyle: 'light',
