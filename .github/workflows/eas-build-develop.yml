@@ -1,10 +1,5 @@
 name: EAS Build Develop
 on:
-  push:
-    branches:
-      - develop
-    paths:
-      - 'app.config.ts'
   workflow_dispatch:
     inputs:
       expo-cache:
