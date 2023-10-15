@@ -79,7 +79,8 @@ export const ICT031PlansMapProvider = ({ children }: { children: ReactNode }) =>
 			return () => unsubscribe();
 		}
 		return () => undefined;
-	}, [plansCRef]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [!!plansCRef]);
 
 	const value: PlansMapValInterface = useMemo(
 		() => ({
