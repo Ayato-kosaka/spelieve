@@ -1,10 +1,5 @@
 name: EAS Build Preview Release
 on:
-  push:
-    branches:
-      - develop
-    paths-ignore:
-      - '.github/**'
   workflow_dispatch:
 
 jobs:
