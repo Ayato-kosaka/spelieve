@@ -21,7 +21,7 @@ export const IPA001ItineraryEditController = ({ route, navigation }: ItineraryTo
 	const { plansCRef } = useContext(ICT031PlansMap);
 
 	// eslint-disable-next-line @typescript-eslint/naming-convention
-	const { itineraryID, place_id, placeName, placeImage } = route.params;
+	const { place_id, placeName, placeImage } = route.params;
 
 	const createItinerary = useCallback(async () => {
 		if (itineraryCRef) {
@@ -45,13 +45,17 @@ export const IPA001ItineraryEditController = ({ route, navigation }: ItineraryTo
 	}, [itineraryCRef, navigation, planGroupsCRef, plansCRef]);
 
 	useEffect(() => {
-		if (itineraryID) {
-			setItineraryID(itineraryID);
+		if (route.params.itineraryID) {
+			if (!itineraryDocSnap?.id) {
+				setItineraryID(route.params.itineraryID);
+			}
+		} else if (itineraryDocSnap?.id) {
+			navigation.setParams({ itineraryID: itineraryDocSnap?.id });
 		} else {
 			// eslint-disable-next-line @typescript-eslint/no-floating-promises
 			createItinerary();
 		}
-	}, [createItinerary, itineraryID, setItineraryID]);
+	}, [createItinerary, itineraryDocSnap?.id, navigation, route.params.itineraryID, setItineraryID]);
 
 	useEffect(() => {
 		if (planGroupsQSnap?.empty) {
@@ -157,20 +161,20 @@ export const IPA001ItineraryEditController = ({ route, navigation }: ItineraryTo
 	const onPlanPress = useCallback(
 		(planGroupID: string, planID: string) => {
 			navigation.navigate('EditPlan', {
-				itineraryID,
+				itineraryID: itineraryDocSnap?.id,
 				planGroupID,
 				planID,
 			});
 		},
-		[navigation, itineraryID],
+		[navigation, itineraryDocSnap?.id],
 	);
 
-	const buildCopyItineraryPreviewDL = async () => {
-		if (!itineraryID) return;
-		const previewPageLink = `${ENV.HOST_NAME_WEB}/ItineraryPreview?itineraryID=${itineraryID}`;
+	const buildCopyItineraryPreviewDL = useCallback(async () => {
+		if (!itineraryDocSnap?.id) return;
+		const previewPageLink = `${ENV.HOST_NAME_WEB}/ItineraryPreview?itineraryID=${itineraryDocSnap?.id}`;
 		const url = Platform.OS !== 'web' ? await buildDynamicLink(previewPageLink) : previewPageLink;
 		await setStringAsync(url);
-	};
+	}, [itineraryDocSnap?.id]);
 
 	return {
 		pageItinerary,
