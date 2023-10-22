@@ -1,5 +1,7 @@
-import { QueryDocumentSnapshot } from 'firebase/firestore';
-import { useEffect, useMemo, useState } from 'react';
+import { QueryDocumentSnapshot, setDoc } from 'firebase/firestore';
+import { useCallback, useEffect, useMemo, useState, useContext } from 'react';
+
+import { ICT031PlansMap } from '../../PlansMap';
 
 import { PlanGroupsListInterface } from '@/Itinerary/Contexts/ICT021PlanGroupsList/PlanGroupsListInterface';
 
@@ -9,12 +11,22 @@ export const IMC03103PlanGroupsEditController = ({
 	planGroupsDoc: QueryDocumentSnapshot<PlanGroupsListInterface>;
 }) => {
 	const planGroups = planGroupsDoc.data();
+	const { createPlan, plansDocSnapMap } = useContext(ICT031PlansMap);
 
 	const [isMounted, setIsMounted] = useState<boolean>(false);
 
 	useEffect(() => {
 		setIsMounted(true);
 	}, []);
+
+	const addFirstPlan = useCallback(async () => {
+		const firstPlan = plansDocSnapMap[planGroups.plans[0]].data();
+		const planDocRef = await createPlan({
+			placeStartTime: firstPlan.placeStartTime,
+			placeEndTime: firstPlan.placeStartTime,
+		});
+		await setDoc(planGroupsDoc.ref, { plans: [planDocRef.id, ...planGroups.plans] }, { merge: true });
+	}, [createPlan, planGroups.plans, planGroupsDoc.ref, plansDocSnapMap]);
 
 	const draxItemList = useMemo(() => {
 		let representativeFounded = false;
@@ -47,5 +59,5 @@ export const IMC03103PlanGroupsEditController = ({
 		});
 	}, [planGroups.plans, planGroups.representativePlanID]);
 
-	return { isMounted, draxItemList };
+	return { isMounted, addFirstPlan, draxItemList };
 };
