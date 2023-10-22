@@ -4,10 +4,11 @@ import {
 	TransitRoutingPreference,
 	TravelRestriction,
 } from '@googlemaps/google-maps-services-js';
-import { collection, query, onSnapshot } from 'firebase/firestore';
-import { useState, createContext, useEffect, useMemo, useContext, ReactNode } from 'react';
+import { collection, query, onSnapshot, addDoc } from 'firebase/firestore';
+import { useState, createContext, useEffect, useMemo, useContext, ReactNode, useCallback } from 'react';
 
 import { Plans } from 'spelieve-common/lib/Models/Itinerary/IDB03/Plans';
+import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
 import { PlansMapInterface, PlansMapValInterface } from './PlansMapInterface';
@@ -82,13 +83,37 @@ export const ICT031PlansMapProvider = ({ children }: { children: ReactNode }) =>
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [!!plansCRef]);
 
+	const createPlan: PlansMapValInterface['createPlan'] = useCallback(
+		async (plan) => {
+			if (!plansCRef) {
+				throw new Error('not initialized');
+			}
+			const newPlan: Plans = {
+				title: '',
+				placeSpan: DateUtils.initialDate(),
+				transportationSpan: DateUtils.initialDate(),
+				avoid: [],
+				transitModes: [TransitMode.bus, TransitMode.rail, TransitMode.subway, TransitMode.train, TransitMode.tram],
+				transitRoutingPreference: TransitRoutingPreference.fewer_transfers,
+				textMap: {},
+				storeUrlMap: {},
+				createdAt: new Date(),
+				updatedAt: new Date(),
+				...plan,
+			};
+			return addDoc(plansCRef, newPlan);
+		},
+		[plansCRef],
+	);
+
 	const value: PlansMapValInterface = useMemo(
 		() => ({
 			plansDocSnapMap,
 			plansCRef,
 			isPlansLoading,
+			createPlan,
 		}),
-		[plansDocSnapMap, plansCRef, isPlansLoading],
+		[plansDocSnapMap, plansCRef, isPlansLoading, createPlan],
 	);
 
 	return <ICT031PlansMap.Provider value={value}>{children}</ICT031PlansMap.Provider>;

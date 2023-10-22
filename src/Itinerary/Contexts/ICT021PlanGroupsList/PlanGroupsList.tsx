@@ -1,10 +1,8 @@
-import { TransitMode, TransitRoutingPreference } from '@googlemaps/google-maps-services-js';
 import { collection, query, QuerySnapshot, onSnapshot, addDoc, orderBy, setDoc, deleteDoc } from 'firebase/firestore';
 import { useState, createContext, useEffect, useContext, useMemo, ReactNode, useCallback } from 'react';
 
 import { PlanGroups } from 'spelieve-common/lib/Models/Itinerary/IDB02/PlanGroups';
 import { Plans } from 'spelieve-common/lib/Models/Itinerary/IDB03/Plans';
-import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
 
 import { PlanGroupsListInterface, PlanGroupsListValInterface } from './PlanGroupsListInterface';
@@ -18,7 +16,7 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 	const [planGroupsQSnap, setPlanGroupsQSnap] = useState<QuerySnapshot<PlanGroupsListInterface> | undefined>(undefined);
 
 	const { itineraryDocSnap } = useContext(ICT011ItineraryOne);
-	const { plansCRef, plansDocSnapMap } = useContext(ICT031PlansMap);
+	const { plansCRef, plansDocSnapMap, createPlan } = useContext(ICT031PlansMap);
 
 	const itinerary = useMemo(() => itineraryDocSnap?.data(), [itineraryDocSnap]);
 
@@ -47,25 +45,15 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 
 	const createPlanGroup = useCallback(
 		async (plan?: Partial<Plans>) => {
-			if (!plansCRef || !planGroupsCRef || !itinerary) {
+			if (!planGroupsCRef || !itinerary) {
 				throw new Error('not initialized');
 			}
-			const newPlan: Plans = {
-				title: '',
-				placeSpan: DateUtils.initialDate(),
+			const newPlan = {
 				placeStartTime: itinerary.startDate,
 				placeEndTime: itinerary.startDate,
-				transportationSpan: DateUtils.initialDate(),
-				avoid: [],
-				transitModes: [TransitMode.bus, TransitMode.rail, TransitMode.subway, TransitMode.train, TransitMode.tram],
-				transitRoutingPreference: TransitRoutingPreference.fewer_transfers,
-				textMap: {},
-				storeUrlMap: {},
-				createdAt: new Date(),
-				updatedAt: new Date(),
 				...plan,
 			};
-			const planDocRef = await addDoc(plansCRef, newPlan);
+			const planDocRef = await createPlan(newPlan);
 			await addDoc(planGroupsCRef, {
 				plans: [planDocRef.id],
 				representativePlanID: planDocRef.id,
@@ -75,7 +63,7 @@ export const ICT021PlanGroupsListProvider = ({ children }: { children: ReactNode
 				updatedAt: new Date(),
 			});
 		},
-		[itinerary, planGroupsCRef, plansCRef],
+		[createPlan, itinerary, planGroupsCRef],
 	);
 
 	const movePlan = useCallback(
