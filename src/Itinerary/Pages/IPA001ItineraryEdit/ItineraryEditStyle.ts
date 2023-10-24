@@ -9,12 +9,17 @@ export const styles = StyleSheet.create({
 		borderRadius: 50,
 	},
 	image: { paddingTop: '100%', backgroundColor: materialColors.grey[300] },
-	startDateComtainer: { zIndex: 1, alignItems: 'flex-start' },
+	startDateComtainer: { zIndex: 1, alignItems: 'flex-start', marginVertical: 10, marginHorizontal: 5 },
 	startDateLabel: { color: materialColors.grey[700] },
 	startDateTimePicker: { backgroundColor: '#fff' },
 	captionTextInput: {
 		height: 300,
 		backgroundColor: '#fff',
+		marginVertical: 10,
+		marginHorizontal: 5,
+	},
+	dayNumber: {
+		marginHorizontal: 5,
 	},
 	materialCommunityIcons: {
 		position: 'absolute',

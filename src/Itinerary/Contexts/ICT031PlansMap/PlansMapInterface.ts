@@ -4,7 +4,7 @@ import {
 	TransitRoutingPreference,
 	TravelRestriction,
 } from '@googlemaps/google-maps-services-js';
-import { CollectionReference, QueryDocumentSnapshot } from 'firebase/firestore';
+import { CollectionReference, DocumentReference, QueryDocumentSnapshot } from 'firebase/firestore';
 
 import { Plans } from 'spelieve-common/lib/Models/Itinerary/IDB03/Plans';
 
@@ -21,4 +21,7 @@ export interface PlansMapValInterface {
 	};
 	plansCRef?: CollectionReference<PlansMapInterface>;
 	isPlansLoading: boolean;
+	createPlan: (
+		plan: Partial<Plans> & Required<Pick<Plans, 'placeStartTime' | 'placeEndTime'>>,
+	) => Promise<DocumentReference<Plans>>;
 }
