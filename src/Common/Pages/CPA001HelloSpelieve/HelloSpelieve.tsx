@@ -30,16 +30,6 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 
 	const windowWidth = getWindowWidth();
 
-	const images = (): NodeRequire[] => {
-		const imagePaths = [
-			require('@assets/london.jpg'),
-			require('@assets/egypt.jpeg'),
-			require('@assets/australia.webp'),
-			require('@assets/france.jpg'),
-		];
-		return imagePaths;
-	};
-
 	return (
 		// TODO: https://github.com/Ayato-kosaka/spelieve/issues/156 LP作成計画検討
 		<>
