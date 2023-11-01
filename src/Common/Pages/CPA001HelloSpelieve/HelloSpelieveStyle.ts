@@ -47,25 +47,12 @@ export const styles = StyleSheet.create({
 	h2Text: {
 		fontSize: 30,
 	},
-
-	// button: {
-	// 	marginVertical: 16,
-	// 	borderColor: 'black',
-	// 	borderRadius: 50,
-	// },
-	// image: { paddingTop: '100%', backgroundColor: materialColors.grey[300] },
-	// startDateComtainer: { zIndex: 1, alignItems: 'flex-start' },
-	// startDateLabel: { color: materialColors.grey[700] },
-	// startDateTimePicker: { backgroundColor: '#fff' },
-	// captionTextInput: {
-	// 	height: 300,
-	// 	backgroundColor: '#fff',
-	// },
-	// materialCommunityIcons: {
-	// 	position: 'absolute',
-	// 	top: '50%',
-	// 	left: '50%',
-	// 	transform: [{ translateY: -50 }, { translateX: -50 }],
-	// 	zIndex: 1,
-	// },
+	howToUseBox: {
+		width: '70%',
+		backgroundColor: '#f5f5f5',
+		borderRadius: 8,
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginVertical: 10
+	}
 });

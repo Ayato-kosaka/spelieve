@@ -91,7 +91,10 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 						resizeMode="cover"
 					/>
 					<Text style={styles.featureTitle}>自動計算機能</Text>
-					<Text>1つのプラン変更しても自動計算で全体が調整{'\n'}旅の途中にプランの変更があっても安心</Text>
+					<View style={{ alignItems: 'center'}}>
+						<Text>1つのプラン変更しても自動計算で全体が調整</Text>
+						<Text>旅の途中にプランの変更があっても安心</Text>
+					</View>
 					<Image
 						// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
 						source={require('@assets/LP_feature2.jpeg')}
@@ -99,7 +102,12 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 						resizeMode="cover"
 					/>
 					<Text style={styles.featureTitle}>サムネイル機能</Text>
-					<Text>独自の旅しおりをカスタマイズ{'\n'}写真でプランを鮮やかに表現し、個性的な冒険を創造しましょう。</Text>
+					<View style={{ alignItems: 'center'}}>
+						<Text>独自の旅しおりをカスタマイズ</Text>
+						<Text>写真でプランを鮮やかに表現し</Text>
+						<Text>個性的な冒険を創造しましょう</Text>
+					</View>
+					{/* <Text>独自の旅しおりをカスタマイズ{'\n'}写真でプランを鮮やかに表現し、個性的な冒険を創造しましょう。</Text> */}
 					<Image
 						// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
 						source={require('@assets/LP_feature3.jpeg')}
@@ -107,12 +115,18 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 						resizeMode="cover"
 					/>
 					<Text style={styles.featureTitle}>共同作成機能</Text>
-					<Text>
+					<View style={{ alignItems: 'center'}}>
+						<Text>予定調整やアイデア共有が簡単！</Text>
+						<Text>共有された側もインストール不要!</Text>
+						<Text>思い出に残る旅行を一緒に作り上げよう。</Text>
+					</View>
+					{/* <Text>
 						予定調整やアイデア共有が簡単！共有された側もインストール不要!{'\n'}思い出に残る旅行を一緒に作り上げよう。
-					</Text>
+					</Text> */}
 				</View>
 				<View>
 					<Button
+						testID="createItineraryButton"
 						mode="contained"
 						labelStyle={{ color: 'white', fontSize: 16 }}
 						style={{
@@ -121,7 +135,27 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 							textAlign: 'right',
 							backGroundColor: 'black',
 							marginHorizontal: 'auto',
+							marginVertical: 30
 						}}
+						onPress={() =>
+							navigation.navigate('ItineraryTopTabNavigator', {
+								screen: 'ItineraryEdit',
+								params: { itineraryID: undefined },
+							})
+						}>
+						{i18n.t('新しく始める')}
+					</Button>
+					<Button
+						mode="contained"
+						labelStyle={{ color: 'white', fontSize: 16 }}
+						style={{
+							paddingVertical: 8,
+							width: '90%',
+							textAlign: 'right',
+							marginHorizontal: 'auto',
+							marginVertical: 30
+						}}
+						color='#c0c0c0'
 						onPress={() => console.log('Pushサンプルしおりを参照')} // TODO: 参照先
 					>
 						{i18n.t('サンプルしおりを参照')}
@@ -129,7 +163,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 				</View>
 				<View style={{ alignItems: 'center' }}>
 					<Text style={styles.h2Text}>{i18n.t('Spelieveの使い方')}</Text>
-					<View>
+					<View style={styles.howToUseBox}>
 						<Image
 							// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
 							source={require('@assets/HowToUse1.png')}
@@ -141,26 +175,33 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 							resizeMode="cover"
 						/>
 					</View>
-					<Image
-						// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
-						source={require('@assets/HowToUse2.png')}
-						style={{
-							width: 200,
-							height: 200,
-							marginVertical: 20,
-						}}
-						resizeMode="cover"
-					/>
-					<Image
-						// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
-						source={require('@assets/image.png')}
-						style={{
-							width: 200,
-							height: 200,
-							marginVertical: 20,
-						}}
-						resizeMode="cover"
-					/>
+					<View style={styles.howToUseBox}>
+						<Image
+							// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
+							source={require('@assets/HowToUse2.png')}
+							style={{
+								width: 200,
+								height: 200,
+								marginVertical: 20,
+							}}
+							resizeMode="cover"
+						/>
+					</View>
+					<View style={styles.howToUseBox}>
+						{/* URLコピー画像を追加 */}
+					</View>
+					<View style={styles.howToUseBox}>
+						<Image
+							// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
+							source={require('@assets/image.png')}
+							style={{
+								width: 200,
+								height: 200,
+								marginVertical: 20,
+							}}
+							resizeMode="cover"
+						/>
+					</View>
 				</View>
 				<View style={{ backgroundColor: customColors.midnight, paddingTop: 40 }}>
 					<Button
