@@ -1,9 +1,8 @@
 import { StyleSheet } from 'react-native';
 
+import { materialColors } from '@/ThemeProvider';
+
 export const styles = StyleSheet.create({
-	areaTitle: {
-		fontSize: 20,
-	},
 	header: {
 		backgroundColor: 'orange',
 		flexDirection: 'row',
@@ -12,7 +11,7 @@ export const styles = StyleSheet.create({
 		alignItems: 'center',
 		position: 'relative',
 	},
-	titleText: {
+	headerTitleText: {
 		color: 'white',
 		fontSize: 30,
 		fontWeight: 'bold',
@@ -32,17 +31,54 @@ export const styles = StyleSheet.create({
 		top: 8,
 		right: 3,
 	},
-	itineraryHistoriesArea: {
+	headLineText: {
+		textAlign: 'center',
+	},
+	recentlyItineraryArea: {
+		marginVertical: 20,
 		width: '90%',
 		marginHorizontal: 'auto',
-		alignItems: 'center',
-		marginTop: 15,
 	},
-	itineraryHistoryRow: {
+	recentlyItineraryScroll: {
+		maxHeight: 700,
+	},
+	recentlyItineraryScrollContainer: {
 		flexDirection: 'row',
+		flexWrap: 'wrap',
 	},
-	commonDisplay: {
+	recentlyItineraryPressable: {
+		width: '50%',
+	},
+	recentlyItineraryView: {
+		borderWidth: 1,
+		borderColor: materialColors.grey[400],
+		borderRadius: 4,
+		margin: 8,
+	},
+	recentlyItineraryImage: {
+		paddingTop: '100%',
+		width: '100%',
+	},
+	recentlyItineraryNoImageArea: {
+		paddingTop: '100%',
+		width: '100%',
+		position: 'relative',
+		overflow: 'hidden',
+	},
+	recentlyItineraryNoImageContent: {
+		position: 'absolute',
+		width: '100%',
+		top: 0,
+		bottom: 0,
+		justifyContent: 'center',
+	},
+	recentlyItineraryNoImageText: {
+		textAlign: 'center',
+		flexWrap: 'wrap',
+	},
+	featuresArea: {
 		alignItems: 'center',
+		flexDirection: 'column',
 	},
 	featureImage: {
 		width: 200,

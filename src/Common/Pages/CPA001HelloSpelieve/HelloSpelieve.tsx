@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Linking, SafeAreaView, View, Image } from 'react-native';
+import { Linking, SafeAreaView, View, Image, Pressable } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Text, Button } from 'react-native-paper';
+import { Text, Button, Headline } from 'react-native-paper';
 
 import { RecentItinerariesInterface, getRecentItineraries } from './HelloSpelieveRecentItineraryHook';
 import { styles } from './HelloSpelieveStyle';
@@ -36,7 +36,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 			<SafeAreaView />
 			<ScrollView>
 				<View style={styles.header}>
-					<Text style={styles.titleText}>Spelieve</Text>
+					<Text style={styles.headerTitleText}>Spelieve</Text>
 					<Button
 						testID="createItineraryButton"
 						mode="contained"
@@ -51,39 +51,42 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 						{i18n.t('新規作成')}
 					</Button>
 				</View>
-				<View style={styles.itineraryHistoriesArea}>
-					<Text style={styles.areaTitle}>{i18n.t('最近作成したしおり')}</Text>
-					<View style={styles.itineraryHistoryRow}>
-						<Image
-							// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
-							source={require('@assets/egypt.jpeg')}
-							style={{ ...styles.featureImage, marginHorizontal: 10 }}
-							resizeMode="cover"
-						/>
-						<Image
-							// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
-							source={require('@assets/london.jpg')}
-							style={{ ...styles.featureImage, marginHorizontal: 10 }}
-							resizeMode="cover"
-						/>
+				{recentItineraries && recentItineraries.length > 0 && (
+					<View style={styles.recentlyItineraryArea}>
+						<Headline style={styles.headLineText}>{i18n.t('最近作成した旅行プラン')}</Headline>
+						<ScrollView
+							style={styles.recentlyItineraryScroll}
+							contentContainerStyle={styles.recentlyItineraryScrollContainer}>
+							{recentItineraries.map((recentItinerary) => (
+								<Pressable
+									key={recentItinerary.itineraryID}
+									onPress={() => {
+										navigation.navigate('ItineraryTopTabNavigator', {
+											screen: 'ItineraryEdit',
+											params: {
+												itineraryID: recentItinerary.itineraryID,
+											},
+										});
+									}}
+									style={styles.recentlyItineraryPressable}>
+									<View style={styles.recentlyItineraryView}>
+										{recentItinerary.imageUrl ? (
+											<Image source={{ uri: recentItinerary.imageUrl }} style={styles.recentlyItineraryImage} />
+										) : (
+											<View style={styles.recentlyItineraryNoImageArea}>
+												<View style={styles.recentlyItineraryNoImageContent}>
+													<Text style={styles.recentlyItineraryNoImageText}>{i18n.t('No Thumbnail')}</Text>
+												</View>
+											</View>
+										)}
+									</View>
+								</Pressable>
+							))}
+						</ScrollView>
 					</View>
-					<View style={styles.itineraryHistoryRow}>
-						<Image
-							// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
-							source={require('@assets/australia.webp')}
-							style={{ ...styles.featureImage, marginHorizontal: 10 }}
-							resizeMode="cover"
-						/>
-						<Image
-							// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
-							source={require('@assets/france.jpg')}
-							style={{ ...styles.featureImage, marginHorizontal: 10 }}
-							resizeMode="cover"
-						/>
-					</View>
-				</View>
-				<View style={{ alignItems: 'center', flexDirection: 'column' }}>
-					<Text style={styles.areaTitle}>{i18n.t('Spelieve の特徴')}</Text>
+				)}
+				<View style={styles.featuresArea}>
+					<Headline style={styles.headLineText}>{i18n.t('Spelieve の特徴')}</Headline>
 					<Image
 						// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
 						source={require('@assets/LP_feature1.jpeg')}
@@ -162,7 +165,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 					</Button>
 				</View>
 				<View style={{ alignItems: 'center' }}>
-					<Text style={styles.areaTitle}>{i18n.t('Spelieveの使い方')}</Text>
+					<Headline style={styles.headLineText}>{i18n.t('Spelieveの使い方')}</Headline>
 					<View style={styles.howToUseBox}>
 						<View style={styles.howToUseNumber}>
 							<Text style={styles.howToUseNumberText}>1</Text>
