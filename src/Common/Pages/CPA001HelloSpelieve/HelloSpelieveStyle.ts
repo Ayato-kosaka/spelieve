@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
 	},
 	headerBtnLabel: {
 		color: 'black',
-		fontSize: 15,
+		fontSize: 11,
 	},
 	headerBtn: {
 		paddingVertical: 8,
@@ -28,10 +28,13 @@ export const styles = StyleSheet.create({
 		textAlign: 'right',
 		backgroundColor: 'white',
 		position: 'absolute',
-		top: 8,
+		top: 9,
 		right: 3,
 	},
 	headLineText: {
+		textAlign: 'center',
+	},
+	simpleExplanation: {
 		textAlign: 'center',
 	},
 	recentlyItineraryArea: {

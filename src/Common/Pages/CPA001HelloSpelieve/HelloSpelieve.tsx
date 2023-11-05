@@ -53,7 +53,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 				</View>
 				{recentItineraries && recentItineraries.length > 0 && (
 					<View style={styles.recentlyItineraryArea}>
-						<Headline style={styles.headLineText}>{i18n.t('最近作成した旅行プラン')}</Headline>
+						<Headline style={styles.headLineText}>{i18n.t('最近作成した旅行しおり')}</Headline>
 						<ScrollView
 							style={styles.recentlyItineraryScroll}
 							contentContainerStyle={styles.recentlyItineraryScrollContainer}>
@@ -93,10 +93,11 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 						style={styles.featureImage}
 						resizeMode="cover"
 					/>
-					<Text style={styles.featureTitle}>自動計算機能</Text>
+					<Text style={styles.featureTitle}>{i18n.t('自動計算機能')}</Text>
 					<View style={{ alignItems: 'center' }}>
-						<Text>1つのプラン変更しても自動計算で全体が調整</Text>
-						<Text>旅の途中にプランの変更があっても安心</Text>
+						<Text style={styles.simpleExplanation}>
+							{i18n.t('1つのプラン変更しても自動計算で全体が調整 旅の途中にプランの変更があっても安心')}
+						</Text>
 					</View>
 					<Image
 						// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
@@ -104,11 +105,11 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 						style={styles.featureImage}
 						resizeMode="cover"
 					/>
-					<Text style={styles.featureTitle}>サムネイル機能</Text>
+					<Text style={styles.featureTitle}>{i18n.t('サムネイル機能')}</Text>
 					<View style={{ alignItems: 'center' }}>
-						<Text>独自の旅しおりをカスタマイズ</Text>
-						<Text>写真でプランを鮮やかに表現し</Text>
-						<Text>個性的な冒険を創造しましょう</Text>
+						<Text style={styles.simpleExplanation}>
+							{i18n.t('独自の旅しおりをカスタマイズ 写真でプランを鮮やかに表現し 個性的な冒険を創造しましょう')}
+						</Text>
 					</View>
 					{/* <Text>独自の旅しおりをカスタマイズ{'\n'}写真でプランを鮮やかに表現し、個性的な冒険を創造しましょう。</Text> */}
 					<Image
@@ -117,15 +118,14 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 						style={styles.featureImage}
 						resizeMode="cover"
 					/>
-					<Text style={styles.featureTitle}>共同作成機能</Text>
+					<Text style={styles.featureTitle}>{i18n.t('共同作成機能')}</Text>
 					<View style={{ alignItems: 'center' }}>
-						<Text>予定調整やアイデア共有が簡単！</Text>
-						<Text>共有された側もインストール不要!</Text>
-						<Text>思い出に残る旅行を一緒に作り上げよう。</Text>
+						<Text style={styles.simpleExplanation}>
+							{i18n.t(
+								'予定調整やアイデア共有が簡単！ 共有された側もインストール不要！ 思い出に残る旅行を一緒に作り上げよう',
+							)}
+						</Text>
 					</View>
-					{/* <Text>
-						予定調整やアイデア共有が簡単！共有された側もインストール不要!{'\n'}思い出に残る旅行を一緒に作り上げよう。
-					</Text> */}
 				</View>
 				<View>
 					<Button
@@ -165,7 +165,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 					</Button>
 				</View>
 				<View style={{ alignItems: 'center' }}>
-					<Headline style={styles.headLineText}>{i18n.t('Spelieveの使い方')}</Headline>
+					<Headline style={styles.headLineText}>{i18n.t('Spelieve の使い方')}</Headline>
 					<View style={styles.howToUseBox}>
 						<View style={styles.howToUseNumber}>
 							<Text style={styles.howToUseNumberText}>1</Text>
@@ -181,8 +181,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 							}}
 							resizeMode="cover"
 						/>
-						<Text>{i18n.t('新しく始めるボタンから')}</Text>
-						<Text>{i18n.t('しおりを新規作成できます')}</Text>
+						<Text style={styles.simpleExplanation}>{i18n.t('新しく始めるボタンから しおりを新規作成できます')}</Text>
 					</View>
 					<View style={styles.howToUseBox}>
 						<View style={styles.howToUseNumber}>
@@ -199,9 +198,9 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 							}}
 							resizeMode="cover"
 						/>
-						<Text>{i18n.t('訪れる場所を追加しましょう')}</Text>
-						<Text>{i18n.t('Add Plan ボタンを押すと')}</Text>
-						<Text>{i18n.t('新しく場所を追加できます')}</Text>
+						<Text style={styles.simpleExplanation}>
+							{i18n.t('訪れる場所を追加しましょう Add Plan ボタンを押すと 新しく場所を追加できます')}
+						</Text>
 					</View>
 					<View style={styles.howToUseBox}>
 						<View style={styles.howToUseNumber}>
@@ -218,8 +217,9 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 							}}
 							resizeMode="cover"
 						/>
-						<Text>{i18n.t('画面下部でしおりのURLをコピー可能')}</Text>
-						<Text>{i18n.t('一緒に行く友人や家族に共有しよう!')}</Text>
+						<Text style={styles.simpleExplanation}>
+							{i18n.t('画面下部でしおりのURLをコピー可能 一緒に行く友人や家族に共有しよう!')}
+						</Text>
 					</View>
 					<View style={styles.howToUseBox}>
 						<View style={styles.howToUseNumber}>
