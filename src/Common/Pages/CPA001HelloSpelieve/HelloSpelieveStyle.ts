@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
 	},
 	headLineText: {
 		textAlign: 'center',
-		fontFamily: 'Verdana',
+		fontFamily: 'Verdana-Bold',
 	},
 	simpleExplanation: {
 		textAlign: 'center',
