@@ -4,7 +4,7 @@ import { materialColors } from '@/ThemeProvider';
 
 export const styles = StyleSheet.create({
 	header: {
-		backgroundColor: 'orange',
+		backgroundColor: materialColors.orange['500'],
 		flexDirection: 'row',
 		height: 70,
 		justifyContent: 'center',
@@ -17,19 +17,6 @@ export const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		marginLeft: 5,
 		justifyContent: 'center',
-	},
-	headerBtnLabel: {
-		color: 'black',
-		fontSize: 11,
-	},
-	headerBtn: {
-		paddingVertical: 8,
-		width: '30%',
-		textAlign: 'right',
-		backgroundColor: 'white',
-		position: 'absolute',
-		top: 9,
-		right: 3,
 	},
 	headLineText: {
 		textAlign: 'center',
@@ -96,7 +83,7 @@ export const styles = StyleSheet.create({
 		position: 'relative',
 		alignItems: 'center',
 		justifyContent: 'center',
-		backgroundColor: '#f5f5f5',
+		backgroundColor: materialColors.grey[50],
 		borderRadius: 8,
 		marginVertical: 10,
 	},
@@ -107,7 +94,7 @@ export const styles = StyleSheet.create({
 		justifyContent: 'center',
 		top: -10,
 		left: -10,
-		backgroundColor: 'orange',
+		backgroundColor: materialColors.orange['500'],
 		width: 40,
 		height: 40,
 		fontSize: 10,
@@ -119,7 +106,7 @@ export const styles = StyleSheet.create({
 	},
 	howToUseText: {
 		marginTop: 10,
-		color: 'orange',
+		color: materialColors.orange['500'],
 		fontWeight: 'bold',
 	},
 });

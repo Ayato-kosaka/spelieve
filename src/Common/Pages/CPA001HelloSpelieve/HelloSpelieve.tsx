@@ -37,20 +37,27 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 			<ScrollView>
 				<View style={styles.header}>
 					<Text style={styles.headerTitleText}>Spelieve</Text>
-					<Button
+				</View>
+				<Button
 						testID="createItineraryButton"
 						mode="contained"
-						labelStyle={styles.headerBtnLabel}
-						style={styles.headerBtn}
+						labelStyle={{ color: 'white', fontSize: 16 }}
+						style={{
+							paddingVertical: 8,
+							width: '90%',
+							textAlign: 'right',
+							backGroundColor: 'black',
+							marginHorizontal: 'auto',
+							marginVertical: 30,
+						}}
 						onPress={() =>
 							navigation.navigate('ItineraryTopTabNavigator', {
 								screen: 'ItineraryEdit',
 								params: { itineraryID: undefined },
 							})
 						}>
-						{i18n.t('新規作成')}
+						{i18n.t('新しく始める')}
 					</Button>
-				</View>
 				{recentItineraries && recentItineraries.length > 0 && (
 					<View style={styles.recentlyItineraryArea}>
 						<Headline style={styles.headLineText}>{i18n.t('最近作成した旅行しおり')}</Headline>
