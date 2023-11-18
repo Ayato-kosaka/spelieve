@@ -13,7 +13,7 @@ const en: typeof Lang = {
 
 	// HelloSpelieve.tsx
 	新規作成: 'New Itinerary',
-	最近作成した旅行しおり: 'Recently Itinerary',
+	最近作成した旅行しおり: 'Recent Itinerary',
 	'No Thumbnail': 'No Thumbnail',
 	'Spelieve の特徴': 'Features of Spelieve',
 	自動計算機能: 'Automatic Calculation',
