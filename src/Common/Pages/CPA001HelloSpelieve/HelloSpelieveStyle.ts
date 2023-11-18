@@ -15,14 +15,18 @@ export const styles = StyleSheet.create({
 		color: 'white',
 		fontSize: 30,
 		fontWeight: 'bold',
+		fontFamily: 'Verdana',
 		marginLeft: 5,
 		justifyContent: 'center',
 	},
 	headLineText: {
 		textAlign: 'center',
+		fontFamily: 'Verdana',
 	},
 	simpleExplanation: {
 		textAlign: 'center',
+		fontFamily: 'Verdana',
+		lineHeight: 20,
 	},
 	recentlyItineraryArea: {
 		marginVertical: 20,
@@ -77,15 +81,19 @@ export const styles = StyleSheet.create({
 	},
 	featureTitle: {
 		fontWeight: 'bold',
+		paddingVertical: 7,
+		fontSize: 17,
+		fontFamily: 'Verdana-Bold'
 	},
 	howToUseBox: {
-		width: '70%',
+		width: '90%',
 		position: 'relative',
 		alignItems: 'center',
 		justifyContent: 'center',
 		backgroundColor: materialColors.grey[50],
 		borderRadius: 8,
 		marginVertical: 10,
+		padding: 10,
 	},
 	howToUseNumber: {
 		borderRadius: 9999,
