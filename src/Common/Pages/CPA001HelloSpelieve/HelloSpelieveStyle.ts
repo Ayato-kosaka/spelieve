@@ -112,6 +112,11 @@ export const styles = StyleSheet.create({
 		fontSize: 20,
 		fontWeight: 'bold',
 	},
+	howToUseImage: {
+		width: 200,
+		height: 200,
+		marginVertical: 20,
+	},
 	howToUseText: {
 		marginTop: 10,
 		color: materialColors.orange['500'],

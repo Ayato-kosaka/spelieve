@@ -181,11 +181,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 						<Image
 							// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
 							source={require('@assets/HowToUse1.png')}
-							style={{
-								width: 200,
-								height: 200,
-								marginVertical: 20,
-							}}
+							style={styles.howToUseImage}
 							resizeMode="cover"
 						/>
 						<Text style={styles.simpleExplanation}>{i18n.t('新しく始めるボタンから しおりを新規作成できます')}</Text>
@@ -198,11 +194,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 						<Image
 							// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
 							source={require('@assets/HowToUse2.png')}
-							style={{
-								width: 200,
-								height: 200,
-								marginVertical: 20,
-							}}
+							style={styles.howToUseImage}
 							resizeMode="cover"
 						/>
 						<Text style={styles.simpleExplanation}>
@@ -217,11 +209,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 						<Image
 							// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
 							source={require('@assets/HowToUse3.png')}
-							style={{
-								width: 200,
-								height: 200,
-								marginVertical: 20,
-							}}
+							style={styles.howToUseImage}
 							resizeMode="cover"
 						/>
 						<Text style={styles.simpleExplanation}>
