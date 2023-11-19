@@ -113,13 +113,14 @@ export const styles = StyleSheet.create({
 		fontWeight: 'bold',
 	},
 	howToUseImage: {
-		width: 200,
-		height: 200,
+		width: 250,
+		height: 250,
 		marginVertical: 20,
 	},
 	howToUseText: {
 		marginTop: 10,
 		color: materialColors.orange['500'],
+		fontSize: 17,
 		fontWeight: 'bold',
 	},
 });
