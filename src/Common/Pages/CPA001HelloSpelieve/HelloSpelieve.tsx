@@ -96,7 +96,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 					<Headline style={styles.headLineText}>{i18n.t('Spelieve の特徴')}</Headline>
 					<Image
 						// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
-						source={require('@assets/LP_feature1.jpeg')}
+						source={require('@assets/LP_feature1.png')}
 						style={styles.featureImage}
 						resizeMode="cover"
 					/>
@@ -108,7 +108,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 					</View>
 					<Image
 						// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
-						source={require('@assets/LP_feature2.jpeg')}
+						source={require('@assets/LP_feature2.png')}
 						style={styles.featureImage}
 						resizeMode="cover"
 					/>
@@ -121,7 +121,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 					{/* <Text>独自の旅しおりをカスタマイズ{'\n'}写真でプランを鮮やかに表現し、個性的な冒険を創造しましょう。</Text> */}
 					<Image
 						// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
-						source={require('@assets/LP_feature3.jpeg')}
+						source={require('@assets/LP_feature3.png')}
 						style={styles.featureImage}
 						resizeMode="cover"
 					/>
