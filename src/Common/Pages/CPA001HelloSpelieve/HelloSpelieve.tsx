@@ -39,25 +39,25 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 					<Text style={styles.headerTitleText}>Spelieve</Text>
 				</View>
 				<Button
-						testID="createItineraryButton"
-						mode="contained"
-						labelStyle={{ color: 'white', fontSize: 16 }}
-						style={{
-							paddingVertical: 8,
-							width: '90%',
-							textAlign: 'right',
-							backGroundColor: 'black',
-							marginHorizontal: 'auto',
-							marginVertical: 30,
-						}}
-						onPress={() =>
-							navigation.navigate('ItineraryTopTabNavigator', {
-								screen: 'ItineraryEdit',
-								params: { itineraryID: undefined },
-							})
-						}>
-						{i18n.t('新しく始める')}
-					</Button>
+					testID="createItineraryButton"
+					mode="contained"
+					labelStyle={{ color: 'white', fontSize: 16 }}
+					style={{
+						paddingVertical: 8,
+						width: '90%',
+						textAlign: 'right',
+						backGroundColor: 'black',
+						marginHorizontal: 'auto',
+						marginVertical: 30,
+					}}
+					onPress={() =>
+						navigation.navigate('ItineraryTopTabNavigator', {
+							screen: 'ItineraryEdit',
+							params: { itineraryID: undefined },
+						})
+					}>
+					{i18n.t('新しく始める')}
+				</Button>
 				{recentItineraries && recentItineraries.length > 0 && (
 					<View style={styles.recentlyItineraryArea}>
 						<Headline style={styles.headLineText}>{i18n.t('最近作成した旅行しおり')}</Headline>
@@ -166,13 +166,12 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 							marginVertical: 30,
 						}}
 						color="#c0c0c0"
-						onPress={() => 
+						onPress={() =>
 							navigation.navigate('ItineraryTopTabNavigator', {
 								screen: 'ItineraryEdit',
 								params: { itineraryID: i18n.t('eTUHLh152sFWMNGLLwSg') },
 							})
-						}
-					>
+						}>
 						{i18n.t('サンプルしおりを参照')}
 					</Button>
 				</View>

@@ -83,7 +83,7 @@ export const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		paddingVertical: 7,
 		fontSize: 17,
-		fontFamily: 'Verdana-Bold'
+		fontFamily: 'Verdana-Bold',
 	},
 	howToUseBox: {
 		width: '90%',
