@@ -27,6 +27,7 @@ const en: typeof Lang = {
 		"Easy to coordinate schedules and share ideas!\nNo installation required on the shared side!\nLet's create a memorable trip together!",
 	新しく始める: 'Create New Itinerary',
 	サンプルしおりを参照: 'Show Sample Itinerary',
+	eTUHLh152sFWMNGLLwSg: 'eTUHLh152sFWMNGLLwSg',
 	'Spelieve の使い方': 'How to Use',
 	しおりを作成: 'Create New Itinerary',
 	'新しく始めるボタンから しおりを新規作成できます':

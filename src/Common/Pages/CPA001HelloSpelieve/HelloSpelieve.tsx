@@ -166,7 +166,12 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 							marginVertical: 30,
 						}}
 						color="#c0c0c0"
-						onPress={() => navigation.navigate('HelloSpelieve', {})} // TODO: https://github.com/Ayato-kosaka/spelieve/issues/894 参照先作成次第navigation追加
+						onPress={() => 
+							navigation.navigate('ItineraryTopTabNavigator', {
+								screen: 'ItineraryEdit',
+								params: { itineraryID: i18n.t('eTUHLh152sFWMNGLLwSg') },
+							})
+						}
 					>
 						{i18n.t('サンプルしおりを参照')}
 					</Button>
