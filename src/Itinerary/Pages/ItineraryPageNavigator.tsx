@@ -1,46 +1,25 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { ICT011ItineraryOneProvider } from '../Contexts/ICT011ItineraryOne';
-import { ICT021PlanGroupsListProvider } from '../Contexts/ICT021PlanGroupsList';
-import { ICT031PlansMapProvider } from '../Contexts/ICT031PlansMap';
 import { INV002ItineraryTopTabNavigator } from '../Navigator/INV002ItineraryTopTabNavigator';
 
-import { IPA003EditPlan } from './IPA003EditPlan';
-
-import i18n from '@/Common/Hooks/i18n-js';
 import { BottomTabNavigatorScreenProps, ItineraryStackParamList } from '@/Common/Navigation/NavigationInterface';
 import { CPA001HelloSpelieve } from '@/Common/Pages/CPA001HelloSpelieve/HelloSpelieve';
-import { PCT012MPlaceOneProvider } from '@/Place/Contexts/PCT012MPlaceOne';
 
 const Stack = createNativeStackNavigator<ItineraryStackParamList>();
 
 export const ItineraryPageNavigator = ({ navigation, route }: BottomTabNavigatorScreenProps<'Itinerary'>) => (
-	<ICT011ItineraryOneProvider>
-		<ICT031PlansMapProvider>
-			<ICT021PlanGroupsListProvider>
-				<PCT012MPlaceOneProvider>
-					<Stack.Navigator initialRouteName="HelloSpelieve">
-						<Stack.Screen
-							name="ItineraryTopTabNavigator"
-							component={INV002ItineraryTopTabNavigator}
-							initialParams={{}}
-							options={{ title: '' }}
-						/>
-						<Stack.Screen
-							name="EditPlan"
-							component={IPA003EditPlan}
-							initialParams={{}}
-							options={{ title: i18n.t('Plan setting') }}
-						/>
-						<Stack.Screen
-							name="HelloSpelieve"
-							component={CPA001HelloSpelieve}
-							initialParams={{}}
-							options={{ headerShown: false }}
-						/>
-					</Stack.Navigator>
-				</PCT012MPlaceOneProvider>
-			</ICT021PlanGroupsListProvider>
-		</ICT031PlansMapProvider>
-	</ICT011ItineraryOneProvider>
+	<Stack.Navigator initialRouteName="HelloSpelieve">
+		<Stack.Screen
+			name="ItineraryTopTabNavigator"
+			component={INV002ItineraryTopTabNavigator}
+			initialParams={{}}
+			options={{ title: '' }}
+		/>
+		<Stack.Screen
+			name="HelloSpelieve"
+			component={CPA001HelloSpelieve}
+			initialParams={{}}
+			options={{ headerShown: false }}
+		/>
+	</Stack.Navigator>
 );
