@@ -34,7 +34,6 @@ const ItineraryStackScreens: Weaken<ItineraryStackParamList, keyof ItineraryStac
 	ItineraryTopTabNavigator: {
 		screens: ItineraryTopTabScreenProps,
 	},
-	EditPlan: 'EditPlan',
 	HelloSpelieve: 'HelloSpelieve',
 };
 
@@ -65,6 +64,7 @@ const RootStackScreens: Weaken<RootStackParamList, keyof RootStackParamList> = {
 		screens: ThumbnailStackScreens,
 	},
 	Modal: 'modal',
+	EditPlan: 'EditPlan',
 	NotFound: '*',
 };
 

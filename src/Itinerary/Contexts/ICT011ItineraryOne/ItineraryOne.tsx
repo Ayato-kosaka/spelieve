@@ -1,14 +1,11 @@
-import { onSnapshot, DocumentSnapshot, collection, doc } from 'firebase/firestore';
+import { onSnapshot, DocumentSnapshot, doc } from 'firebase/firestore';
 import { useState, createContext, useEffect, ReactNode, useMemo } from 'react';
 
-import { Itineraries } from 'spelieve-common/lib/Models/Itinerary/IDB01/Itineraries';
-import { FirestoreConverter } from 'spelieve-common/lib/Utils/FirestoreConverter';
-
+import { ICT011ItineraryOneController } from './ItineraryOneController';
 import { ItineraryOneInterface, ItineraryOneValInterface } from './ItineraryOneIntereface';
 
 import { consoleError, Logger } from '@/Common/Hooks/CHK001Utils';
 import { storeRecentItinerary } from '@/Common/Pages/CPA001HelloSpelieve/HelloSpelieveRecentItineraryHook';
-import db from '@/Itinerary/Endpoint/firestore';
 
 export const ICT011ItineraryOne = createContext({} as ItineraryOneValInterface);
 
@@ -18,20 +15,7 @@ export const ICT011ItineraryOneProvider = ({ children }: { children: ReactNode }
 		undefined,
 	);
 
-	const itineraryCRef = useMemo(
-		() =>
-			collection(db, Itineraries.modelName).withConverter(
-				FirestoreConverter<Itineraries, ItineraryOneInterface>(
-					Itineraries,
-					(data) => data,
-					(data) => {
-						Logger('IDB01/Itineraries', 'write', data);
-						return data;
-					},
-				),
-			),
-		[],
-	);
+	const { itineraryCRef } = ICT011ItineraryOneController();
 
 	useEffect(() => {
 		setItineraryDocSnap(undefined);
