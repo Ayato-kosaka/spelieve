@@ -169,7 +169,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 						onPress={() =>
 							navigation.navigate('ItineraryTopTabNavigator', {
 								screen: 'ItineraryEdit',
-								params: { itineraryID: i18n.t('eTUHLh152sFWMNGLLwSg') },
+								params: { itineraryID: i18n.t('多言語対応サンプルしおり遷移先itineraryID') },
 							})
 						}>
 						{i18n.t('サンプルしおりを参照')}
