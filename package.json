@@ -27,6 +27,7 @@
 		"@expo-google-fonts/roboto-condensed": "^0.2.3",
 		"@expo-google-fonts/roboto-mono": "^0.2.3",
 		"@expo-google-fonts/source-sans-pro": "^0.2.3",
+		"@expo/webpack-config": "^0.17.4",
 		"@googlemaps/google-maps-services-js": "^3.3.16",
 		"@gorhom/bottom-sheet": "^4.4.5",
 		"@react-google-maps/api": "^2.13.1",
