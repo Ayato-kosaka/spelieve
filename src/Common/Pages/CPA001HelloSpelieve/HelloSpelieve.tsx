@@ -1,17 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Linking, Pressable, SafeAreaView, View, Image } from 'react-native';
+import { Linking, SafeAreaView, View, Image, Pressable } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Headline, Text, Button, Title } from 'react-native-paper';
+import { Text, Button, Headline } from 'react-native-paper';
 
 import { RecentItinerariesInterface, getRecentItineraries } from './HelloSpelieveRecentItineraryHook';
+import { styles } from './HelloSpelieveStyle';
 
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
 import { consoleError, getWindowWidth } from '@/Common/Hooks/CHK001Utils';
 import i18n from '@/Common/Hooks/i18n-js';
 import { ItineraryStackScreenProps } from '@/Common/Navigation/NavigationInterface';
 import { ENV } from '@/ENV';
-import { GooglePlaceLanguageTagFromIETFLanguageTag } from '@/Place/Hooks/PHK001GooglePlaceAPI';
-import { customColors, materialColors } from '@/ThemeProvider';
+import { customColors } from '@/ThemeProvider';
 
 export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenProps<'HelloSpelieve'>) => {
 	const [recentItineraries, setRecentItineraries] = useState<RecentItinerariesInterface | undefined>(undefined);
@@ -35,24 +35,118 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 		<>
 			<SafeAreaView />
 			<ScrollView>
-				<View>
+				<View style={styles.header}>
+					<Text style={styles.headerTitleText}>Spelieve</Text>
+				</View>
+				<Button
+					testID="createItineraryButton"
+					mode="contained"
+					labelStyle={{ color: 'white', fontSize: 16 }}
+					style={{
+						paddingVertical: 8,
+						width: '90%',
+						textAlign: 'right',
+						backGroundColor: 'black',
+						marginHorizontal: 'auto',
+						marginVertical: 30,
+					}}
+					onPress={() =>
+						navigation.navigate('ItineraryTopTabNavigator', {
+							screen: 'ItineraryEdit',
+							params: { itineraryID: undefined },
+						})
+					}>
+					{i18n.t('新しく始める')}
+				</Button>
+				{recentItineraries && recentItineraries.length > 0 && (
+					<View style={styles.recentlyItineraryArea}>
+						<Headline style={styles.headLineText}>{i18n.t('最近作成した旅行しおり')}</Headline>
+						<ScrollView
+							style={styles.recentlyItineraryScroll}
+							contentContainerStyle={styles.recentlyItineraryScrollContainer}>
+							{recentItineraries.map((recentItinerary) => (
+								<Pressable
+									key={recentItinerary.itineraryID}
+									onPress={() => {
+										navigation.navigate('ItineraryTopTabNavigator', {
+											screen: 'ItineraryEdit',
+											params: {
+												itineraryID: recentItinerary.itineraryID,
+											},
+										});
+									}}
+									style={styles.recentlyItineraryPressable}>
+									<View style={styles.recentlyItineraryView}>
+										{recentItinerary.imageUrl ? (
+											<Image source={{ uri: recentItinerary.imageUrl }} style={styles.recentlyItineraryImage} />
+										) : (
+											<View style={styles.recentlyItineraryNoImageArea}>
+												<View style={styles.recentlyItineraryNoImageContent}>
+													<Text style={styles.recentlyItineraryNoImageText}>{i18n.t('No Thumbnail')}</Text>
+												</View>
+											</View>
+										)}
+									</View>
+								</Pressable>
+							))}
+						</ScrollView>
+					</View>
+				)}
+				<View style={styles.featuresArea}>
+					<Headline style={styles.headLineText}>{i18n.t('Spelieve の特徴')}</Headline>
 					<Image
 						// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
-						source={require('@assets/adaptive-icon.png')}
-						style={{
-							width: '100%',
-							height: windowWidth * (351 / 586),
-						}}
+						source={require('@assets/LP_feature1.png')}
+						style={styles.featureImage}
 						resizeMode="cover"
 					/>
+					<Text style={styles.featureTitle}>{i18n.t('自動計算機能')}</Text>
+					<View style={{ alignItems: 'center' }}>
+						<Text style={styles.simpleExplanation}>
+							{i18n.t('1つのプラン変更しても自動計算で全体が調整 旅の途中にプランの変更があっても安心')}
+						</Text>
+					</View>
+					<Image
+						// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
+						source={require('@assets/LP_feature2.png')}
+						style={styles.featureImage}
+						resizeMode="cover"
+					/>
+					<Text style={styles.featureTitle}>{i18n.t('サムネイル機能')}</Text>
+					<View style={{ alignItems: 'center' }}>
+						<Text style={styles.simpleExplanation}>
+							{i18n.t('独自の旅しおりをカスタマイズ 写真でプランを鮮やかに表現し 個性的な冒険を創造しましょう')}
+						</Text>
+					</View>
+					{/* <Text>独自の旅しおりをカスタマイズ{'\n'}写真でプランを鮮やかに表現し、個性的な冒険を創造しましょう。</Text> */}
+					<Image
+						// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
+						source={require('@assets/LP_feature3.png')}
+						style={styles.featureImage}
+						resizeMode="cover"
+					/>
+					<Text style={styles.featureTitle}>{i18n.t('共同作成機能')}</Text>
+					<View style={{ alignItems: 'center' }}>
+						<Text style={styles.simpleExplanation}>
+							{i18n.t(
+								'予定調整やアイデア共有が簡単！ 共有された側もインストール不要！ 思い出に残る旅行を一緒に作り上げよう',
+							)}
+						</Text>
+					</View>
 				</View>
-				<View style={{ marginHorizontal: 16, marginVertical: 32 }}>
-					<Headline>{`${i18n.t('あなたの旅行もっと「楽」に')}\n${i18n.t('素晴らしい「思い出」に')}`}</Headline>
+				<View>
 					<Button
 						testID="createItineraryButton"
 						mode="contained"
 						labelStyle={{ color: 'white', fontSize: 16 }}
-						style={{ marginVertical: 32, paddingVertical: 8 }}
+						style={{
+							paddingVertical: 8,
+							width: '90%',
+							textAlign: 'right',
+							backGroundColor: 'black',
+							marginHorizontal: 'auto',
+							marginVertical: 30,
+						}}
 						onPress={() =>
 							navigation.navigate('ItineraryTopTabNavigator', {
 								screen: 'ItineraryEdit',
@@ -61,141 +155,107 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 						}>
 						{i18n.t('新しく始める')}
 					</Button>
-					<Image
-						source={
-							// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-							GooglePlaceLanguageTagFromIETFLanguageTag[i18n.locale] === 'ja'
-								? // eslint-disable-next-line global-require
-								  require('@assets/JP-sol.png')
-								: // eslint-disable-next-line global-require
-								  require('@assets/EN-sol.png')
-						}
-						style={{ width: '100%', height: 200 }}
-						resizeMode="contain"
-					/>
-					<View style={{ flex: 1, width: '100%' }}>
-						<View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', marginVertical: 10 }}>
-							<View
-								style={{
-									backgroundColor: materialColors.grey[200],
-									flex: 0.5,
-									alignItems: 'center',
-									justifyContent: 'center',
-									height: 150,
-									marginHorizontal: 12,
-									borderRadius: 10,
-								}}>
-								<Text>{i18n.t('特徴1')}</Text>
-								<Title>{i18n.t('しおり簡単作成')}</Title>
-							</View>
-							<View
-								style={{
-									backgroundColor: materialColors.grey[200],
-									flex: 0.5,
-									alignItems: 'center',
-									justifyContent: 'center',
-									height: 150,
-									marginHorizontal: 12,
-									borderRadius: 10,
-								}}>
-								<Text>{i18n.t('特徴2')}</Text>
-								<Title>{`${i18n.t('移動時間')}\n${i18n.t('自動計算')}`}</Title>
-							</View>
+					<Button
+						mode="contained"
+						labelStyle={{ color: 'white', fontSize: 16 }}
+						style={{
+							paddingVertical: 8,
+							width: '90%',
+							textAlign: 'right',
+							marginHorizontal: 'auto',
+							marginVertical: 30,
+						}}
+						color="#c0c0c0"
+						onPress={() =>
+							navigation.navigate('ItineraryTopTabNavigator', {
+								screen: 'ItineraryEdit',
+								params: { itineraryID: i18n.t('多言語対応サンプルしおり遷移先itineraryID') },
+							})
+						}>
+						{i18n.t('サンプルしおりを参照')}
+					</Button>
+				</View>
+				<View style={{ alignItems: 'center' }}>
+					<Headline style={styles.headLineText}>{i18n.t('Spelieve の使い方')}</Headline>
+					<View style={styles.howToUseBox}>
+						<View style={styles.howToUseNumber}>
+							<Text style={styles.howToUseNumberText}>1</Text>
 						</View>
-						<View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', marginVertical: 10 }}>
-							<View
-								style={{
-									backgroundColor: materialColors.grey[200],
-									flex: 0.5,
-									alignItems: 'center',
-									justifyContent: 'center',
-									height: 150,
-									marginHorizontal: 12,
-									borderRadius: 10,
-								}}>
-								<Text>{i18n.t('特徴3')}</Text>
-								<Title>{i18n.t('マップ検索')}</Title>
-							</View>
-							<View
-								style={{
-									backgroundColor: materialColors.grey[200],
-									flex: 0.5,
-									alignItems: 'center',
-									justifyContent: 'center',
-									height: 150,
-									marginHorizontal: 12,
-									borderRadius: 10,
-								}}>
-								<Text>{i18n.t('特徴4')}</Text>
-								<Title>{i18n.t('思い出化')}</Title>
-							</View>
-						</View>
+						<Text style={styles.howToUseText}>{i18n.t('しおりを作成')}</Text>
+						<Image
+							// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
+							source={require('@assets/HowToUse1.png')}
+							style={styles.howToUseImage}
+							resizeMode="cover"
+						/>
+						<Text style={styles.simpleExplanation}>{i18n.t('新しく始めるボタンから しおりを新規作成できます')}</Text>
 					</View>
-					{recentItineraries && recentItineraries.length > 0 && (
-						<View style={{ marginVertical: 64 }}>
-							<Headline style={{ textAlign: 'center' }}>{i18n.t('最近作成した旅行プラン')}</Headline>
-							<ScrollView style={{ maxHeight: 700 }} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-								{recentItineraries.map((recentItinerary) => (
-									<Pressable
-										key={recentItinerary.itineraryID}
-										onPress={() => {
-											navigation.navigate('ItineraryTopTabNavigator', {
-												screen: 'ItineraryEdit',
-												params: {
-													itineraryID: recentItinerary.itineraryID,
-												},
-											});
-										}}
-										style={{
-											width: '50%',
-										}}>
-										<View
-											style={{
-												borderWidth: 1,
-												borderColor: materialColors.grey[400],
-												borderRadius: 4,
-												margin: 8,
-											}}>
-											{recentItinerary.imageUrl ? (
-												<Image
-													source={{ uri: recentItinerary.imageUrl }}
-													style={{
-														paddingTop: '100%',
-														width: '100%',
-													}}
-												/>
-											) : (
-												<View
-													style={{
-														paddingTop: '100%',
-														width: '100%',
-														position: 'relative',
-														overflow: 'hidden',
-													}}>
-													<View
-														style={{
-															position: 'absolute',
-															width: '100%',
-															top: 0,
-															bottom: 0,
-															justifyContent: 'center',
-														}}>
-														<Text
-															style={{
-																textAlign: 'center',
-																flexWrap: 'wrap',
-															}}>
-															{i18n.t('No Thumbnail')}
-														</Text>
-													</View>
-												</View>
-											)}
-										</View>
-									</Pressable>
-								))}
-							</ScrollView>
+					<View style={styles.howToUseBox}>
+						<View style={styles.howToUseNumber}>
+							<Text style={styles.howToUseNumberText}>2</Text>
 						</View>
-					)}
+						<Text style={styles.howToUseText}>{i18n.t('訪れる予定の場所を入力')}</Text>
+						<Image
+							// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
+							source={require('@assets/HowToUse2.png')}
+							style={styles.howToUseImage}
+							resizeMode="cover"
+						/>
+						<Text style={styles.simpleExplanation}>
+							{i18n.t('訪れる場所を追加しましょう Add Plan ボタンを押すと 新しく場所を追加できます')}
+						</Text>
+					</View>
+					<View style={styles.howToUseBox}>
+						<View style={styles.howToUseNumber}>
+							<Text style={styles.howToUseNumberText}>3</Text>
+						</View>
+						<Text style={styles.howToUseText}>{i18n.t('URLをコピーし、友達にシェア')}</Text>
+						<Image
+							// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
+							source={require('@assets/HowToUse3.png')}
+							style={styles.howToUseImage}
+							resizeMode="cover"
+						/>
+						<Text style={styles.simpleExplanation}>
+							{i18n.t('画面下部でしおりのURLをコピー可能 一緒に行く友人や家族に共有しよう!')}
+						</Text>
+					</View>
+					<View style={styles.howToUseBox}>
+						<View style={styles.howToUseNumber}>
+							<Text style={styles.howToUseNumberText}>4</Text>
+						</View>
+						<Text style={styles.howToUseText}>{i18n.t('旅行を楽しむ！')}</Text>
+						<Image
+							// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, global-require
+							source={require('@assets/HowToUse4.png')}
+							style={{
+								width: 200,
+								height: 200,
+								marginVertical: 20,
+							}}
+							resizeMode="cover"
+						/>
+					</View>
+					<Button
+						testID="createItineraryButton"
+						mode="contained"
+						labelStyle={{ color: 'white', fontSize: 16 }}
+						style={{
+							paddingVertical: 8,
+							width: '90%',
+							textAlign: 'right',
+							backGroundColor: 'black',
+							marginHorizontal: 'auto',
+							marginVertical: 30,
+						}}
+						onPress={() =>
+							navigation.navigate('ItineraryTopTabNavigator', {
+								screen: 'ItineraryEdit',
+								params: { itineraryID: undefined },
+							})
+						}>
+						{i18n.t('新しく始める')}
+					</Button>
 				</View>
 				<View style={{ backgroundColor: customColors.midnight, paddingTop: 40 }}>
 					<Button

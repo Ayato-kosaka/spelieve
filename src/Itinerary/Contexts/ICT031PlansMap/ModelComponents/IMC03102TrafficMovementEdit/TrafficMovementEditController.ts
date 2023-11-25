@@ -1,5 +1,5 @@
 import { DirectionsRequest, DirectionsResponse, TrafficModel, TravelMode } from '@googlemaps/google-maps-services-js';
-import { addDoc, setDoc } from 'firebase/firestore';
+import { setDoc } from 'firebase/firestore';
 import { useCallback, useContext, useMemo, useState, useEffect } from 'react';
 
 import { PlansMapInterface, TrafficMovementEditControllerInterface } from 'spelieve-common/lib/Interfaces';
@@ -24,7 +24,7 @@ export const IMC03102TrafficMovementEditController = ({
 }: TrafficMovementEditPropsInterface): TrafficMovementEditControllerInterface => {
 	const [bottomSheetVisible, setBottomSheetVisible] = useState<boolean>(false);
 
-	const { plansCRef, plansDocSnapMap } = useContext(ICT031PlansMap);
+	const { plansDocSnapMap, createPlan } = useContext(ICT031PlansMap);
 	const planDocSnap = useMemo(() => plansDocSnapMap[planID], [planID, plansDocSnapMap]);
 	const plan = useMemo(() => planDocSnap.data(), [planDocSnap]);
 	const planGroups = useMemo(() => planGroupsDoc.data(), [planGroupsDoc]);
@@ -194,32 +194,25 @@ export const IMC03102TrafficMovementEditController = ({
 	}, [nextPlan?.place_id]);
 
 	const addPlan = useCallback(async () => {
-		const planDocRef = await addDoc(plansCRef!, {
-			title: '',
-			placeSpan: DateUtils.initialDate(),
+		const planDocRef = await createPlan({
 			placeStartTime: plan.transportationArrivalTime || plan.placeEndTime,
 			placeEndTime: plan.transportationArrivalTime || plan.placeEndTime,
-			transportationSpan: DateUtils.initialDate(),
 			avoid: plan.avoid,
 			transitModes: plan.transitModes,
 			transitRoutingPreference: plan.transitRoutingPreference,
-			textMap: {},
-			storeUrlMap: {},
-			createdAt: new Date(),
-			updatedAt: new Date(),
 		});
 		const newPlans = [...planGroups.plans];
 		newPlans.splice(plansIndex + 1, 0, planDocRef.id);
 		await setDoc(planGroupsDoc.ref, { plans: newPlans }, { merge: true });
 	}, [
-		plansCRef,
-		planGroups,
-		plansIndex,
-		plan.placeEndTime,
+		createPlan,
 		plan.transportationArrivalTime,
+		plan.placeEndTime,
 		plan.avoid,
 		plan.transitModes,
 		plan.transitRoutingPreference,
+		planGroups.plans,
+		plansIndex,
 		planGroupsDoc.ref,
 	]);
 
