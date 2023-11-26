@@ -12,7 +12,6 @@ const en: typeof Lang = {
 	'Advertisement Area': 'Advertisement Area',
 
 	// HelloSpelieve.tsx
-	新規作成: 'New Itinerary',
 	最近作成した旅行しおり: 'Recent Itinerary',
 	'No Thumbnail': 'No Thumbnail',
 	'Spelieve の特徴': 'Features of Spelieve',
@@ -66,7 +65,6 @@ const en: typeof Lang = {
 	'Add Plan group': 'Add Plan group',
 	'day N': 'Day %{count}',
 	'copy Share URL': 'copy Share URL',
-	'Add Tag': 'Add Tag',
 	'Start date': 'Start date',
 	Description: 'Description',
 
@@ -125,7 +123,6 @@ const en: typeof Lang = {
 	Order: 'Order',
 	Duplication: 'Duplication',
 	Delete: 'Delete',
-	'Dummy Text': 'Text',
 	テキストを入力してください: 'Enter text',
 	'Discard Thumbnail?': 'Discard Thumbnail?',
 	'変更を保存せずに戻りますか？': 'Are you sure you want to leave without save your change?',
