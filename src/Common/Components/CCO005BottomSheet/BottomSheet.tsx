@@ -1,7 +1,7 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import React, { useCallback, useMemo, useRef, useEffect } from 'react';
 
-import { BottomSheetPropsInterface } from 'spelieve-common/lib/Interfaces';
+import { BottomSheetPropsInterface } from './BottomSheet.interface';
 
 export const CCO005BottomSheet = ({
 	children,

@@ -2,8 +2,7 @@ import { GoogleMap, Marker as MarkerWeb } from '@react-google-maps/api';
 import { useContext } from 'react';
 import { View } from 'react-native';
 
-import { GoogleMapPlaceListPropsInterface } from 'spelieve-common/lib/Interfaces';
-
+import { GoogleMapPlaceListPropsInterface } from './GoogleMapPlacesList.interface';
 import { styles } from './GoogleMapPlacesListStyle.web';
 
 import { PCT011MPlacesList } from '@/Place/Contexts/PCT011MPlacesList';

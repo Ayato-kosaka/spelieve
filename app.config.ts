@@ -44,7 +44,6 @@ export default ({ config }: ConfigContext) => {
 				versionCode: 12, // TODO: 毎submitで変更の必要あり
 				permissions: [],
 				googleServicesFile: './google-services.json',
-				targetSdkVersion: 33,
 			},
 			web: {
 				shortName: 'Spelieve',

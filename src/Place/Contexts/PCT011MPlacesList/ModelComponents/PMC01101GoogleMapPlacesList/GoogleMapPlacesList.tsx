@@ -2,8 +2,7 @@ import { useContext, useState } from 'react';
 import { View } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
-import { GoogleMapPlaceListPropsInterface } from 'spelieve-common/lib/Interfaces';
-
+import { GoogleMapPlaceListPropsInterface } from './GoogleMapPlacesList.interface';
 import { styles } from './GoogleMapPlacesListStyle';
 
 import { PCT011MPlacesList } from '@/Place/Contexts/PCT011MPlacesList';

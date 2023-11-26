@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 
 import 'react-spring-bottom-sheet/dist/style.css';
-import { BottomSheetPropsInterface } from 'spelieve-common/lib/Interfaces';
+import { BottomSheetPropsInterface } from './BottomSheet.interface';
 
 export const CCO005BottomSheet = ({
 	children,
