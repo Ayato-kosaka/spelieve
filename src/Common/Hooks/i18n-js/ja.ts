@@ -12,7 +12,6 @@ const ja: typeof Lang = {
 	'Advertisement Area': 'Advertisement Area',
 
 	// HelloSpelieve.tsx
-	新規作成: '新規作成',
 	最近作成した旅行しおり: '最近作成した旅行しおり',
 	'No Thumbnail': 'サムネイル画像なし',
 	'Spelieve の特徴': 'Spelieve の特徴',
@@ -65,7 +64,6 @@ const ja: typeof Lang = {
 	'Add Plan group': 'プラングループ追加',
 	'day N': '%{count} 日目',
 	'copy Share URL': 'URL をコピー',
-	'Add Tag': 'タグ追加',
 	'Start date': '開始日',
 	Description: '説明',
 
@@ -124,7 +122,6 @@ const ja: typeof Lang = {
 	Order: 'Order',
 	Duplication: 'Duplication',
 	Delete: 'Delete',
-	'Dummy Text': 'テキスト',
 	テキストを入力してください: 'テキストを入力してください',
 	'Discard Thumbnail?': 'サムネイルを破棄しますか?',
 	'変更を保存せずに戻りますか？': '変更を保存せずに戻りますか？',
