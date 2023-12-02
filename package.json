@@ -88,7 +88,6 @@
 		"@types/i18n-js": "3.8.4",
 		"@types/react": "18.0.26",
 		"@types/react-datepicker": "^4.8.0",
-		"@types/react-native": "0.70.8",
 		"@types/react-native-autocomplete-input": "^5.1.0",
 		"@types/react-native-vector-icons": "^6.4.12",
 		"@types/uuid": "^9.0.0",

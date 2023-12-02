@@ -27,7 +27,7 @@ export default ({ config }: ConfigContext) => {
 				config: {
 					googleMapsApiKey: process.env.GCP_API_KEY_IOS,
 				},
-				buildNumber: '9',
+				buildNumber: '12',
 				googleServicesFile: './GoogleService-Info.plist',
 			},
 			android: {
@@ -41,10 +41,9 @@ export default ({ config }: ConfigContext) => {
 						apiKey: process.env.GCP_API_KEY_ANDROID,
 					},
 				},
-				versionCode: 12, // TODO: 毎submitで変更の必要あり
+				versionCode: 15, // TODO: 毎submitで変更の必要あり
 				permissions: [],
 				googleServicesFile: './google-services.json',
-				targetSdkVersion: 33,
 			},
 			web: {
 				shortName: 'Spelieve',
@@ -54,18 +53,23 @@ export default ({ config }: ConfigContext) => {
 			},
 			plugins: [
 				[
+					'expo-build-properties',
+					{
+						android: {
+							compileSdkVersion: 33,
+							targetSdkVersion: 33,
+							buildToolsVersion: '33.0.0',
+						},
+						ios: {
+							useFrameworks: 'static',
+						},
+					},
+				],
+				[
 					'expo-image-picker',
 					{
 						photosPermission: 'Allow $(PRODUCT_NAME) to access your photos',
 						cameraPermission: 'Allow $(PRODUCT_NAME) to access your camera',
-					},
-				],
-				[
-					'expo-build-properties',
-					{
-						ios: {
-							useFrameworks: 'static',
-						},
 					},
 				],
 				'@react-native-firebase/app',
