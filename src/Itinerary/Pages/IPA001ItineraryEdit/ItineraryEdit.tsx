@@ -59,27 +59,16 @@ export const IPA001ItineraryEdit = ({ route, navigation }: ItineraryTopTabScreen
 				/>
 				<Image source={{ uri: pageItinerary.imageUrl }} resizeMode="cover" style={styles.image} />
 			</Pressable>
-			<View>
-				<View style={styles.startDateComtainer}>
-					<Text style={styles.startDateLabel}>{i18n.t('Start date')}</Text>
-					<CCO003DateTimePicker
-						value={pageItinerary.startDate}
-						onChange={(event, date) => {
-							if (event.type === 'set') {
-								setPageItinerary({ ...pageItinerary, startDate: date! });
-							}
-						}}
-						style={styles.startDateTimePicker}
-					/>
-				</View>
-				<TextInput
-					mode="outlined"
-					label={i18n.t('Description')}
-					value={pageItinerary.caption}
-					onChange={handleOnChange('caption')}
-					onBlur={updateItinerary}
-					multiline
-					style={styles.captionTextInput}
+			<View style={styles.startDateComtainer}>
+				<Text style={styles.startDateLabel}>{i18n.t('Start date')}</Text>
+				<CCO003DateTimePicker
+					value={pageItinerary.startDate}
+					onChange={(event, date) => {
+						if (event.type === 'set') {
+							setPageItinerary({ ...pageItinerary, startDate: date! });
+						}
+					}}
+					style={styles.startDateTimePicker}
 				/>
 			</View>
 
@@ -89,7 +78,9 @@ export const IPA001ItineraryEdit = ({ route, navigation }: ItineraryTopTabScreen
 				prevDateNumber = planGroup.dayNumber;
 				return (
 					<View key={planGroupsDoc.id}>
-						{isAnotherDay && <Headline>{i18n.t('day N', { count: planGroup.dayNumber })}</Headline>}
+						{isAnotherDay && (
+							<Headline style={styles.dayNumber}>{i18n.t('day N', { count: planGroup.dayNumber })}</Headline>
+						)}
 						<IMC03103PlanGroupsEdit planGroupsDoc={planGroupsDoc} onPlanPress={onPlanPress} />
 					</View>
 				);
@@ -115,6 +106,15 @@ export const IPA001ItineraryEdit = ({ route, navigation }: ItineraryTopTabScreen
 				}}>
 				{i18n.t('copy Share URL')}
 			</Button>
+			<TextInput
+				mode="outlined"
+				label={i18n.t('Description')}
+				value={pageItinerary.caption}
+				onChange={handleOnChange('caption')}
+				onBlur={updateItinerary}
+				multiline
+				style={styles.captionTextInput}
+			/>
 			<CCO007GoogleBannerAd />
 		</ScrollView>
 	);

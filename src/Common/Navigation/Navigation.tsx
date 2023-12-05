@@ -16,6 +16,7 @@ import { LinkingConfiguration } from './LinkingConfiguration';
 import { RootStackParamList, BottomTabNavigatorParamList, RootStackScreenProps } from './NavigationInterface';
 
 import { CHK006GoogleAnalytics } from '@/Common/Hooks/CHK006GoogleAnalytics/GoogleAnalytics';
+import { IPA003EditPlan } from '@/Itinerary/Pages/IPA003EditPlan';
 import { ItineraryPageNavigator } from '@/Itinerary/Pages/ItineraryPageNavigator';
 import { PlacePageNavigator } from '@/Place/Pages/PlacePageNavigator/PlacePageNavigator';
 import { navigationTheme } from '@/ThemeProvider';
@@ -86,6 +87,12 @@ const RootNavigator = () => (
 			<Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
 			<Stack.Group screenOptions={{ presentation: 'modal' }}>
 				<Stack.Screen name="Modal" component={ModalScreen} />
+				<Stack.Screen
+					name="EditPlan"
+					component={IPA003EditPlan}
+					initialParams={{}}
+					options={{ title: i18n.t('Plan setting') }}
+				/>
 			</Stack.Group>
 		</Stack.Navigator>
 	</CCO001GlobalContext>

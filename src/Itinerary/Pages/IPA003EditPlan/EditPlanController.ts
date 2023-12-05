@@ -1,218 +1,210 @@
 import { PlaceAutocompleteResult } from '@googlemaps/google-maps-services-js';
 import { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { setDoc } from 'firebase/firestore';
-import { useContext, useEffect, useMemo, useCallback, useState, useRef } from 'react';
+import { doc, DocumentSnapshot, getDoc, setDoc } from 'firebase/firestore';
+import { useContext, useEffect, useMemo, useCallback, useState } from 'react';
 import { TextInputChangeEventData } from 'react-native';
 
+import { ItineraryOneInterface } from 'spelieve-common/lib/Interfaces/Itinerary/ICT011/ItineraryOneInterface';
+
 import { CCO001ThumbnailEditor } from '@/Common/Components/CCO001GlobalContext/GlobalContext';
-import { ItineraryStackScreenProps } from '@/Common/Navigation/NavigationInterface';
-import { ICT011ItineraryOne } from '@/Itinerary/Contexts/ICT011ItineraryOne';
-import { ICT021PlanGroupsList } from '@/Itinerary/Contexts/ICT021PlanGroupsList';
-import { ICT031PlansMap } from '@/Itinerary/Contexts/ICT031PlansMap';
+import { consoleError } from '@/Common/Hooks/CHK001Utils';
+import { RootStackScreenProps } from '@/Common/Navigation/NavigationInterface';
+import { ICT011ItineraryOneController } from '@/Itinerary/Contexts/ICT011ItineraryOne/ItineraryOneController';
+import { ICT021PlanGroupsListController } from '@/Itinerary/Contexts/ICT021PlanGroupsList/PlanGroupsListController';
+import { PlanGroupsListInterface } from '@/Itinerary/Contexts/ICT021PlanGroupsList/PlanGroupsListInterface';
+import { ICT031PlansMapController } from '@/Itinerary/Contexts/ICT031PlansMap/PlansMapController';
 import { PlansMapInterface } from '@/Itinerary/Contexts/ICT031PlansMap/PlansMapInterface';
 import { PCT012MPlaceOne } from '@/Place/Contexts/PCT012MPlaceOne';
 
-export const IPA003EditPlanController = ({ route, navigation }: ItineraryStackScreenProps<'EditPlan'>) => {
-	const { itineraryID, planGroupID, planID } = route.params;
-	const { setItineraryID, itineraryDocSnap } = useContext(ICT011ItineraryOne);
-	const { isPlansLoading, plansDocSnapMap } = useContext(ICT031PlansMap);
-	const { planGroupsQSnap } = useContext(ICT021PlanGroupsList);
-	const planGroupDocSnap = useMemo(
-		() => planGroupsQSnap?.docs.find((doc) => doc.id === planGroupID),
-		[planGroupID, planGroupsQSnap],
-	);
-	const planGroup = useMemo(() => planGroupDocSnap?.data(), [planGroupDocSnap]);
-
-	const planDocSnap = useMemo(() => (planID ? plansDocSnapMap[planID] : undefined), [planID, plansDocSnapMap]);
-	const plan = useMemo(() => (planDocSnap ? planDocSnap.data() : undefined), [planDocSnap]);
-
+export const IPA003EditPlanController = ({ route, navigation }: RootStackScreenProps<'EditPlan'>) => {
 	const { setPlaceID, place } = useContext(PCT012MPlaceOne);
-	const prevPlaceRef = useRef<typeof place>(undefined);
 
-	const [pagePlan, setPagePlan] = useState<PlansMapInterface | undefined>(undefined);
-
-	// アンマウント時に、PlaceID を undefined で初期化する
-	useEffect(
-		() => () => {
-			setPlaceID(undefined);
-		},
-		[setPlaceID],
-	);
-
-	// Header にタイトルを設定する
-	useEffect(() => {
-		navigation.setOptions({
-			title: plan?.title,
-		});
-	}, [navigation, plan?.title]);
-
-	const navigateToItineraryEdit = useCallback(() => {
-		navigation.navigate('ItineraryTopTabNavigator', {
-			screen: 'ItineraryEdit',
-			params: {
-				itineraryID,
-			},
-		});
-	}, [navigation, itineraryID]);
-
-	// パラメータを監視し、不足があれば navigateToItineraryEdit する
-	useEffect(() => {
-		if (itineraryID === undefined || planGroupID === undefined || planID === undefined) {
+	const { itineraryID, planGroupID, planID } = useMemo(() => {
+		if (
+			route.params.itineraryID === undefined ||
+			route.params.planGroupID === undefined ||
+			route.params.planID === undefined
+		) {
 			// TODO: https://github.com/Ayato-kosaka/spelieve/issues/397 HelloSpelieve に遷移できない
-			navigation.navigate('HelloSpelieve', {});
+			navigation.navigate('BottomTabNavigator', {
+				screen: 'Itinerary',
+				params: { screen: 'HelloSpelieve', params: {} },
+			});
+			throw new Error();
 		}
-	}, [planGroupID, itineraryID, navigateToItineraryEdit, navigation, planID, setItineraryID]);
+		return {
+			itineraryID: route.params.itineraryID,
+			planGroupID: route.params.planGroupID,
+			planID: route.params.planID,
+		};
+	}, [navigation, route.params]);
 
-	// plan.place_id を監視し、 Place Context にセットする
+	// itinerayDocumentSnapshot の取得処理
+	const { itineraryCRef } = ICT011ItineraryOneController();
+	const itineraryDocumentReference = useMemo(() => doc(itineraryCRef, itineraryID), [itineraryCRef, itineraryID]);
+	const [itineraryDocSnap, setItineraryDocSnap] = useState<DocumentSnapshot<ItineraryOneInterface> | undefined>(
+		undefined,
+	);
 	useEffect(() => {
-		setPlaceID(plan?.place_id);
-	}, [plan?.place_id, setPlaceID]);
+		getDoc(itineraryDocumentReference)
+			.then((documentSnapshot) => {
+				setItineraryDocSnap(documentSnapshot);
+			})
+			.catch((e) => consoleError('IPA003EditPlanController', 'getDoc(itineraryDocumentReference)', e));
+	}, [itineraryDocumentReference]);
 
-	// Context の plan を監視し、 pagePlan にセットする
+	// planGroup の取得処理
+	const { planGroupsCRef } = ICT021PlanGroupsListController(itineraryDocSnap);
+	const planGroupDocumentReference = useMemo(
+		() => (planGroupsCRef ? doc(planGroupsCRef, planGroupID) : undefined),
+		[planGroupsCRef, planGroupID],
+	);
+	const [planGroup, setPlanGroup] = useState<PlanGroupsListInterface | undefined>(undefined);
 	useEffect(() => {
-		if (plan) {
-			setPagePlan({ ...plan });
-		}
-	}, [plan]);
+		if (planGroupDocumentReference)
+			getDoc(planGroupDocumentReference)
+				.then((documentSnapshot) => {
+					setPlanGroup(documentSnapshot.data());
+				})
+				.catch((e) => consoleError('IPA003EditPlanController', 'getDoc(planGroupDocumentReference)', e));
+	}, [planGroupDocumentReference]);
+
+	// plan の取得処理
+	const { getPlansCRef } = ICT031PlansMapController();
+	const plansCRef = useMemo(() => getPlansCRef(itineraryDocumentReference), [getPlansCRef, itineraryDocumentReference]);
+	const plansDocumentReference = useMemo(() => doc(plansCRef, planID), [planID, plansCRef]);
+	const [plan, setPlan] = useState<PlansMapInterface | undefined>(undefined);
+	useEffect(() => {
+		getDoc(plansDocumentReference)
+			.then((documentSnapshot) => {
+				const data = documentSnapshot.data();
+				setPlan(data);
+				setPlaceID(data?.place_id);
+				navigation.setOptions({
+					title: data?.title,
+				});
+			})
+			.catch((e) => consoleError('IPA003EditPlanController', 'getDoc(planDocumentReference)', e));
+	}, [plansDocumentReference, setPlaceID, navigation]);
 
 	const isRepresentativePlan: boolean = useMemo(
-		() => planGroup?.representativePlanID === planDocSnap?.id,
-		[planGroup?.representativePlanID, planDocSnap],
+		() => planGroup?.representativePlanID === planID,
+		[planGroup?.representativePlanID, planID],
 	);
 
-	const isNeedToShowActivityIndicator = useMemo(
-		() => !itineraryDocSnap || isPlansLoading || !planGroupsQSnap || !planGroupDocSnap || !planGroup || !pagePlan,
-		[itineraryDocSnap, isPlansLoading, planGroupsQSnap, planGroupDocSnap, planGroup, pagePlan],
-	);
-
-	// place.name を監視し、plan.title を更新する
+	// 本画面では、画面を出る時に画面の内容をDBに保存する整理とする。
+	// 後勝ちとなるため注意する、
+	// 画面操作中に plan が更新された場合上書きしてしまうが、そのようなことは起きない想定。
+	const beforeRemove = useCallback(() => {
+		setDoc(plansDocumentReference, { ...plan }).catch((e) => consoleError('IPA003EditPlanController', 'onRemove', e));
+		if (planGroupDocumentReference)
+			setDoc(
+				planGroupDocumentReference,
+				{
+					representativePlanID: isRepresentativePlan ? planID : undefined,
+					representativeStartDateTime: planGroup?.representativeStartDateTime,
+				},
+				{ merge: true },
+			).catch((e) => consoleError('IPA003EditPlanController', 'updateRepresentativeStartDateTime', e));
+	}, [
+		isRepresentativePlan,
+		plan,
+		planGroup?.representativeStartDateTime,
+		planGroupDocumentReference,
+		planID,
+		plansDocumentReference,
+	]);
 	useEffect(() => {
-		if (!!place && place.name !== plan?.title && planDocSnap && (!plan?.title || prevPlaceRef.current)) {
-			// eslint-disable-next-line @typescript-eslint/no-floating-promises
-			setDoc(planDocSnap.ref, { title: place.name }, { merge: true });
+		const unsubscribe = navigation.addListener('beforeRemove', beforeRemove);
+		return unsubscribe;
+	}, [beforeRemove, navigation]);
+
+	// place.place_id を監視し、place が plan が持っているものから更新された場合、
+	// title, imageUrl を更新する
+	useEffect(() => {
+		if (place && place.place_id !== plan?.place_id) {
+			setPlan((v) => v && { ...v, place_id: place.place_id, title: place.name, imageUrl: place.imageUrl });
+			navigation.setOptions({
+				title: place.name,
+			});
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [place?.name]);
-
-	// place.imageUrl を監視し、plan.imageUrl を更新する
-	useEffect(() => {
-		if (!!place && place.imageUrl !== plan?.imageUrl && planDocSnap && (!plan?.imageUrl || prevPlaceRef.current)) {
-			// eslint-disable-next-line @typescript-eslint/no-floating-promises
-			setDoc(planDocSnap.ref, { imageUrl: place.imageUrl }, { merge: true });
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [place?.imageUrl]);
-
-	const isNeedToNavigateToItineraryEdit = useMemo(
-		() => !isNeedToShowActivityIndicator && !itineraryDocSnap!.exists(),
-		[isNeedToShowActivityIndicator, itineraryDocSnap],
-	);
-
-	const updatePlan = useCallback(() => {
-		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		setDoc(planDocSnap!.ref, { ...pagePlan });
-	}, [pagePlan, planDocSnap]);
+	}, [place?.place_id]);
 
 	const { setThumbnailItemMapper } = useContext(CCO001ThumbnailEditor);
 	const onPressThumbnail = useCallback(() => {
-		if (!pagePlan) {
+		if (plan === undefined) {
 			return;
 		}
 		setThumbnailItemMapper({
 			aspectRatio: 16 / 9,
-			textMap: pagePlan.textMap,
-			storeUrlMap: pagePlan.storeUrlMap,
+			textMap: plan.textMap,
+			storeUrlMap: plan.storeUrlMap,
 			onBack(thumbnailID, thumbnailItemMapper, imageUrl) {
-				if (planDocSnap) {
-					// eslint-disable-next-line @typescript-eslint/no-floating-promises
-					setDoc<PlansMapInterface>(
-						planDocSnap.ref,
-						{
+				setPlan(
+					(v) =>
+						v && {
+							...v,
 							thumbnailID,
 							imageUrl,
 							textMap: thumbnailItemMapper.textMap,
 							storeUrlMap: thumbnailItemMapper.storeUrlMap,
 						},
-						{ merge: true },
-					);
-				}
+				);
 			},
 		});
 		navigation.navigate('ThumbnailPageNavigator', {
 			screen: 'TPA001ThumbnailEditor',
 			params: {
-				fromThumbnailID: pagePlan?.thumbnailID,
+				fromThumbnailID: plan?.thumbnailID,
 			},
 		});
-	}, [navigation, pagePlan, planDocSnap, setThumbnailItemMapper]);
-
-	const onChangeMemo: ({ nativeEvent }: { nativeEvent: TextInputChangeEventData }) => void = useCallback(
-		({ nativeEvent }) => {
-			setPagePlan({ ...pagePlan!, memo: nativeEvent.text });
-		},
-		[pagePlan],
-	);
+	}, [navigation, plan, setThumbnailItemMapper]);
 
 	const onAutocompleteClicked = useCallback(
 		(data: PlaceAutocompleteResult): void => {
-			if (!planDocSnap) {
-				return;
-			}
-			// eslint-disable-next-line @typescript-eslint/no-floating-promises
-			setDoc(
-				planDocSnap.ref,
-				{ place_id: data.place_id, title: data.structured_formatting.main_text },
-				{ merge: true },
-			);
+			setPlaceID(data.place_id);
 		},
-		[planDocSnap],
+		[setPlaceID],
 	);
 
-	const setPlanToRepresentativePlan = useCallback(() => {
-		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		setDoc(
-			planGroupDocSnap!.ref,
-			{ representativePlanID: planDocSnap?.id, representativeStartDateTime: plan?.placeStartTime },
-			{ merge: true },
-		);
-	}, [planGroupDocSnap, planDocSnap, plan?.placeStartTime]);
+	const onChangeMemo: ({ nativeEvent }: { nativeEvent: TextInputChangeEventData }) => void = useCallback(
+		({ nativeEvent }) => {
+			setPlan((v) => v && { ...v, memo: nativeEvent.text });
+		},
+		[],
+	);
+
+	const onBlurSpan = useCallback((val: Date) => {
+		setPlan((v) => v && { ...v, placeSpan: val });
+	}, []);
 
 	const updateRepresentativeStartDateTime: (event: DateTimePickerEvent, date?: Date | undefined) => void = useCallback(
 		(event, date) => {
-			if (event.type === 'set' && planGroupDocSnap) {
-				// eslint-disable-next-line @typescript-eslint/no-floating-promises
-				setDoc(
-					planGroupDocSnap.ref,
-					{
-						representativeStartDateTime: date,
-					},
-					{ merge: true },
-				);
+			if (event.type === 'set' && date && planGroupDocumentReference) {
+				setPlanGroup((v) => v && { ...v, representativeStartDateTime: date });
 			}
 		},
-		[planGroupDocSnap],
+		[planGroupDocumentReference],
 	);
 
-	// prevPlace を更新する
-	useEffect(() => {
-		if (place !== undefined) {
-			prevPlaceRef.current = place;
+	const setPlanToRepresentativePlan = useCallback(() => {
+		if (planGroupDocumentReference && plan?.placeStartTime) {
+			setPlanGroup(
+				(v) => v && { ...v, representativePlanID: planID, representativeStartDateTime: plan.placeStartTime },
+			);
 		}
-	}, [place]);
+	}, [plan?.placeStartTime, planGroupDocumentReference, planID]);
 
 	return {
 		planGroup,
-		planDocSnap,
-		pagePlan: pagePlan!,
 		isRepresentativePlan,
-		isNeedToShowActivityIndicator,
-		isNeedToNavigateToItineraryEdit,
-		navigateToItineraryEdit,
-		updatePlan,
+		plan,
 		onPressThumbnail,
 		updateRepresentativeStartDateTime,
 		setPlanToRepresentativePlan,
 		onAutocompleteClicked,
 		onChangeMemo,
+		onBlurSpan,
 	};
 };

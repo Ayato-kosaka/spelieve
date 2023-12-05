@@ -20,6 +20,7 @@ export type RootStackParamList = {
 	BottomTabNavigator: NavigatorScreenParams<BottomTabNavigatorParamList> | undefined;
 	ThumbnailPageNavigator: NavigatorScreenParams<ThumbnailStackParamList>;
 	Modal: undefined;
+	EditPlan: EditPlanPropsInterface;
 	NotFound: undefined;
 };
 
@@ -59,7 +60,6 @@ export type BottomTabNavigatorScreenProps<Screen extends keyof BottomTabNavigato
  */
 export type ItineraryStackParamList = {
 	ItineraryTopTabNavigator: NavigatorScreenParams<ItineraryTopTabParamList>;
-	EditPlan: EditPlanPropsInterface;
 	HelloSpelieve: Record<string, never>;
 };
 

@@ -9,6 +9,7 @@ import { ICT031PlansMap } from '../..';
 
 import { IMC03102TrafficMovementEditController } from './TrafficMovementEditController';
 import { TrafficMovementEditPropsInterface } from './TrafficMovementEditInterface';
+import { IMC03102TrafficMovementEditTemplate } from './TrafficMovementEditTemplate';
 
 import i18n from '@/Common/Hooks/i18n-js';
 import { IMC03104EditDirectionsMode } from '@/Itinerary/Contexts/ICT031PlansMap/ModelComponents/IMC03104EditDirectionsMode';
@@ -42,9 +43,10 @@ export const IMC03102TrafficMovementEdit = ({
 
 	return (
 		<>
-			<View style={{ flexDirection: 'row', paddingHorizontal: 16, paddingVertical: 4 }}>
-				<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-					{plan.place_id && nextPlan?.place_id && (
+			<IMC03102TrafficMovementEditTemplate
+				Mode={
+					plan.place_id &&
+					nextPlan?.place_id && (
 						<Pressable
 							onPress={() => {
 								setBottomSheetVisible(true);
@@ -58,38 +60,38 @@ export const IMC03102TrafficMovementEdit = ({
 								size={20}
 							/>
 						</Pressable>
-					)}
-				</View>
-				<View style={{ flex: 14, flexDirection: 'row' }}>
-					<View style={{ flex: 3 }}>
-						{plan.place_id && nextPlan?.place_id && plan.transportationMode && (
-							<View>
-								<Text>
-									{plan.transportationDepartureTime
-										? `${DateUtils.formatToHHMM(plan.transportationDepartureTime)} ~`
-										: ''}
-								</Text>
-								<Text>
-									{plan.transportationArrivalTime ? `${DateUtils.formatToHHMM(plan.transportationArrivalTime)}` : ''}
-								</Text>
-							</View>
-						)}
-					</View>
-					<View style={{ flex: 11, flexDirection: 'row' }}>
-						<Button
-							mode="outlined"
-							icon="plus"
-							onPress={() => {
-								// eslint-disable-next-line @typescript-eslint/no-floating-promises
-								addPlan();
-							}}
-							color={materialColors.grey['500']}
-							style={{ backgroundColor: 'white' }}>
-							{i18n.t('Add Plan')}
-						</Button>
-					</View>
-				</View>
-			</View>
+					)
+				}
+				Time={
+					plan.place_id &&
+					nextPlan?.place_id &&
+					plan.transportationMode && (
+						<View>
+							<Text>
+								{plan.transportationDepartureTime
+									? `${DateUtils.formatToHHMM(plan.transportationDepartureTime)} ~`
+									: ''}
+							</Text>
+							<Text>
+								{plan.transportationArrivalTime ? `${DateUtils.formatToHHMM(plan.transportationArrivalTime)}` : ''}
+							</Text>
+						</View>
+					)
+				}
+				AddPlan={
+					<Button
+						mode="outlined"
+						icon="plus"
+						onPress={() => {
+							// eslint-disable-next-line @typescript-eslint/no-floating-promises
+							addPlan();
+						}}
+						color={materialColors.grey['500']}
+						style={{ backgroundColor: 'white' }}>
+						{i18n.t('Add Plan')}
+					</Button>
+				}
+			/>
 			<IMC03104EditDirectionsMode
 				planID={planID}
 				bottomSheetVisible={bottomSheetVisible}
