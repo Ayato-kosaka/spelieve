@@ -15,6 +15,7 @@ export const ICT011ItineraryOneProvider = ({ children }: { children: ReactNode }
 		undefined,
 	);
 
+	// onSnapShotを使用するために取得している
 	const { itineraryCRef } = ICT011ItineraryOneController();
 
 	useEffect(() => {

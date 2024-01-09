@@ -26,7 +26,7 @@ import { THK001UseFonts } from '@/Thumbnail/Hooks/THK001UseFonts';
 import { ThumnailRule } from '@/Thumbnail/Hooks/ThumbnailRule';
 
 export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScreenProps<'TPA001ThumbnailEditor'>) => {
-	// パラメータ取得
+	// パラメータ取得(URLのクエリパラメータから取得される)
 	const { fromThumbnailID } = route.params;
 
 	// グローバルコンテキスト取得
@@ -36,6 +36,7 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 	const { setThumbnailID } = useContext(TCT011MThumbnailOne);
 	const { isLoading, decorationsMap, activeDecorationID } = useContext(TCT023DecorationsMap);
 
+	// 選択されているデコレーションのオブジェクトを保持
 	const activeDecoration: DecorationsMapInterface | undefined = useMemo(
 		() => decorationsMap[activeDecorationID],
 		[activeDecorationID, decorationsMap],
@@ -106,6 +107,7 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 
 	const { fontsLoaded } = THK001UseFonts();
 
+	// 右上のヘッダのビュー作成（テキスト挿入ボタン、画像挿入ボタン、四角挿入ボタン）
 	const headerRight = useCallback(
 		() => (
 			<View style={{ flexDirection: 'row' }}>
@@ -117,6 +119,8 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		),
 		[onFigurePlusClicked, onTextPlusClicked, pickImage],
 	);
+
+	// 左上のヘッダのビュー作成（閉じるボタン）
 	const headerLeft = useCallback(
 		() => (
 			<View style={{ flexDirection: 'row' }}>
@@ -125,6 +129,8 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 		),
 		[onLeaveScreen],
 	);
+
+	// ?なんのためにあるか、いつ動作するのか不明
 	useEffect(() => {
 		navigation.setOptions({
 			headerRight,
@@ -212,6 +218,7 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 						{footerMenuList
 							.filter(
 								(footerMenu) =>
+									// 選択されているデコレーションが存在し、
 									activeDecoration &&
 									ThumnailRule.FooterDisplay()[activeDecoration.decorationType][footerMenu.key] === true,
 							)

@@ -13,7 +13,9 @@ import { DecorationsMapInterface, DecorationsMapValInterface } from './Decoratio
 export const TCT023DecorationsMap = createContext({} as DecorationsMapValInterface);
 
 export const TCT023DecorationsMapProvider = ({ children }: { children: ReactNode }) => {
+	// 連想配列(key: ?, value: decorationType) 
 	const [decorationsMap, setDecorationsMap] = useState<DecorationsMapValInterface['decorationsMap']>({});
+	// ?（ローディングしているかどうか？）
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const { thumbnailDocRef, isLoading: mThumbnailOneIsLoading } = useContext(TCT011MThumbnailOne);

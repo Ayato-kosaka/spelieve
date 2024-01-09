@@ -14,8 +14,11 @@ import { ThumbnailStackParamList } from '@/Common/Navigation/NavigationInterface
 const Stack = createNativeStackNavigator<ThumbnailStackParamList>();
 
 export const ThumbnailPageNavigator = () => (
+	// サムネイルの一覧のコンテキスト
 	<TCT012MThumbnailListProvider>
+		{/* 1件のサムネイルのコンテキスト */}
 		<TCT011MThumbnailOneProvider>
+			{/* ??? */}
 			<TCT023DecorationsMapProvider>
 				<TCT032MMaskShapeListProvider>
 					<Stack.Navigator initialRouteName="TPA001ThumbnailEditor">

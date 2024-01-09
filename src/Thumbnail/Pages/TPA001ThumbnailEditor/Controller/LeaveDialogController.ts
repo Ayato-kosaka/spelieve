@@ -40,7 +40,7 @@ export const TPA001LeaveDialogController = ({
 					return setDoc(dDocRef, decorationsMap[decorationID]);
 				}),
 			);
-			return tDocRef.id;
+return tDocRef.id;
 		},
 		[decorationsMap, getCollection, thumbnail, thumbnailCollectionRef],
 	);
@@ -49,6 +49,7 @@ export const TPA001LeaveDialogController = ({
 		visible: boolean;
 	}>({ visible: false });
 	const hideBeforeLeaveDialog = useCallback(() => setBeforeLeaveDialog({ visible: false }), []);
+
 	const onSaveClicked = useCallback(async () => {
 		hideBeforeLeaveDialog();
 
@@ -69,6 +70,8 @@ export const TPA001LeaveDialogController = ({
 		}
 		navigation.goBack();
 	}, [createThumbnail, hideBeforeLeaveDialog, navigation, setActiveDecorationID, thumbnailItemMapper]);
+
+	
 	const onDiscardClicked = useCallback(() => {
 		hideBeforeLeaveDialog();
 		navigation.goBack();

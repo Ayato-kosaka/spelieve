@@ -45,13 +45,13 @@ export const IPA001ItineraryEditController = ({ route, navigation }: ItineraryTo
 	}, [itineraryCRef, navigation, planGroupsCRef, plansCRef]);
 
 	useEffect(() => {
-		if (route.params.itineraryID) {
-			if (!itineraryDocSnap?.id) {
-				setItineraryID(route.params.itineraryID);
+		if (route.params.itineraryID) { // URLにitineraryIDが存在する
+			if (!itineraryDocSnap?.id) { // 初めてしおり表示する時
+				setItineraryID(route.params.itineraryID); // itineraryIせっとsuru 
 			}
-		} else if (itineraryDocSnap?.id) {
-			navigation.setParams({ itineraryID: itineraryDocSnap?.id });
-		} else {
+		} else if (itineraryDocSnap?.id) { // URLにitineraryIDがないパターン（どう言う状況？URLのitineraryIDを消した時？)
+			navigation.setParams({ itineraryID: itineraryDocSnap?.id }); // URLにitineraryIDをセット
+		} else { // 新しく始めるを押したパタンーん
 			// eslint-disable-next-line @typescript-eslint/no-floating-promises
 			createItinerary();
 		}

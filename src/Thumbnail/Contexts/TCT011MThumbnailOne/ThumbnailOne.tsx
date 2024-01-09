@@ -22,9 +22,13 @@ const initialThumbnail: MThumbnailOneInterface = {
 };
 
 export const TCT011MThumbnailOneProvider = ({ children }: { children: ReactNode }) => {
+	// サムネイルのState
+	// MThumbnailOneInterface型のプロパティを持つ
 	const [thumbnail, setThumbnail] = useState<MThumbnailOneInterface>({} as MThumbnailOneInterface);
+	// サムネイルのDocRefのState()
 	const [thumbnailDocRef, setThumbnailDocRef] = useState<DocumentReference<MThumbnailOneInterface> | undefined>();
 	const [thumbnailID, setThumbnailID] = useState<string | undefined>();
+	// DB読み込み中かどうかを判定する
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const thumbnailCollectionRef = useMemo(
@@ -41,21 +45,31 @@ export const TCT011MThumbnailOneProvider = ({ children }: { children: ReactNode 
 		[],
 	);
 
+	// 初期描画時はここが動く
 	useEffect(() => {
-		if (!thumbnailID) {
-			setIsLoading(false);
+		if (!thumbnailID) { // IDがない時は、初期状態にする。初めて作った時とか
+			setIsLoading(false); // 読み込み中にしない
 			setThumbnail(initialThumbnail);
 			return;
 		}
+
+		// すでにDBに存在する場合（IDあり）
+		// 読み込み開始
 		setIsLoading(true);
 
+		// データ取得しに行く
 		const fetchData = async () => {
+			// 1件のサムネイルの「参照データ」を取得
 			const docRef = doc(thumbnailCollectionRef, thumbnailID);
+			// 1件のサムネイルの「実際のデータ」を取得
 			const documentSnapshot = await getDoc(docRef);
+
+			// 実際のデータ取得された
 			if (documentSnapshot.exists()) {
 				setThumbnailDocRef(docRef);
 				setThumbnail({ ...documentSnapshot.data(), prevThumbnailID: thumbnailID });
 			}
+			// 読み込み終了
 			setIsLoading(false);
 		};
 
