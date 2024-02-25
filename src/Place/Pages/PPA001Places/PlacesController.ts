@@ -34,7 +34,7 @@ export const PPA001PlacesController = ({ navigation, route }: PlaceStackScreenPr
 			setAddress({ country, administrativeAreaLevel1, administrativeAreaLevel2, locality });
 		} else {
 			// TODO: https://github.com/Ayato-kosaka/spelieve/issues/305 現在地からGepoint取得
-			navigation.navigate('PPA001Places', initialPlaceParams);
+			navigation.setParams(initialPlaceParams);
 		}
 	}, [
 		country,
@@ -70,7 +70,7 @@ export const PPA001PlacesController = ({ navigation, route }: PlaceStackScreenPr
 				locality: details?.locality,
 			};
 
-			navigation.navigate('PPA001Places', searchedAddress);
+			navigation.setParams(searchedAddress);
 		}
 	};
 
