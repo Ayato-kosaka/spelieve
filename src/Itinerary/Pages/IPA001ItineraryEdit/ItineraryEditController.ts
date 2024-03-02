@@ -150,7 +150,7 @@ export const IPA001ItineraryEditController = ({ route, navigation }: ItineraryTo
 				}
 			},
 		});
-		navigation.navigate('ThumbnailPageNavigator', {
+		navigation.push('ThumbnailPageNavigator', {
 			screen: 'TPA001ThumbnailEditor',
 			params: {
 				fromThumbnailID: pageItinerary?.thumbnailID,
@@ -160,7 +160,7 @@ export const IPA001ItineraryEditController = ({ route, navigation }: ItineraryTo
 
 	const onPlanPress = useCallback(
 		(planGroupID: string, planID: string) => {
-			navigation.navigate('EditPlan', {
+			navigation.push('EditPlan', {
 				itineraryID: itineraryDocSnap?.id,
 				planGroupID,
 				planID,

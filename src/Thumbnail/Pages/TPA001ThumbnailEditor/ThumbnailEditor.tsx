@@ -175,7 +175,7 @@ export const TPA001ThumbnailEditor = ({ navigation, route }: ThumbnailStackScree
 			<View style={{ height: '100%', justifyContent: 'space-between' }}>
 				<Button
 					onPress={() => {
-						navigation.navigate('TPA002ThumbnailTemplate', {});
+						navigation.push('TPA002ThumbnailTemplate', {});
 					}}
 					color="black"
 					style={{ height: 80 }}>

@@ -47,7 +47,7 @@ export const PPA001PlacesController = ({ navigation, route }: PlaceStackScreenPr
 	]);
 
 	const onPlaceSelected = (place_id: string) => {
-		navigation.navigate('PPA002Place', {
+		navigation.push('PPA002Place', {
 			place_id,
 		});
 	};

@@ -51,7 +51,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 						marginVertical: 30,
 					}}
 					onPress={() =>
-						navigation.navigate('ItineraryTopTabNavigator', {
+						navigation.push('ItineraryTopTabNavigator', {
 							screen: 'ItineraryEdit',
 							params: { itineraryID: undefined },
 						})
@@ -68,7 +68,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 								<Pressable
 									key={recentItinerary.itineraryID}
 									onPress={() => {
-										navigation.navigate('ItineraryTopTabNavigator', {
+										navigation.push('ItineraryTopTabNavigator', {
 											screen: 'ItineraryEdit',
 											params: {
 												itineraryID: recentItinerary.itineraryID,
@@ -148,7 +148,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 							marginVertical: 30,
 						}}
 						onPress={() =>
-							navigation.navigate('ItineraryTopTabNavigator', {
+							navigation.push('ItineraryTopTabNavigator', {
 								screen: 'ItineraryEdit',
 								params: { itineraryID: undefined },
 							})
@@ -167,7 +167,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 						}}
 						color="#c0c0c0"
 						onPress={() =>
-							navigation.navigate('ItineraryTopTabNavigator', {
+							navigation.push('ItineraryTopTabNavigator', {
 								screen: 'ItineraryEdit',
 								params: { itineraryID: i18n.t('多言語対応サンプルしおり遷移先itineraryID') },
 							})
@@ -249,7 +249,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 							marginVertical: 30,
 						}}
 						onPress={() =>
-							navigation.navigate('ItineraryTopTabNavigator', {
+							navigation.push('ItineraryTopTabNavigator', {
 								screen: 'ItineraryEdit',
 								params: { itineraryID: undefined },
 							})
@@ -298,7 +298,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 									console.log('onBack', { thumbnailID, thumbnailItemMapper, uri });
 								},
 							});
-							navigation.navigate('ThumbnailPageNavigator', {
+							navigation.push('ThumbnailPageNavigator', {
 								screen: 'TPA001ThumbnailEditor',
 								params: {
 									fromThumbnailID: 'HVClefrb102gUdcTp2Cu',

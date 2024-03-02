@@ -18,7 +18,7 @@ export const PPA002PlaceController = ({
 	}, [place_id, setPlaceID]);
 
 	const onCreateItineraryClicked = () => {
-		navigation.navigate('Itinerary', {
+		navigation.push('Itinerary', {
 			screen: 'ItineraryTopTabNavigator',
 			params: {
 				screen: 'ItineraryEdit',

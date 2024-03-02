@@ -25,7 +25,7 @@ export const IPA003EditPlanController = ({ route, navigation }: RootStackScreenP
 			route.params.planGroupID === undefined ||
 			route.params.planID === undefined
 		) {
-			// TODO: https://github.com/Ayato-kosaka/spelieve/issues/397 HelloSpelieve に遷移できない
+			// TODO: https://github.com/Ayato-kosaka/spelieve/issues/397 HelloSpelieve に遷移できない(エラーとなる)
 			navigation.navigate('BottomTabNavigator', {
 				screen: 'Itinerary',
 				params: { screen: 'HelloSpelieve', params: {} },
@@ -153,7 +153,7 @@ export const IPA003EditPlanController = ({ route, navigation }: RootStackScreenP
 				);
 			},
 		});
-		navigation.navigate('ThumbnailPageNavigator', {
+		navigation.push('ThumbnailPageNavigator', {
 			screen: 'TPA001ThumbnailEditor',
 			params: {
 				fromThumbnailID: plan?.thumbnailID,
