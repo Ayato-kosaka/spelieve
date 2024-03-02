@@ -27,7 +27,6 @@ export const IPA004ItineraryPreviewController = ({
 		} else if (itineraryID) {
 			navigation.setParams({ itineraryID });
 		} else {
-			// TODO: https://github.com/Ayato-kosaka/spelieve/issues/361 navigation.navigate が動かない
 			navigation.navigate('HelloSpelieve', {});
 		}
 	}, [itineraryID, navigation, route.params.itineraryID, setItineraryID]);
