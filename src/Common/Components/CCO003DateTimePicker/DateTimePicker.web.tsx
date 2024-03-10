@@ -1,40 +1,57 @@
 import { IOSNativeProps, AndroidNativeProps, WindowsNativeProps } from '@react-native-community/datetimepicker';
-import { useMemo } from 'react';
-import DatePicker from 'react-datepicker';
+import { useCallback, useMemo } from 'react';
+import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { TextInput } from 'react-native-paper';
 
-export const CCO003DateTimePicker = ({ ...props }: IOSNativeProps & AndroidNativeProps & WindowsNativeProps) => {
-	const onChange = (date: Date) => {
-		if (props.onChange) {
-			props.onChange(
-				{
-					type: 'set',
-					nativeEvent: {},
-				},
-				date,
-			);
-		}
-	};
+export const CCO003DateTimePicker = ({
+	value,
+	mode = 'date',
+	onChange,
+	minuteInterval,
+	style,
+}: IOSNativeProps & AndroidNativeProps & WindowsNativeProps) => {
+	const onChangeDatePicker: ReactDatePickerProps['onChange'] = useCallback(
+		(date) => {
+			if (onChange && date instanceof Date) {
+				// #961 TimeFiled を直接入力すると ReactDatePickerProps#onChange の date が本日日付で発火することが判明したため、
+				// props.onChange に渡す Date の変更項目を mode で分岐することで詳細化する。
+				const newDate = new Date(value.getTime());
+				if (mode === 'time') {
+					newDate.setHours(date.getHours(), date.getMinutes(), date.getSeconds());
+				} else if (mode === 'date') {
+					newDate.setFullYear(date.getFullYear(), date.getMonth(), date.getDate());
+				}
+				onChange(
+					{
+						type: 'set',
+						nativeEvent: {},
+					},
+					newDate,
+				);
+			}
+		},
+		[value, mode, onChange],
+	);
 
-	const showTimeSelect = useMemo(() => props.mode === 'time', [props.mode]);
+	const showTimeSelect = useMemo(() => mode === 'time', [mode]);
 
 	const showTimeSelectOnly = useMemo(() => showTimeSelect, [showTimeSelect]);
 
-	const timeIntervals = useMemo(() => props.minuteInterval, [props.minuteInterval]);
+	const timeIntervals = useMemo(() => minuteInterval, [minuteInterval]);
 
 	const dateFormat = useMemo(() => {
-		if (props.mode === 'time') {
+		if (mode === 'time') {
 			return 'hh:mm aa';
 		}
 		return 'MMMM d, yyyy';
-	}, [props.mode]);
+	}, [mode]);
 
 	return (
 		<DatePicker
-			customInput={<TextInput style={props.style} />}
-			selected={props.value}
-			onChange={onChange}
+			customInput={<TextInput style={style} />}
+			selected={value}
+			onChange={onChangeDatePicker}
 			showTimeSelect={showTimeSelect}
 			showTimeSelectOnly={showTimeSelectOnly}
 			timeIntervals={timeIntervals}
