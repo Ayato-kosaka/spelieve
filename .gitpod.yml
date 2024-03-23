@@ -5,12 +5,12 @@
 tasks:
   - name: Setup, spelieve secret
     before: git clone https://github.com/Ayato-kosaka/spelieve-secret.git
-    init: mv ./spelieve-secret/spelieve-frontend/release/ENV.ts ./src/
+    init: mv ./spelieve-secret/spelieve-frontend/release/ENV.ts ./src/ && 
+      mv ./spelieve-secret/spelieve-frontend/release/GoogleService-Info.plist ./ &&
+      mv ./spelieve-secret/spelieve-frontend/release/google-services.json ./ &&
+      rm -rf ./spelieve-secret/
 
   - name: Setup, Install & Build
     before: npm install -g expo-cli
     init: npm ci
     command: expo web
-
-  - name: Delete, spelieve secret
-    init: rm -rf ./spelieve-secret/
