@@ -20,31 +20,31 @@ jobs:
         with:
           node-version: "20"
 
-      # - name: Install dependencies
-      #   run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-      # - name: Checkout spelieve-secret
-      #   uses: actions/checkout@v3
-      #   with:
-      #     repository: Ayato-kosaka/spelieve-secret
-      #     token: ${{ secrets.REPO_ACCESS_TOKEN }}
-      #     path: spelieve-secret
-      # - name: Move environment configuration to src directory
-      #   run: mv ./spelieve-secret/spelieve-frontend/release/ENV.ts ./src
-      # - name: Clean up secret repository
-      #   run: rm -rf spelieve-secret/
+      - name: Checkout spelieve-secret
+        uses: actions/checkout@v3
+        with:
+          repository: Ayato-kosaka/spelieve-secret
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          path: spelieve-secret
+      - name: Move environment configuration to src directory
+        run: mv ./spelieve-secret/spelieve-frontend/release/ENV.ts ./src
+      - name: Clean up secret repository
+        run: rm -rf spelieve-secret/
       
-      # - name: Check missing Lang.json entries
-      #   run: npm run grepI18n
+      - name: Check missing Lang.json entries
+        run: npm run grepI18n
 
-      # - name: ESLint and Prettier Check
-      #   run: npm run format:check
+      - name: ESLint and Prettier Check
+        run: npm run format:check
 
-      # - name: TypeScript Compiler Check
-      #   run: npx tsc
+      - name: TypeScript Compiler Check
+        run: npx tsc
 
-      # - name: Expo Doctor Check
-      #   run: npm install -g expo-doctor && npx expo-doctor
+      - name: Expo Doctor Check
+        run: npm install -g expo-doctor && npx expo-doctor
 
       - name: Check out code analysis tools
         uses: actions/checkout@v3
