@@ -3,7 +3,7 @@ import { ConfigContext } from '@expo/config';
 export default ({ config }: ConfigContext) => {
 	return {
 		expo: {
-			name: 'Spelieve ~旅のしおり簡単作成アプリ~',
+			name: 'Spelieve',
 			owner: 'spelieve',
 			slug: 'Spelieve',
 			scheme: 'spelieve',
@@ -16,7 +16,7 @@ export default ({ config }: ConfigContext) => {
 				resizeMode: 'contain',
 				backgroundColor: '#ffffff',
 			},
-			description: 'このしおりが私たちの道標。未来の思い出が詰まってる。',
+			description: 'Traveling can be one of the happiest experiences in life, but preparing and managing schedules can be stressful. Spelieve helps reduce the hassle of travel, allowing travelers to focus on enjoying the essence of their journeys and make the most of their precious time!',
 			updates: {
 				fallbackToCacheTimeout: 0,
 			},
