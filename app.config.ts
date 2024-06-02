@@ -161,5 +161,13 @@ export default ({ config }: ConfigContext) => {
 			// _internal @see {@link https://docs.expo.dev/versions/latest/config/app/#_internal}
 			assetBundlePatterns: ['**/*'],
 		},
+    "react-native-google-mobile-ads": {
+        "android_app_id": "ca-app-pub-8992436220024710~3024441948",
+        "ios_app_id": "ca-app-pub-8992436220024710~4145951922"
+    }
 	};
 };
+
+
+// expo doctor に対応
+// * You have an app.json file in your project, but your app.config.ts is not using the values from it. Remove the static app.json, or use its values in your dynamic app.config.js
