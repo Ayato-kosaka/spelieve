@@ -33,7 +33,7 @@ jobs:
         run: mv ./spelieve-secret/spelieve-frontend/release/ENV.ts ./src
       - name: Clean up secret repository
         run: rm -rf spelieve-secret/
-      
+
       - name: Check missing Lang.json entries
         run: npm run grepI18n
 
