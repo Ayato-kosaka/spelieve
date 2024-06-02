@@ -121,7 +121,6 @@
 		"*.config.js",
 		".*lintrc.js",
 		"/*.*",
-		".package.json",
-		"src/ENV.ts"
+		".package.json"
 	]
 }
