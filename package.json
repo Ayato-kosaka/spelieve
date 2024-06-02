@@ -10,7 +10,7 @@
 		"web": "expo start --web",
 		"eject": "expo eject",
 		"format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\" && eslint \"{src,apps,libs,test}/**/*.{js,jsx,ts,tsx}\" --fix",
-		"format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\" && eslint \"{src,apps,libs,test}/**/*.{js,jsx,ts,tsx}\" --max-warnings=0",
+		"format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\" --ignore-path \".gitignore\" && eslint \"{src,apps,libs,test}/**/*.{js,jsx,ts,tsx}\" --max-warnings=0",
 		"type:check": "tsc",
 		"grepI18n": "node src/Common/Hooks/i18n-js/grepI18n.ts"
 	},
@@ -121,6 +121,7 @@
 		"*.config.js",
 		".*lintrc.js",
 		"/*.*",
-		".package.json"
+		".package.json",
+		"src/ENV.ts"
 	]
 }

@@ -34,7 +34,8 @@ jobs:
       - name: Clean up secret repository
         run: rm -rf spelieve-secret/
       
-      - run: npm run grepI18n
+      - name: Check missing Lang.json entries
+        run: npm run grepI18n
 
       - name: ESLint and Prettier Check
         run: npm run format:check
