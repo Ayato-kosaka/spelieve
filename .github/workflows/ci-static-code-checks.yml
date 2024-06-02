@@ -35,7 +35,7 @@ jobs:
         run: rm -rf spelieve-secret/
 
       - name: TypeScript Compiler Check
-        run: npm run tsc
+        run: npx tsc
 
       - name: ESLint and Prettier Check
         run: npm run format:check
