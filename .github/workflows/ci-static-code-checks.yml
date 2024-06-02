@@ -33,12 +33,14 @@ jobs:
         run: mv ./spelieve-secret/spelieve-frontend/release/ENV.ts ./src
       - name: Clean up secret repository
         run: rm -rf spelieve-secret/
-
-      - name: TypeScript Compiler Check
-        run: npx tsc
+      
+      - run: npm run grepI18n
 
       - name: ESLint and Prettier Check
         run: npm run format:check
+
+      - name: TypeScript Compiler Check
+        run: npx tsc
 
       - name: Expo Doctor Check
         run: npm install -g expo-doctor && npx expo-doctor
