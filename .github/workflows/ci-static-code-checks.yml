@@ -53,6 +53,8 @@ jobs:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           path: ./spelieve-code-analysis
       - run: mv ./spelieve-code-analysis ../ && cd ../spelieve-code-analysis && npm i
+      
+      - run: pwd && ll
 
       - name: Check missing i18n entries
         run: npx ts-node ./src/checker/checkMissingI18nEntries.ts
