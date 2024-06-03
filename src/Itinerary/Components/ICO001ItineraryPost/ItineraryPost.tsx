@@ -40,7 +40,9 @@ export const ICO001ItineraryPost = ({ itinerary, planGroups, plans }: ItineraryP
 												<Image source={{ uri: plan.imageUrl }} style={styles.planImage} />
 												{plan.title !== '' && <Text style={styles.planTitle}>{plan.title}</Text>}
 												<Text style={styles.planTime}>
-													{dateToHourMinString(plan.placeStartTime)}~{dateToHourMinString(plan.placeEndTime)}
+													{dateToHourMinString(plan.placeStartTime)}
+													{i18n.t('~')}
+													{dateToHourMinString(plan.placeEndTime)}
 												</Text>
 											</View>
 											<View style={styles.transportationSpanContainer}>

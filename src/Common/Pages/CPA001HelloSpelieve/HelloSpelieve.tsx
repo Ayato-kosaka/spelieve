@@ -36,7 +36,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 			<SafeAreaView />
 			<ScrollView>
 				<View style={styles.header}>
-					<Text style={styles.headerTitleText}>Spelieve</Text>
+					<Text style={styles.headerTitleText}>{i18n.t('Spelieve')}</Text>
 				</View>
 				<Button
 					testID="createItineraryButton"
@@ -179,7 +179,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 					<Headline style={styles.headLineText}>{i18n.t('Spelieve の使い方')}</Headline>
 					<View style={styles.howToUseBox}>
 						<View style={styles.howToUseNumber}>
-							<Text style={styles.howToUseNumberText}>1</Text>
+							<Text style={styles.howToUseNumberText}>{i18n.t('1')}</Text>
 						</View>
 						<Text style={styles.howToUseText}>{i18n.t('しおりを作成')}</Text>
 						<Image
@@ -192,7 +192,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 					</View>
 					<View style={styles.howToUseBox}>
 						<View style={styles.howToUseNumber}>
-							<Text style={styles.howToUseNumberText}>2</Text>
+							<Text style={styles.howToUseNumberText}>{i18n.t('2')}</Text>
 						</View>
 						<Text style={styles.howToUseText}>{i18n.t('訪れる予定の場所を入力')}</Text>
 						<Image
@@ -207,7 +207,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 					</View>
 					<View style={styles.howToUseBox}>
 						<View style={styles.howToUseNumber}>
-							<Text style={styles.howToUseNumberText}>3</Text>
+							<Text style={styles.howToUseNumberText}>{i18n.t('3')}</Text>
 						</View>
 						<Text style={styles.howToUseText}>{i18n.t('URLをコピーし、友達にシェア')}</Text>
 						<Image
@@ -222,7 +222,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 					</View>
 					<View style={styles.howToUseBox}>
 						<View style={styles.howToUseNumber}>
-							<Text style={styles.howToUseNumberText}>4</Text>
+							<Text style={styles.howToUseNumberText}>{i18n.t('4')}</Text>
 						</View>
 						<Text style={styles.howToUseText}>{i18n.t('旅行を楽しむ！')}</Text>
 						<Image
@@ -283,28 +283,7 @@ export const CPA001HelloSpelieve = ({ route, navigation }: ItineraryStackScreenP
 					</Text>
 				</View>
 				{ENV.LOGGER && (
-					<Button
-						mode="contained"
-						onPress={() => {
-							setThumbnailItemMapper({
-								aspectRatio: 1,
-								textMap: { xxx: 'サンプル横浜行くぞい！' },
-								storeUrlMap: {
-									'b87e0c4d-bb1f-48a9-a304-80ce4728f2a7':
-										'https://firebasestorage.googleapis.com/v0/b/spelieve-dev.appspot.com/o/12373bcd-013b-43d3-bbcf-f95c3d991edc?alt=media&token=91171ed7-7a92-439b-9c4b-a675cabe49bc',
-								},
-								onBack(thumbnailID, thumbnailItemMapper, uri) {
-									// eslint-disable-next-line no-console
-									console.log('onBack', { thumbnailID, thumbnailItemMapper, uri });
-								},
-							});
-							navigation.navigate('ThumbnailPageNavigator', {
-								screen: 'TPA001ThumbnailEditor',
-								params: {
-									fromThumbnailID: 'HVClefrb102gUdcTp2Cu',
-								},
-							});
-						}}>
+					<Button mode="contained" onPress={() => {}}>
 						{i18n.t('開発者用')}
 					</Button>
 				)}
