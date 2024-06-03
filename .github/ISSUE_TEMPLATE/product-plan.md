@@ -3,7 +3,8 @@ name: Product Plan
 about: Product Plan
 title: ''
 labels: ":package: PBI"
-assignees: Ayato-kosaka
+assignees: Ayato-kosaka, Takapy1
+
 ---
 
 # Product Plan
