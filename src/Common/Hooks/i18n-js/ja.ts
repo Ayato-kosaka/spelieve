@@ -8,21 +8,10 @@ const ja: typeof Lang = {
 	// NotFoundScreen.tsx
 	'Go to home screen!': 'ホームに戻る',
 
-	// Modal.tsx
-	Modal: 'Modal',
-
 	// Utils
 	'Advertisement Area': 'Advertisement Area',
-	': ': ': ',
-	'~': '~',
 
 	// HelloSpelieve.tsx
-	'1': '1',
-	'2': '2',
-	'3': '3',
-	'4': '4',
-	'Spelieve ~旅のしおり簡単作成アプリ~': 'Spelieve ~旅のしおり簡単作成アプリ~',
-	Spelieve: 'Spelieve',
 	最近作成した旅行しおり: '最近作成した旅行しおり',
 	'No Thumbnail': 'サムネイル画像なし',
 	'Spelieve の特徴': 'Spelieve の特徴',
@@ -134,7 +123,6 @@ const ja: typeof Lang = {
 	Duplication: 'Duplication',
 	Delete: 'Delete',
 	テキストを入力してください: 'テキストを入力してください',
-	FontFamily: 'フォント',
 	'Discard Thumbnail?': 'サムネイルを破棄しますか?',
 	'変更を保存せずに戻りますか？': '変更を保存せずに戻りますか？',
 	Discard: '破棄',

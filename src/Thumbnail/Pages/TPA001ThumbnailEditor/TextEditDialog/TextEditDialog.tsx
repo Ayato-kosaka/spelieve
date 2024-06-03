@@ -56,10 +56,7 @@ export const TPA001TextEditDialog = ({
 						style={{ fontFamily }}
 					/>
 					<View style={{ flexDirection: 'row', overflow: 'hidden', height: 80, alignItems: 'center' }}>
-						<Text style={{ fontSize: 20, marginRight: 5 }}>
-							{i18n.t('FontFamily')}
-							{i18n.t(': ')}
-						</Text>
+						<Text style={{ fontSize: 20, marginRight: 5 }}>FontFamily: </Text>
 						<Text style={{ fontFamily, fontSize: 20 }}>{fontFamily}</Text>
 					</View>
 					{fontsLoaded && (

@@ -4,7 +4,6 @@ import { Pressable, Text } from 'react-native';
 
 import { INV002ItineraryTopTabNavigator } from '../Navigator/INV002ItineraryTopTabNavigator';
 
-import i18n from '@/Common/Hooks/i18n-js';
 import { BottomTabNavigatorScreenProps, ItineraryStackParamList } from '@/Common/Navigation/NavigationInterface';
 import { CPA001HelloSpelieve } from '@/Common/Pages/CPA001HelloSpelieve/HelloSpelieve';
 import { materialColors } from '@/ThemeProvider';
@@ -28,7 +27,7 @@ export const ItineraryPageNavigator = ({ navigation, route }: BottomTabNavigator
 						fontWeight: 'bold',
 						fontFamily: 'Verdana',
 					}}>
-					{i18n.t('Spelieve')}
+					Spelieve
 				</Text>
 			</Pressable>
 		),
