@@ -17,7 +17,7 @@ export default ({ config }: ConfigContext) => {
 			privacy: 'public',
 			// sdkVersion: '47.0.14', // package.json と一致するため省略
 			// runtimeVersion @see {@link https://docs.expo.dev/versions/latest/config/app/#runtimeVersion}
-			version: '2.5.0',
+			version: '2.5.1',
 			platforms: ['ios', 'android', 'web'],
 			githubUrl: 'https://github.com/Ayato-kosaka/spelieve',
 			orientation: 'portrait',
@@ -81,7 +81,7 @@ export default ({ config }: ConfigContext) => {
 				// publishManifestPath @see {@link https://docs.expo.dev/versions/latest/config/app/#publishManifestPath}
 				// publishBundlePath @see {@link https://docs.expo.dev/versions/latest/config/app/#publishBundlePath}
 				bundleIdentifier: 'com.spelieve',
-				buildNumber: '12',
+				buildNumber: '13',
 				// backgroundColor: '#ffffff', // Override 不要のため省略
 				// icon: './assets/favicon.png', // Override 不要のため省略
 				appStoreUrl: 'https://apps.apple.com/us/app/spelieve-travel-itinerary/id1660453134',
@@ -110,7 +110,7 @@ export default ({ config }: ConfigContext) => {
 				// publishManifestPath @see {@link https://docs.expo.dev/versions/latest/config/app/#publishManifestPath}
 				// publishBundlePath @see {@link https://docs.expo.dev/versions/latest/config/app/#publishBundlePath}
 				package: 'com.spelieve',
-				versionCode: 15, // TODO: 毎submitで変更の必要あり
+				versionCode: 16, // TODO: 毎submitで変更の必要あり
 				// backgroundColor: '#ffffff', // Override 不要のため省略
 				// userInterfaceStyle: 'light', // Override 不要のため省略
 				// icon: './assets/favicon.png', // Override 不要のため省略

@@ -1,6 +1,6 @@
 {
 	"name": "spelieve",
-	"version": "2.5.0",
+	"version": "2.5.1",
 	"main": "src/App.tsx",
 	"private": true,
 	"scripts": {
