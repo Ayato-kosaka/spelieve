@@ -1,6 +1,6 @@
 {
 	"name": "spelieve",
-	"version": "2.5.1",
+	"version": "2.5.0",
 	"main": "src/App.tsx",
 	"private": true,
 	"scripts": {
@@ -10,7 +10,7 @@
 		"web": "expo start --web",
 		"eject": "expo eject",
 		"format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\" && eslint \"{src,apps,libs,test}/**/*.{js,jsx,ts,tsx}\" --fix",
-		"format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\" --ignore-path \".gitignore\" && eslint \"{src,apps,libs,test}/**/*.{js,jsx,ts,tsx}\" --max-warnings=0",
+		"format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\" && eslint \"{src,apps,libs,test}/**/*.{js,jsx,ts,tsx}\" --max-warnings=0",
 		"type:check": "tsc",
 		"grepI18n": "node src/Common/Hooks/i18n-js/grepI18n.ts"
 	},

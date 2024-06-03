@@ -57,7 +57,7 @@ export const Navigation = () => {
 			linking={LinkingConfiguration}
 			theme={navigationTheme}
 			documentTitle={{
-				formatter: (options, route) => i18n.t('Spelieve ~旅のしおり簡単作成アプリ~'),
+				formatter: (options, route) => 'Spelieve ~旅のしおり簡単作成アプリ~',
 			}}
 			ref={navigationRef}
 			onReady={() => {
