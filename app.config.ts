@@ -1,18 +1,21 @@
-import { ConfigContext } from '@expo/config';
+import { ConfigContext, ExpoConfig } from '@expo/config';
 
 /**
  * This file is used for configuring Expo Prebuild generation, how a project loads in Expo Go, and the OTA update manifest.
  * @see {@link https://docs.expo.dev/workflow/configuration/}
  * @see {@link https://docs.expo.dev/versions/latest/config/app/}
  */
-export default ({ config }: ConfigContext) => {
+export default ({ config }: ConfigContext): {
+	expo: ExpoConfig
+} => {
 	return {
+		...config,
 		expo: {
 			name: 'Spelieve',
 			description: 'Traveling can be one of the happiest experiences in life, but preparing and managing schedules can be stressful. Spelieve helps reduce the hassle of travel, allowing travelers to focus on enjoying the essence of their journeys and make the most of their precious time!',
 			slug: 'Spelieve',
 			owner: 'spelieve',
-			currentfullname: '@spelieve/Spelieve',
+			currentFullName: '@spelieve/Spelieve',
 			originalFullName: '@spelieve/Spelieve',
 			privacy: 'public',
 			// sdkVersion: '47.0.14', // package.json と一致するため省略
@@ -160,14 +163,6 @@ export default ({ config }: ConfigContext) => {
 			// experiments @see {@link https://docs.expo.dev/versions/latest/config/app/#experiments}
 			// _internal @see {@link https://docs.expo.dev/versions/latest/config/app/#_internal}
 			assetBundlePatterns: ['**/*'],
-		},
-    "react-native-google-mobile-ads": {
-        "android_app_id": "ca-app-pub-8992436220024710~3024441948",
-        "ios_app_id": "ca-app-pub-8992436220024710~4145951922"
-    }
+		}
 	};
 };
-
-
-// expo doctor に対応
-// * You have an app.json file in your project, but your app.config.ts is not using the values from it. Remove the static app.json, or use its values in your dynamic app.config.js
