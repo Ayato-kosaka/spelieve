@@ -22,7 +22,7 @@ export default ({ config }: ConfigContext) => {
 			githubUrl: 'https://github.com/Ayato-kosaka/spelieve',
 			orientation: 'portrait',
 			userInterfaceStyle: 'light',
-			backgroundColor: '#ffffff',
+			// backgroundColor @see {@link https://docs.expo.dev/versions/latest/config/app/#backgroundColor}
 			// primaryColor @see {@link https://docs.expo.dev/versions/latest/config/app/#primaryColor}
 			icon: './assets/favicon.png',
 			// notification @see {@link https://docs.expo.dev/versions/latest/config/app/#notification}
