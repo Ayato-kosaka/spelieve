@@ -28,6 +28,7 @@
     "@expo-google-fonts/roboto-mono": "^0.2.3",
     "@expo-google-fonts/source-sans-pro": "^0.2.3",
     "@expo/metro-runtime": "~3.2.1",
+    "@expo/vector-icons": "^14.0.0",
     "@googlemaps/google-maps-services-js": "^3.3.16",
     "@gorhom/bottom-sheet": "^4.4.5",
     "@react-google-maps/api": "^2.13.1",
@@ -64,7 +65,7 @@
     "react-native-autocomplete-input": "^5.2.0",
     "react-native-drax": "^0.10.3",
     "react-native-gesture-handler": "~2.16.1",
-    "react-native-google-mobile-ads": "^9.1.1",
+    "react-native-google-mobile-ads": "^13.6.0",
     "react-native-maps": "1.14.0",
     "react-native-pager-view": "6.3.0",
     "react-native-paper": "^4.12.5",
@@ -80,8 +81,7 @@
     "react-native-wheel-color-picker": "^1.2.0",
     "react-spring-bottom-sheet": "^3.4.1",
     "setimmediate": "^1.0.5",
-    "spelieve-common": "^1.1.171",
-    "@expo/vector-icons": "^14.0.0"
+    "spelieve-common": "^1.1.171"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
