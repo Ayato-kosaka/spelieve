@@ -1,0 +1,58 @@
+name: CI Static Code Checks
+
+env:
+  CI: true
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Checkout spelieve-secret
+        uses: actions/checkout@v3
+        with:
+          repository: Ayato-kosaka/spelieve-secret
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          path: spelieve-secret
+      - name: Move environment configuration to src directory
+        run: mv ./spelieve-secret/spelieve-frontend/release/ENV.ts ./src
+      - name: Clean up secret repository
+        run: rm -rf spelieve-secret/
+
+      - name: Check missing Lang.json entries
+        run: npm run grepI18n
+
+      - name: ESLint and Prettier Check
+        run: npm run format:check
+
+      - name: TypeScript Compiler Check
+        run: npx tsc
+
+      - name: Expo Doctor Check
+        run: npm install -g expo-doctor && npx expo-doctor
+
+      - name: Check out code analysis tools
+        uses: actions/checkout@v3
+        with:
+          repository: Ayato-kosaka/spelieve-code-analysis
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          path: ./spelieve-code-analysis
+      - run: mv ./spelieve-code-analysis ../ && cd ../spelieve-code-analysis && npm i
+
+      - name: Check missing i18n entries
+        run: cd ../spelieve-code-analysis && npx ts-node ./src/checker/checkMissingI18nEntries.ts

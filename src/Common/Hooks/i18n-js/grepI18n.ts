@@ -1,12 +1,18 @@
 /* eslint-disable */
 // @ts-nocheck
 
+/**
+ * `npm run grepI18n` で実行する。
+ * src 配下の i18n.t メソッドのキーを抽出し、それらをキー/バリューに持った、Lang.json を作成する。
+ *
+ */
+
 const fs = require('fs');
 
 /**
  * Recursively lists all files in a given directory.
- * @param targetDirectoryPath - The path of the directory to list files from.
- * @returns A list of file paths.
+ * @param {string} targetDirectoryPath - The path of the directory to list files from.
+ * @returns {string[]} A list of file paths.
  */
 function listFiles(targetDirectoryPath) {
 	return fs.readdirSync(targetDirectoryPath, { withFileTypes: true }).flatMap((dirent) => {
@@ -22,6 +28,7 @@ const duplicateKeys = [];
 listFiles('./src')
 	.filter((filePath) => filePath.endsWith('.tsx') || filePath.endsWith('.ts'))
 	.forEach((filePath) => {
+		/** @type {string} */
 		const contents = fs.readFileSync(filePath, 'utf-8');
 		for (const match of contents.matchAll(i18nRegex)) {
 			const key = match[2];
