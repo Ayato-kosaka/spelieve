@@ -1,6 +1,6 @@
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { ActivityIndicator, Image, Pressable, ScrollView, View } from 'react-native';
 import { Text, TextInput, Button } from 'react-native-paper';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 import { IPA003EditPlanController } from './EditPlanController';
 import { styles } from './EditPlanStyle';

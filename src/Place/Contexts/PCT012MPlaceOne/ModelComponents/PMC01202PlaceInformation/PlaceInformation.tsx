@@ -1,8 +1,8 @@
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useContext, useState, useCallback } from 'react';
 import { Linking, View, Image } from 'react-native';
 import { Headline, List, Text } from 'react-native-paper';
 import { Rating } from 'react-native-ratings';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 import { PCT012MPlaceOne } from '../../MPlaceOne';
 

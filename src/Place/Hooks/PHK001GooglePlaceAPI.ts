@@ -1,8 +1,8 @@
+import { Icon } from '@expo/vector-icons/build/createIconSet';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Language, TransitMode, TravelMode, TravelRestriction } from '@googlemaps/google-maps-services-js';
 
 import i18n from '@/Common/Hooks/i18n-js';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { Icon } from '@expo/vector-icons/build/createIconSet';
 
 export const GooglePlaceLanguageTagFromIETFLanguageTag: { [key: string]: Language } = {
 	ja: Language.ja,

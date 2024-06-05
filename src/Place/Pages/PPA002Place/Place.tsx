@@ -1,7 +1,7 @@
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import React, { useCallback, useContext, useEffect } from 'react';
 import { View, Image, ScrollView } from 'react-native';
 import { Text, ActivityIndicator } from 'react-native-paper';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 import { PPA002PlaceController } from './PlaceController';
 import { styles } from './PlaceStyle';

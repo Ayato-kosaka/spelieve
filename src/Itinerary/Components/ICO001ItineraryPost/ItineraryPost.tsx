@@ -1,6 +1,6 @@
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Image, View, ScrollView } from 'react-native';
 import { Card, Subheading, Text } from 'react-native-paper';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 import { styles } from './ItineraryPostStyle';
 
