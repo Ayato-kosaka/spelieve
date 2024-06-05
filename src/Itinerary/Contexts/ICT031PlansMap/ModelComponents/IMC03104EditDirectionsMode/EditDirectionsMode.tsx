@@ -1,3 +1,4 @@
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import {
 	TransitMode,
 	TravelMode,
@@ -6,7 +7,6 @@ import {
 } from '@googlemaps/google-maps-services-js';
 import { Pressable, View } from 'react-native';
 import { Checkbox, Divider, Text, Button } from 'react-native-paper';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { IMC03104EditDirectionsModeController } from './EditDirectionsModeController';
 import { EditDirectionsModePropsInterface } from './EditDirectionsModePropsInterface';
@@ -103,13 +103,11 @@ export const IMC03104EditDirectionsMode = ({
 								})
 							}>
 							<Text>{i18n.t('Route with Fewest transfer')}</Text>
-							<MaterialCommunityIcons
-								name={
-									directionsMode.transitRoutingPreference === TransitRoutingPreference.fewer_transfers
-										? 'checkbox-blank-circle'
-										: ''
-								}
-							/>
+							{directionsMode.transitRoutingPreference ? (
+								<MaterialCommunityIcons name="checkbox-blank-circle" />
+							) : (
+								<View />
+							)}
 						</Pressable>
 						<Pressable
 							style={{ flexDirection: 'row', alignItems: 'center' }}
@@ -120,13 +118,11 @@ export const IMC03104EditDirectionsMode = ({
 								})
 							}>
 							<Text>{i18n.t('Route with Shortest walking distance')}</Text>
-							<MaterialCommunityIcons
-								name={
-									directionsMode.transitRoutingPreference === TransitRoutingPreference.less_walking
-										? 'checkbox-blank-circle'
-										: ''
-								}
-							/>
+							{directionsMode.transitRoutingPreference === TransitRoutingPreference.less_walking ? (
+								<MaterialCommunityIcons name="checkbox-blank-circle" />
+							) : (
+								<View />
+							)}
 						</Pressable>
 						<Divider />
 					</>
