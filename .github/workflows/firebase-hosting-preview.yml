@@ -30,7 +30,7 @@ jobs:
           path: spelieve-secret
       - run: 'mv ./spelieve-secret/spelieve-frontend/${{ env.TARGET }}/ENV.ts ./src'
       - run: 'rm -rf spelieve-secret/'
-      - run: 'npm ci && npm i -g expo-cli && expo build:web'
+      - run: 'npm ci && npx expo export --platform web'
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
