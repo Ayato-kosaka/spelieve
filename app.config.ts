@@ -84,7 +84,7 @@ export default ({ config }: ConfigContext): {
 				// publishManifestPath @see {@link https://docs.expo.dev/versions/latest/config/app/#publishManifestPath}
 				// publishBundlePath @see {@link https://docs.expo.dev/versions/latest/config/app/#publishBundlePath}
 				bundleIdentifier: 'com.spelieve',
-				buildNumber: '13',
+				buildNumber: '14',
 				// backgroundColor: '#ffffff', // Override 不要のため省略
 				// icon: './assets/favicon.png', // Override 不要のため省略
 				appStoreUrl: 'https://apps.apple.com/us/app/spelieve-travel-itinerary/id1660453134',
@@ -113,7 +113,7 @@ export default ({ config }: ConfigContext): {
 				// publishManifestPath @see {@link https://docs.expo.dev/versions/latest/config/app/#publishManifestPath}
 				// publishBundlePath @see {@link https://docs.expo.dev/versions/latest/config/app/#publishBundlePath}
 				package: 'com.spelieve',
-				versionCode: 16, // TODO: 毎submitで変更の必要あり
+				versionCode: 17, // TODO: 毎submitで変更の必要あり
 				// backgroundColor: '#ffffff', // Override 不要のため省略
 				// userInterfaceStyle: 'light', // Override 不要のため省略
 				// icon: './assets/favicon.png', // Override 不要のため省略

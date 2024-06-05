@@ -1,8 +1,7 @@
 import React, { useContext } from 'react';
 import { Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
 
-import { PlacesListPropsInterface } from 'spelieve-common/lib/Interfaces';
-
+import { PlacesListPropsInterface } from './PlacesListInterface';
 import { styles } from './PlacesListStyle';
 
 import { PCT011MPlacesList } from '@/Place/Contexts/PCT011MPlacesList';
