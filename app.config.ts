@@ -72,7 +72,6 @@ export default ({ config }: ConfigContext): {
 				'@react-native-firebase/app',
 				'@react-native-firebase/perf',
 				'@react-native-firebase/crashlytics',
-				'./bin/react-native-maps-plugin',
 			],
 			splash: {
 				backgroundColor: '#ffffff',
