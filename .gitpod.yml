@@ -11,6 +11,5 @@ tasks:
       rm -rf ./spelieve-secret/
 
   - name: Setup, Install & Build
-    before: npm install -g expo-cli
     init: npm ci
-    command: expo web
+    command: npx expo start --web
