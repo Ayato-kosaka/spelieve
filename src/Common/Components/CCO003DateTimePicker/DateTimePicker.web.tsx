@@ -25,7 +25,10 @@ export const CCO003DateTimePicker = ({
 				onChange(
 					{
 						type: 'set',
-						nativeEvent: {},
+						nativeEvent: {
+							timestamp: 0,
+							utcOffset: 0,
+						},
 					},
 					newDate,
 				);
