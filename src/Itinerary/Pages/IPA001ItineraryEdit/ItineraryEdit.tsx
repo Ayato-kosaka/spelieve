@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { ScrollView, ActivityIndicator, View, Pressable, Image } from 'react-native';
 import { Headline, Button, Text, TextInput } from 'react-native-paper';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 import { IPA001ItineraryEditController } from './ItineraryEditController';
 import { styles } from './ItineraryEditStyle';

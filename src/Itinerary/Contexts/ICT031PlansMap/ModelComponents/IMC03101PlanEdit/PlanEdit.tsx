@@ -2,7 +2,7 @@ import React, { useContext, useMemo } from 'react';
 import { Pressable, View } from 'react-native';
 import { Card, Text } from 'react-native-paper';
 import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 

@@ -1,5 +1,5 @@
 import { Pressable } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 import { CCO006ImagePickerController } from './ImagePickerController';
 import { ImagePickerPropsInterface } from './ImagePickerPropsInterface';

@@ -2,7 +2,7 @@ import { MediaTypeOptions } from 'expo-image-picker';
 import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import { ActivityIndicator, Pressable, SafeAreaView, ScrollView, View } from 'react-native';
 import { Button, Dialog, Portal, Text } from 'react-native-paper';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import ViewShot from 'react-native-view-shot';
 
 import { TPA001BorderColorPickerDialog } from './BorderColorPickerDialog/BorderColorPickerDialog';

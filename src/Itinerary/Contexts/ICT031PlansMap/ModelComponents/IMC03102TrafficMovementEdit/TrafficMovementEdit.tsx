@@ -1,7 +1,7 @@
 import { useContext, useMemo } from 'react';
 import { Pressable, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 import * as DateUtils from 'spelieve-common/lib/Utils/DateUtils';
 

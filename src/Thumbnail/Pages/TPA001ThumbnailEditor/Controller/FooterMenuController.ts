@@ -205,31 +205,32 @@ export const TPA001FooterMenuController = ({
 	}, [activeDecoration, pickImage]);
 
 	const footerMenuList = useMemo(
-		() => [
-			{
-				key: 'EditText' as const,
-				title: i18n.t('EditText'),
-				icon: 'format-text',
-				onPress: () => {},
-			},
-			{ key: 'Replace' as const, title: i18n.t('Replace'), icon: 'file-replace-outline', onPress: onPressReplace },
-			{ key: 'Color' as const, title: i18n.t('Color'), icon: 'palette-outline', onPress: () => {} },
-			{ key: 'Mask' as const, title: i18n.t('Mask'), icon: 'content-cut', onPress: () => {} },
-			{ key: 'Order' as const, title: i18n.t('Order'), icon: 'sort', onPress: () => {} },
-			{ key: 'BorderColor' as const, title: i18n.t('Border Color'), icon: 'border-color', onPress: () => {} },
-			{
-				key: 'Duplicate' as const,
-				title: i18n.t('Duplication'),
-				icon: 'content-copy',
-				onPress: duplicationDecoration,
-			},
-			{
-				key: 'Delete' as const,
-				title: i18n.t('Delete'),
-				icon: 'delete',
-				onPress: () => deleteDecoration(activeDecorationID),
-			},
-		],
+		() =>
+			[
+				{
+					key: 'EditText',
+					title: i18n.t('EditText'),
+					icon: 'format-text',
+					onPress: () => {},
+				},
+				{ key: 'Replace', title: i18n.t('Replace'), icon: 'file-replace-outline', onPress: onPressReplace },
+				{ key: 'Color', title: i18n.t('Color'), icon: 'palette-outline', onPress: () => {} },
+				{ key: 'Mask', title: i18n.t('Mask'), icon: 'content-cut', onPress: () => {} },
+				{ key: 'Order', title: i18n.t('Order'), icon: 'sort', onPress: () => {} },
+				{ key: 'BorderColor', title: i18n.t('Border Color'), icon: 'border-color', onPress: () => {} },
+				{
+					key: 'Duplicate',
+					title: i18n.t('Duplication'),
+					icon: 'content-copy',
+					onPress: duplicationDecoration,
+				},
+				{
+					key: 'Delete',
+					title: i18n.t('Delete'),
+					icon: 'delete',
+					onPress: () => deleteDecoration(activeDecorationID),
+				},
+			] as const,
 		[activeDecorationID, deleteDecoration, duplicationDecoration, onPressReplace],
 	);
 

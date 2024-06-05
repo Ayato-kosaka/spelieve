@@ -1,6 +1,8 @@
 import { Language, TransitMode, TravelMode, TravelRestriction } from '@googlemaps/google-maps-services-js';
 
 import i18n from '@/Common/Hooks/i18n-js';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { Icon } from '@expo/vector-icons/build/createIconSet';
 
 export const GooglePlaceLanguageTagFromIETFLanguageTag: { [key: string]: Language } = {
 	ja: Language.ja,
@@ -9,7 +11,7 @@ export const GooglePlaceLanguageTagFromIETFLanguageTag: { [key: string]: Languag
 
 export const travelModeConverter: {
 	[key in TravelMode]: {
-		iconName: string;
+		iconName: typeof MaterialCommunityIcons extends Icon<infer T, string> ? T : never;
 		title: string;
 	};
 } = {
@@ -29,11 +31,11 @@ export const travelModeConverter: {
 		iconName: 'walk',
 		title: i18n.t('Walking'),
 	},
-};
+} as const;
 
 export const transitModeConverter: {
 	[key in TransitMode]: {
-		iconName: string;
+		iconName: typeof MaterialCommunityIcons extends Icon<infer T, string> ? T : never;
 		title: string;
 	};
 } = {
