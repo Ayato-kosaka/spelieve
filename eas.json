@@ -8,7 +8,7 @@
 			"developmentClient": true,
 			"distribution": "internal",
 			"ios": {
-				"cocoapods": "1.12.0"
+				"cocoapods": "1.14.0"
 			}
 		},
 		"development-simulator": {
@@ -16,20 +16,20 @@
 			"distribution": "internal",
 			"ios": {
 				"simulator": true,
-				"cocoapods": "1.12.0"
+				"cocoapods": "1.14.0"
 			}
 		},
 		"preview": {
 			"distribution": "internal",
 			"ios": {
-				"cocoapods": "1.12.0"
+				"cocoapods": "1.14.0"
 			}
 		},
 		"preview-simulator": {
 			"distribution": "internal",
 			"ios": {
 				"simulator": true,
-				"cocoapods": "1.12.0"
+				"cocoapods": "1.14.0"
 			}
 		},
 		"production": {
@@ -37,7 +37,7 @@
 				"credentialsSource": "remote"
 			},
 			"ios": {
-				"cocoapods": "1.12.0"
+				"cocoapods": "1.14.0"
 			}
 		}
 	},
