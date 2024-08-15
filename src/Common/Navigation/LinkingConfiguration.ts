@@ -65,6 +65,7 @@ const RootStackScreens: Weaken<RootStackParamList, keyof RootStackParamList> = {
 	},
 	Modal: 'modal',
 	EditPlan: 'EditPlan',
+	Extensions: 'Extensions',
 	NotFound: '*',
 };
 

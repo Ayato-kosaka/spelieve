@@ -21,6 +21,7 @@ export type RootStackParamList = {
 	ThumbnailPageNavigator: NavigatorScreenParams<ThumbnailStackParamList>;
 	Modal: undefined;
 	EditPlan: EditPlanPropsInterface;
+	Extensions: undefined;
 	NotFound: undefined;
 };
 

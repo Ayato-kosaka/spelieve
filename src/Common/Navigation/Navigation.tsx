@@ -21,6 +21,7 @@ import { ItineraryPageNavigator } from '@/Itinerary/Pages/ItineraryPageNavigator
 import { PlacePageNavigator } from '@/Place/Pages/PlacePageNavigator/PlacePageNavigator';
 import { navigationTheme } from '@/ThemeProvider';
 import { ThumbnailPageNavigator } from '@/Thumbnail/Pages/ThumbnailPageNavigator';
+import { CPA002Extensions } from '../Pages/CPA002Extensions/Extensions';
 
 export const Navigation = () => {
 	const navigationRef = useNavigationContainerRef<RootStackParamList>();
@@ -84,6 +85,7 @@ const RootNavigator = () => (
 				component={ThumbnailPageNavigator}
 				options={{ headerShown: false, gestureEnabled: false }}
 			/>
+			<Stack.Screen name="Extensions" component={CPA002Extensions} options={{ title: 'Extensions' }} />
 			<Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
 			<Stack.Group screenOptions={{ presentation: 'modal' }}>
 				<Stack.Screen name="Modal" component={ModalScreen} />
